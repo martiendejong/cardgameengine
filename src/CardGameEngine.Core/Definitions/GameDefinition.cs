@@ -17,6 +17,17 @@ public class GameDefinition
     public ResolutionPolicyDefinition ResolutionPolicy { get; set; } = new();
     public DeckRulesDefinition? DeckRules { get; set; }
     public BattlefieldLinesDefinition? BattlefieldLines { get; set; }
+    public List<PreconDeckDefinition> Decks { get; set; } = new();
+}
+
+public class PreconDeckDefinition
+{
+    public string Id { get; set; } = "";
+    public string Name { get; set; } = "";
+    public string Description { get; set; } = "";
+    public string Hq { get; set; } = "";   // headquarters card id
+    public string Hero { get; set; } = ""; // hero card id
+    public Dictionary<string, int> Cards { get; set; } = new();
 }
 
 public class BattlefieldLinesDefinition
@@ -102,6 +113,18 @@ public class CardDefinition
     public string? ArtworkDescription { get; set; }
     public int? PlayCost { get; set; } // gold cost to play from hand; null = not deck-eligible
     public AbilityDefinition? OnPlay { get; set; } // resolved when the card is played from hand
+    public List<TriggerDefinition> Triggers { get; set; } = new();
+    public int? BonusAttackVsBuildings { get; set; } // extra attack when the target is a building
+}
+
+public class TriggerDefinition
+{
+    // "onKill"                    - this card destroyed an enemy in combat
+    // "onDestroyBuilding"         - this card destroyed an enemy building in combat
+    // "onFriendlyDamageHqOrHero"  - any friendly card damaged an enemy hero or HQ in combat
+    public string Event { get; set; } = "";
+    public bool OncePerTurn { get; set; }
+    public List<EffectDefinition> Effects { get; set; } = new();
 }
 
 public class AbilityDefinition

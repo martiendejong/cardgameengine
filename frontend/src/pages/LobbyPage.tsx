@@ -13,6 +13,7 @@ interface LobbyPageProps {
 interface PlayerDeckState {
   name: string;
   isAdmin: boolean;
+  deckId: string;
   deck: Record<string, number>;
 }
 
@@ -43,8 +44,8 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
   const [selectedGame, setSelectedGame] = useState('');
   const [fullDef, setFullDef] = useState<GameDefinitionFull | null>(null);
   const [players, setPlayers] = useState<PlayerDeckState[]>([
-    { name: 'Player 1', isAdmin: false, deck: {} },
-    { name: 'Player 2', isAdmin: false, deck: {} },
+    { name: 'Player 1', isAdmin: false, deckId: '', deck: {} },
+    { name: 'Player 2', isAdmin: false, deckId: '', deck: {} },
   ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -65,8 +66,12 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
       .then(r => r.json())
       .then((def: GameDefinitionFull) => {
         setFullDef(def);
-        const defaultDeck = def.deckRules?.defaultDeck ?? {};
-        setPlayers(prev => prev.map(p => ({ ...p, deck: { ...defaultDeck } })));
+        // Seed each player with a precon deck (P1 gets the first, P2 the second, etc.)
+        setPlayers(prev => prev.map((p, i) => {
+          const precon = def.decks[i % Math.max(def.decks.length, 1)];
+          if (precon) return { ...p, deckId: precon.id, deck: { ...precon.cards } };
+          return { ...p, deckId: '', deck: { ...(def.deckRules?.defaultDeck ?? {}) } };
+        }));
       })
       .catch(() => setError('Failed to load game definition details'));
   }, [selectedGame]);
@@ -105,6 +110,14 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
     setPlayers(prev => prev.map((p, i) => (i === playerIdx ? { ...p, name } : p)));
   }
 
+  function selectDeck(playerIdx: number, deckId: string) {
+    const precon = fullDef?.decks.find(d => d.id === deckId);
+    setPlayers(prev => prev.map((p, i) => {
+      if (i !== playerIdx) return p;
+      return { ...p, deckId, deck: precon ? { ...precon.cards } : p.deck };
+    }));
+  }
+
   function toggleAdmin(playerIdx: number) {
     setPlayers(prev => prev.map((p, i) => {
       if (i !== playerIdx) return p;
@@ -141,6 +154,7 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
           players: players.map((p, i) => ({
             id: `p${i + 1}`,
             name: p.name,
+            deckId: p.deckId || undefined,
             deck: p.deck,
             isAdmin: p.isAdmin,
           })),
@@ -215,6 +229,32 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
                     Admin
                   </label>
                 </div>
+
+                {fullDef && fullDef.decks.length > 0 && (
+                  <div className="deck-select-row">
+                    <select
+                      className="deck-select"
+                      value={player.deckId}
+                      onChange={e => selectDeck(idx, e.target.value)}
+                    >
+                      {fullDef.decks.map(d => (
+                        <option key={d.id} value={d.id}>{d.name}</option>
+                      ))}
+                    </select>
+                    {(() => {
+                      const precon = fullDef.decks.find(d => d.id === player.deckId);
+                      if (!precon) return null;
+                      const hqCard = fullDef.cards.find(c => c.id === precon.hq);
+                      const heroCard = fullDef.cards.find(c => c.id === precon.hero);
+                      return (
+                        <div className="deck-precon-info">
+                          <span className="precon-hq">🏛 {hqCard?.name ?? precon.hq}</span>
+                          <span className="precon-hero">★ {heroCard?.name ?? precon.hero}</span>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                )}
 
                 <div className={`deck-size ${overLimit ? 'over-limit' : ''}`}>
                   Deck: {size}{!player.isAdmin && deckRules ? ` / ${deckRules.maxDeckSize}` : ''} cards

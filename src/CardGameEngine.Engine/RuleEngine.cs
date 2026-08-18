@@ -15,29 +15,42 @@ public class RuleEngine
 
     public void ExecuteSetup(GameInstance game)
     {
-        foreach (var action in game.Definition.Setup.Actions)
+        // Players with a chosen deck bring their own HQ + hero; otherwise fall back to setup actions
+        bool perPlayerSetup = game.Players.All(p => p.HqCardId != null && p.HeroCardId != null);
+        if (perPlayerSetup)
         {
-            switch (action.Type)
+            foreach (var player in game.Players)
             {
-                case "place_card":
-                    if (action.Scope == "eachPlayer")
-                    {
-                        foreach (var player in game.Players)
-                            PlaceCard(game, action.CardId!, action.Zone!, player.Id);
-                    }
-                    else
-                    {
-                        PlaceCard(game, action.CardId!, action.Zone!, game.Players[0].Id);
-                    }
-                    break;
+                PlaceCard(game, player.HqCardId!, "battlefield", player.Id);
+                PlaceCard(game, player.HeroCardId!, "battlefield", player.Id);
+            }
+        }
+        else
+        {
+            foreach (var action in game.Definition.Setup.Actions)
+            {
+                switch (action.Type)
+                {
+                    case "place_card":
+                        if (action.Scope == "eachPlayer")
+                        {
+                            foreach (var player in game.Players)
+                                PlaceCard(game, action.CardId!, action.Zone!, player.Id);
+                        }
+                        else
+                        {
+                            PlaceCard(game, action.CardId!, action.Zone!, game.Players[0].Id);
+                        }
+                        break;
 
-                case "set_resource":
-                    if (action.Scope == "eachPlayer")
-                    {
-                        foreach (var player in game.Players)
-                            player.Resources[action.ResourceId!] = action.Amount ?? 0;
-                    }
-                    break;
+                    case "set_resource":
+                        if (action.Scope == "eachPlayer")
+                        {
+                            foreach (var player in game.Players)
+                                player.Resources[action.ResourceId!] = action.Amount ?? 0;
+                        }
+                        break;
+                }
             }
         }
 
@@ -253,6 +266,7 @@ public class RuleEngine
             var nextPlayerIdx = (currentPlayerIdx + 1) % game.Players.Count;
             game.ActivePlayerId = game.Players[nextPlayerIdx].Id;
             game.TurnNumber++;
+            game.FiredOncePerTurn.Clear();
 
             var firstPhase = phases[0];
             game.CurrentPhaseId = firstPhase.Id;
@@ -303,8 +317,17 @@ public class RuleEngine
 
                 if (canUse && ability.Choice != null)
                 {
-                    action.RequiresChoice = ability.Choice;
-                    action.ValidTargets = GetValidTargets(game, ability.Choice, playerId);
+                    var choiceTargets = GetValidTargets(game, ability.Choice, playerId);
+                    if (choiceTargets.Count == 0)
+                    {
+                        action.Available = false;
+                        action.UnavailableReason = "No valid targets";
+                    }
+                    else
+                    {
+                        action.RequiresChoice = ability.Choice;
+                        action.ValidTargets = choiceTargets;
+                    }
                 }
 
                 actions.Add(action);
@@ -596,6 +619,23 @@ public class RuleEngine
         if (!CanUseAbility(game, obj, ability, player, out string? reason))
             return (false, reason);
 
+        // Validate provided targets before paying any cost
+        if (ability.Choice != null && action.TargetIds.Count > 0)
+        {
+            var valid = GetValidTargets(game, ability.Choice, playerId);
+            if (action.TargetIds.Count < ability.Choice.Min || action.TargetIds.Count > ability.Choice.Max)
+                return (false, $"Must select between {ability.Choice.Min} and {ability.Choice.Max} target(s)");
+            foreach (var t in action.TargetIds)
+                if (!valid.Contains(t))
+                    return (false, "Invalid target");
+        }
+        else if (ability.Choice != null && ability.Choice.Min > 0)
+        {
+            var valid = GetValidTargets(game, ability.Choice, playerId);
+            if (valid.Count == 0)
+                return (false, "No valid targets");
+        }
+
         // Pay costs
         foreach (var cost in ability.Costs)
             PayCost(game, cost, obj, player);
@@ -693,6 +733,15 @@ public class RuleEngine
         int attackerArmor = GetEffectiveProperty(game, attacker, "armor");
         int defenderArmor = GetEffectiveProperty(game, defender, "armor");
 
+        // Anti-building bonus (e.g. Pillager)
+        var attackerDef = game.Definition.Cards.FirstOrDefault(c => c.Id == attacker.DefinitionId);
+        bool defenderIsBuilding = IsObjectTypeOrSubtype(game, defender.ObjectType, "building");
+        if (defenderIsBuilding && attackerDef?.BonusAttackVsBuildings is int bonus && bonus > 0)
+        {
+            attackerAttack += bonus;
+            game.Log.Add($"{attacker.Name} gains +{bonus} attack against buildings!");
+        }
+
         int damageToDefender = Math.Max(0, attackerAttack - defenderArmor);
 
         // Defender only counterattacks when the attacker is within its own reach
@@ -708,8 +757,48 @@ public class RuleEngine
         // Tap attacker
         attacker.IsTapped = true;
 
+        // Combat triggers
+        var attackerController = game.Players.First(p => p.Id == attacker.ControllerId);
+        if (defender.IsDestroyed && !attacker.IsDestroyed)
+        {
+            FireTriggers(game, attacker, "onKill", attackerController);
+            if (defenderIsBuilding)
+                FireTriggers(game, attacker, "onDestroyBuilding", attackerController);
+        }
+
+        bool defenderIsHqOrHero = IsObjectTypeOrSubtype(game, defender.ObjectType, "headquarters")
+            || IsObjectTypeOrSubtype(game, defender.ObjectType, "hero");
+        if (damageToDefender > 0 && defenderIsHqOrHero)
+        {
+            var friendlies = game.Objects
+                .Where(o => o.ControllerId == attacker.ControllerId && !o.IsDestroyed && o.ZoneId == "battlefield")
+                .ToList();
+            foreach (var obj in friendlies)
+                FireTriggers(game, obj, "onFriendlyDamageHqOrHero", attackerController);
+        }
+
         CheckEndConditions(game);
         return (true, null);
+    }
+
+    private void FireTriggers(GameInstance game, ObjectInstance obj, string eventName, PlayerInstance controller)
+    {
+        var cardDef = game.Definition.Cards.FirstOrDefault(c => c.Id == obj.DefinitionId);
+        if (cardDef == null) return;
+
+        foreach (var trigger in cardDef.Triggers.Where(t => t.Event == eventName))
+        {
+            if (trigger.OncePerTurn)
+            {
+                var key = $"{obj.Id}:{eventName}";
+                if (game.FiredOncePerTurn.Contains(key)) continue;
+                game.FiredOncePerTurn.Add(key);
+            }
+
+            game.Log.Add($"{obj.Name} triggers!");
+            foreach (var effect in trigger.Effects)
+                ProcessEffect(game, effect, obj, null, controller);
+        }
     }
 
     private (bool, string?) ExecuteMove(GameInstance game, string playerId, ActionRequest action)
@@ -827,7 +916,108 @@ public class RuleEngine
             case "buff_tag_until_end_of_turn":
                 ApplyBuffTagUntilEndOfTurn(game, effect, player);
                 break;
+            case "buff_target_until_end_of_turn":
+                ApplyBuffTargetUntilEndOfTurn(game, effect, source, target);
+                break;
+            case "transform":
+                ApplyTransform(game, effect, target);
+                break;
+            case "steal_resource":
+                ApplyStealResource(game, effect, player);
+                break;
+            case "plunder_resource":
+                ApplyPlunderResource(game, effect, source, player);
+                break;
         }
+    }
+
+    private void ApplyBuffTargetUntilEndOfTurn(GameInstance game, EffectDefinition effect, ObjectInstance? source, ObjectInstance? target)
+    {
+        var obj = ResolveScope(effect.Scope ?? "target", source, target);
+        if (obj == null) return;
+
+        _modifierCounter++;
+        game.ActiveModifiers.Add(new ModifierInstance
+        {
+            Id = $"mod_{_modifierCounter}",
+            TargetObjectId = obj.Id,
+            PropertyId = effect.PropertyId ?? "attack",
+            Amount = effect.Amount ?? 1,
+            ExpiresOn = "endOfTurn"
+        });
+        game.Log.Add($"{obj.Name} gains +{effect.Amount ?? 1} {effect.PropertyId ?? "attack"} until end of turn.");
+    }
+
+    private void ApplyTransform(GameInstance game, EffectDefinition effect, ObjectInstance? target)
+    {
+        if (target == null || effect.CardId == null) return;
+        var newDef = game.Definition.Cards.FirstOrDefault(c => c.Id == effect.CardId);
+        if (newDef == null) return;
+
+        var oldName = target.Name;
+        target.DefinitionId = newDef.Id;
+        target.Name = newDef.Name;
+        target.ObjectType = newDef.ObjectType;
+        target.Tags = new List<string>(newDef.Tags);
+        target.IsTapped = false;
+        target.HasSummoningSickness = true;
+
+        target.Properties.Clear();
+        foreach (var propDef in game.Definition.Properties)
+        {
+            target.Properties[propDef.Id] = newDef.Properties.TryGetValue(propDef.Id, out var val)
+                ? val
+                : propDef.DefaultValue;
+        }
+
+        target.Resources.Clear();
+        foreach (var resDef in game.Definition.Resources.Where(r => r.Scope == "entity"))
+        {
+            if (!ObjectTypeHasResource(game, newDef.ObjectType, resDef.Id)) continue;
+            target.Resources[resDef.Id] = newDef.Resources.TryGetValue(resDef.Id, out var val)
+                ? val
+                : resDef.DefaultValue;
+        }
+
+        game.Log.Add($"{oldName} is trained into a {newDef.Name}!");
+    }
+
+    private void ApplyStealResource(GameInstance game, EffectDefinition effect, PlayerInstance player)
+    {
+        var opponent = game.Players.FirstOrDefault(p => p.Id != player.Id);
+        if (opponent == null) return;
+
+        var resId = effect.ResourceId ?? "gold";
+        var stolen = Math.Min(effect.Amount ?? 0, opponent.Resources.GetValueOrDefault(resId));
+        if (stolen <= 0)
+        {
+            game.Log.Add($"{player.Name} tries to steal {resId} from {opponent.Name}, but there is nothing to take!");
+            return;
+        }
+
+        opponent.Resources[resId] = opponent.Resources.GetValueOrDefault(resId) - stolen;
+        player.Resources[resId] = player.Resources.GetValueOrDefault(resId) + stolen;
+        game.Log.Add($"{player.Name} steals {stolen} {resId} from {opponent.Name}!");
+    }
+
+    private void ApplyPlunderResource(GameInstance game, EffectDefinition effect, ObjectInstance? source, PlayerInstance player)
+    {
+        if (source == null) return;
+        var opponent = game.Players.FirstOrDefault(p => p.Id != player.Id);
+        if (opponent == null) return;
+
+        var resId = effect.ResourceId ?? "gold";
+        var storeId = effect.Tag ?? "loot"; // token resource stored on the source object
+        var taken = Math.Min(effect.Amount ?? 0, opponent.Resources.GetValueOrDefault(resId));
+        if (taken <= 0)
+        {
+            game.Log.Add($"{source.Name} finds nothing to plunder from {opponent.Name}.");
+            return;
+        }
+
+        opponent.Resources[resId] = opponent.Resources.GetValueOrDefault(resId) - taken;
+        source.Resources[storeId] = source.Resources.GetValueOrDefault(storeId) + taken;
+        game.Log.Add($"{source.Name} plunders {taken} {resId} from {opponent.Name}! ({taken} tokens stored)");
     }
 
     private void ApplyGainResource(GameInstance game, EffectDefinition effect, ObjectInstance? source, ObjectInstance? target, PlayerInstance player)

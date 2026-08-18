@@ -16,6 +16,8 @@ public class GameInstance
     public int TurnNumber { get; set; } = 1;
     // Ordered object ids per player: index 0 is the top of the deck
     public Dictionary<string, List<string>> DeckOrder { get; set; } = new();
+    // "objectId:event" keys for once-per-turn triggers; cleared when the turn passes
+    public HashSet<string> FiredOncePerTurn { get; set; } = new();
 }
 
 public enum GameState
@@ -36,6 +38,8 @@ public class PlayerInstance
     public bool IsLoser { get; set; }
     public bool IsAdmin { get; set; }
     public List<string> DeckList { get; set; } = new(); // expanded card definition ids
+    public string? HqCardId { get; set; }   // headquarters placed at setup
+    public string? HeroCardId { get; set; } // hero placed at setup
 }
 
 public class ObjectInstance

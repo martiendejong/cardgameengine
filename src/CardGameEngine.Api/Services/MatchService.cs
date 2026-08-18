@@ -7,7 +7,8 @@ public class PlayerSetup
 {
     public string Name { get; set; } = "";
     public string? Id { get; set; }
-    public Dictionary<string, int>? Deck { get; set; } // cardId -> copies
+    public string? DeckId { get; set; }                // preconstructed deck (brings HQ + hero)
+    public Dictionary<string, int>? Deck { get; set; } // cardId -> copies (overrides precon card list)
     public bool IsAdmin { get; set; }
 }
 
@@ -52,7 +53,16 @@ public class MatchService
 
         foreach (var setup in players)
         {
-            var deck = setup.Deck ?? definition.DeckRules?.DefaultDeck ?? new Dictionary<string, int>();
+            // Resolve preconstructed deck (fall back to the first one so every player has an HQ + hero)
+            var precon = definition.Decks.FirstOrDefault(d => d.Id == setup.DeckId)
+                ?? definition.Decks.FirstOrDefault();
+            if (setup.DeckId != null && definition.Decks.All(d => d.Id != setup.DeckId))
+                return (null, $"{setup.Name}: unknown deck '{setup.DeckId}'");
+
+            var deck = setup.Deck
+                ?? precon?.Cards
+                ?? definition.DeckRules?.DefaultDeck
+                ?? new Dictionary<string, int>();
 
             // Validate deck contents
             foreach (var (cardId, count) in deck)
@@ -90,7 +100,9 @@ public class MatchService
                 Id = setup.Id ?? Guid.NewGuid().ToString("N")[..8],
                 Name = setup.Name,
                 IsAdmin = setup.IsAdmin,
-                DeckList = deckList
+                DeckList = deckList,
+                HqCardId = precon?.Hq,
+                HeroCardId = precon?.Hero
             });
         }
 

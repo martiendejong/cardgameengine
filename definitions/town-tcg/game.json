@@ -9,7 +9,9 @@
     { "id": "unit", "name": "Unit", "parentType": "character" },
     { "id": "building", "name": "Building", "parentType": "card", "properties": ["currentHp", "maxHp", "armor"] },
     { "id": "headquarters", "name": "Headquarters", "parentType": "building" },
-    { "id": "spell", "name": "Spell", "parentType": "card" }
+    { "id": "spell", "name": "Spell", "parentType": "card" },
+    { "id": "item", "name": "Item", "parentType": "spell" },
+    { "id": "treasure", "name": "Treasure", "parentType": "building", "resources": ["loot"] }
   ],
   "properties": [
     { "id": "attack", "name": "Attack", "type": "int", "defaultValue": 0, "minValue": 0 },
@@ -19,14 +21,17 @@
   ],
   "resources": [
     { "id": "gold", "name": "Gold", "scope": "player", "defaultValue": 0 },
-    { "id": "ap", "name": "Action Points", "scope": "entity", "defaultValue": 0 }
+    { "id": "ap", "name": "Action Points", "scope": "entity", "defaultValue": 0 },
+    { "id": "loot", "name": "Loot Tokens", "scope": "entity", "defaultValue": 0 }
   ],
   "tags": [
     { "id": "peasant", "name": "Peasant" },
     { "id": "worker", "name": "Worker" },
     { "id": "builder", "name": "Builder" },
     { "id": "soldier", "name": "Soldier" },
-    { "id": "ranged", "name": "Ranged" }
+    { "id": "ranged", "name": "Ranged" },
+    { "id": "mercenary", "name": "Mercenary" },
+    { "id": "raider", "name": "Raider" }
   ],
   "zones": [
     { "id": "deck", "name": "Deck", "visibility": "none", "ordered": true },
@@ -40,7 +45,7 @@
   },
   "deckRules": {
     "maxCopies": 2,
-    "maxDeckSize": 15,
+    "maxDeckSize": 20,
     "startingHandSize": 3,
     "drawPerTurn": 1,
     "defaultDeck": { "soldier": 2, "archer": 2, "barracks": 1, "healing-salve": 2, "fireball": 1 }
@@ -160,7 +165,8 @@
             { "type": "tap" }
           ],
           "conditions": [],
-          "effects": [{ "type": "summon", "scope": "player", "cardId": "soldier" }]
+          "choice": { "type": "entity", "controller": "self", "tag": "peasant", "min": 1, "max": 1 },
+          "effects": [{ "type": "transform", "scope": "target", "cardId": "soldier" }]
         }
       ]
     },
@@ -188,6 +194,325 @@
         "name": "Deal 4 damage",
         "choice": { "type": "entity", "controller": "opponent", "min": 1, "max": 1 },
         "effects": [{ "type": "damage", "scope": "target", "amount": 4 }]
+      }
+    },
+    {
+      "id": "archery-range",
+      "name": "Archery Range",
+      "objectType": "building",
+      "playCost": 3,
+      "properties": { "currentHp": 5, "maxHp": 5, "armor": 1 },
+      "artworkDescription": "Straw targets and a rack of longbows",
+      "abilities": [
+        {
+          "id": "train-archer",
+          "name": "Train Archer",
+          "costs": [
+            { "type": "resource", "scope": "player", "resourceId": "gold", "amount": 2 },
+            { "type": "tap" }
+          ],
+          "conditions": [],
+          "choice": { "type": "entity", "controller": "self", "tag": "peasant", "min": 1, "max": 1 },
+          "effects": [{ "type": "transform", "scope": "target", "cardId": "archer" }]
+        }
+      ]
+    },
+    {
+      "id": "tavern",
+      "name": "Tavern",
+      "objectType": "building",
+      "playCost": 2,
+      "properties": { "currentHp": 5, "maxHp": 5, "armor": 1 },
+      "artworkDescription": "A rowdy tavern where sellswords gather",
+      "abilities": [
+        {
+          "id": "hire-mercenary",
+          "name": "Hire Mercenary",
+          "costs": [
+            { "type": "resource", "scope": "player", "resourceId": "gold", "amount": 3 },
+            { "type": "tap" }
+          ],
+          "conditions": [],
+          "effects": [{ "type": "summon", "scope": "player", "cardId": "mercenary" }]
+        }
+      ]
+    },
+    {
+      "id": "mercenary",
+      "name": "Mercenary",
+      "objectType": "unit",
+      "properties": { "attack": 3, "currentHp": 3, "maxHp": 3, "armor": 1 },
+      "tags": ["mercenary"],
+      "artworkDescription": "A scarred sellsword who fights for coin, not loyalty"
+    },
+    {
+      "id": "blacksmith",
+      "name": "Blacksmith",
+      "objectType": "building",
+      "playCost": 3,
+      "properties": { "currentHp": 5, "maxHp": 5, "armor": 2 },
+      "artworkDescription": "A soot-stained forge ringing with hammer blows",
+      "abilities": [
+        {
+          "id": "forge-weapon",
+          "name": "Forge Weapon",
+          "costs": [
+            { "type": "resource", "scope": "player", "resourceId": "gold", "amount": 2 },
+            { "type": "tap" }
+          ],
+          "conditions": [],
+          "choice": { "type": "entity", "controller": "self", "objectType": "character", "min": 1, "max": 1 },
+          "effects": [{ "type": "modify_property", "scope": "target", "propertyId": "attack", "amount": 1 }]
+        }
+      ]
+    },
+    {
+      "id": "bag-of-gold",
+      "name": "Bag of Gold",
+      "objectType": "spell",
+      "playCost": 0,
+      "artworkDescription": "A bulging leather pouch of coins",
+      "onPlay": {
+        "id": "bag-gain",
+        "name": "Gain 3 gold",
+        "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "gold", "amount": 3 }]
+      }
+    },
+    {
+      "id": "iron-sword",
+      "name": "Iron Sword",
+      "objectType": "item",
+      "playCost": 1,
+      "artworkDescription": "A dependable iron blade",
+      "onPlay": {
+        "id": "equip-sword",
+        "name": "+1 Attack",
+        "choice": { "type": "entity", "controller": "self", "objectType": "character", "min": 1, "max": 1 },
+        "effects": [{ "type": "modify_property", "scope": "target", "propertyId": "attack", "amount": 1 }]
+      }
+    },
+    {
+      "id": "shield",
+      "name": "Shield",
+      "objectType": "item",
+      "playCost": 1,
+      "artworkDescription": "A sturdy round wooden shield",
+      "onPlay": {
+        "id": "equip-shield",
+        "name": "+1 Armor",
+        "choice": { "type": "entity", "controller": "self", "objectType": "character", "min": 1, "max": 1 },
+        "effects": [{ "type": "modify_property", "scope": "target", "propertyId": "armor", "amount": 1 }]
+      }
+    },
+    {
+      "id": "battle-axe",
+      "name": "Battle Axe",
+      "objectType": "item",
+      "playCost": 3,
+      "artworkDescription": "A brutal two-handed axe with notched blades",
+      "onPlay": {
+        "id": "equip-axe",
+        "name": "+2 Attack",
+        "choice": { "type": "entity", "controller": "self", "objectType": "character", "min": 1, "max": 1 },
+        "effects": [{ "type": "modify_property", "scope": "target", "propertyId": "attack", "amount": 2 }]
+      }
+    },
+    {
+      "id": "raider-camp",
+      "name": "Raider Camp",
+      "objectType": "headquarters",
+      "properties": { "currentHp": 9, "maxHp": 9, "armor": 1 },
+      "artworkDescription": "A palisade of sharpened stakes around smoking campfires",
+      "abilities": [
+        {
+          "id": "raid-party",
+          "name": "Raid Party",
+          "costs": [
+            { "type": "resource", "scope": "player", "resourceId": "gold", "amount": 2 },
+            { "type": "tap" }
+          ],
+          "conditions": [],
+          "effects": [{ "type": "summon", "scope": "player", "cardId": "scavenger" }]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onFriendlyDamageHqOrHero",
+          "oncePerTurn": true,
+          "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "gold", "amount": 1 }]
+        }
+      ]
+    },
+    {
+      "id": "warchief",
+      "name": "Warchief",
+      "objectType": "hero",
+      "properties": { "attack": 5, "currentHp": 6, "maxHp": 6, "armor": 2 },
+      "resources": { "ap": 0 },
+      "artworkDescription": "A hulking warlord draped in trophies of past raids",
+      "abilities": [
+        {
+          "id": "bloodlust",
+          "name": "Bloodlust",
+          "costs": [{ "type": "resource", "scope": "self", "resourceId": "ap", "amount": 3 }],
+          "conditions": [],
+          "effects": [{ "type": "buff_tag_until_end_of_turn", "tag": "raider", "propertyId": "attack", "amount": 1 }]
+        },
+        {
+          "id": "pillage",
+          "name": "Pillage",
+          "costs": [
+            { "type": "resource", "scope": "self", "resourceId": "ap", "amount": 2 },
+            { "type": "tap" }
+          ],
+          "conditions": [],
+          "effects": [{ "type": "steal_resource", "resourceId": "gold", "amount": 2 }]
+        }
+      ]
+    },
+    {
+      "id": "scavenger",
+      "name": "Scavenger",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": { "attack": 2, "currentHp": 3, "maxHp": 3, "armor": 1 },
+      "tags": ["raider"],
+      "artworkDescription": "A wiry looter picking through the wreckage of battle",
+      "triggers": [
+        {
+          "event": "onKill",
+          "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "gold", "amount": 1 }]
+        }
+      ]
+    },
+    {
+      "id": "pillager",
+      "name": "Pillager",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": { "attack": 3, "currentHp": 4, "maxHp": 4, "armor": 1 },
+      "tags": ["raider"],
+      "bonusAttackVsBuildings": 2,
+      "artworkDescription": "A torch-bearing brute who lives to burn towns",
+      "triggers": [
+        {
+          "event": "onDestroyBuilding",
+          "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "gold", "amount": 2 }]
+        }
+      ]
+    },
+    {
+      "id": "axe-thrower",
+      "name": "Axe Thrower",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": { "attack": 2, "currentHp": 2, "maxHp": 2, "armor": 0 },
+      "tags": ["raider", "ranged"],
+      "artworkDescription": "A raider hurling throwing axes from a distance"
+    },
+    {
+      "id": "brute",
+      "name": "Brute",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": { "attack": 4, "currentHp": 5, "maxHp": 5, "armor": 1 },
+      "tags": ["raider"],
+      "artworkDescription": "A mountain of muscle swinging a spiked club"
+    },
+    {
+      "id": "fighting-pit",
+      "name": "Fighting Pit",
+      "objectType": "building",
+      "playCost": 3,
+      "properties": { "currentHp": 6, "maxHp": 6, "armor": 1 },
+      "artworkDescription": "A blood-stained arena where raiders spar for sport",
+      "abilities": [
+        {
+          "id": "rally",
+          "name": "Rally",
+          "costs": [{ "type": "tap" }],
+          "conditions": [],
+          "choice": { "type": "entity", "controller": "self", "tag": "raider", "min": 1, "max": 1 },
+          "effects": [{ "type": "buff_target_until_end_of_turn", "scope": "target", "propertyId": "attack", "amount": 1 }]
+        }
+      ]
+    },
+    {
+      "id": "stolen-treasure",
+      "name": "Stolen Treasure",
+      "objectType": "treasure",
+      "playCost": 1,
+      "properties": { "currentHp": 4, "maxHp": 4, "armor": 0 },
+      "artworkDescription": "A cracked chest overflowing with someone else's gold",
+      "onPlay": {
+        "id": "plunder",
+        "name": "Plunder up to 4 gold",
+        "effects": [{ "type": "plunder_resource", "resourceId": "gold", "amount": 4, "tag": "loot" }]
+      },
+      "abilities": [
+        {
+          "id": "claim-spoils",
+          "name": "Claim Spoils",
+          "costs": [
+            { "type": "resource", "scope": "self", "resourceId": "loot", "amount": 1 },
+            { "type": "tap" }
+          ],
+          "conditions": [],
+          "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "gold", "amount": 1 }]
+        }
+      ]
+    },
+    {
+      "id": "loot",
+      "name": "Loot",
+      "objectType": "spell",
+      "playCost": 0,
+      "artworkDescription": "Grasping hands making off with a stranger's purse",
+      "onPlay": {
+        "id": "loot-steal",
+        "name": "Steal up to 2 gold",
+        "effects": [{ "type": "steal_resource", "resourceId": "gold", "amount": 2 }]
+      }
+    }
+  ],
+  "decks": [
+    {
+      "id": "town",
+      "name": "Town of Millbrook",
+      "description": "Build a town from scratch: peasants work, buildings train them into an army, and the Town Chief mobilizes the population in emergencies.",
+      "hq": "town-hall",
+      "hero": "town-chief",
+      "cards": {
+        "soldier": 2,
+        "archer": 2,
+        "barracks": 2,
+        "archery-range": 2,
+        "tavern": 2,
+        "blacksmith": 1,
+        "healing-salve": 2,
+        "fireball": 1,
+        "bag-of-gold": 2,
+        "iron-sword": 1,
+        "shield": 1
+      }
+    },
+    {
+      "id": "raiders",
+      "name": "Blackrock Raiders",
+      "description": "No workers, no patience. Earn gold through violence: kill for bounties, burn buildings for plunder, and steal what the enemy saved.",
+      "hq": "raider-camp",
+      "hero": "warchief",
+      "cards": {
+        "scavenger": 2,
+        "pillager": 2,
+        "axe-thrower": 2,
+        "brute": 2,
+        "fighting-pit": 2,
+        "stolen-treasure": 2,
+        "loot": 2,
+        "bag-of-gold": 2,
+        "battle-axe": 1,
+        "shield": 1
       }
     }
   ],

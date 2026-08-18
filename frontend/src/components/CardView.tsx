@@ -103,6 +103,13 @@ export function CardView({
           {ap !== undefined && (
             <span className="stat ap" title="Action Points">AP: {ap}</span>
           )}
+          {Object.entries(card.resources)
+            .filter(([key, val]) => key !== 'ap' && val > 0)
+            .map(([key, val]) => (
+              <span key={key} className="stat tokens" title={key}>
+                ◈ {val}
+              </span>
+            ))}
         </div>
 
         {card.tags.length > 0 && (

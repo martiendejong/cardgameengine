@@ -120,12 +120,22 @@ export interface DeckRulesDto {
   defaultDeck: Record<string, number>;
 }
 
+export interface PreconDeckDto {
+  id: string;
+  name: string;
+  description: string;
+  hq: string;
+  hero: string;
+  cards: Record<string, number>;
+}
+
 export interface GameDefinitionFull {
   id: string;
   name: string;
   version: string;
   cards: CardDefinitionDto[];
   deckRules?: DeckRulesDto | null;
+  decks: PreconDeckDto[];
 }
 
 export interface CreateMatchRequest {
