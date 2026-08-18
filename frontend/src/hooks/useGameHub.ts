@@ -14,8 +14,13 @@ export function useGameHub({ matchId, playerId, onStateUpdate, onError }: UseGam
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
+
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl('/gamehub')
+      .withUrl('/gamehub', {
+        skipNegotiation: true,
+        transport: signalR.HttpTransportType.WebSockets,
+      })
       .withAutomaticReconnect()
       .build();
 
@@ -29,10 +34,12 @@ export function useGameHub({ matchId, playerId, onStateUpdate, onError }: UseGam
 
     connection.start()
       .then(() => {
+        if (cancelled) return;
         setConnected(true);
         return connection.invoke('JoinMatch', matchId, playerId);
       })
       .catch(err => {
+        if (cancelled) return; // suppress error when component unmounts mid-connect
         console.error('SignalR connection failed:', err);
         onError('Failed to connect to game server');
       });
@@ -40,7 +47,8 @@ export function useGameHub({ matchId, playerId, onStateUpdate, onError }: UseGam
     connectionRef.current = connection;
 
     return () => {
-      connection.stop();
+      cancelled = true;
+      connection.stop().catch(() => {});
     };
   }, [matchId, playerId]);
 

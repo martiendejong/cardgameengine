@@ -95,9 +95,10 @@ public class RuleEngine
                 obj.Properties[propDef.Id] = propDef.DefaultValue;
         }
 
-        // Copy entity resources from definition
+        // Copy entity resources — only for resources the object type (or its ancestors) declare
         foreach (var resDef in game.Definition.Resources.Where(r => r.Scope == "entity"))
         {
+            if (!ObjectTypeHasResource(game, cardDef.ObjectType, resDef.Id)) continue;
             if (cardDef.Resources.TryGetValue(resDef.Id, out var val))
                 obj.Resources[resDef.Id] = val;
             else
@@ -105,6 +106,17 @@ public class RuleEngine
         }
 
         return obj;
+    }
+
+    private bool ObjectTypeHasResource(GameInstance game, string objectType, string resourceId)
+    {
+        var typeDef = game.Definition.ObjectTypes.FirstOrDefault(t => t.Id == objectType);
+        while (typeDef != null)
+        {
+            if (typeDef.Resources.Contains(resourceId)) return true;
+            typeDef = game.Definition.ObjectTypes.FirstOrDefault(t => t.Id == typeDef.ParentType);
+        }
+        return false;
     }
 
     // -------------------------------------------------------------------------
@@ -311,8 +323,7 @@ public class RuleEngine
         return game.Objects
             .Where(o => o.ControllerId != playerId
                 && !o.IsDestroyed
-                && o.ZoneId == "battlefield"
-                && IsObjectTypeOrSubtype(game, o.ObjectType, "character"))
+                && o.ZoneId == "battlefield")
             .Select(o => o.Id)
             .ToList();
     }
