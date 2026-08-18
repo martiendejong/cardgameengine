@@ -25,7 +25,8 @@
     { "id": "peasant", "name": "Peasant" },
     { "id": "worker", "name": "Worker" },
     { "id": "builder", "name": "Builder" },
-    { "id": "soldier", "name": "Soldier" }
+    { "id": "soldier", "name": "Soldier" },
+    { "id": "ranged", "name": "Ranged" }
   ],
   "zones": [
     { "id": "deck", "name": "Deck", "visibility": "none", "ordered": true },
@@ -33,6 +34,10 @@
     { "id": "battlefield", "name": "Battlefield", "visibility": "all", "ordered": false },
     { "id": "discard", "name": "Discard", "visibility": "all", "ordered": true }
   ],
+  "battlefieldLines": {
+    "lines": ["front", "back"],
+    "spawnLine": "back"
+  },
   "deckRules": {
     "maxCopies": 2,
     "maxDeckSize": 15,
@@ -126,7 +131,7 @@
       "objectType": "unit",
       "playCost": 2,
       "properties": { "attack": 2, "currentHp": 2, "maxHp": 2, "armor": 0 },
-      "tags": ["soldier"],
+      "tags": ["soldier", "ranged"],
       "artworkDescription": "A hooded archer with a longbow",
       "abilities": [
         {

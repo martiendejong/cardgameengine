@@ -79,6 +79,12 @@ export function CardView({
       </div>
 
       {card.isTapped && <div className="tapped-indicator">TAPPED</div>}
+      {card.hasSummoningSickness && card.zoneId === 'battlefield' && (
+        <div className="status-indicator new-indicator">NEW</div>
+      )}
+      {card.hasMovedThisTurn && !card.hasSummoningSickness && (
+        <div className="status-indicator moved-indicator">MOVED</div>
+      )}
 
       <div className="card-stats">
         {(isCharacter || isBuilding) && (

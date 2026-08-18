@@ -58,22 +58,30 @@ export function PlayerArea({
         </div>
       </div>
 
-      <div className="battlefield">
-        {battlefieldCards.length === 0 && (
-          <div className="empty-battlefield">No cards on battlefield</div>
-        )}
-        {battlefieldCards.map(card => (
-          <CardView
-            key={card.id}
-            card={card}
-            actions={isBottom ? actions : []}
-            isSelectableTarget={selectableTargets.includes(card.id)}
-            isSelectedTarget={selectedTargets.includes(card.id)}
-            onAction={onAction}
-            onSelectTarget={onSelectTarget}
-            flipped={!isBottom}
-          />
-        ))}
+      <div className="battlefield-lines">
+        {(isBottom ? ['front', 'back'] : ['back', 'front']).map(line => {
+          const lineCards = battlefieldCards.filter(c => (c.line || 'back') === line);
+          return (
+            <div key={line} className={`battle-line line-${line}`}>
+              <span className="line-label">{line === 'front' ? 'Front Line' : 'Back Line'}</span>
+              <div className="line-cards">
+                {lineCards.length === 0 && <span className="empty-line">—</span>}
+                {lineCards.map(card => (
+                  <CardView
+                    key={card.id}
+                    card={card}
+                    actions={isBottom ? actions : []}
+                    isSelectableTarget={selectableTargets.includes(card.id)}
+                    isSelectedTarget={selectedTargets.includes(card.id)}
+                    onAction={onAction}
+                    onSelectTarget={onSelectTarget}
+                    flipped={!isBottom}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       <div className="hand-area">

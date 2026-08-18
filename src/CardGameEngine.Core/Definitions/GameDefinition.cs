@@ -16,6 +16,13 @@ public class GameDefinition
     public List<EndConditionDefinition> EndConditions { get; set; } = new();
     public ResolutionPolicyDefinition ResolutionPolicy { get; set; } = new();
     public DeckRulesDefinition? DeckRules { get; set; }
+    public BattlefieldLinesDefinition? BattlefieldLines { get; set; }
+}
+
+public class BattlefieldLinesDefinition
+{
+    public List<string> Lines { get; set; } = new(); // e.g. ["front", "back"]
+    public string SpawnLine { get; set; } = "back";  // where new cards enter the battlefield
 }
 
 public class DeckRulesDefinition

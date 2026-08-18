@@ -52,6 +52,9 @@ public class ObjectInstance
     public List<string> Tags { get; set; } = new();
     public bool IsTapped { get; set; }
     public bool IsDestroyed { get; set; }
+    public string Line { get; set; } = ""; // battlefield line ("front"/"back") when lines are enabled
+    public bool HasMovedThisTurn { get; set; }
+    public bool HasSummoningSickness { get; set; } // cannot move or attack the turn it arrived
 }
 
 public class ResolutionStack

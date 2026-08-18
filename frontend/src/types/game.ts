@@ -28,6 +28,9 @@ export interface ObjectStateDto {
   tags: string[];
   isTapped: boolean;
   isDestroyed: boolean;
+  line: string;
+  hasMovedThisTurn: boolean;
+  hasSummoningSickness: boolean;
 }
 
 export interface ChoiceDefinition {

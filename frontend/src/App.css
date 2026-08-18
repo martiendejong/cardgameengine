@@ -1017,3 +1017,80 @@
   );
   border: 1px solid #30363d;
 }
+
+/* ============================================================
+   Battlefield lines
+   ============================================================ */
+.battlefield-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.battle-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 8px;
+  padding: 6px 10px;
+  min-height: 60px;
+}
+
+.line-front {
+  background: rgba(244, 67, 54, 0.05);
+  border: 1px dashed rgba(244, 67, 54, 0.3);
+}
+
+.line-back {
+  background: rgba(88, 166, 255, 0.04);
+  border: 1px dashed rgba(88, 166, 255, 0.25);
+}
+
+.line-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #8b949e;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.line-front .line-label { color: rgba(244, 67, 54, 0.7); }
+.line-back .line-label { color: rgba(88, 166, 255, 0.7); }
+
+.line-cards {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.empty-line {
+  color: #444;
+  font-size: 14px;
+  padding: 8px;
+}
+
+.status-indicator {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  display: inline-block;
+  margin: 2px 0;
+}
+
+.new-indicator {
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+}
+
+.moved-indicator {
+  background: rgba(156, 39, 176, 0.2);
+  color: #ce93d8;
+}

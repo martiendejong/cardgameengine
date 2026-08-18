@@ -112,6 +112,9 @@ public class RuleEngine
             Tags = new List<string>(cardDef.Tags)
         };
 
+        if (zoneId == "battlefield" && game.Definition.BattlefieldLines != null)
+            obj.Line = game.Definition.BattlefieldLines.SpawnLine;
+
         // Copy properties from definition
         foreach (var propDef in game.Definition.Properties)
         {
@@ -198,6 +201,8 @@ public class RuleEngine
                 obj.IsTapped = false;
                 game.Log.Add($"{obj.Name} untapped.");
             }
+            obj.HasMovedThisTurn = false;
+            obj.HasSummoningSickness = false;
         }
     }
 
@@ -305,20 +310,51 @@ public class RuleEngine
                 actions.Add(action);
             }
 
-            // Attack action: only for characters with attack > 0, in combat phase
+            // Attack action: only for characters, in combat phase
             if (game.CurrentPhaseId == "combat" &&
                 IsObjectTypeOrSubtype(game, obj.ObjectType, "character") &&
                 !obj.IsTapped)
             {
-                var validTargets = GetAttackTargets(game, playerId);
+                string? attackReason = null;
+                if (obj.HasSummoningSickness) attackReason = "Cannot attack the turn it was summoned";
+                else if (obj.HasMovedThisTurn) attackReason = "Already moved this turn";
+
+                var validTargets = attackReason == null ? GetAttackTargets(game, obj) : new List<string>();
+                if (attackReason == null && validTargets.Count == 0)
+                    attackReason = "No targets in reach";
+
                 actions.Add(new AvailableAction
                 {
                     Type = "attack",
                     SourceObjectId = obj.Id,
                     Label = $"{obj.Name}: Attack",
-                    Available = validTargets.Count > 0,
-                    UnavailableReason = validTargets.Count == 0 ? "No valid targets" : null,
-                    ValidTargets = validTargets
+                    Available = attackReason == null,
+                    UnavailableReason = attackReason,
+                    ValidTargets = validTargets,
+                    RequiresChoice = attackReason == null
+                        ? new ChoiceDefinition { Type = "entity", Controller = "opponent", Min = 1, Max = 1 }
+                        : null
+                });
+            }
+
+            // Move action: characters can switch lines once per turn (main or combat phase)
+            if (game.Definition.BattlefieldLines != null &&
+                IsObjectTypeOrSubtype(game, obj.ObjectType, "character") &&
+                (game.CurrentPhaseId == "main" || game.CurrentPhaseId == "combat"))
+            {
+                string? moveReason = null;
+                if (obj.HasSummoningSickness) moveReason = "Cannot move the turn it was summoned";
+                else if (obj.HasMovedThisTurn) moveReason = "Already moved this turn";
+                else if (obj.IsTapped) moveReason = "Tapped";
+
+                var targetLine = obj.Line == "front" ? "back" : "front";
+                actions.Add(new AvailableAction
+                {
+                    Type = "move",
+                    SourceObjectId = obj.Id,
+                    Label = $"{obj.Name}: Move to {(targetLine == "front" ? "Front" : "Back")} Line",
+                    Available = moveReason == null,
+                    UnavailableReason = moveReason
                 });
             }
         }
@@ -382,6 +418,12 @@ public class RuleEngine
     {
         reason = null;
 
+        if (obj.HasMovedThisTurn)
+        {
+            reason = "Already moved this turn";
+            return false;
+        }
+
         // Check costs
         foreach (var cost in ability.Costs)
         {
@@ -405,14 +447,35 @@ public class RuleEngine
         return true;
     }
 
-    private List<string> GetAttackTargets(GameInstance game, string playerId)
+    // Line-aware attack reach. With lines disabled, every enemy on the battlefield is in reach.
+    // Melee: front line hits enemy front line (or back line if front is empty); back line hits nothing.
+    // Ranged: front line hits both enemy lines; back line hits enemy front line only.
+    private List<string> GetAttackTargets(GameInstance game, ObjectInstance attacker)
     {
-        return game.Objects
-            .Where(o => o.ControllerId != playerId
+        var enemies = game.Objects
+            .Where(o => o.ControllerId != attacker.ControllerId
                 && !o.IsDestroyed
                 && o.ZoneId == "battlefield")
-            .Select(o => o.Id)
             .ToList();
+
+        if (game.Definition.BattlefieldLines == null)
+            return enemies.Select(o => o.Id).ToList();
+
+        bool ranged = attacker.Tags.Contains("ranged");
+        var enemyFront = enemies.Where(o => o.Line == "front").ToList();
+        var enemyBack = enemies.Where(o => o.Line != "front").ToList();
+
+        if (attacker.Line == "front")
+        {
+            if (ranged)
+                return enemies.Select(o => o.Id).ToList();
+            return (enemyFront.Count > 0 ? enemyFront : enemyBack).Select(o => o.Id).ToList();
+        }
+
+        // back line
+        if (ranged)
+            return enemyFront.Select(o => o.Id).ToList();
+        return new List<string>();
     }
 
     private List<string> GetValidTargets(GameInstance game, ChoiceDefinition choice, string playerId)
@@ -448,6 +511,8 @@ public class RuleEngine
                 return ActivateAbility(game, playerId, action);
             case "attack":
                 return ExecuteAttack(game, playerId, action);
+            case "move":
+                return ExecuteMove(game, playerId, action);
             case "playCard":
                 return ExecutePlayCard(game, playerId, action);
             case "endPhase":
@@ -504,6 +569,9 @@ public class RuleEngine
         else
         {
             obj.ZoneId = "battlefield";
+            obj.HasSummoningSickness = true;
+            if (game.Definition.BattlefieldLines != null)
+                obj.Line = game.Definition.BattlefieldLines.SpawnLine;
             game.Log.Add($"{player.Name} plays {obj.Name}!");
             if (cardDef.OnPlay != null)
                 ApplyAbilityEffects(game, cardDef.OnPlay, obj, player, targetIds);
@@ -609,14 +677,16 @@ public class RuleEngine
         if (attacker.IsTapped) return (false, "Unit is tapped");
         if (!IsObjectTypeOrSubtype(game, attacker.ObjectType, "character")) return (false, "Only characters can attack");
 
+        if (attacker.HasSummoningSickness) return (false, "Cannot attack the turn it was summoned");
+        if (attacker.HasMovedThisTurn) return (false, "Already moved this turn");
+
         if (action.TargetIds.Count == 0) return (false, "No target specified");
         var defender = game.Objects.FirstOrDefault(o => o.Id == action.TargetIds[0]);
         if (defender == null) return (false, "Defender not found");
         if (defender.ControllerId == playerId) return (false, "Cannot attack your own units");
         if (defender.IsDestroyed) return (false, "Target is already destroyed");
-
-        var attackerPlayer = game.Players.First(p => p.Id == attacker.ControllerId);
-        var defenderPlayer = game.Players.First(p => p.Id == defender.ControllerId);
+        if (!GetAttackTargets(game, attacker).Contains(defender.Id))
+            return (false, "Target is out of reach");
 
         int attackerAttack = GetEffectiveProperty(game, attacker, "attack");
         int defenderAttack = GetEffectiveProperty(game, defender, "attack");
@@ -624,9 +694,12 @@ public class RuleEngine
         int defenderArmor = GetEffectiveProperty(game, defender, "armor");
 
         int damageToDefender = Math.Max(0, attackerAttack - defenderArmor);
-        int damageToAttacker = Math.Max(0, defenderAttack - attackerArmor);
 
-        game.Log.Add($"{attacker.Name} attacks {defender.Name}! ({attackerAttack} ATK vs {defenderArmor} ARM = {damageToDefender} dmg; {defenderAttack} ATK vs {attackerArmor} ARM = {damageToAttacker} dmg)");
+        // Defender only counterattacks when the attacker is within its own reach
+        bool defenderCanCounter = GetAttackTargets(game, defender).Contains(attacker.Id);
+        int damageToAttacker = defenderCanCounter ? Math.Max(0, defenderAttack - attackerArmor) : 0;
+
+        game.Log.Add($"{attacker.Name} attacks {defender.Name}! ({attackerAttack} ATK vs {defenderArmor} ARM = {damageToDefender} dmg{(defenderCanCounter ? $"; counter: {defenderAttack} ATK vs {attackerArmor} ARM = {damageToAttacker} dmg" : "; no counterattack")})");
 
         // Apply damage simultaneously
         ApplyDamage(game, attacker, damageToAttacker);
@@ -636,6 +709,31 @@ public class RuleEngine
         attacker.IsTapped = true;
 
         CheckEndConditions(game);
+        return (true, null);
+    }
+
+    private (bool, string?) ExecuteMove(GameInstance game, string playerId, ActionRequest action)
+    {
+        if (game.Definition.BattlefieldLines == null)
+            return (false, "This game has no battlefield lines");
+        if (game.CurrentPhaseId != "main" && game.CurrentPhaseId != "combat")
+            return (false, "Can only move during Main or Combat Phase");
+
+        var obj = game.Objects.FirstOrDefault(o => o.Id == action.SourceObjectId);
+        if (obj == null) return (false, "Unit not found");
+        if (obj.ControllerId != playerId) return (false, "Not your unit");
+        if (obj.ZoneId != "battlefield") return (false, "Unit is not on the battlefield");
+        if (!IsObjectTypeOrSubtype(game, obj.ObjectType, "character")) return (false, "Only characters can move");
+        if (obj.HasSummoningSickness) return (false, "Cannot move the turn it was summoned");
+        if (obj.HasMovedThisTurn) return (false, "Already moved this turn");
+        if (obj.IsTapped) return (false, "Tapped units cannot move");
+
+        var from = obj.Line == "front" ? "Front" : "Back";
+        obj.Line = obj.Line == "front" ? "back" : "front";
+        obj.HasMovedThisTurn = true;
+        var to = obj.Line == "front" ? "Front" : "Back";
+        game.Log.Add($"{obj.Name} moves from the {from} Line to the {to} Line.");
+
         return (true, null);
     }
 
@@ -800,6 +898,7 @@ public class RuleEngine
         if (cardDef == null) return;
 
         var obj = CreateObjectInstance(game, cardDef, player.Id, "battlefield");
+        obj.HasSummoningSickness = true;
         game.Objects.Add(obj);
         game.Log.Add($"{player.Name} summons {cardDef.Name}!");
     }

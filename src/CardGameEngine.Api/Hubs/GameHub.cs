@@ -136,7 +136,10 @@ public class GameHub : Hub
                 Resources = new Dictionary<string, int>(o.Resources),
                 Tags = new List<string>(o.Tags),
                 IsTapped = o.IsTapped,
-                IsDestroyed = o.IsDestroyed
+                IsDestroyed = o.IsDestroyed,
+                Line = o.Line,
+                HasMovedThisTurn = o.HasMovedThisTurn,
+                HasSummoningSickness = o.HasSummoningSickness
             }).ToList(),
             AvailableActions = game.ActivePlayerId == forPlayerId
                 ? _ruleEngine.GetAvailableActions(game, forPlayerId)

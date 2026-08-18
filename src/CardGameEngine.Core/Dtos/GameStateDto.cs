@@ -40,4 +40,7 @@ public class ObjectStateDto
     public List<string> Tags { get; set; } = new();
     public bool IsTapped { get; set; }
     public bool IsDestroyed { get; set; }
+    public string Line { get; set; } = "";
+    public bool HasMovedThisTurn { get; set; }
+    public bool HasSummoningSickness { get; set; }
 }
