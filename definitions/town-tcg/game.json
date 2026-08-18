@@ -1,0 +1,120 @@
+{
+  "id": "town-tcg",
+  "name": "Town Wars",
+  "version": "1.0",
+  "objectTypes": [
+    { "id": "card", "name": "Card" },
+    { "id": "character", "name": "Character", "parentType": "card", "properties": ["attack", "currentHp", "maxHp", "armor"], "resources": [] },
+    { "id": "hero", "name": "Hero", "parentType": "character", "resources": ["ap"] },
+    { "id": "unit", "name": "Unit", "parentType": "character" },
+    { "id": "building", "name": "Building", "parentType": "card", "properties": ["currentHp", "maxHp", "armor"] },
+    { "id": "headquarters", "name": "Headquarters", "parentType": "building" }
+  ],
+  "properties": [
+    { "id": "attack", "name": "Attack", "type": "int", "defaultValue": 0, "minValue": 0 },
+    { "id": "currentHp", "name": "HP", "type": "int", "defaultValue": 1, "minValue": 0 },
+    { "id": "maxHp", "name": "Max HP", "type": "int", "defaultValue": 1 },
+    { "id": "armor", "name": "Armor", "type": "int", "defaultValue": 0, "minValue": 0 }
+  ],
+  "resources": [
+    { "id": "gold", "name": "Gold", "scope": "player", "defaultValue": 0 },
+    { "id": "ap", "name": "Action Points", "scope": "entity", "defaultValue": 0 }
+  ],
+  "tags": [
+    { "id": "peasant", "name": "Peasant" },
+    { "id": "worker", "name": "Worker" },
+    { "id": "builder", "name": "Builder" }
+  ],
+  "zones": [
+    { "id": "hand", "name": "Hand", "visibility": "owner", "ordered": false },
+    { "id": "battlefield", "name": "Battlefield", "visibility": "all", "ordered": false },
+    { "id": "discard", "name": "Discard", "visibility": "all", "ordered": true }
+  ],
+  "flow": {
+    "phases": [
+      { "id": "start", "name": "Start Phase", "autoActions": ["untap_all", "gain_hero_ap"] },
+      { "id": "main", "name": "Main Phase" },
+      { "id": "combat", "name": "Combat Phase" },
+      { "id": "end", "name": "End Phase", "autoActions": ["expire_end_of_turn"] }
+    ]
+  },
+  "resolutionPolicy": { "type": "stack", "order": "LIFO" },
+  "cards": [
+    {
+      "id": "town-hall",
+      "name": "Town Hall",
+      "objectType": "headquarters",
+      "properties": { "currentHp": 8, "maxHp": 8, "armor": 2 },
+      "artworkDescription": "A grand stone town hall with a bell tower",
+      "abilities": [
+        {
+          "id": "collect-taxes",
+          "name": "Collect Taxes",
+          "costs": [{ "type": "tap" }],
+          "conditions": [],
+          "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "gold", "amount": 2 }]
+        },
+        {
+          "id": "recruit-peasant",
+          "name": "Recruit Peasant",
+          "costs": [
+            { "type": "resource", "scope": "player", "resourceId": "gold", "amount": 2 },
+            { "type": "tap" }
+          ],
+          "conditions": [],
+          "effects": [{ "type": "summon", "scope": "player", "cardId": "peasant" }]
+        }
+      ]
+    },
+    {
+      "id": "town-chief",
+      "name": "Town Chief",
+      "objectType": "hero",
+      "properties": { "attack": 4, "currentHp": 5, "maxHp": 5, "armor": 2 },
+      "resources": { "ap": 0 },
+      "artworkDescription": "A weathered leader with a wooden staff and chainmail",
+      "abilities": [
+        {
+          "id": "call-to-arms",
+          "name": "Call to Arms",
+          "costs": [{ "type": "resource", "scope": "self", "resourceId": "ap", "amount": 3 }],
+          "conditions": [],
+          "effects": [{ "type": "buff_tag_until_end_of_turn", "tag": "peasant", "propertyId": "attack", "amount": 1 }]
+        },
+        {
+          "id": "regenerate",
+          "name": "Regenerate",
+          "costs": [
+            { "type": "resource", "scope": "self", "resourceId": "ap", "amount": 2 },
+            { "type": "tap" }
+          ],
+          "conditions": [],
+          "effects": [{ "type": "heal", "scope": "self", "amount": 3 }]
+        }
+      ]
+    },
+    {
+      "id": "peasant",
+      "name": "Peasant",
+      "objectType": "unit",
+      "properties": { "attack": 2, "currentHp": 3, "maxHp": 3, "armor": 1 },
+      "tags": ["peasant", "worker", "builder"],
+      "artworkDescription": "A simple farmer with a pitchfork"
+    }
+  ],
+  "setup": {
+    "actions": [
+      { "type": "place_card", "scope": "eachPlayer", "cardId": "town-hall", "zone": "battlefield" },
+      { "type": "place_card", "scope": "eachPlayer", "cardId": "town-chief", "zone": "battlefield" }
+    ]
+  },
+  "endConditions": [
+    {
+      "id": "player-loses",
+      "type": "all_destroyed",
+      "targets": ["headquarters", "hero"],
+      "result": "lose",
+      "scope": "player"
+    }
+  ]
+}

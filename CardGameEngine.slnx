@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CardGameEngine.Api/CardGameEngine.Api.csproj" />
+    <Project Path="src/CardGameEngine.Core/CardGameEngine.Core.csproj" />
+    <Project Path="src/CardGameEngine.Engine/CardGameEngine.Engine.csproj" />
+  </Folder>
+</Solution>

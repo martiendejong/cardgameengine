@@ -1,0 +1,41 @@
+# .NET build artifacts
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.swp
+*.sln.docstates
+
+# NuGet
+*.nupkg
+*.snupkg
+nuget.config
+project.lock.json
+packages/
+.nuget/
+
+# ASP.NET
+*.csproj.user
+Properties/PublishProfiles/
+PublishOutput/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.idea/
+*.swp
+*~
