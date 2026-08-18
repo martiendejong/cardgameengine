@@ -51,6 +51,32 @@ public class RuleEngine
             }
         }
 
+        // Build and shuffle decks
+        foreach (var player in game.Players)
+        {
+            var order = new List<string>();
+            foreach (var cardId in player.DeckList)
+            {
+                var cardDef = game.Definition.Cards.FirstOrDefault(c => c.Id == cardId);
+                if (cardDef == null) continue;
+                var obj = CreateObjectInstance(game, cardDef, player.Id, "deck");
+                game.Objects.Add(obj);
+                order.Add(obj.Id);
+            }
+            for (int i = order.Count - 1; i > 0; i--)
+            {
+                int j = Random.Shared.Next(i + 1);
+                (order[i], order[j]) = (order[j], order[i]);
+            }
+            game.DeckOrder[player.Id] = order;
+        }
+
+        // Draw starting hands
+        var startingHand = game.Definition.DeckRules?.StartingHandSize ?? 0;
+        foreach (var player in game.Players)
+            for (int i = 0; i < startingHand; i++)
+                DrawCard(game, player);
+
         // Set initial phase
         var firstPhase = game.Definition.Flow.Phases.First();
         game.CurrentPhaseId = firstPhase.Id;
@@ -138,8 +164,28 @@ public class RuleEngine
                 case "expire_end_of_turn":
                     ExpireModifiers(game, "endOfTurn");
                     break;
+                case "draw_card":
+                    var activePlayer = game.Players.First(p => p.Id == game.ActivePlayerId);
+                    var drawCount = game.Definition.DeckRules?.DrawPerTurn ?? 1;
+                    for (int i = 0; i < drawCount; i++)
+                        DrawCard(game, activePlayer);
+                    break;
             }
         }
+    }
+
+    private void DrawCard(GameInstance game, PlayerInstance player)
+    {
+        if (!game.DeckOrder.TryGetValue(player.Id, out var order) || order.Count == 0)
+        {
+            game.Log.Add($"{player.Name}'s deck is empty — no card drawn.");
+            return;
+        }
+        var objId = order[0];
+        order.RemoveAt(0);
+        var obj = game.Objects.First(o => o.Id == objId);
+        obj.ZoneId = "hand";
+        game.Log.Add($"{player.Name} draws a card. ({order.Count} left in deck)");
     }
 
     private void UntapAll(GameInstance game)
@@ -277,6 +323,47 @@ public class RuleEngine
             }
         }
 
+        // Hand cards: play actions
+        var handCards = game.Objects.Where(o => o.OwnerId == playerId && o.ZoneId == "hand" && !o.IsDestroyed);
+        foreach (var obj in handCards)
+        {
+            var cardDef = game.Definition.Cards.FirstOrDefault(c => c.Id == obj.DefinitionId);
+            if (cardDef == null) continue;
+
+            var cost = cardDef.PlayCost ?? 0;
+            string? reason = null;
+            if (game.CurrentPhaseId != "main")
+                reason = "Can only play cards during Main Phase";
+            else if (player.Resources.GetValueOrDefault("gold") < cost)
+                reason = $"Requires {cost} gold";
+
+            var playAction = new AvailableAction
+            {
+                Type = "playCard",
+                SourceObjectId = obj.Id,
+                Label = $"{obj.Name}: Play ({cost}g)",
+                Available = reason == null,
+                UnavailableReason = reason
+            };
+
+            if (playAction.Available && cardDef.OnPlay?.Choice != null)
+            {
+                var validTargets = GetValidTargets(game, cardDef.OnPlay.Choice, playerId);
+                if (validTargets.Count == 0)
+                {
+                    playAction.Available = false;
+                    playAction.UnavailableReason = "No valid targets";
+                }
+                else
+                {
+                    playAction.RequiresChoice = cardDef.OnPlay.Choice;
+                    playAction.ValidTargets = validTargets;
+                }
+            }
+
+            actions.Add(playAction);
+        }
+
         // End phase
         if (game.State == GameState.WaitingForAction)
         {
@@ -361,12 +448,69 @@ public class RuleEngine
                 return ActivateAbility(game, playerId, action);
             case "attack":
                 return ExecuteAttack(game, playerId, action);
+            case "playCard":
+                return ExecutePlayCard(game, playerId, action);
             case "endPhase":
                 EndPhase(game, playerId);
                 return (true, null);
             default:
                 return (false, $"Unknown action type: {action.Type}");
         }
+    }
+
+    private (bool, string?) ExecutePlayCard(GameInstance game, string playerId, ActionRequest action)
+    {
+        if (game.CurrentPhaseId != "main")
+            return (false, "Can only play cards during Main Phase");
+
+        var player = game.Players.First(p => p.Id == playerId);
+        var obj = game.Objects.FirstOrDefault(o => o.Id == action.SourceObjectId);
+        if (obj == null) return (false, "Card not found");
+        if (obj.OwnerId != playerId) return (false, "Not your card");
+        if (obj.ZoneId != "hand") return (false, "Card is not in your hand");
+
+        var cardDef = game.Definition.Cards.FirstOrDefault(c => c.Id == obj.DefinitionId);
+        if (cardDef == null) return (false, "Card definition not found");
+
+        var cost = cardDef.PlayCost ?? 0;
+        if (player.Resources.GetValueOrDefault("gold") < cost)
+            return (false, $"Requires {cost} gold");
+
+        var targetIds = action.TargetIds ?? new List<string>();
+        if (cardDef.OnPlay?.Choice != null)
+        {
+            var choice = cardDef.OnPlay.Choice;
+            if (targetIds.Count < choice.Min || targetIds.Count > choice.Max)
+                return (false, $"Must select between {choice.Min} and {choice.Max} target(s)");
+            var valid = GetValidTargets(game, choice, playerId);
+            foreach (var t in targetIds)
+                if (!valid.Contains(t))
+                    return (false, "Invalid target");
+        }
+
+        if (cost > 0)
+        {
+            player.Resources["gold"] = player.Resources.GetValueOrDefault("gold") - cost;
+            game.Log.Add($"{player.Name} spends {cost} gold. (Remaining: {player.Resources["gold"]})");
+        }
+
+        if (IsObjectTypeOrSubtype(game, obj.ObjectType, "spell"))
+        {
+            game.Log.Add($"{player.Name} casts {obj.Name}!");
+            if (cardDef.OnPlay != null)
+                ApplyAbilityEffects(game, cardDef.OnPlay, obj, player, targetIds);
+            obj.ZoneId = "discard";
+        }
+        else
+        {
+            obj.ZoneId = "battlefield";
+            game.Log.Add($"{player.Name} plays {obj.Name}!");
+            if (cardDef.OnPlay != null)
+                ApplyAbilityEffects(game, cardDef.OnPlay, obj, player, targetIds);
+        }
+
+        CheckEndConditions(game);
+        return (true, null);
     }
 
     private (bool, string?) ActivateAbility(GameInstance game, string playerId, ActionRequest action)

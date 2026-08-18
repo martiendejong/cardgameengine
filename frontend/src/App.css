@@ -823,3 +823,197 @@
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+/* ============================================================
+   Deck builder (lobby)
+   ============================================================ */
+.lobby-wide {
+  max-width: 980px;
+  width: 95%;
+}
+
+.deck-builders {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+@media (max-width: 800px) {
+  .deck-builders { grid-template-columns: 1fr; }
+}
+
+.deck-builder {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.deck-builder-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.player-name-input {
+  flex: 1;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  color: #e0e0e0;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.admin-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #8b949e;
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin-toggle input { accent-color: #ffd700; }
+
+.deck-size {
+  font-size: 13px;
+  color: #8b949e;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.deck-size.over-limit { color: #f44336; }
+
+.admin-badge {
+  background: rgba(255,215,0,0.15);
+  color: #ffd700;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+}
+
+.card-pool {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.pool-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 8px 10px;
+  gap: 10px;
+}
+
+.pool-card.in-deck { border-color: #58a6ff; }
+
+.pool-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pool-card-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #e0e0e0;
+}
+
+.pool-card-meta {
+  font-size: 12px;
+  color: #8b949e;
+}
+
+.pool-card-abilities {
+  font-size: 11px;
+  color: #58a6ff;
+}
+
+.pool-card-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.count-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: #21262d;
+  border: 1px solid #30363d;
+  color: #e0e0e0;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.count-btn:hover:not(:disabled) { background: #30363d; }
+.count-btn:disabled { opacity: 0.35; cursor: default; }
+
+.pool-card-count {
+  min-width: 18px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: #e0e0e0;
+}
+
+/* ============================================================
+   Hand area
+   ============================================================ */
+.hand-area {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #30363d;
+}
+
+.hand-label {
+  font-size: 12px;
+  color: #8b949e;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.hand-cards {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  min-height: 20px;
+}
+
+.empty-hand {
+  font-size: 12px;
+  color: #555;
+  font-style: italic;
+}
+
+.card-back {
+  width: 60px;
+  height: 84px;
+  border-radius: 6px;
+  background: repeating-linear-gradient(
+    45deg,
+    #1a2740,
+    #1a2740 6px,
+    #223055 6px,
+    #223055 12px
+  );
+  border: 1px solid #30363d;
+}

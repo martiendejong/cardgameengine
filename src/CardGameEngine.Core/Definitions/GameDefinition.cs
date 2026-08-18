@@ -15,6 +15,16 @@ public class GameDefinition
     public SetupDefinition Setup { get; set; } = new();
     public List<EndConditionDefinition> EndConditions { get; set; } = new();
     public ResolutionPolicyDefinition ResolutionPolicy { get; set; } = new();
+    public DeckRulesDefinition? DeckRules { get; set; }
+}
+
+public class DeckRulesDefinition
+{
+    public int MaxCopies { get; set; } = 2;
+    public int MaxDeckSize { get; set; } = 15;
+    public int StartingHandSize { get; set; } = 3;
+    public int DrawPerTurn { get; set; } = 1;
+    public Dictionary<string, int> DefaultDeck { get; set; } = new();
 }
 
 public class ObjectTypeDefinition
@@ -83,6 +93,8 @@ public class CardDefinition
     public List<AbilityDefinition> Abilities { get; set; } = new();
     public PlayTimingDefinition? PlayTiming { get; set; }
     public string? ArtworkDescription { get; set; }
+    public int? PlayCost { get; set; } // gold cost to play from hand; null = not deck-eligible
+    public AbilityDefinition? OnPlay { get; set; } // resolved when the card is played from hand
 }
 
 public class AbilityDefinition

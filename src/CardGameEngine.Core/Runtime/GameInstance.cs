@@ -14,6 +14,8 @@ public class GameInstance
     public List<ModifierInstance> ActiveModifiers { get; set; } = new();
     public List<PendingChoice> PendingChoices { get; set; } = new();
     public int TurnNumber { get; set; } = 1;
+    // Ordered object ids per player: index 0 is the top of the deck
+    public Dictionary<string, List<string>> DeckOrder { get; set; } = new();
 }
 
 public enum GameState
@@ -32,6 +34,8 @@ public class PlayerInstance
     public Dictionary<string, int> Resources { get; set; } = new();
     public bool IsWinner { get; set; }
     public bool IsLoser { get; set; }
+    public bool IsAdmin { get; set; }
+    public List<string> DeckList { get; set; } = new(); // expanded card definition ids
 }
 
 public class ObjectInstance

@@ -88,6 +88,41 @@ export interface GameDefinitionSummary {
 export interface PlayerSetup {
   name: string;
   id?: string;
+  deck?: Record<string, number>;
+  isAdmin?: boolean;
+}
+
+export interface AbilitySummary {
+  id: string;
+  name: string;
+}
+
+export interface CardDefinitionDto {
+  id: string;
+  name: string;
+  objectType: string;
+  playCost?: number | null;
+  properties: Record<string, number>;
+  tags: string[];
+  abilities: AbilitySummary[];
+  onPlay?: AbilitySummary | null;
+  artworkDescription?: string;
+}
+
+export interface DeckRulesDto {
+  maxCopies: number;
+  maxDeckSize: number;
+  startingHandSize: number;
+  drawPerTurn: number;
+  defaultDeck: Record<string, number>;
+}
+
+export interface GameDefinitionFull {
+  id: string;
+  name: string;
+  version: string;
+  cards: CardDefinitionDto[];
+  deckRules?: DeckRulesDto | null;
 }
 
 export interface CreateMatchRequest {

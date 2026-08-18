@@ -1,15 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import { GameDefinitionSummary, CreateMatchResponse } from '../types/game';
+import {
+  GameDefinitionSummary,
+  GameDefinitionFull,
+  CardDefinitionDto,
+  CreateMatchResponse,
+} from '../types/game';
 
 interface LobbyPageProps {
   onMatchCreated: (matchId: string, players: { id: string; name: string }[]) => void;
 }
 
+interface PlayerDeckState {
+  name: string;
+  isAdmin: boolean;
+  deck: Record<string, number>;
+}
+
+function statsSummary(card: CardDefinitionDto): string {
+  const parts: string[] = [];
+  const atk = card.properties?.['attack'];
+  const hp = card.properties?.['maxHp'];
+  const armor = card.properties?.['armor'];
+  if (atk) parts.push(`⚔${atk}`);
+  if (hp) parts.push(`❤${hp}`);
+  if (armor) parts.push(`🛡${armor}`);
+  return parts.join(' ');
+}
+
+function typeLabel(objectType: string): string {
+  switch (objectType) {
+    case 'hero': return 'Hero';
+    case 'headquarters': return 'HQ';
+    case 'unit': return 'Unit';
+    case 'building': return 'Building';
+    case 'spell': return 'Spell';
+    default: return objectType;
+  }
+}
+
 export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
   const [definitions, setDefinitions] = useState<GameDefinitionSummary[]>([]);
   const [selectedGame, setSelectedGame] = useState('');
-  const [player1Name, setPlayer1Name] = useState('Player 1');
-  const [player2Name, setPlayer2Name] = useState('Player 2');
+  const [fullDef, setFullDef] = useState<GameDefinitionFull | null>(null);
+  const [players, setPlayers] = useState<PlayerDeckState[]>([
+    { name: 'Player 1', isAdmin: false, deck: {} },
+    { name: 'Player 2', isAdmin: false, deck: {} },
+  ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -23,6 +59,74 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
       .catch(() => setError('Failed to load game definitions. Is the backend running?'));
   }, []);
 
+  useEffect(() => {
+    if (!selectedGame) return;
+    fetch(`/api/definitions/${selectedGame}`)
+      .then(r => r.json())
+      .then((def: GameDefinitionFull) => {
+        setFullDef(def);
+        const defaultDeck = def.deckRules?.defaultDeck ?? {};
+        setPlayers(prev => prev.map(p => ({ ...p, deck: { ...defaultDeck } })));
+      })
+      .catch(() => setError('Failed to load game definition details'));
+  }, [selectedGame]);
+
+  const deckRules = fullDef?.deckRules;
+
+  function cardPool(isAdmin: boolean): CardDefinitionDto[] {
+    if (!fullDef) return [];
+    return isAdmin
+      ? fullDef.cards
+      : fullDef.cards.filter(c => c.playCost !== null && c.playCost !== undefined);
+  }
+
+  function deckSize(deck: Record<string, number>): number {
+    return Object.values(deck).reduce((a, b) => a + b, 0);
+  }
+
+  function setCount(playerIdx: number, cardId: string, delta: number) {
+    setPlayers(prev => prev.map((p, i) => {
+      if (i !== playerIdx) return p;
+      const current = p.deck[cardId] ?? 0;
+      let next = current + delta;
+      if (next < 0) next = 0;
+      if (!p.isAdmin && deckRules) {
+        if (next > deckRules.maxCopies) next = deckRules.maxCopies;
+        if (delta > 0 && deckSize(p.deck) >= deckRules.maxDeckSize) return p;
+      }
+      const deck = { ...p.deck };
+      if (next === 0) delete deck[cardId];
+      else deck[cardId] = next;
+      return { ...p, deck };
+    }));
+  }
+
+  function setName(playerIdx: number, name: string) {
+    setPlayers(prev => prev.map((p, i) => (i === playerIdx ? { ...p, name } : p)));
+  }
+
+  function toggleAdmin(playerIdx: number) {
+    setPlayers(prev => prev.map((p, i) => {
+      if (i !== playerIdx) return p;
+      const isAdmin = !p.isAdmin;
+      let deck = p.deck;
+      // When leaving admin mode, clamp the deck back to legal limits
+      if (!isAdmin && deckRules && fullDef) {
+        deck = {};
+        let total = 0;
+        for (const [cardId, count] of Object.entries(p.deck)) {
+          const card = fullDef.cards.find(c => c.id === cardId);
+          if (!card || card.playCost === null || card.playCost === undefined) continue;
+          const clamped = Math.min(count, deckRules.maxCopies, deckRules.maxDeckSize - total);
+          if (clamped <= 0) continue;
+          deck[cardId] = clamped;
+          total += clamped;
+        }
+      }
+      return { ...p, isAdmin, deck };
+    }));
+  }
+
   async function handleStart() {
     if (!selectedGame) return;
     setLoading(true);
@@ -34,10 +138,12 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           gameId: selectedGame,
-          players: [
-            { name: player1Name, id: 'p1' },
-            { name: player2Name, id: 'p2' },
-          ],
+          players: players.map((p, i) => ({
+            id: `p${i + 1}`,
+            name: p.name,
+            deck: p.deck,
+            isAdmin: p.isAdmin,
+          })),
         }),
       });
 
@@ -55,64 +161,128 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
     }
   }
 
+  const namesValid = players.every(p => p.name.trim().length > 0);
+
   return (
     <div className="lobby-page">
-      <div className="lobby-card">
+      <div className="lobby-card lobby-wide">
         <h1 className="lobby-title">Town Wars</h1>
         <p className="lobby-subtitle">Trading Card Game Engine</p>
 
         {error && <div className="error-box">{error}</div>}
 
-        <div className="lobby-form">
-          <div className="form-group">
-            <label>Game</label>
-            <select
-              value={selectedGame}
-              onChange={e => setSelectedGame(e.target.value)}
-            >
-              {definitions.length === 0 && (
-                <option value="">Loading...</option>
-              )}
-              {definitions.map(d => (
-                <option key={d.id} value={d.id}>
-                  {d.name} v{d.version}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label>Player 1 Name</label>
-            <input
-              type="text"
-              value={player1Name}
-              onChange={e => setPlayer1Name(e.target.value)}
-              placeholder="Player 1"
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Player 2 Name</label>
-            <input
-              type="text"
-              value={player2Name}
-              onChange={e => setPlayer2Name(e.target.value)}
-              placeholder="Player 2"
-            />
-          </div>
-
-          <div className="lobby-note">
-            <strong>2-Player Local:</strong> Both players share the same screen. Take turns on the same device.
-          </div>
-
-          <button
-            className="start-btn"
-            onClick={handleStart}
-            disabled={loading || !selectedGame || !player1Name || !player2Name}
-          >
-            {loading ? 'Starting...' : 'Start Game'}
-          </button>
+        <div className="form-group">
+          <label>Game</label>
+          <select value={selectedGame} onChange={e => setSelectedGame(e.target.value)}>
+            {definitions.length === 0 && <option value="">Loading...</option>}
+            {definitions.map(d => (
+              <option key={d.id} value={d.id}>
+                {d.name} v{d.version}
+              </option>
+            ))}
+          </select>
         </div>
+
+        {deckRules && (
+          <div className="lobby-note">
+            <strong>Deck rules:</strong> max {deckRules.maxDeckSize} cards,
+            max {deckRules.maxCopies} copies per card.
+            Admins ignore all limits and can use every card.
+          </div>
+        )}
+
+        <div className="deck-builders">
+          {players.map((player, idx) => {
+            const pool = cardPool(player.isAdmin);
+            const size = deckSize(player.deck);
+            const overLimit = !player.isAdmin && deckRules && size > deckRules.maxDeckSize;
+            return (
+              <div key={idx} className="deck-builder">
+                <div className="deck-builder-header">
+                  <input
+                    type="text"
+                    className="player-name-input"
+                    value={player.name}
+                    onChange={e => setName(idx, e.target.value)}
+                    placeholder={`Player ${idx + 1}`}
+                  />
+                  <label className="admin-toggle">
+                    <input
+                      type="checkbox"
+                      checked={player.isAdmin}
+                      onChange={() => toggleAdmin(idx)}
+                    />
+                    Admin
+                  </label>
+                </div>
+
+                <div className={`deck-size ${overLimit ? 'over-limit' : ''}`}>
+                  Deck: {size}{!player.isAdmin && deckRules ? ` / ${deckRules.maxDeckSize}` : ''} cards
+                  {player.isAdmin && <span className="admin-badge">ADMIN — no limits</span>}
+                </div>
+
+                <div className="card-pool">
+                  {pool.map(card => {
+                    const count = player.deck[card.id] ?? 0;
+                    const maxed = !player.isAdmin && deckRules
+                      ? count >= deckRules.maxCopies || size >= deckRules.maxDeckSize
+                      : false;
+                    return (
+                      <div key={card.id} className={`pool-card ${count > 0 ? 'in-deck' : ''}`}>
+                        <div className="pool-card-info">
+                          <span className="pool-card-name">{card.name}</span>
+                          <span className="pool-card-meta">
+                            {typeLabel(card.objectType)}
+                            {card.playCost !== null && card.playCost !== undefined
+                              ? ` · ${card.playCost}g`
+                              : ' · free'}
+                            {statsSummary(card) ? ` · ${statsSummary(card)}` : ''}
+                          </span>
+                          {(card.abilities?.length > 0 || card.onPlay) && (
+                            <span className="pool-card-abilities">
+                              {card.onPlay
+                                ? `On play: ${card.onPlay.name}`
+                                : card.abilities.map(a => a.name).join(', ')}
+                            </span>
+                          )}
+                        </div>
+                        <div className="pool-card-controls">
+                          <button
+                            className="count-btn"
+                            disabled={count === 0}
+                            onClick={() => setCount(idx, card.id, -1)}
+                          >
+                            −
+                          </button>
+                          <span className="pool-card-count">{count}</span>
+                          <button
+                            className="count-btn"
+                            disabled={maxed}
+                            onClick={() => setCount(idx, card.id, 1)}
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="lobby-note">
+          <strong>2-Player Local:</strong> Both players share the same screen. Take turns on the same device.
+        </div>
+
+        <button
+          className="start-btn"
+          onClick={handleStart}
+          disabled={loading || !selectedGame || !namesValid}
+        >
+          {loading ? 'Starting...' : 'Start Game'}
+        </button>
       </div>
     </div>
   );

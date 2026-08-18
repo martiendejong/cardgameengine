@@ -29,8 +29,14 @@ export function PlayerArea({
     o => o.controllerId === player.id && o.zoneId === 'battlefield' && !o.isDestroyed
   );
   const discardedCards = objects.filter(
-    o => o.controllerId === player.id && o.isDestroyed
+    o => o.controllerId === player.id && (o.zoneId === 'discard' || o.isDestroyed)
   );
+  const handCards = objects.filter(
+    o => o.ownerId === player.id && o.zoneId === 'hand'
+  );
+  const deckCount = objects.filter(
+    o => o.ownerId === player.id && o.zoneId === 'deck'
+  ).length;
 
   return (
     <div className={`player-area ${isBottom ? 'bottom-player' : 'top-player'} ${isActivePlayer ? 'active-player' : ''} ${player.isLoser ? 'loser' : ''} ${player.isWinner ? 'winner' : ''}`}>
@@ -68,6 +74,34 @@ export function PlayerArea({
             flipped={!isBottom}
           />
         ))}
+      </div>
+
+      <div className="hand-area">
+        <span className="hand-label">
+          Hand ({handCards.length}) · Deck ({deckCount})
+        </span>
+        {isBottom ? (
+          <div className="hand-cards">
+            {handCards.length === 0 && <span className="empty-hand">No cards in hand</span>}
+            {handCards.map(card => (
+              <CardView
+                key={card.id}
+                card={card}
+                actions={actions}
+                isSelectableTarget={false}
+                isSelectedTarget={false}
+                onAction={onAction}
+                onSelectTarget={onSelectTarget}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="hand-cards">
+            {handCards.map(card => (
+              <div key={card.id} className="card-back" title="Opponent's card" />
+            ))}
+          </div>
+        )}
       </div>
 
       {discardedCards.length > 0 && (

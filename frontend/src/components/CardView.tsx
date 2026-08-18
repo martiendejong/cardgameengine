@@ -42,6 +42,7 @@ export function CardView({
     if (card.objectType === 'headquarters') return '🏛';
     if (card.objectType === 'unit') return '⚔';
     if (card.objectType === 'building') return '🏠';
+    if (card.objectType === 'spell') return '✨';
     return '□';
   }
 
@@ -51,6 +52,7 @@ export function CardView({
       case 'headquarters': return 'HQ';
       case 'unit': return 'Unit';
       case 'building': return 'Building';
+      case 'spell': return 'Spell';
       default: return card.objectType;
     }
   }

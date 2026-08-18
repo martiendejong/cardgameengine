@@ -7,6 +7,8 @@ public class PlayerSetup
 {
     public string Name { get; set; } = "";
     public string? Id { get; set; }
+    public Dictionary<string, int>? Deck { get; set; } // cardId -> copies
+    public bool IsAdmin { get; set; }
 }
 
 public class CreateMatchRequest
@@ -50,10 +52,45 @@ public class MatchService
 
         foreach (var setup in players)
         {
+            var deck = setup.Deck ?? definition.DeckRules?.DefaultDeck ?? new Dictionary<string, int>();
+
+            // Validate deck contents
+            foreach (var (cardId, count) in deck)
+            {
+                if (count < 0)
+                    return (null, $"{setup.Name}: negative count for card '{cardId}'");
+                var cardDef = definition.Cards.FirstOrDefault(c => c.Id == cardId);
+                if (cardDef == null)
+                    return (null, $"{setup.Name}: unknown card '{cardId}'");
+                if (!setup.IsAdmin && cardDef.PlayCost == null)
+                    return (null, $"{setup.Name}: card '{cardDef.Name}' is not deck-eligible");
+            }
+
+            // Enforce deck rules for non-admins
+            if (!setup.IsAdmin && definition.DeckRules != null)
+            {
+                var rules = definition.DeckRules;
+                var total = deck.Values.Sum();
+                if (total > rules.MaxDeckSize)
+                    return (null, $"{setup.Name}: deck has {total} cards, maximum is {rules.MaxDeckSize}");
+                foreach (var (cardId, count) in deck)
+                {
+                    if (count > rules.MaxCopies)
+                        return (null, $"{setup.Name}: at most {rules.MaxCopies} copies of '{cardId}' allowed");
+                }
+            }
+
+            var deckList = new List<string>();
+            foreach (var (cardId, count) in deck)
+                for (int i = 0; i < count; i++)
+                    deckList.Add(cardId);
+
             game.Players.Add(new PlayerInstance
             {
                 Id = setup.Id ?? Guid.NewGuid().ToString("N")[..8],
-                Name = setup.Name
+                Name = setup.Name,
+                IsAdmin = setup.IsAdmin,
+                DeckList = deckList
             });
         }
 

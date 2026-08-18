@@ -8,7 +8,8 @@
     { "id": "hero", "name": "Hero", "parentType": "character", "resources": ["ap"] },
     { "id": "unit", "name": "Unit", "parentType": "character" },
     { "id": "building", "name": "Building", "parentType": "card", "properties": ["currentHp", "maxHp", "armor"] },
-    { "id": "headquarters", "name": "Headquarters", "parentType": "building" }
+    { "id": "headquarters", "name": "Headquarters", "parentType": "building" },
+    { "id": "spell", "name": "Spell", "parentType": "card" }
   ],
   "properties": [
     { "id": "attack", "name": "Attack", "type": "int", "defaultValue": 0, "minValue": 0 },
@@ -23,16 +24,25 @@
   "tags": [
     { "id": "peasant", "name": "Peasant" },
     { "id": "worker", "name": "Worker" },
-    { "id": "builder", "name": "Builder" }
+    { "id": "builder", "name": "Builder" },
+    { "id": "soldier", "name": "Soldier" }
   ],
   "zones": [
+    { "id": "deck", "name": "Deck", "visibility": "none", "ordered": true },
     { "id": "hand", "name": "Hand", "visibility": "owner", "ordered": false },
     { "id": "battlefield", "name": "Battlefield", "visibility": "all", "ordered": false },
     { "id": "discard", "name": "Discard", "visibility": "all", "ordered": true }
   ],
+  "deckRules": {
+    "maxCopies": 2,
+    "maxDeckSize": 15,
+    "startingHandSize": 3,
+    "drawPerTurn": 1,
+    "defaultDeck": { "soldier": 2, "archer": 2, "barracks": 1, "healing-salve": 2, "fireball": 1 }
+  },
   "flow": {
     "phases": [
-      { "id": "start", "name": "Start Phase", "autoActions": ["untap_all", "gain_hero_ap"] },
+      { "id": "start", "name": "Start Phase", "autoActions": ["untap_all", "gain_hero_ap", "draw_card"] },
       { "id": "main", "name": "Main Phase" },
       { "id": "combat", "name": "Combat Phase" },
       { "id": "end", "name": "End Phase", "autoActions": ["expire_end_of_turn"] }
@@ -100,6 +110,80 @@
       "properties": { "attack": 2, "currentHp": 3, "maxHp": 3, "armor": 1 },
       "tags": ["peasant", "worker", "builder"],
       "artworkDescription": "A simple farmer with a pitchfork"
+    },
+    {
+      "id": "soldier",
+      "name": "Soldier",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": { "attack": 3, "currentHp": 4, "maxHp": 4, "armor": 1 },
+      "tags": ["soldier"],
+      "artworkDescription": "A disciplined footman with sword and shield"
+    },
+    {
+      "id": "archer",
+      "name": "Archer",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": { "attack": 2, "currentHp": 2, "maxHp": 2, "armor": 0 },
+      "tags": ["soldier"],
+      "artworkDescription": "A hooded archer with a longbow",
+      "abilities": [
+        {
+          "id": "ranged-shot",
+          "name": "Ranged Shot",
+          "costs": [{ "type": "tap" }],
+          "conditions": [],
+          "choice": { "type": "entity", "controller": "opponent", "min": 1, "max": 1 },
+          "effects": [{ "type": "damage", "scope": "target", "amount": 2 }]
+        }
+      ]
+    },
+    {
+      "id": "barracks",
+      "name": "Barracks",
+      "objectType": "building",
+      "playCost": 4,
+      "properties": { "currentHp": 6, "maxHp": 6, "armor": 1 },
+      "artworkDescription": "A sturdy wooden barracks with training grounds",
+      "abilities": [
+        {
+          "id": "train-soldier",
+          "name": "Train Soldier",
+          "costs": [
+            { "type": "resource", "scope": "player", "resourceId": "gold", "amount": 2 },
+            { "type": "tap" }
+          ],
+          "conditions": [],
+          "effects": [{ "type": "summon", "scope": "player", "cardId": "soldier" }]
+        }
+      ]
+    },
+    {
+      "id": "healing-salve",
+      "name": "Healing Salve",
+      "objectType": "spell",
+      "playCost": 1,
+      "artworkDescription": "A glowing vial of restorative ointment",
+      "onPlay": {
+        "id": "heal-target",
+        "name": "Heal 3 HP",
+        "choice": { "type": "entity", "controller": "self", "min": 1, "max": 1 },
+        "effects": [{ "type": "heal", "scope": "target", "amount": 3 }]
+      }
+    },
+    {
+      "id": "fireball",
+      "name": "Fireball",
+      "objectType": "spell",
+      "playCost": 3,
+      "artworkDescription": "A roaring sphere of flame hurled at the enemy",
+      "onPlay": {
+        "id": "fireball-damage",
+        "name": "Deal 4 damage",
+        "choice": { "type": "entity", "controller": "opponent", "min": 1, "max": 1 },
+        "effects": [{ "type": "damage", "scope": "target", "amount": 4 }]
+      }
     }
   ],
   "setup": {
