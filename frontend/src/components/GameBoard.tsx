@@ -97,63 +97,66 @@ export function GameBoard({
         </div>
       )}
 
-      {/* Opponent area (top) */}
-      {opponentPlayer && (
-        <PlayerArea
-          player={opponentPlayer}
-          objects={gameState.objects}
-          actions={gameState.availableActions}
-          isActivePlayer={gameState.activePlayerId === opponentPlayer.id}
-          isBottom={false}
-          selectableTargets={selectableTargets}
-          selectedTargets={selectedTargets}
-          onAction={handleActionClick}
-          onSelectTarget={handleSelectTarget}
-          onInspect={setInspectedId}
-        />
-      )}
-
-      {/* Middle zone: action panel + target selection banner */}
-      <div className="middle-zone">
-        {pendingAction && (
-          <div className="target-select-banner">
-            <span>Select target for: <strong>{pendingAction.label}</strong></span>
-            <span className="target-count">({selectedTargets.length}/{pendingAction.requiresChoice?.max ?? 1} selected)</span>
-            <button
-              className="confirm-target-btn"
-              disabled={selectedTargets.length < (pendingAction.requiresChoice?.min ?? 1)}
-              onClick={handleConfirmTargets}
-            >
-              Confirm
-            </button>
-            <button className="cancel-target-btn" onClick={handleCancelTargetSelect}>
-              Cancel
-            </button>
-          </div>
+      {/* Main play area: one scroll container for both player sections */}
+      <div className="board-main">
+        {/* Opponent area (top) */}
+        {opponentPlayer && (
+          <PlayerArea
+            player={opponentPlayer}
+            objects={gameState.objects}
+            actions={gameState.availableActions}
+            isActivePlayer={gameState.activePlayerId === opponentPlayer.id}
+            isBottom={false}
+            selectableTargets={selectableTargets}
+            selectedTargets={selectedTargets}
+            onAction={handleActionClick}
+            onSelectTarget={handleSelectTarget}
+            onInspect={setInspectedId}
+          />
         )}
-        <ActionPanel
-          gameState={gameState}
-          myPlayerId={myPlayerId}
-          onEndPhase={onEndPhase}
-          onAction={handleActionClick}
-        />
-      </div>
 
-      {/* My area (bottom) */}
-      {myPlayer && (
-        <PlayerArea
-          player={myPlayer}
-          objects={gameState.objects}
-          actions={isMyTurn ? gameState.availableActions : []}
-          isActivePlayer={isMyTurn}
-          isBottom={true}
-          selectableTargets={selectableTargets}
-          selectedTargets={selectedTargets}
-          onAction={handleActionClick}
-          onSelectTarget={handleSelectTarget}
-          onInspect={setInspectedId}
-        />
-      )}
+        {/* Middle zone: action panel + target selection banner */}
+        <div className="middle-zone">
+          {pendingAction && (
+            <div className="target-select-banner">
+              <span>Select target for: <strong>{pendingAction.label}</strong></span>
+              <span className="target-count">({selectedTargets.length}/{pendingAction.requiresChoice?.max ?? 1} selected)</span>
+              <button
+                className="confirm-target-btn"
+                disabled={selectedTargets.length < (pendingAction.requiresChoice?.min ?? 1)}
+                onClick={handleConfirmTargets}
+              >
+                Confirm
+              </button>
+              <button className="cancel-target-btn" onClick={handleCancelTargetSelect}>
+                Cancel
+              </button>
+            </div>
+          )}
+          <ActionPanel
+            gameState={gameState}
+            myPlayerId={myPlayerId}
+            onEndPhase={onEndPhase}
+            onAction={handleActionClick}
+          />
+        </div>
+
+        {/* My area (bottom) */}
+        {myPlayer && (
+          <PlayerArea
+            player={myPlayer}
+            objects={gameState.objects}
+            actions={isMyTurn ? gameState.availableActions : []}
+            isActivePlayer={isMyTurn}
+            isBottom={true}
+            selectableTargets={selectableTargets}
+            selectedTargets={selectedTargets}
+            onAction={handleActionClick}
+            onSelectTarget={handleSelectTarget}
+            onInspect={setInspectedId}
+          />
+        )}
+      </div>
 
       {/* Game log */}
       <GameLog log={gameState.log} />

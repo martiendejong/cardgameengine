@@ -1,6 +1,7 @@
 import React from 'react';
 import { PlayerStateDto, ObjectStateDto, AvailableAction } from '../types/game';
 import { CardView } from './CardView';
+import { LINE_TIP_FRONT, LINE_TIP_BACK } from '../utils/cardText';
 
 interface PlayerAreaProps {
   player: PlayerStateDto;
@@ -72,7 +73,12 @@ export function PlayerArea({
           const lineCards = battlefieldCards.filter(c => (c.line || 'back') === line);
           return (
             <div key={line} className={`battle-line line-${line}`}>
-              <span className="line-label">{line === 'front' ? 'Front Line' : 'Back Line'}</span>
+              <span
+                className="line-label tip"
+                data-tip={line === 'front' ? LINE_TIP_FRONT : LINE_TIP_BACK}
+              >
+                {line === 'front' ? 'Front Line' : 'Back Line'}
+              </span>
               <div className="line-cards">
                 {lineCards.length === 0 && <span className="empty-line">—</span>}
                 {lineCards.map(card => (

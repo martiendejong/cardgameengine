@@ -105,7 +105,7 @@ export const STAT_TIPS: Record<string, string> = {
 };
 
 export const TAG_TIPS: Record<string, string> = {
-  ranged: 'Ranged — from your back line it can attack the enemy front line; from your front line it reaches both enemy lines. Defenders that cannot reach it back deal no counterattack damage.',
+  ranged: 'Ranged — always reaches the enemy front line, even from your back line. From your front line it reaches both enemy lines. From your back line it can bombard the enemy back line once their front is empty — but only while your own front line is held. Defenders that cannot reach it back deal no counterattack damage.',
   peasant: 'Peasant — the town workforce. Can be trained into a Soldier (Barracks) or Archer (Archery Range), and boosted by Call to Arms.',
   worker: 'Worker — can perform resource-producing work.',
   builder: 'Builder — can construct buildings.',
@@ -132,9 +132,9 @@ export const STATUS_TIPS: Record<string, string> = {
 };
 
 export const LINE_TIP_FRONT =
-  'Front Line — melee cards must be here to attack. Shields the back line: melee enemies must chew through the front line first.';
+  'Front Line — melee cards attack from here. Holding it shields your back line, and lets your back-line ranged cards bombard the enemy back line once the enemy front is empty.';
 export const LINE_TIP_BACK =
-  'Back Line — where all cards spawn. Safe from melee while your front line holds; ranged cards can shoot from here.';
+  'Back Line — where all cards spawn. If your front line is empty, melee here can defensively strike the enemy front line, and your ranged cards can only hit the enemy front.';
 
 export function playCostTip(cost: number, resource: string): string {
   return `Play cost — pay ${cost} ${resName(resource)} to play this card from your hand during your Main Phase.`;
