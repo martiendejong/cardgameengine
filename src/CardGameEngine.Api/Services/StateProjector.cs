@@ -38,7 +38,8 @@ public class StateProjector
                 Resources = new Dictionary<string, int>(p.Resources),
                 RelevantResources = new List<string>(p.RelevantResources),
                 IsWinner = p.IsWinner,
-                IsLoser = p.IsLoser
+                IsLoser = p.IsLoser,
+                IsBot = p.IsBot
             }).ToList(),
             Objects = game.Objects.Select(o => ProjectObject(game, o, viewerId, omniscient)).ToList(),
             AvailableActions = game.ActivePlayerId == actionsFor

@@ -11,15 +11,17 @@ public class GameHub : Hub
     private readonly RuleEngine _ruleEngine;
     private readonly StateProjector _projector;
     private readonly MatchConnectionRegistry _registry;
+    private readonly BotService _bot;
     private readonly ILogger<GameHub> _logger;
 
     public GameHub(MatchService matchService, RuleEngine ruleEngine, StateProjector projector,
-        MatchConnectionRegistry registry, ILogger<GameHub> logger)
+        MatchConnectionRegistry registry, BotService bot, ILogger<GameHub> logger)
     {
         _matchService = matchService;
         _ruleEngine = ruleEngine;
         _projector = projector;
         _registry = registry;
+        _bot = bot;
         _logger = logger;
     }
 
@@ -100,6 +102,9 @@ public class GameHub : Hub
     /// <summary>Each connection receives its own projection — hidden information stays server-side.</summary>
     private async Task BroadcastStateUpdate(string matchId, GameInstance game)
     {
+        // If the turn passed to a computer player, let it play before broadcasting
+        _bot.PlayBotTurns(game);
+
         foreach (var (connectionId, playerId) in _registry.GetForMatch(matchId))
         {
             await Clients.Client(connectionId)

@@ -10,6 +10,7 @@ public class PlayerSetup
     public string? DeckId { get; set; }                // preconstructed deck (brings HQ + hero)
     public Dictionary<string, int>? Deck { get; set; } // cardId -> copies (overrides precon card list)
     public bool IsAdmin { get; set; }
+    public bool IsBot { get; set; }                    // seat is played by the server-side bot
 }
 
 public class CreateMatchRequest
@@ -100,6 +101,7 @@ public class MatchService
                 Id = setup.Id ?? Guid.NewGuid().ToString("N")[..8],
                 Name = setup.Name,
                 IsAdmin = setup.IsAdmin,
+                IsBot = setup.IsBot,
                 DeckList = deckList,
                 HqCardId = precon?.Hq,
                 HeroCardId = precon?.Hero

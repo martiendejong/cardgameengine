@@ -14,6 +14,7 @@ export interface PlayerStateDto {
   relevantResources: string[];
   isWinner: boolean;
   isLoser: boolean;
+  isBot: boolean;
 }
 
 export interface ObjectStateDto {

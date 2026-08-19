@@ -88,7 +88,7 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   function opponentInviteUrl(): string | null {
     if (isHotseat || !gameState) return null;
     const opponent = gameState.players.find(p => p.id !== seat);
-    if (!opponent) return null;
+    if (!opponent || opponent.isBot) return null;
     const url = new URL(window.location.origin + window.location.pathname);
     url.searchParams.set('match', matchId);
     url.searchParams.set('player', opponent.id);

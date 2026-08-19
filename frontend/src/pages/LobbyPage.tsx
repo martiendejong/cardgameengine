@@ -49,7 +49,7 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
   ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [mode, setMode] = useState<'hotseat' | 'seats'>('hotseat');
+  const [mode, setMode] = useState<'hotseat' | 'seats' | 'bot'>('hotseat');
 
   useEffect(() => {
     fetch('/api/definitions')
@@ -154,10 +154,11 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
           gameId: selectedGame,
           players: players.map((p, i) => ({
             id: `p${i + 1}`,
-            name: p.name,
+            name: mode === 'bot' && i === 1 ? 'Computer' : p.name,
             deckId: p.deckId || undefined,
             deck: p.deck,
             isAdmin: p.isAdmin,
+            isBot: mode === 'bot' && i === 1,
           })),
         }),
       });
@@ -168,7 +169,7 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
       }
 
       const data: CreateMatchResponse = await res.json();
-      onMatchCreated(data.matchId, mode === 'seats' ? 'p1' : '');
+      onMatchCreated(data.matchId, mode === 'hotseat' ? '' : 'p1');
     } catch (err: any) {
       setError(err.message ?? 'Unknown error');
     } finally {
@@ -333,6 +334,15 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
               onChange={() => setMode('seats')}
             />
             <strong>Two browsers</strong> — you play as Player 1; share an invite link for Player 2. Hands stay hidden.
+          </label>
+          <label className={`mode-option ${mode === 'bot' ? 'mode-active' : ''}`}>
+            <input
+              type="radio"
+              name="mode"
+              checked={mode === 'bot'}
+              onChange={() => setMode('bot')}
+            />
+            <strong>vs Computer</strong> — you play as Player 1 against a computer opponent using Player 2's deck.
           </label>
         </div>
 

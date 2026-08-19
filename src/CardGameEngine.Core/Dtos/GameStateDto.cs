@@ -26,6 +26,7 @@ public class PlayerStateDto
     public List<string> RelevantResources { get; set; } = new();
     public bool IsWinner { get; set; }
     public bool IsLoser { get; set; }
+    public bool IsBot { get; set; }
 }
 
 public class ObjectStateDto

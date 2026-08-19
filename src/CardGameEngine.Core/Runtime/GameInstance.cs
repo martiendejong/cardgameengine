@@ -37,6 +37,7 @@ public class PlayerInstance
     public bool IsWinner { get; set; }
     public bool IsLoser { get; set; }
     public bool IsAdmin { get; set; }
+    public bool IsBot { get; set; }
     public List<string> DeckList { get; set; } = new(); // expanded card definition ids
     public string? HqCardId { get; set; }   // headquarters placed at setup
     public string? HeroCardId { get; set; } // hero placed at setup
