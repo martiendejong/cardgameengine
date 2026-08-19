@@ -49,11 +49,13 @@ public class CombatService
 
         int damageToDefender = Math.Max(0, attackerAttack - defenderArmor);
 
-        // Defender only counterattacks when the attacker is within its own reach
-        bool defenderCanCounter = _s.Targeting.GetAttackTargets(game, defender).Contains(attacker.Id);
-        int damageToAttacker = defenderCanCounter ? Math.Max(0, defenderAttack - attackerArmor) : 0;
+        // Defenders do not strike back by default. Only the Retaliate keyword lets a
+        // defender hit back, and even then only when the attacker is within its reach.
+        bool defenderRetaliates = defender.Tags.Contains("retaliate")
+            && _s.Targeting.GetAttackTargets(game, defender).Contains(attacker.Id);
+        int damageToAttacker = defenderRetaliates ? Math.Max(0, defenderAttack - attackerArmor) : 0;
 
-        game.Log.Add($"{attacker.Name} attacks {defender.Name}! ({attackerAttack} ATK vs {defenderArmor} ARM = {damageToDefender} dmg{(defenderCanCounter ? $"; counter: {defenderAttack} ATK vs {attackerArmor} ARM = {damageToAttacker} dmg" : "; no counterattack")})");
+        game.Log.Add($"{attacker.Name} attacks {defender.Name}! ({attackerAttack} ATK vs {defenderArmor} ARM = {damageToDefender} dmg{(defenderRetaliates ? $"; retaliation: {defenderAttack} ATK vs {attackerArmor} ARM = {damageToAttacker} dmg" : "")})");
 
         // Apply damage simultaneously (events published by the mutator)
         _s.Mutator.ApplyDamage(game, attacker, damageToAttacker, defender);

@@ -154,6 +154,10 @@
     {
       "id": "raider",
       "name": "Raider"
+    },
+    {
+      "id": "retaliate",
+      "name": "Retaliate"
     }
   ],
   "zones": [
@@ -382,7 +386,8 @@
         "armor": 1
       },
       "tags": [
-        "soldier"
+        "soldier",
+        "retaliate"
       ],
       "artworkDescription": "A disciplined footman with sword and shield",
       "icon": "⚔️"
@@ -975,7 +980,8 @@
         "armor": 1
       },
       "tags": [
-        "raider"
+        "raider",
+        "retaliate"
       ],
       "artworkDescription": "A mountain of muscle swinging a spiked club",
       "icon": "🦍"
