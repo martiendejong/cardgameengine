@@ -390,17 +390,21 @@ public class RuleEngine
             if (cardDef == null) continue;
 
             var cost = cardDef.PlayCost ?? 0;
+            var costRes = cardDef.PlayCostResource;
             string? reason = null;
             if (game.CurrentPhaseId != "main")
                 reason = "Can only play cards during Main Phase";
-            else if (player.Resources.GetValueOrDefault("gold") < cost)
-                reason = $"Requires {cost} gold";
+            else if (player.Resources.GetValueOrDefault(costRes) < cost)
+                reason = $"Requires {cost} {costRes}";
+            else if (cardDef.Slot != null && FindLivingHero(game, playerId) == null)
+                reason = "No hero to install this module on";
 
+            var costLabel = costRes == "gold" ? $"{cost}g" : $"{cost} {costRes}";
             var playAction = new AvailableAction
             {
                 Type = "playCard",
                 SourceObjectId = obj.Id,
-                Label = $"{obj.Name}: Play ({cost}g)",
+                Label = $"{obj.Name}: Play ({costLabel})",
                 Available = reason == null,
                 UnavailableReason = reason
             };
@@ -478,7 +482,8 @@ public class RuleEngine
         var enemies = game.Objects
             .Where(o => o.ControllerId != attacker.ControllerId
                 && !o.IsDestroyed
-                && o.ZoneId == "battlefield")
+                && o.ZoneId == "battlefield"
+                && o.AttachedToId == null)
             .ToList();
 
         if (game.Definition.BattlefieldLines == null)
@@ -507,6 +512,7 @@ public class RuleEngine
             .Where(o =>
             {
                 if (o.IsDestroyed || o.ZoneId != "battlefield") return false;
+                if (o.AttachedToId != null) return false;
                 if (choice.Controller == "self" && o.ControllerId != playerId) return false;
                 if (choice.Controller == "opponent" && o.ControllerId == playerId) return false;
                 if (choice.ObjectType != null && !IsObjectTypeOrSubtype(game, o.ObjectType, choice.ObjectType)) return false;
@@ -561,8 +567,9 @@ public class RuleEngine
         if (cardDef == null) return (false, "Card definition not found");
 
         var cost = cardDef.PlayCost ?? 0;
-        if (player.Resources.GetValueOrDefault("gold") < cost)
-            return (false, $"Requires {cost} gold");
+        var costRes = cardDef.PlayCostResource;
+        if (player.Resources.GetValueOrDefault(costRes) < cost)
+            return (false, $"Requires {cost} {costRes}");
 
         var targetIds = action.TargetIds ?? new List<string>();
         if (cardDef.OnPlay?.Choice != null)
@@ -576,10 +583,25 @@ public class RuleEngine
                     return (false, "Invalid target");
         }
 
+        // Modules need a living hero to be installed on
+        ObjectInstance? moduleHost = null;
+        if (cardDef.Slot != null)
+        {
+            moduleHost = FindLivingHero(game, playerId);
+            if (moduleHost == null) return (false, "No hero to install this module on");
+        }
+
         if (cost > 0)
         {
-            player.Resources["gold"] = player.Resources.GetValueOrDefault("gold") - cost;
-            game.Log.Add($"{player.Name} spends {cost} gold. (Remaining: {player.Resources["gold"]})");
+            player.Resources[costRes] = player.Resources.GetValueOrDefault(costRes) - cost;
+            game.Log.Add($"{player.Name} spends {cost} {costRes}. (Remaining: {player.Resources[costRes]})");
+        }
+
+        if (cardDef.Slot != null && moduleHost != null)
+        {
+            InstallModule(game, obj, cardDef, moduleHost, player);
+            CheckEndConditions(game);
+            return (true, null);
         }
 
         if (IsObjectTypeOrSubtype(game, obj.ObjectType, "spell"))
@@ -928,7 +950,30 @@ public class RuleEngine
             case "plunder_resource":
                 ApplyPlunderResource(game, effect, source, player);
                 break;
+            case "revive_hero":
+                ApplyReviveHero(game, player);
+                break;
         }
+    }
+
+    private void ApplyReviveHero(GameInstance game, PlayerInstance player)
+    {
+        var deadHero = game.Objects.FirstOrDefault(o =>
+            o.OwnerId == player.Id &&
+            o.IsDestroyed &&
+            IsObjectTypeOrSubtype(game, o.ObjectType, "hero"));
+        if (deadHero == null) return;
+
+        deadHero.IsDestroyed = false;
+        deadHero.ZoneId = "battlefield";
+        deadHero.IsTapped = false;
+        deadHero.HasSummoningSickness = true;
+        deadHero.HasMovedThisTurn = false;
+        deadHero.Properties["currentHp"] = deadHero.Properties.GetValueOrDefault("maxHp", 1);
+        if (game.Definition.BattlefieldLines != null)
+            deadHero.Line = game.Definition.BattlefieldLines.SpawnLine;
+
+        game.Log.Add($"{deadHero.Name} is reconstructed and returns to the battlefield!");
     }
 
     private void ApplyBuffTargetUntilEndOfTurn(GameInstance game, EffectDefinition effect, ObjectInstance? source, ObjectInstance? target)
@@ -1168,6 +1213,68 @@ public class RuleEngine
         obj.IsDestroyed = true;
         obj.ZoneId = "discard";
         game.Log.Add($"{obj.Name} is destroyed!");
+
+        // Modifiers granted by this object (e.g. installed modules) disappear with it
+        game.ActiveModifiers.RemoveAll(m => m.SourceObjectId == obj.Id);
+
+        // Modules go down with their host
+        var attached = game.Objects.Where(o => o.AttachedToId == obj.Id && !o.IsDestroyed).ToList();
+        foreach (var module in attached)
+        {
+            game.Log.Add($"{module.Name} is destroyed along with {obj.Name}!");
+            DestroyObject(game, module);
+        }
+    }
+
+    private ObjectInstance? FindLivingHero(GameInstance game, string playerId)
+    {
+        return game.Objects.FirstOrDefault(o =>
+            o.OwnerId == playerId &&
+            !o.IsDestroyed &&
+            o.ZoneId == "battlefield" &&
+            IsObjectTypeOrSubtype(game, o.ObjectType, "hero"));
+    }
+
+    private void InstallModule(GameInstance game, ObjectInstance module, CardDefinition moduleDef, ObjectInstance host, PlayerInstance player)
+    {
+        var slot = moduleDef.Slot!;
+        var hostDef = game.Definition.Cards.FirstOrDefault(c => c.Id == host.DefinitionId);
+        var capacity = hostDef?.EquipmentSlots?.GetValueOrDefault(slot, 1) ?? 1;
+
+        // Slot full: dismantle the oldest module in that slot
+        var occupying = game.Objects
+            .Where(o => o.AttachedToId == host.Id && o.Slot == slot && !o.IsDestroyed)
+            .ToList();
+        while (occupying.Count >= capacity)
+        {
+            var oldest = occupying[0];
+            occupying.RemoveAt(0);
+            oldest.AttachedToId = null;
+            oldest.ZoneId = "discard";
+            game.ActiveModifiers.RemoveAll(m => m.SourceObjectId == oldest.Id);
+            game.Log.Add($"{oldest.Name} is dismantled to make room.");
+        }
+
+        module.ZoneId = "battlefield";
+        module.AttachedToId = host.Id;
+        module.Slot = slot;
+        module.HasSummoningSickness = false;
+        game.Log.Add($"{player.Name} installs {module.Name} on {host.Name} ({slot} slot).");
+
+        foreach (var attachMod in moduleDef.AttachModifiers)
+        {
+            _modifierCounter++;
+            game.ActiveModifiers.Add(new ModifierInstance
+            {
+                Id = $"mod_{_modifierCounter}",
+                TargetObjectId = host.Id,
+                PropertyId = attachMod.PropertyId,
+                Amount = attachMod.Amount,
+                ExpiresOn = "never",
+                SourceObjectId = module.Id
+            });
+            game.Log.Add($"{host.Name} gains +{attachMod.Amount} {attachMod.PropertyId} from {module.Name}.");
+        }
     }
 
     private void ClampProperty(GameInstance game, ObjectInstance obj, string propId)
@@ -1203,6 +1310,9 @@ public class RuleEngine
             "resource_lte" => GetResourceValue(game, cond, obj, player) <= (cond.Amount ?? 0),
             "has_tag" => obj.Tags.Contains(cond.Tag ?? ""),
             "is_phase" => game.CurrentPhaseId == cond.Phase,
+            "own_hero_destroyed" => game.Objects.Any(o =>
+                o.OwnerId == player.Id && o.IsDestroyed &&
+                IsObjectTypeOrSubtype(game, o.ObjectType, "hero")),
             _ => true
         };
     }

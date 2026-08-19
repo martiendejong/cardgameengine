@@ -31,6 +31,8 @@ export interface ObjectStateDto {
   line: string;
   hasMovedThisTurn: boolean;
   hasSummoningSickness: boolean;
+  attachedToId?: string | null;
+  slot?: string | null;
 }
 
 export interface ChoiceDefinition {

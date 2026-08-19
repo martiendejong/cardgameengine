@@ -43,4 +43,6 @@ public class ObjectStateDto
     public string Line { get; set; } = "";
     public bool HasMovedThisTurn { get; set; }
     public bool HasSummoningSickness { get; set; }
+    public string? AttachedToId { get; set; }
+    public string? Slot { get; set; }
 }

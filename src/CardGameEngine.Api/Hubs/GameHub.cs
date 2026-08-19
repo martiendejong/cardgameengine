@@ -139,7 +139,9 @@ public class GameHub : Hub
                 IsDestroyed = o.IsDestroyed,
                 Line = o.Line,
                 HasMovedThisTurn = o.HasMovedThisTurn,
-                HasSummoningSickness = o.HasSummoningSickness
+                HasSummoningSickness = o.HasSummoningSickness,
+                AttachedToId = o.AttachedToId,
+                Slot = o.Slot
             }).ToList(),
             AvailableActions = game.ActivePlayerId == forPlayerId
                 ? _ruleEngine.GetAvailableActions(game, forPlayerId)

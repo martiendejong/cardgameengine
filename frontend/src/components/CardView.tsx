@@ -4,6 +4,7 @@ import { ObjectStateDto, AvailableAction } from '../types/game';
 interface CardViewProps {
   card: ObjectStateDto;
   actions: AvailableAction[];
+  attachments?: ObjectStateDto[];
   isSelectableTarget: boolean;
   isSelectedTarget: boolean;
   onAction: (action: AvailableAction, targetIds?: string[]) => void;
@@ -14,6 +15,7 @@ interface CardViewProps {
 export function CardView({
   card,
   actions,
+  attachments = [],
   isSelectableTarget,
   isSelectedTarget,
   onAction,
@@ -120,6 +122,35 @@ export function CardView({
           </div>
         )}
       </div>
+
+      {attachments.length > 0 && (
+        <div className="attachments">
+          {attachments.map(mod => {
+            const modActions = actions.filter(a => a.sourceObjectId === mod.id);
+            return (
+              <div key={mod.id} className={`module-chip ${mod.isTapped ? 'module-tapped' : ''}`}>
+                <span className="module-name" title={mod.slot ?? ''}>
+                  ⚙ {mod.name}
+                </span>
+                {modActions.map(action => (
+                  <button
+                    key={`${action.sourceObjectId}-${action.abilityId || action.type}`}
+                    className={`action-btn module-btn ${action.available ? 'available' : 'unavailable'}`}
+                    disabled={!action.available}
+                    title={action.unavailableReason || action.label}
+                    onClick={e => {
+                      e.stopPropagation();
+                      if (action.available) onAction(action);
+                    }}
+                  >
+                    {action.label.split(': ')[1] || action.label}
+                  </button>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {cardActions.length > 0 && (
         <div className="card-actions">

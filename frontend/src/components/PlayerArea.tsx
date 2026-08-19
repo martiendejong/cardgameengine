@@ -26,8 +26,10 @@ export function PlayerArea({
   onSelectTarget,
 }: PlayerAreaProps) {
   const battlefieldCards = objects.filter(
-    o => o.controllerId === player.id && o.zoneId === 'battlefield' && !o.isDestroyed
+    o => o.controllerId === player.id && o.zoneId === 'battlefield' && !o.isDestroyed && !o.attachedToId
   );
+  const attachmentsFor = (cardId: string) =>
+    objects.filter(o => o.attachedToId === cardId && !o.isDestroyed);
   const discardedCards = objects.filter(
     o => o.controllerId === player.id && (o.zoneId === 'discard' || o.isDestroyed)
   );
@@ -70,6 +72,7 @@ export function PlayerArea({
                   <CardView
                     key={card.id}
                     card={card}
+                    attachments={attachmentsFor(card.id)}
                     actions={isBottom ? actions : []}
                     isSelectableTarget={selectableTargets.includes(card.id)}
                     isSelectedTarget={selectedTargets.includes(card.id)}

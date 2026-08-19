@@ -1125,3 +1125,40 @@
 .precon-hero { color: #58a6ff; }
 
 .stat.tokens { color: #ffd700; }
+
+/* ============================================================
+   Installed modules
+   ============================================================ */
+.attachments {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px dashed #30363d;
+}
+
+.module-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  background: rgba(88, 166, 255, 0.08);
+  border: 1px solid rgba(88, 166, 255, 0.25);
+  border-radius: 5px;
+  padding: 2px 6px;
+}
+
+.module-chip.module-tapped { opacity: 0.55; }
+
+.module-name {
+  font-size: 10px;
+  font-weight: 600;
+  color: #79b8ff;
+  white-space: nowrap;
+}
+
+.module-btn {
+  font-size: 9px;
+  padding: 1px 6px;
+}

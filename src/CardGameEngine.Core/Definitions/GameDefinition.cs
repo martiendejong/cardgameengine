@@ -111,10 +111,20 @@ public class CardDefinition
     public List<AbilityDefinition> Abilities { get; set; } = new();
     public PlayTimingDefinition? PlayTiming { get; set; }
     public string? ArtworkDescription { get; set; }
-    public int? PlayCost { get; set; } // gold cost to play from hand; null = not deck-eligible
+    public int? PlayCost { get; set; } // cost to play from hand; null = not deck-eligible
+    public string PlayCostResource { get; set; } = "gold"; // which player resource pays the play cost
     public AbilityDefinition? OnPlay { get; set; } // resolved when the card is played from hand
     public List<TriggerDefinition> Triggers { get; set; } = new();
     public int? BonusAttackVsBuildings { get; set; } // extra attack when the target is a building
+    public string? Slot { get; set; } // module slot ("arm", "core", ...); modules attach to your hero
+    public List<AttachModifierDefinition> AttachModifiers { get; set; } = new(); // stat bonuses while attached
+    public Dictionary<string, int>? EquipmentSlots { get; set; } // on heroes: slot id -> capacity
+}
+
+public class AttachModifierDefinition
+{
+    public string PropertyId { get; set; } = "";
+    public int Amount { get; set; }
 }
 
 public class TriggerDefinition

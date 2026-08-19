@@ -11,7 +11,8 @@
     { "id": "headquarters", "name": "Headquarters", "parentType": "building" },
     { "id": "spell", "name": "Spell", "parentType": "card" },
     { "id": "item", "name": "Item", "parentType": "spell" },
-    { "id": "treasure", "name": "Treasure", "parentType": "building", "resources": ["loot"] }
+    { "id": "treasure", "name": "Treasure", "parentType": "building", "resources": ["loot"] },
+    { "id": "module", "name": "Module", "parentType": "card" }
   ],
   "properties": [
     { "id": "attack", "name": "Attack", "type": "int", "defaultValue": 0, "minValue": 0 },
@@ -21,6 +22,7 @@
   ],
   "resources": [
     { "id": "gold", "name": "Gold", "scope": "player", "defaultValue": 0 },
+    { "id": "energy", "name": "Energy", "scope": "player", "defaultValue": 0 },
     { "id": "ap", "name": "Action Points", "scope": "entity", "defaultValue": 0 },
     { "id": "loot", "name": "Loot Tokens", "scope": "entity", "defaultValue": 0 }
   ],
@@ -473,6 +475,200 @@
         "name": "Steal up to 2 gold",
         "effects": [{ "type": "steal_resource", "resourceId": "gold", "amount": 2 }]
       }
+    },
+    {
+      "id": "landing-pad",
+      "name": "Landing Pad",
+      "objectType": "headquarters",
+      "properties": { "currentHp": 10, "maxHp": 10, "armor": 2 },
+      "artworkDescription": "A scorched launch platform humming with power conduits",
+      "abilities": [
+        {
+          "id": "recharge",
+          "name": "Recharge",
+          "costs": [{ "type": "tap" }],
+          "conditions": [],
+          "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "energy", "amount": 2 }]
+        },
+        {
+          "id": "repair-bay",
+          "name": "Repair Bay",
+          "costs": [
+            { "type": "resource", "scope": "player", "resourceId": "energy", "amount": 2 },
+            { "type": "tap" }
+          ],
+          "conditions": [],
+          "choice": { "type": "entity", "controller": "self", "objectType": "hero", "min": 1, "max": 1 },
+          "effects": [{ "type": "heal", "scope": "target", "amount": 3 }]
+        },
+        {
+          "id": "emergency-reconstruction",
+          "name": "Emergency Reconstruction",
+          "costs": [
+            { "type": "resource", "scope": "player", "resourceId": "energy", "amount": 6 },
+            { "type": "tap" }
+          ],
+          "conditions": [{ "type": "own_hero_destroyed" }],
+          "effects": [{ "type": "revive_hero" }]
+        }
+      ]
+    },
+    {
+      "id": "ax-01",
+      "name": "AX-01",
+      "objectType": "hero",
+      "properties": { "attack": 5, "currentHp": 10, "maxHp": 10, "armor": 3 },
+      "resources": { "ap": 0 },
+      "equipmentSlots": { "arm": 2, "torso": 1, "head": 1, "core": 1, "legs": 1, "utility": 2 },
+      "artworkDescription": "A towering war robot, scarred plating over a glowing core",
+      "abilities": [
+        {
+          "id": "overdrive",
+          "name": "Overdrive",
+          "costs": [{ "type": "resource", "scope": "self", "resourceId": "ap", "amount": 3 }],
+          "conditions": [],
+          "effects": [{ "type": "buff_target_until_end_of_turn", "scope": "self", "propertyId": "attack", "amount": 2 }]
+        }
+      ]
+    },
+    {
+      "id": "plasma-cannon",
+      "name": "Plasma Cannon",
+      "objectType": "module",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "slot": "arm",
+      "attachModifiers": [{ "propertyId": "attack", "amount": 3 }],
+      "artworkDescription": "An arm-mounted cannon dripping with superheated plasma",
+      "abilities": [
+        {
+          "id": "overcharge-shot",
+          "name": "Overcharge",
+          "costs": [{ "type": "resource", "scope": "player", "resourceId": "energy", "amount": 2 }],
+          "conditions": [],
+          "choice": { "type": "entity", "controller": "self", "objectType": "hero", "min": 1, "max": 1 },
+          "effects": [{ "type": "buff_target_until_end_of_turn", "scope": "target", "propertyId": "attack", "amount": 2 }]
+        }
+      ]
+    },
+    {
+      "id": "missile-launcher",
+      "name": "Missile Launcher",
+      "objectType": "module",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "slot": "arm",
+      "artworkDescription": "A shoulder-fed rack of guided missiles",
+      "abilities": [
+        {
+          "id": "launch-missile",
+          "name": "Launch Missile",
+          "costs": [
+            { "type": "resource", "scope": "player", "resourceId": "energy", "amount": 3 },
+            { "type": "tap" }
+          ],
+          "conditions": [],
+          "choice": { "type": "entity", "controller": "opponent", "min": 1, "max": 1 },
+          "effects": [{ "type": "damage", "scope": "target", "amount": 4 }]
+        }
+      ]
+    },
+    {
+      "id": "reinforced-plating",
+      "name": "Reinforced Plating",
+      "objectType": "module",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "slot": "torso",
+      "attachModifiers": [{ "propertyId": "armor", "amount": 2 }],
+      "artworkDescription": "Layered composite armor bolted over the chassis"
+    },
+    {
+      "id": "targeting-computer",
+      "name": "Targeting Computer",
+      "objectType": "module",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "slot": "head",
+      "attachModifiers": [{ "propertyId": "attack", "amount": 1 }],
+      "artworkDescription": "A sensor array of whirring lenses and rangefinders"
+    },
+    {
+      "id": "fusion-reactor",
+      "name": "Fusion Reactor",
+      "objectType": "module",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "slot": "core",
+      "artworkDescription": "A miniature star caged in magnetic containment",
+      "abilities": [
+        {
+          "id": "generate",
+          "name": "Generate",
+          "costs": [{ "type": "tap" }],
+          "conditions": [],
+          "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "energy", "amount": 2 }]
+        }
+      ]
+    },
+    {
+      "id": "jump-jets",
+      "name": "Jump Jets",
+      "objectType": "module",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "slot": "legs",
+      "attachModifiers": [{ "propertyId": "armor", "amount": 1 }],
+      "artworkDescription": "Thrusters that let a war machine strike and reposition"
+    },
+    {
+      "id": "repair-nanobots",
+      "name": "Repair Nanobots",
+      "objectType": "module",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "slot": "utility",
+      "artworkDescription": "A swarm of microscopic welders crawling across the hull",
+      "abilities": [
+        {
+          "id": "nanorepair",
+          "name": "Nanorepair",
+          "costs": [
+            { "type": "resource", "scope": "player", "resourceId": "energy", "amount": 1 },
+            { "type": "tap" }
+          ],
+          "conditions": [],
+          "choice": { "type": "entity", "controller": "self", "objectType": "hero", "min": 1, "max": 1 },
+          "effects": [{ "type": "heal", "scope": "target", "amount": 2 }]
+        }
+      ]
+    },
+    {
+      "id": "energy-cell",
+      "name": "Energy Cell",
+      "objectType": "spell",
+      "playCost": 0,
+      "playCostResource": "energy",
+      "artworkDescription": "A glowing canister of stored charge",
+      "onPlay": {
+        "id": "cell-gain",
+        "name": "Gain 3 energy",
+        "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "energy", "amount": 3 }]
+      }
+    },
+    {
+      "id": "emergency-repair",
+      "name": "Emergency Repair",
+      "objectType": "spell",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "artworkDescription": "Sparks fly as field engineers weld a wound shut",
+      "onPlay": {
+        "id": "emergency-heal",
+        "name": "Heal your hero 4 HP",
+        "choice": { "type": "entity", "controller": "self", "objectType": "hero", "min": 1, "max": 1 },
+        "effects": [{ "type": "heal", "scope": "target", "amount": 4 }]
+      }
     }
   ],
   "decks": [
@@ -513,6 +709,24 @@
         "bag-of-gold": 2,
         "battle-axe": 1,
         "shield": 1
+      }
+    },
+    {
+      "id": "machine",
+      "name": "AX-01 War Machine",
+      "description": "You brought an army; I brought one machine. No units, no gold — just energy, modules, and one increasingly dangerous robot backed by its Landing Pad.",
+      "hq": "landing-pad",
+      "hero": "ax-01",
+      "cards": {
+        "plasma-cannon": 2,
+        "missile-launcher": 2,
+        "reinforced-plating": 2,
+        "targeting-computer": 2,
+        "fusion-reactor": 2,
+        "jump-jets": 2,
+        "repair-nanobots": 2,
+        "energy-cell": 2,
+        "emergency-repair": 2
       }
     }
   ],

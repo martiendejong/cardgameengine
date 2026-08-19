@@ -59,6 +59,8 @@ public class ObjectInstance
     public string Line { get; set; } = ""; // battlefield line ("front"/"back") when lines are enabled
     public bool HasMovedThisTurn { get; set; }
     public bool HasSummoningSickness { get; set; } // cannot move or attack the turn it arrived
+    public string? AttachedToId { get; set; } // host object when this is an installed module
+    public string? Slot { get; set; }         // which slot this module occupies on its host
 }
 
 public class ResolutionStack
@@ -91,7 +93,8 @@ public class ModifierInstance
     public string TargetObjectId { get; set; } = "";
     public string PropertyId { get; set; } = "";
     public int Amount { get; set; }
-    public string ExpiresOn { get; set; } = "endOfTurn"; // event type
+    public string ExpiresOn { get; set; } = "endOfTurn"; // event type; "never" for permanent
+    public string? SourceObjectId { get; set; } // removed when this object leaves the battlefield
 }
 
 public class PendingChoice
