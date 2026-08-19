@@ -111,6 +111,14 @@ public class CombatService
 
         int damageToDefender = Math.Max(0, attackerAttack - defenderArmor);
 
+        // Siege chipping: buildings cannot dodge — any real attack deals at least 1.
+        // Keeps armor meaningful in unit combat while guaranteeing sieges eventually end.
+        if (defenderIsBuilding && attackerAttack > 0 && damageToDefender == 0)
+        {
+            damageToDefender = 1;
+            game.Log.Add($"{attacker.Name} chips away at {defender.Name}'s defenses.");
+        }
+
         bool defenderRetaliates = defender.Tags.Contains("retaliate")
             && _s.Targeting.GetAttackTargets(game, defender).Contains(attacker.Id);
         int damageToAttacker = defenderRetaliates ? Math.Max(0, defenderAttack - attackerArmor) : 0;

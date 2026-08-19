@@ -78,7 +78,7 @@ public class GameMutator
     {
         if (amount <= 0) return;
         var currentHp = obj.Properties.GetValueOrDefault("currentHp");
-        var maxHp = obj.Properties.GetValueOrDefault("maxHp");
+        var maxHp = GameQueries.GetEffectiveProperty(game, obj, "maxHp"); // mutations can raise it
         var newHp = Math.Min(currentHp + amount, maxHp);
         obj.Properties["currentHp"] = newHp;
         game.Log.Add($"{obj.Name} heals {amount} HP. (HP: {currentHp} → {newHp}/{maxHp})");

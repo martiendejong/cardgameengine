@@ -246,6 +246,47 @@ public static class DefaultHandlers
             s.Bus.Publish(ctx.Game, new GameEvent { Type = GameEventTypes.ObjectTransformed, Target = ctx.Target, Player = ctx.Player });
         });
 
+        // Raider looting: drain whatever the enemy has (gold, training, or their HQ
+        // stockpile - mana/corpses/biomass/reagents/energy) and convert it to gold.
+        // Never fully dependent on the enemy holding gold; scraps guarantee 1.
+        e.Register("drain_resource", ctx =>
+        {
+            var opponent = GameQueries.GetOpponent(ctx.Game, ctx.Player);
+            if (opponent == null) return;
+            var want = ctx.Effect.Amount ?? 1;
+            var drained = 0;
+
+            // player-scoped valuables first
+            foreach (var resId in new[] { "gold", "training" })
+            {
+                if (drained >= want) break;
+                var have = opponent.Resources.GetValueOrDefault(resId);
+                var take = Math.Min(want - drained, have);
+                if (take <= 0) continue;
+                opponent.Resources[resId] = have - take;
+                drained += take;
+                ctx.Game.Log.Add($"{ctx.Player.Name} drains {take} {resId} from {opponent.Name}!");
+            }
+
+            // then their HQ stockpile
+            var bank = GameQueries.FindResourceBank(ctx.Game, opponent.Id);
+            if (bank != null)
+            {
+                foreach (var (resId, have) in bank.Resources.ToList())
+                {
+                    if (drained >= want) break;
+                    var take = Math.Min(want - drained, have);
+                    if (take <= 0) continue;
+                    bank.Resources[resId] = have - take;
+                    drained += take;
+                    ctx.Game.Log.Add($"{ctx.Player.Name} plunders {take} {resId} from {bank.Name}!");
+                }
+            }
+
+            var gained = Math.Max(1, drained); // scraps: raiding always pays something
+            m.GainResource(ctx.Game, ctx.Player, "gold", gained);
+        });
+
         e.Register("steal_resource", ctx =>
         {
             var opponent = GameQueries.GetOpponent(ctx.Game, ctx.Player);
@@ -267,17 +308,35 @@ public static class DefaultHandlers
             if (ctx.Source == null) return;
             var opponent = GameQueries.GetOpponent(ctx.Game, ctx.Player);
             if (opponent == null) return;
-            var resId = ctx.Effect.ResourceId ?? "gold";
             var storeId = ctx.Effect.Tag ?? "loot";
-            var taken = Math.Min(ctx.Effect.Amount ?? 0, opponent.Resources.GetValueOrDefault(resId));
+            var want = ctx.Effect.Amount ?? 0;
+            var taken = 0;
+
+            // Gold first, then whatever their HQ has stockpiled
+            var gold = opponent.Resources.GetValueOrDefault("gold");
+            var g = Math.Min(want, gold);
+            if (g > 0) { opponent.Resources["gold"] = gold - g; taken += g; }
+
+            var bank = GameQueries.FindResourceBank(ctx.Game, opponent.Id);
+            if (bank != null && taken < want)
+            {
+                foreach (var (resId, have) in bank.Resources.ToList())
+                {
+                    if (taken >= want) break;
+                    var t = Math.Min(want - taken, have);
+                    if (t <= 0) continue;
+                    bank.Resources[resId] = have - t;
+                    taken += t;
+                }
+            }
+
             if (taken <= 0)
             {
                 ctx.Game.Log.Add($"{ctx.Source.Name} finds nothing to plunder from {opponent.Name}.");
                 return;
             }
-            opponent.Resources[resId] = opponent.Resources.GetValueOrDefault(resId) - taken;
             ctx.Source.Resources[storeId] = ctx.Source.Resources.GetValueOrDefault(storeId) + taken;
-            ctx.Game.Log.Add($"{ctx.Source.Name} plunders {taken} {resId} from {opponent.Name}! ({taken} tokens stored)");
+            ctx.Game.Log.Add($"{ctx.Source.Name} plunders {taken} resources from {opponent.Name}! ({taken} tokens stored)");
         });
 
         e.Register("direct_damage", ctx =>

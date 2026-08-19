@@ -197,6 +197,7 @@ public class ChoiceDefinition
     public string? RequireResourceId { get; set; } // target must hold at least RequireResourceAmount of this
     public int RequireResourceAmount { get; set; }
     public bool ExcludeSelf { get; set; } // target may not be the ability's source (sacrifice another unit)
+    public bool AttachmentsOnly { get; set; } // target equipment/modules installed on cards (Dissolve)
 }
 
 public class EffectDefinition

@@ -12,7 +12,8 @@ public class TargetingService
             .Where(o =>
             {
                 if (o.IsDestroyed || o.ZoneId != "battlefield") return false;
-                if (o.AttachedToId != null) return false;
+                if (choice.AttachmentsOnly ? o.AttachedToId == null : o.AttachedToId != null) return false;
+                if (choice.AttachmentsOnly && o.FaceDown) return false; // hidden spies stay hidden
                 if (choice.ExcludeSelf && o.Id == sourceObjectId) return false;
                 if (choice.Controller == "self" && o.ControllerId != playerId) return false;
                 if (choice.Controller == "opponent" && o.ControllerId == playerId) return false;
