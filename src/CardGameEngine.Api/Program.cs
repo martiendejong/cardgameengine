@@ -14,6 +14,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<GameDefinitionService>();
 builder.Services.AddSingleton<MatchService>();
 builder.Services.AddSingleton<RuleEngine>();
+builder.Services.AddSingleton<StateProjector>();
+builder.Services.AddSingleton<MatchConnectionRegistry>();
 
 // CORS - allow frontend dev server
 builder.Services.AddCors(options =>

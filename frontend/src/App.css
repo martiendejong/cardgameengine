@@ -1162,3 +1162,70 @@
   font-size: 9px;
   padding: 1px 6px;
 }
+
+/* ============================================================
+   Mode select + invite link
+   ============================================================ */
+.mode-select {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.mode-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #8b949e;
+  cursor: pointer;
+}
+
+.mode-option.mode-active {
+  border-color: #58a6ff;
+  color: #e0e0e0;
+}
+
+.mode-option input { accent-color: #58a6ff; }
+
+.invite-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(88, 166, 255, 0.08);
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  border-radius: 8px;
+  padding: 8px 14px;
+  margin: 6px 12px;
+  font-size: 13px;
+  color: #8b949e;
+}
+
+.invite-url {
+  flex: 1;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  color: #79b8ff;
+  padding: 5px 8px;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+.copy-invite-btn {
+  background: #1f6feb;
+  color: #fff;
+  border-radius: 6px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.copy-invite-btn:hover { background: #388bfd; }
+
+.seat-label { color: #79b8ff; }

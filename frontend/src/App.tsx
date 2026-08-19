@@ -1,29 +1,44 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LobbyPage } from './pages/LobbyPage';
 import { GamePage } from './pages/GamePage';
 import './App.css';
 
-interface MatchInfo {
+interface Session {
   matchId: string;
-  players: { id: string; name: string }[];
+  seat: string; // player id for a fixed seat, '' for hotseat (omniscient)
 }
 
 function App() {
-  const [match, setMatch] = useState<MatchInfo | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
 
-  function handleMatchCreated(matchId: string, players: { id: string; name: string }[]) {
-    setMatch({ matchId, players });
+  // Allow a second browser window to join via ?match=...&player=...
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const match = params.get('match');
+    const player = params.get('player');
+    if (match) setSession({ matchId: match, seat: player ?? '' });
+  }, []);
+
+  function handleMatchCreated(matchId: string, seat: string) {
+    if (seat) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('match', matchId);
+      url.searchParams.set('player', seat);
+      window.history.replaceState(null, '', url.toString());
+    }
+    setSession({ matchId, seat });
   }
 
   function handleLeave() {
-    setMatch(null);
+    window.history.replaceState(null, '', window.location.pathname);
+    setSession(null);
   }
 
-  if (match) {
+  if (session) {
     return (
       <GamePage
-        matchId={match.matchId}
-        players={match.players}
+        matchId={session.matchId}
+        seat={session.seat}
         onLeave={handleLeave}
       />
     );

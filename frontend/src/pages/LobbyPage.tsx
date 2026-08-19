@@ -7,7 +7,7 @@ import {
 } from '../types/game';
 
 interface LobbyPageProps {
-  onMatchCreated: (matchId: string, players: { id: string; name: string }[]) => void;
+  onMatchCreated: (matchId: string, seat: string) => void;
 }
 
 interface PlayerDeckState {
@@ -49,6 +49,7 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
   ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [mode, setMode] = useState<'hotseat' | 'seats'>('hotseat');
 
   useEffect(() => {
     fetch('/api/definitions')
@@ -167,7 +168,7 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
       }
 
       const data: CreateMatchResponse = await res.json();
-      onMatchCreated(data.matchId, data.players);
+      onMatchCreated(data.matchId, mode === 'seats' ? 'p1' : '');
     } catch (err: any) {
       setError(err.message ?? 'Unknown error');
     } finally {
@@ -312,8 +313,25 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
           })}
         </div>
 
-        <div className="lobby-note">
-          <strong>2-Player Local:</strong> Both players share the same screen. Take turns on the same device.
+        <div className="mode-select">
+          <label className={`mode-option ${mode === 'hotseat' ? 'mode-active' : ''}`}>
+            <input
+              type="radio"
+              name="mode"
+              checked={mode === 'hotseat'}
+              onChange={() => setMode('hotseat')}
+            />
+            <strong>Hotseat</strong> — both players share this screen and take turns
+          </label>
+          <label className={`mode-option ${mode === 'seats' ? 'mode-active' : ''}`}>
+            <input
+              type="radio"
+              name="mode"
+              checked={mode === 'seats'}
+              onChange={() => setMode('seats')}
+            />
+            <strong>Two browsers</strong> — you play as Player 1; share an invite link for Player 2. Hands stay hidden.
+          </label>
         </div>
 
         <button

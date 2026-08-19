@@ -4,7 +4,7 @@ import { GameStateDto, ActionRequest } from '../types/game';
 
 interface UseGameHubOptions {
   matchId: string;
-  playerId: string;
+  playerId: string; // seat to join as ('' = omniscient hotseat)
   onStateUpdate: (state: GameStateDto) => void;
   onError: (message: string) => void;
 }
@@ -32,6 +32,10 @@ export function useGameHub({ matchId, playerId, onStateUpdate, onError }: UseGam
       onError(message);
     });
 
+    connection.onreconnected(() => {
+      connection.invoke('JoinMatch', matchId, playerId).catch(() => {});
+    });
+
     connection.start()
       .then(() => {
         if (cancelled) return;
@@ -39,7 +43,7 @@ export function useGameHub({ matchId, playerId, onStateUpdate, onError }: UseGam
         return connection.invoke('JoinMatch', matchId, playerId);
       })
       .catch(err => {
-        if (cancelled) return; // suppress error when component unmounts mid-connect
+        if (cancelled) return;
         console.error('SignalR connection failed:', err);
         onError('Failed to connect to game server');
       });
@@ -52,20 +56,20 @@ export function useGameHub({ matchId, playerId, onStateUpdate, onError }: UseGam
     };
   }, [matchId, playerId]);
 
-  const sendAction = useCallback(async (action: ActionRequest) => {
+  const sendAction = useCallback(async (asPlayerId: string, action: ActionRequest) => {
     if (!connectionRef.current) return;
-    await connectionRef.current.invoke('SendAction', matchId, playerId, action);
-  }, [matchId, playerId]);
+    await connectionRef.current.invoke('SendAction', matchId, asPlayerId, action);
+  }, [matchId]);
 
-  const resolveChoice = useCallback(async (choiceId: string, selectedIds: string[]) => {
+  const resolveChoice = useCallback(async (asPlayerId: string, choiceId: string, selectedIds: string[]) => {
     if (!connectionRef.current) return;
-    await connectionRef.current.invoke('ResolveChoice', matchId, playerId, choiceId, selectedIds);
-  }, [matchId, playerId]);
+    await connectionRef.current.invoke('ResolveChoice', matchId, asPlayerId, choiceId, selectedIds);
+  }, [matchId]);
 
-  const endPhase = useCallback(async () => {
+  const endPhase = useCallback(async (asPlayerId: string) => {
     if (!connectionRef.current) return;
-    await connectionRef.current.invoke('EndPhase', matchId, playerId);
-  }, [matchId, playerId]);
+    await connectionRef.current.invoke('EndPhase', matchId, asPlayerId);
+  }, [matchId]);
 
   return { connected, sendAction, resolveChoice, endPhase };
 }

@@ -1,5 +1,4 @@
 using CardGameEngine.Api.Services;
-using CardGameEngine.Core.Dtos;
 using CardGameEngine.Core.Runtime;
 using CardGameEngine.Engine;
 using Microsoft.AspNetCore.SignalR;
@@ -10,15 +9,21 @@ public class GameHub : Hub
 {
     private readonly MatchService _matchService;
     private readonly RuleEngine _ruleEngine;
+    private readonly StateProjector _projector;
+    private readonly MatchConnectionRegistry _registry;
     private readonly ILogger<GameHub> _logger;
 
-    public GameHub(MatchService matchService, RuleEngine ruleEngine, ILogger<GameHub> logger)
+    public GameHub(MatchService matchService, RuleEngine ruleEngine, StateProjector projector,
+        MatchConnectionRegistry registry, ILogger<GameHub> logger)
     {
         _matchService = matchService;
         _ruleEngine = ruleEngine;
+        _projector = projector;
+        _registry = registry;
         _logger = logger;
     }
 
+    /// <summary>Join a match in a seat. playerId = "" joins as omniscient hotseat/spectator.</summary>
     public async Task JoinMatch(string matchId, string playerId)
     {
         var game = _matchService.GetMatch(matchId);
@@ -28,12 +33,11 @@ public class GameHub : Hub
             return;
         }
 
-        await Groups.AddToGroupAsync(Context.ConnectionId, matchId);
-        _logger.LogInformation("Player {PlayerId} joined match {MatchId}", playerId, matchId);
+        _registry.Add(Context.ConnectionId, matchId, playerId);
+        _logger.LogInformation("Connection {Conn} joined match {MatchId} as '{PlayerId}'",
+            Context.ConnectionId, matchId, playerId);
 
-        // Send current state to the joining player
-        var stateDto = BuildStateDto(game, playerId);
-        await Clients.Caller.SendAsync("GameStateUpdate", stateDto);
+        await Clients.Caller.SendAsync("GameStateUpdate", _projector.Build(game, playerId));
     }
 
     public async Task SendAction(string matchId, string playerId, ActionRequest action)
@@ -52,7 +56,7 @@ public class GameHub : Hub
             return;
         }
 
-        await BroadcastStateUpdate(matchId, game, playerId);
+        await BroadcastStateUpdate(matchId, game);
     }
 
     public async Task ResolveChoice(string matchId, string playerId, string choiceId, List<string> selectedIds)
@@ -71,7 +75,7 @@ public class GameHub : Hub
             return;
         }
 
-        await BroadcastStateUpdate(matchId, game, playerId);
+        await BroadcastStateUpdate(matchId, game);
     }
 
     public async Task EndPhase(string matchId, string playerId)
@@ -84,81 +88,22 @@ public class GameHub : Hub
         }
 
         _ruleEngine.EndPhase(game, playerId);
-        await BroadcastStateUpdate(matchId, game, playerId);
+        await BroadcastStateUpdate(matchId, game);
     }
 
-    private async Task BroadcastStateUpdate(string matchId, GameInstance game, string requestingPlayerId)
+    public override Task OnDisconnectedAsync(Exception? exception)
     {
-        // Send state to each player with their personalized available actions
-        foreach (var player in game.Players)
+        _registry.Remove(Context.ConnectionId);
+        return base.OnDisconnectedAsync(exception);
+    }
+
+    /// <summary>Each connection receives its own projection — hidden information stays server-side.</summary>
+    private async Task BroadcastStateUpdate(string matchId, GameInstance game)
+    {
+        foreach (var (connectionId, playerId) in _registry.GetForMatch(matchId))
         {
-            var stateDto = BuildStateDto(game, player.Id);
-            // We broadcast to the group; clients will filter by their playerId
-            // For simplicity, send full state to everyone (they share the same browser in 2-player local)
+            await Clients.Client(connectionId)
+                .SendAsync("GameStateUpdate", _projector.Build(game, playerId));
         }
-
-        // Send combined state (with actions for the active player)
-        var dto = BuildStateDto(game, game.ActivePlayerId);
-        await Clients.Group(matchId).SendAsync("GameStateUpdate", dto);
-    }
-
-    private GameStateDto BuildStateDto(GameInstance game, string forPlayerId)
-    {
-        var winner = game.Players.FirstOrDefault(p => p.IsWinner);
-
-        var dto = new GameStateDto
-        {
-            MatchId = game.Id,
-            CurrentPhaseId = game.CurrentPhaseId,
-            ActivePlayerId = game.ActivePlayerId,
-            State = game.State,
-            TurnNumber = game.TurnNumber,
-            Winner = winner?.Name,
-            Log = game.Log.TakeLast(50).ToList(),
-            Players = game.Players.Select(p => new PlayerStateDto
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Resources = new Dictionary<string, int>(p.Resources),
-                IsWinner = p.IsWinner,
-                IsLoser = p.IsLoser
-            }).ToList(),
-            Objects = game.Objects.Select(o => new ObjectStateDto
-            {
-                Id = o.Id,
-                DefinitionId = o.DefinitionId,
-                Name = o.Name,
-                ObjectType = o.ObjectType,
-                OwnerId = o.OwnerId,
-                ControllerId = o.ControllerId,
-                ZoneId = o.ZoneId,
-                Properties = BuildEffectiveProperties(game, o),
-                Resources = new Dictionary<string, int>(o.Resources),
-                Tags = new List<string>(o.Tags),
-                IsTapped = o.IsTapped,
-                IsDestroyed = o.IsDestroyed,
-                Line = o.Line,
-                HasMovedThisTurn = o.HasMovedThisTurn,
-                HasSummoningSickness = o.HasSummoningSickness,
-                AttachedToId = o.AttachedToId,
-                Slot = o.Slot
-            }).ToList(),
-            AvailableActions = game.ActivePlayerId == forPlayerId
-                ? _ruleEngine.GetAvailableActions(game, forPlayerId)
-                : new List<AvailableAction>(),
-            PendingChoice = game.PendingChoices.FirstOrDefault(c => c.PlayerId == forPlayerId)
-        };
-
-        return dto;
-    }
-
-    private Dictionary<string, int> BuildEffectiveProperties(GameInstance game, ObjectInstance obj)
-    {
-        var result = new Dictionary<string, int>(obj.Properties);
-        foreach (var propId in result.Keys.ToList())
-        {
-            result[propId] = _ruleEngine.GetEffectiveProperty(game, obj, propId);
-        }
-        return result;
     }
 }

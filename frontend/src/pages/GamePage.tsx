@@ -1,26 +1,26 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { GameStateDto, AvailableAction, GameState } from '../types/game';
 import { useGameHub } from '../hooks/useGameHub';
 import { GameBoard } from '../components/GameBoard';
 
 interface GamePageProps {
   matchId: string;
-  players: { id: string; name: string }[];
+  seat: string; // fixed player id, or '' for hotseat (perspective follows the active player)
   onLeave: () => void;
 }
 
-export function GamePage({ matchId, players, onLeave }: GamePageProps) {
+export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   const [gameState, setGameState] = useState<GameStateDto | null>(null);
   const [error, setError] = useState('');
-  // For 2-player local, the "viewing player" is always the active player
-  // We show both players' areas with the current active player at bottom
-  const [myPlayerId, setMyPlayerId] = useState(players[0]?.id ?? '');
+  const [myPlayerId, setMyPlayerId] = useState(seat);
+  const [copied, setCopied] = useState(false);
+
+  const isHotseat = seat === '';
 
   const handleStateUpdate = useCallback((state: GameStateDto) => {
     setGameState(state);
-    // In 2-player local mode, switch perspective to the active player
-    setMyPlayerId(state.activePlayerId);
-  }, []);
+    if (isHotseat) setMyPlayerId(state.activePlayerId);
+  }, [isHotseat]);
 
   const handleError = useCallback((msg: string) => {
     setError(msg);
@@ -29,19 +29,21 @@ export function GamePage({ matchId, players, onLeave }: GamePageProps) {
 
   const { connected, sendAction, resolveChoice, endPhase } = useGameHub({
     matchId,
-    playerId: myPlayerId,
+    playerId: seat,
     onStateUpdate: handleStateUpdate,
     onError: handleError,
   });
 
+  // In hotseat mode we act as whoever is active; in seat mode always as our seat
+  const actAs = isHotseat ? myPlayerId : seat;
+
   async function handleAction(action: AvailableAction, targetIds?: string[]) {
     try {
       if (action.type === 'endPhase') {
-        await endPhase();
+        await endPhase(actAs);
         return;
       }
-
-      await sendAction({
+      await sendAction(actAs, {
         type: action.type,
         sourceObjectId: action.sourceObjectId,
         abilityId: action.abilityId,
@@ -54,7 +56,7 @@ export function GamePage({ matchId, players, onLeave }: GamePageProps) {
 
   async function handleEndPhase() {
     try {
-      await endPhase();
+      await endPhase(actAs);
     } catch (err: any) {
       handleError(err.message ?? 'Failed to end phase');
     }
@@ -62,9 +64,31 @@ export function GamePage({ matchId, players, onLeave }: GamePageProps) {
 
   async function handleResolveChoice(choiceId: string, selectedIds: string[]) {
     try {
-      await resolveChoice(choiceId, selectedIds);
+      await resolveChoice(actAs, choiceId, selectedIds);
     } catch (err: any) {
       handleError(err.message ?? 'Failed to resolve choice');
+    }
+  }
+
+  function opponentInviteUrl(): string | null {
+    if (isHotseat || !gameState) return null;
+    const opponent = gameState.players.find(p => p.id !== seat);
+    if (!opponent) return null;
+    const url = new URL(window.location.origin + window.location.pathname);
+    url.searchParams.set('match', matchId);
+    url.searchParams.set('player', opponent.id);
+    return url.toString();
+  }
+
+  async function copyInvite() {
+    const url = opponentInviteUrl();
+    if (!url) return;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // clipboard unavailable; the input below is selectable
     }
   }
 
@@ -85,11 +109,17 @@ export function GamePage({ matchId, players, onLeave }: GamePageProps) {
   }
 
   const activePlayer = gameState.players.find(p => p.id === gameState.activePlayerId);
+  const mySeatPlayer = gameState.players.find(p => p.id === actAs);
+  const inviteUrl = opponentInviteUrl();
+  const opponentJoined = gameState.players.some(p => p.id !== seat);
 
   return (
     <div className="game-page">
       <div className="game-header">
-        <span className="match-id">Match: {matchId}</span>
+        <span className="match-id">
+          Match: {matchId}
+          {!isHotseat && mySeatPlayer && <span className="seat-label"> — playing as {mySeatPlayer.name}</span>}
+        </span>
         <span className="active-turn-label">
           {gameState.state === GameState.GameEnded
             ? `Game Over - ${gameState.winner} wins!`
@@ -98,11 +128,21 @@ export function GamePage({ matchId, players, onLeave }: GamePageProps) {
         <button className="leave-btn" onClick={onLeave}>Leave</button>
       </div>
 
+      {inviteUrl && opponentJoined && gameState.turnNumber <= 1 && (
+        <div className="invite-banner">
+          <span>Opponent link:</span>
+          <input className="invite-url" readOnly value={inviteUrl} onFocus={e => e.target.select()} />
+          <button className="copy-invite-btn" onClick={copyInvite}>
+            {copied ? 'Copied!' : 'Copy'}
+          </button>
+        </div>
+      )}
+
       {error && <div className="error-toast">{error}</div>}
 
       <GameBoard
         gameState={gameState}
-        myPlayerId={myPlayerId}
+        myPlayerId={actAs}
         onAction={handleAction}
         onEndPhase={handleEndPhase}
         onResolveChoice={handleResolveChoice}
