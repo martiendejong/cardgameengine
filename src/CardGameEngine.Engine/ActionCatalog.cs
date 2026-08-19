@@ -36,6 +36,37 @@ public class ActionCatalog
             var cardDef = GameQueries.GetCardDefinition(game, obj);
             if (cardDef == null) continue;
 
+            // Builder work action
+            if (obj.Tags.Contains("builder") && game.CurrentPhaseId == "main" && obj.AttachedToId == null)
+            {
+                var sites = game.Objects
+                    .Where(o => o.ControllerId == playerId && !o.IsDestroyed &&
+                        o.ZoneId == "battlefield" && o.UnderConstruction)
+                    .Select(o => o.Id)
+                    .ToList();
+                if (sites.Count > 0)
+                {
+                    string? buildReason = null;
+                    if (obj.IsTapped) buildReason = "Tapped";
+                    else if (obj.HasSummoningSickness) buildReason = "Cannot work the turn it arrived";
+                    else if (obj.HasMovedThisTurn) buildReason = "Already moved this turn";
+                    else if (obj.UnderConstruction) buildReason = "Still under construction";
+
+                    actions.Add(new AvailableAction
+                    {
+                        Type = "build",
+                        SourceObjectId = obj.Id,
+                        Label = $"{obj.Name}: Build",
+                        Available = buildReason == null,
+                        UnavailableReason = buildReason,
+                        ValidTargets = buildReason == null ? sites : null,
+                        RequiresChoice = buildReason == null
+                            ? new ChoiceDefinition { Type = "entity", Controller = "self", Min = 1, Max = 1, RequireUnderConstruction = true }
+                            : null
+                    });
+                }
+            }
+
             foreach (var ability in cardDef.Abilities)
             {
                 var canUse = _abilities.CanUseAbility(game, obj, ability, player, out string? reason);
@@ -125,29 +156,52 @@ public class ActionCatalog
             var cardDef = GameQueries.GetCardDefinition(game, obj);
             if (cardDef == null) continue;
 
-            var cost = cardDef.PlayCost ?? 0;
-            var costRes = cardDef.PlayCostResource;
+            var costs = GameQueries.EffectivePlayCosts(game, playerId, cardDef);
+            var attachSlots = CardPlayService.GetAttachSlots(cardDef);
+            bool needsEquipTarget = attachSlots.Count > 0 && cardDef.AttachTo == "chooseCharacter";
+
             string? reason = null;
             if (game.CurrentPhaseId != "main")
                 reason = "Can only play cards during Main Phase";
-            else if (player.Resources.GetValueOrDefault(costRes) < cost)
-                reason = $"Requires {cost} {costRes}";
-            else if (cardDef.Slot != null && GameQueries.FindLivingHero(game, playerId) == null)
+            else if (costs.Any(kv => player.Resources.GetValueOrDefault(kv.Key) < kv.Value))
+                reason = $"Requires {GameQueries.FormatCosts(costs)}";
+            else if (attachSlots.Count > 0 && cardDef.AttachTo != "chooseCharacter" &&
+                     GameQueries.FindLivingHero(game, playerId) == null)
                 reason = "No hero to install this module on";
             else if (cardDef.HousingCost is int housing && !GameQueries.HasHousingFor(game, playerId, housing))
                 reason = $"Not enough housing ({GameQueries.HousingUsed(game, playerId)}/{GameQueries.HousingCapacity(game, playerId)})";
+            else if (GameQueries.IsObjectTypeOrSubtype(game, obj.ObjectType, "hero") &&
+                     GameQueries.FindLivingHero(game, playerId) != null)
+                reason = "You already control a Hero";
 
-            var costLabel = costRes == "gold" ? $"{cost}g" : $"{cost} {costRes}";
             var playAction = new AvailableAction
             {
                 Type = "playCard",
                 SourceObjectId = obj.Id,
-                Label = $"{obj.Name}: Play ({costLabel})",
+                Label = $"{obj.Name}: Play ({GameQueries.FormatCosts(costs)})",
                 Available = reason == null,
                 UnavailableReason = reason
             };
 
-            if (playAction.Available && cardDef.OnPlay?.Choice != null)
+            if (playAction.Available && needsEquipTarget)
+            {
+                var equipChoice = new ChoiceDefinition
+                {
+                    Type = "entity", Controller = "self", ObjectType = "character", Min = 1, Max = 1
+                };
+                var bearers = _s.Targeting.GetValidTargets(game, equipChoice, playerId);
+                if (bearers.Count == 0)
+                {
+                    playAction.Available = false;
+                    playAction.UnavailableReason = "No character to equip";
+                }
+                else
+                {
+                    playAction.RequiresChoice = equipChoice;
+                    playAction.ValidTargets = bearers;
+                }
+            }
+            else if (playAction.Available && cardDef.OnPlay?.Choice != null)
             {
                 var validTargets = _s.Targeting.GetValidTargets(game, cardDef.OnPlay.Choice, playerId);
                 if (validTargets.Count == 0)

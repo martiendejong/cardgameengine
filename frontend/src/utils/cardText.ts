@@ -116,6 +116,9 @@ export const STAT_TIPS: Record<string, string> = {
 export const TAG_TIPS: Record<string, string> = {
   ranged: 'Ranged — always reaches the enemy front line, even from your back line. From your front line it reaches both enemy lines. From your back line it can bombard the enemy back line once their front is empty — but only while your own front line is held.',
   retaliate: 'Retaliate — when attacked by an enemy within its own reach, this card strikes back for its Attack (reduced by the attacker’s Armor). Cards without this keyword never strike back when defending.',
+  guard: 'Guard — while this card is untapped and within reach, enemies cannot attack your Hero or Headquarters. Kill or exhaust the guards first.',
+  archer: 'Archer — trained at the Archery Range; tapping a Range makes your next Archer this turn cost 1 less Training.',
+  knight: 'Knight — elite heavy cavalry. Expensive in gold and training, devastating on the field.',
   peasant: 'Peasant — the town workforce. Can be trained into a Soldier (Barracks) or Archer (Archery Range), and boosted by Call to Arms.',
   worker: 'Worker — can perform resource-producing work.',
   builder: 'Builder — can construct buildings.',

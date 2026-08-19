@@ -18,6 +18,8 @@ public class GameDefinition
     public DeckRulesDefinition? DeckRules { get; set; }
     public BattlefieldLinesDefinition? BattlefieldLines { get; set; }
     public List<PreconDeckDefinition> Decks { get; set; } = new();
+    // Equipment slots for characters that don't declare their own (mainHand/offHand/body/head)
+    public Dictionary<string, int>? DefaultEquipmentSlots { get; set; }
 }
 
 public class PreconDeckDefinition
@@ -114,6 +116,12 @@ public class CardDefinition
     public string? Icon { get; set; } // emoji shown in the card's art area
     public int? PlayCost { get; set; } // cost to play from hand; null = not deck-eligible
     public string PlayCostResource { get; set; } = "gold"; // which player resource pays the play cost
+    public Dictionary<string, int>? PlayCosts { get; set; } // multi-resource play cost (e.g. gold + training); overrides PlayCost
+    public string? DeckLimit { get; set; } // "unlimited" or a number as string; null = deck rule default
+    public int? ConstructionRequirement { get; set; } // buildings enter play under construction until this much progress
+    public List<string>? Slots { get; set; } // multi-slot equipment (e.g. two-handed: mainHand+offHand); overrides Slot
+    public string AttachTo { get; set; } = "hero"; // "hero" (auto-attach, robot modules) or "chooseCharacter" (equipment)
+    public List<string> AttachTags { get; set; } = new(); // tags granted to the bearer while attached (e.g. longbow -> ranged)
     public AbilityDefinition? OnPlay { get; set; } // resolved when the card is played from hand
     public List<TriggerDefinition> Triggers { get; set; } = new();
     public int? BonusAttackVsBuildings { get; set; } // extra attack when the target is a building
@@ -135,8 +143,10 @@ public class TriggerDefinition
     // "onKill"                    - this card destroyed an enemy in combat
     // "onDestroyBuilding"         - this card destroyed an enemy building in combat
     // "onFriendlyDamageHqOrHero"  - any friendly card damaged an enemy hero or HQ in combat
+    // "onTurnStart"               - at the start of its controller's turn
     public string Event { get; set; } = "";
     public bool OncePerTurn { get; set; }
+    public List<ConditionDefinition> Conditions { get; set; } = new();
     public List<EffectDefinition> Effects { get; set; } = new();
 }
 
@@ -176,6 +186,8 @@ public class ChoiceDefinition
     public string? Tag { get; set; }
     public int Min { get; set; } = 1;
     public int Max { get; set; } = 1;
+    public bool RequireUntapped { get; set; } // e.g. harvest needs an untapped Worker
+    public bool RequireUnderConstruction { get; set; } // e.g. builders target unfinished buildings
 }
 
 public class EffectDefinition

@@ -81,6 +81,16 @@ public class GameMutator
         // Bonuses granted by this object disappear with it
         game.ActiveModifiers.RemoveAll(m => m.SourceObjectId == obj.Id);
 
+        // An attachment dying takes its granted tags off the bearer
+        if (obj.AttachedToId != null)
+        {
+            var host = game.Objects.FirstOrDefault(o => o.Id == obj.AttachedToId);
+            var def = game.Definition.Cards.FirstOrDefault(c => c.Id == obj.DefinitionId);
+            if (host != null && def != null)
+                foreach (var tag in def.AttachTags)
+                    host.Tags.Remove(tag);
+        }
+
         // Modules go down with their host
         var attached = game.Objects.Where(o => o.AttachedToId == obj.Id && !o.IsDestroyed).ToList();
         foreach (var module in attached)

@@ -33,6 +33,19 @@ public class TurnService
             game.ActivePlayerId = nextPlayer.Id;
             game.TurnNumber++;
             game.FiredOncePerTurn.Clear();
+            game.ActiveCostModifiers.Clear(); // "this turn" discounts do not carry over
+
+            // Modifiers that last "until the owner's next turn" (e.g. Divine Shield) expire now
+            var expiring = game.ActiveModifiers
+                .Where(m => m.ExpiresOn == "ownerNextTurnStart" && m.OwnerPlayerId == nextPlayer.Id)
+                .ToList();
+            foreach (var mod in expiring)
+            {
+                game.ActiveModifiers.Remove(mod);
+                var target = game.Objects.FirstOrDefault(o => o.Id == mod.TargetObjectId);
+                if (target != null)
+                    game.Log.Add($"Buff on {target.Name} ({mod.PropertyId} +{mod.Amount}) expires.");
+            }
 
             var firstPhase = phases[0];
             game.CurrentPhaseId = firstPhase.Id;
@@ -131,6 +144,41 @@ public class TurnService
         var to = obj.Line == "front" ? "Front" : "Back";
         game.Log.Add($"{obj.Name} moves from the {from} Line to the {to} Line.");
         _s.Bus.Publish(game, new GameEvent { Type = GameEventTypes.ObjectMovedLine, Target = obj });
+
+        return (true, null);
+    }
+
+    /// <summary>Builder taps to add 1 construction progress to an unfinished building.</summary>
+    public (bool, string?) ExecuteBuild(GameInstance game, string playerId, ActionRequest action)
+    {
+        if (game.CurrentPhaseId != "main")
+            return (false, "Can only build during Main Phase");
+
+        var builder = game.Objects.FirstOrDefault(o => o.Id == action.SourceObjectId);
+        if (builder == null) return (false, "Builder not found");
+        if (builder.ControllerId != playerId) return (false, "Not your unit");
+        if (builder.ZoneId != "battlefield" || builder.IsDestroyed) return (false, "Builder is not on the battlefield");
+        if (!builder.Tags.Contains("builder")) return (false, "This unit is not a Builder");
+        if (builder.IsTapped) return (false, "Builder is tapped");
+        if (builder.HasSummoningSickness) return (false, "Cannot work the turn it arrived");
+        if (builder.HasMovedThisTurn) return (false, "Already moved this turn");
+
+        if (action.TargetIds.Count != 1) return (false, "Choose a building under construction");
+        var building = game.Objects.FirstOrDefault(o => o.Id == action.TargetIds[0]);
+        if (building == null || building.IsDestroyed || building.ZoneId != "battlefield" ||
+            building.ControllerId != playerId || !building.UnderConstruction)
+            return (false, "Invalid construction target");
+
+        _s.Mutator.Tap(game, builder);
+        game.Log.Add($"{builder.Name} works on {building.Name}.");
+        _s.Effects.Process(new EffectContext
+        {
+            Game = game,
+            Effect = new EffectDefinition { Type = "add_progress", Scope = "target", Amount = 1 },
+            Source = builder,
+            Target = building,
+            Player = game.Players.First(p => p.Id == playerId)
+        });
 
         return (true, null);
     }

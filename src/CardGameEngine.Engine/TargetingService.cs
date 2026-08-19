@@ -17,6 +17,8 @@ public class TargetingService
                 if (choice.Controller == "opponent" && o.ControllerId == playerId) return false;
                 if (choice.ObjectType != null && !GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, choice.ObjectType)) return false;
                 if (choice.Tag != null && !o.Tags.Contains(choice.Tag)) return false;
+                if (choice.RequireUntapped && o.IsTapped) return false;
+                if (choice.RequireUnderConstruction && !o.UnderConstruction) return false;
                 return true;
             })
             .Select(o => o.Id)
@@ -45,38 +47,57 @@ public class TargetingService
                 && o.AttachedToId == null)
             .ToList();
 
+        List<ObjectInstance> reachable;
+
         if (game.Definition.BattlefieldLines == null)
-            return enemies.Select(o => o.Id).ToList();
-
-        bool ranged = attacker.Tags.Contains("ranged");
-        var enemyFront = enemies.Where(o => o.Line == "front").ToList();
-        var enemyBack = enemies.Where(o => o.Line != "front").ToList();
-
-        if (attacker.Line == "front")
         {
-            if (ranged) return enemies.Select(o => o.Id).ToList();
-            return (enemyFront.Count > 0 ? enemyFront : enemyBack).Select(o => o.Id).ToList();
+            reachable = enemies;
+        }
+        else
+        {
+            bool ranged = attacker.Tags.Contains("ranged");
+            var enemyFront = enemies.Where(o => o.Line == "front").ToList();
+            var enemyBack = enemies.Where(o => o.Line != "front").ToList();
+
+            if (attacker.Line == "front")
+            {
+                reachable = ranged
+                    ? enemies
+                    : (enemyFront.Count > 0 ? enemyFront : enemyBack);
+            }
+            else
+            {
+                bool ownFrontEmpty = !game.Objects.Any(o =>
+                    o.ControllerId == attacker.ControllerId
+                    && !o.IsDestroyed
+                    && o.ZoneId == "battlefield"
+                    && o.AttachedToId == null
+                    && o.Line == "front");
+
+                if (ranged)
+                {
+                    // Always the enemy front; bombard their back only from behind a held front
+                    reachable = enemyFront.Count > 0
+                        ? enemyFront
+                        : (ownFrontEmpty ? new List<ObjectInstance>() : enemyBack);
+                }
+                else
+                {
+                    // Melee defensive stand while your own front is empty
+                    reachable = ownFrontEmpty ? enemyFront : new List<ObjectInstance>();
+                }
+            }
         }
 
-        // Back line
-        bool ownFrontEmpty = !game.Objects.Any(o =>
-            o.ControllerId == attacker.ControllerId
-            && !o.IsDestroyed
-            && o.ZoneId == "battlefield"
-            && o.AttachedToId == null
-            && o.Line == "front");
-
-        if (ranged)
+        // Guard: while an untapped Guard is in reach, the Hero and HQ cannot be attacked
+        bool guardInReach = reachable.Any(o => o.Tags.Contains("guard") && !o.IsTapped);
+        if (guardInReach)
         {
-            if (enemyFront.Count > 0)
-                return enemyFront.Select(o => o.Id).ToList();
-            // Enemy front is empty: bombard their back line, but only from behind a held front
-            return ownFrontEmpty ? new List<string>() : enemyBack.Select(o => o.Id).ToList();
+            reachable = reachable.Where(o =>
+                !GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, "hero") &&
+                !GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, "headquarters")).ToList();
         }
 
-        // Melee: defensive stand — strike the enemy front line while your own front is empty
-        if (ownFrontEmpty)
-            return enemyFront.Select(o => o.Id).ToList();
-        return new List<string>();
+        return reachable.Select(o => o.Id).ToList();
     }
 }

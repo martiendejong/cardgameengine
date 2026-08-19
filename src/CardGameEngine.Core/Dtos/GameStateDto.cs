@@ -54,4 +54,7 @@ public class ObjectStateDto
     public string? Icon { get; set; }
     public int? HousingCost { get; set; }
     public int? HousingProvided { get; set; }
+    public bool UnderConstruction { get; set; }
+    public int ConstructionProgress { get; set; }
+    public int? ConstructionRequirement { get; set; }
 }

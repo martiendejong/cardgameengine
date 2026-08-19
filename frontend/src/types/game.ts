@@ -41,6 +41,9 @@ export interface ObjectStateDto {
   icon?: string | null;
   housingCost?: number | null;
   housingProvided?: number | null;
+  underConstruction: boolean;
+  constructionProgress: number;
+  constructionRequirement?: number | null;
 }
 
 export interface ChoiceDefinition {
@@ -159,6 +162,11 @@ export interface CardDefinitionDto {
   icon?: string | null;
   playCost?: number | null;
   playCostResource?: string;
+  playCosts?: Record<string, number> | null;
+  deckLimit?: string | null;
+  constructionRequirement?: number | null;
+  slots?: string[] | null;
+  attachTags?: string[];
   properties: Record<string, number>;
   tags: string[];
   abilities: AbilityDto[];

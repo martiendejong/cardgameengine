@@ -69,6 +69,27 @@
       "id": "module",
       "name": "Module",
       "parentType": "card"
+    },
+    {
+      "id": "mine",
+      "name": "Mine",
+      "parentType": "building",
+      "resources": [
+        "reserves"
+      ]
+    },
+    {
+      "id": "shrine-type",
+      "name": "Shrine",
+      "parentType": "building",
+      "resources": [
+        "ritual"
+      ]
+    },
+    {
+      "id": "equipment",
+      "name": "Equipment",
+      "parentType": "card"
     }
   ],
   "properties": [
@@ -124,6 +145,24 @@
       "name": "Loot Tokens",
       "scope": "entity",
       "defaultValue": 0
+    },
+    {
+      "id": "training",
+      "name": "Training Points",
+      "scope": "player",
+      "defaultValue": 0
+    },
+    {
+      "id": "reserves",
+      "name": "Gold Reserves",
+      "scope": "entity",
+      "defaultValue": 0
+    },
+    {
+      "id": "ritual",
+      "name": "Ritual Progress",
+      "scope": "entity",
+      "defaultValue": 0
     }
   ],
   "tags": [
@@ -158,6 +197,18 @@
     {
       "id": "retaliate",
       "name": "Retaliate"
+    },
+    {
+      "id": "guard",
+      "name": "Guard"
+    },
+    {
+      "id": "archer",
+      "name": "Archer"
+    },
+    {
+      "id": "knight",
+      "name": "Knight"
     }
   ],
   "zones": [
@@ -194,9 +245,9 @@
     "spawnLine": "back"
   },
   "deckRules": {
-    "maxCopies": 2,
-    "maxDeckSize": 20,
-    "startingHandSize": 3,
+    "maxCopies": 4,
+    "maxDeckSize": 40,
+    "startingHandSize": 5,
     "drawPerTurn": 1,
     "defaultDeck": {
       "soldier": 2,
@@ -293,7 +344,25 @@
         }
       ],
       "icon": "🏛️",
-      "housingProvided": 5
+      "housingProvided": 5,
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [
+            {
+              "type": "controls_no_tagged",
+              "tag": "peasant"
+            }
+          ],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "peasant"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "town-chief",
@@ -328,6 +397,12 @@
               "tag": "peasant",
               "propertyId": "attack",
               "amount": 1
+            },
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "peasant",
+              "propertyId": "armor",
+              "amount": 1
             }
           ]
         },
@@ -355,7 +430,8 @@
           ]
         }
       ],
-      "icon": "👑"
+      "icon": "👑",
+      "housingCost": 3
     },
     {
       "id": "peasant",
@@ -374,115 +450,88 @@
       ],
       "artworkDescription": "A simple farmer with a pitchfork",
       "icon": "🧑‍🌾",
-      "housingCost": 1
+      "housingCost": 1,
+      "playCost": 1,
+      "deckLimit": "unlimited"
     },
     {
       "id": "soldier",
       "name": "Soldier",
       "objectType": "unit",
-      "playCost": 3,
+      "playCosts": {
+        "gold": 2,
+        "training": 1
+      },
       "properties": {
         "attack": 3,
         "currentHp": 4,
         "maxHp": 4,
-        "armor": 1
+        "armor": 2
       },
+      "housingCost": 1,
       "tags": [
         "soldier",
         "retaliate"
       ],
-      "artworkDescription": "A disciplined footman with sword and shield",
       "icon": "⚔️",
-      "housingCost": 1
+      "artworkDescription": "A disciplined footman with sword and shield"
     },
     {
       "id": "archer",
       "name": "Archer",
       "objectType": "unit",
-      "playCost": 2,
-      "properties": {
-        "attack": 2,
-        "currentHp": 2,
-        "maxHp": 2,
-        "armor": 0
+      "playCosts": {
+        "gold": 2,
+        "training": 2
       },
+      "properties": {
+        "attack": 4,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 1
+      },
+      "housingCost": 1,
       "tags": [
-        "soldier",
+        "archer",
         "ranged"
       ],
-      "artworkDescription": "A hooded archer with a longbow",
-      "abilities": [
-        {
-          "id": "ranged-shot",
-          "name": "Ranged Shot",
-          "costs": [
-            {
-              "type": "tap"
-            }
-          ],
-          "conditions": [],
-          "choice": {
-            "type": "entity",
-            "controller": "opponent",
-            "min": 1,
-            "max": 1
-          },
-          "effects": [
-            {
-              "type": "damage",
-              "scope": "target",
-              "amount": 2
-            }
-          ]
-        }
-      ],
       "icon": "🏹",
-      "housingCost": 1
+      "artworkDescription": "A hooded archer with a longbow"
     },
     {
       "id": "barracks",
       "name": "Barracks",
       "objectType": "building",
-      "playCost": 4,
+      "playCost": 3,
+      "constructionRequirement": 3,
       "properties": {
         "currentHp": 6,
         "maxHp": 6,
-        "armor": 1
+        "armor": 2
       },
-      "artworkDescription": "A sturdy wooden barracks with training grounds",
+      "housingProvided": 2,
+      "icon": "🏯",
+      "artworkDescription": "Drill yards echo with the clash of practice swords",
       "abilities": [
         {
-          "id": "train-soldier",
-          "name": "Train Soldier",
+          "id": "military-training",
+          "name": "Military Training",
           "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 2
-            },
             {
               "type": "tap"
             }
           ],
           "conditions": [],
-          "choice": {
-            "type": "entity",
-            "controller": "self",
-            "tag": "peasant",
-            "min": 1,
-            "max": 1
-          },
           "effects": [
             {
-              "type": "transform",
-              "scope": "target",
-              "cardId": "soldier"
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "training",
+              "amount": 1
             }
           ]
         }
-      ],
-      "icon": "🏯"
+      ]
     },
     {
       "id": "healing-salve",
@@ -539,68 +588,54 @@
       "name": "Archery Range",
       "objectType": "building",
       "playCost": 3,
+      "constructionRequirement": 3,
       "properties": {
         "currentHp": 5,
         "maxHp": 5,
         "armor": 1
       },
+      "icon": "🎯",
       "artworkDescription": "Straw targets and a rack of longbows",
       "abilities": [
         {
-          "id": "train-archer",
-          "name": "Train Archer",
+          "id": "archery-training",
+          "name": "Archery Training",
           "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 2
-            },
             {
               "type": "tap"
             }
           ],
           "conditions": [],
-          "choice": {
-            "type": "entity",
-            "controller": "self",
-            "tag": "peasant",
-            "min": 1,
-            "max": 1
-          },
           "effects": [
             {
-              "type": "transform",
-              "scope": "target",
-              "cardId": "archer"
+              "type": "cost_discount",
+              "tag": "archer",
+              "resourceId": "training",
+              "amount": 1
             }
           ]
         }
-      ],
-      "icon": "🎯"
+      ]
     },
     {
       "id": "tavern",
       "name": "Tavern",
       "objectType": "building",
       "playCost": 2,
+      "constructionRequirement": 2,
       "properties": {
         "currentHp": 5,
         "maxHp": 5,
         "armor": 1
       },
+      "housingProvided": 1,
+      "icon": "🍺",
       "artworkDescription": "A rowdy tavern where sellswords gather",
       "abilities": [
         {
-          "id": "hire-mercenary",
-          "name": "Hire Mercenary",
+          "id": "recruitment",
+          "name": "Recruitment",
           "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 3
-            },
             {
               "type": "tap"
             }
@@ -608,32 +643,32 @@
           "conditions": [],
           "effects": [
             {
-              "type": "summon",
-              "scope": "player",
-              "cardId": "mercenary"
+              "type": "cost_discount",
+              "tag": "mercenary",
+              "resourceId": "gold",
+              "amount": 1
             }
           ]
         }
-      ],
-      "icon": "🍺",
-      "housingProvided": 2
+      ]
     },
     {
       "id": "mercenary",
       "name": "Mercenary",
       "objectType": "unit",
+      "playCost": 4,
       "properties": {
-        "attack": 3,
-        "currentHp": 3,
-        "maxHp": 3,
+        "attack": 4,
+        "currentHp": 4,
+        "maxHp": 4,
         "armor": 1
       },
+      "housingCost": 1,
       "tags": [
         "mercenary"
       ],
-      "artworkDescription": "A scarred sellsword who fights for coin, not loyalty",
       "icon": "🥷",
-      "housingCost": 1
+      "artworkDescription": "A scarred sellsword who fights for coin, not loyalty"
     },
     {
       "id": "blacksmith",
@@ -702,85 +737,23 @@
       "icon": "💰"
     },
     {
-      "id": "iron-sword",
-      "name": "Iron Sword",
-      "objectType": "item",
-      "playCost": 1,
-      "artworkDescription": "A dependable iron blade",
-      "onPlay": {
-        "id": "equip-sword",
-        "name": "+1 Attack",
-        "choice": {
-          "type": "entity",
-          "controller": "self",
-          "objectType": "character",
-          "min": 1,
-          "max": 1
-        },
-        "effects": [
-          {
-            "type": "modify_property",
-            "scope": "target",
-            "propertyId": "attack",
-            "amount": 1
-          }
-        ]
-      },
-      "icon": "🗡️"
-    },
-    {
-      "id": "shield",
-      "name": "Shield",
-      "objectType": "item",
-      "playCost": 1,
-      "artworkDescription": "A sturdy round wooden shield",
-      "onPlay": {
-        "id": "equip-shield",
-        "name": "+1 Armor",
-        "choice": {
-          "type": "entity",
-          "controller": "self",
-          "objectType": "character",
-          "min": 1,
-          "max": 1
-        },
-        "effects": [
-          {
-            "type": "modify_property",
-            "scope": "target",
-            "propertyId": "armor",
-            "amount": 1
-          }
-        ]
-      },
-      "icon": "🛡️"
-    },
-    {
       "id": "battle-axe",
       "name": "Battle Axe",
-      "objectType": "item",
+      "objectType": "equipment",
       "playCost": 3,
-      "artworkDescription": "A brutal two-handed axe with notched blades",
-      "onPlay": {
-        "id": "equip-axe",
-        "name": "+2 Attack",
-        "choice": {
-          "type": "entity",
-          "controller": "self",
-          "objectType": "character",
-          "min": 1,
-          "max": 1
-        },
-        "effects": [
-          {
-            "type": "modify_property",
-            "scope": "target",
-            "propertyId": "attack",
-            "amount": 2
-          }
-        ]
-      },
-      "icon": "🪓"
+      "slots": [
+        "mainHand",
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 2
+        }
+      ],
+      "icon": "🪓",
+      "artworkDescription": "A brutal two-handed axe with notched blades"
     },
     {
       "id": "raider-camp",
@@ -1504,6 +1477,450 @@
       "housingProvided": 3,
       "icon": "🏠",
       "artworkDescription": "A cozy timber cottage with a smoking chimney"
+    },
+    {
+      "id": "gold-mine",
+      "name": "Gold Mine",
+      "objectType": "mine",
+      "playCost": 0,
+      "deckLimit": "unlimited",
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "resources": {
+        "reserves": 5
+      },
+      "icon": "⛏️",
+      "artworkDescription": "A dark shaft braced with timber, glittering with veins of gold",
+      "abilities": [
+        {
+          "id": "harvest",
+          "name": "Harvest",
+          "costs": [],
+          "conditions": [
+            {
+              "type": "resource_gte",
+              "resourceId": "reserves",
+              "amount": 1
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "tag": "worker",
+            "min": 1,
+            "max": 1,
+            "requireUntapped": true
+          },
+          "effects": [
+            {
+              "type": "tap",
+              "scope": "target"
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "reserves",
+              "amount": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shrine",
+      "name": "Shrine",
+      "objectType": "shrine-type",
+      "playCost": 4,
+      "constructionRequirement": 4,
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "icon": "⛩️",
+      "artworkDescription": "Candles gutter around a mossy altar of forgotten gods",
+      "abilities": [
+        {
+          "id": "resurrection-ritual",
+          "name": "Resurrection Ritual",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "own_hero_destroyed"
+            },
+            {
+              "type": "resource_lte",
+              "resourceId": "ritual",
+              "amount": 0
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_resource",
+              "scope": "self",
+              "resourceId": "ritual",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [
+            {
+              "type": "resource_gte",
+              "resourceId": "ritual",
+              "amount": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "ritual",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "event": "onTurnStart",
+          "conditions": [
+            {
+              "type": "resource_gte",
+              "resourceId": "ritual",
+              "amount": 3
+            }
+          ],
+          "effects": [
+            {
+              "type": "revive_hero"
+            },
+            {
+              "type": "set_resource",
+              "scope": "self",
+              "resourceId": "ritual",
+              "amount": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "town-guard",
+      "name": "Town Guard",
+      "objectType": "unit",
+      "playCosts": {
+        "gold": 3,
+        "training": 1
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 2
+      },
+      "housingCost": 1,
+      "tags": [
+        "guard",
+        "retaliate"
+      ],
+      "icon": "💂",
+      "artworkDescription": "A halberdier sworn to stand between danger and the town"
+    },
+    {
+      "id": "knight",
+      "name": "Knight",
+      "objectType": "unit",
+      "playCosts": {
+        "gold": 5,
+        "training": 3
+      },
+      "properties": {
+        "attack": 5,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 3
+      },
+      "housingCost": 2,
+      "tags": [
+        "knight",
+        "retaliate"
+      ],
+      "icon": "🐴",
+      "artworkDescription": "A mounted knight in gleaming plate"
+    },
+    {
+      "id": "paladin",
+      "name": "Paladin",
+      "objectType": "hero",
+      "playCosts": {
+        "gold": 6,
+        "training": 2
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 3
+      },
+      "resources": {
+        "ap": 0
+      },
+      "housingCost": 3,
+      "icon": "✝️",
+      "artworkDescription": "A holy warrior clad in consecrated steel",
+      "abilities": [
+        {
+          "id": "divine-shield",
+          "name": "Divine Shield",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "character",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": 2,
+              "untilEvent": "ownerNextTurnStart"
+            }
+          ]
+        },
+        {
+          "id": "holy-light",
+          "name": "Holy Light",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master-builder",
+      "name": "Master Builder",
+      "objectType": "hero",
+      "playCost": 4,
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "resources": {
+        "ap": 0
+      },
+      "housingCost": 2,
+      "icon": "📐",
+      "artworkDescription": "A weathered foreman with plans tucked under one arm",
+      "abilities": [
+        {
+          "id": "rapid-construction",
+          "name": "Rapid Construction",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "building",
+            "min": 1,
+            "max": 1,
+            "requireUnderConstruction": true
+          },
+          "effects": [
+            {
+              "type": "add_progress",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "organize-workers",
+          "name": "Organize Workers",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "tag": "peasant",
+            "min": 1,
+            "max": 2
+          },
+          "effects": [
+            {
+              "type": "untap",
+              "scope": "target"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "short-sword",
+      "name": "Short Sword",
+      "objectType": "equipment",
+      "playCost": 2,
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "icon": "🗡️",
+      "artworkDescription": "A dependable one-handed blade"
+    },
+    {
+      "id": "broadsword",
+      "name": "Broadsword",
+      "objectType": "equipment",
+      "playCost": 3,
+      "slots": [
+        "mainHand",
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 2
+        }
+      ],
+      "icon": "⚔️",
+      "artworkDescription": "A heavy two-handed blade"
+    },
+    {
+      "id": "wooden-shield",
+      "name": "Wooden Shield",
+      "objectType": "equipment",
+      "playCost": 2,
+      "slots": [
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "icon": "🛡️",
+      "artworkDescription": "A sturdy round shield of oak"
+    },
+    {
+      "id": "leather-armor",
+      "name": "Leather Armor",
+      "objectType": "equipment",
+      "playCost": 3,
+      "slots": [
+        "body"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "icon": "🦺",
+      "artworkDescription": "Hardened leather cuirass"
+    },
+    {
+      "id": "longbow",
+      "name": "Longbow",
+      "objectType": "equipment",
+      "playCost": 3,
+      "slots": [
+        "mainHand",
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "attachTags": [
+        "ranged"
+      ],
+      "icon": "🏹",
+      "artworkDescription": "A yew warbow taller than its bearer"
     }
   ],
   "decks": [
@@ -1514,18 +1931,25 @@
       "hq": "town-hall",
       "hero": "town-chief",
       "cards": {
-        "soldier": 2,
-        "archer": 2,
-        "barracks": 2,
+        "gold-mine": 6,
+        "bag-of-gold": 3,
+        "peasant": 6,
+        "barracks": 3,
         "archery-range": 2,
         "tavern": 2,
-        "blacksmith": 1,
-        "healing-salve": 2,
-        "fireball": 1,
-        "bag-of-gold": 2,
-        "iron-sword": 1,
-        "shield": 1,
-        "house": 2
+        "shrine": 1,
+        "soldier": 3,
+        "archer": 2,
+        "town-guard": 2,
+        "mercenary": 2,
+        "knight": 1,
+        "paladin": 1,
+        "master-builder": 1,
+        "short-sword": 1,
+        "broadsword": 1,
+        "wooden-shield": 1,
+        "leather-armor": 1,
+        "longbow": 1
       }
     },
     {
@@ -1535,16 +1959,19 @@
       "hq": "raider-camp",
       "hero": "warchief",
       "cards": {
-        "scavenger": 2,
-        "pillager": 2,
-        "axe-thrower": 2,
-        "brute": 2,
-        "fighting-pit": 2,
-        "stolen-treasure": 2,
-        "loot": 2,
-        "bag-of-gold": 2,
-        "battle-axe": 1,
-        "shield": 1
+        "scavenger": 4,
+        "pillager": 4,
+        "axe-thrower": 4,
+        "brute": 3,
+        "fighting-pit": 3,
+        "stolen-treasure": 4,
+        "loot": 4,
+        "bag-of-gold": 3,
+        "battle-axe": 2,
+        "wooden-shield": 2,
+        "mercenary": 2,
+        "fireball": 2,
+        "healing-salve": 3
       }
     },
     {
@@ -1554,15 +1981,15 @@
       "hq": "landing-pad",
       "hero": "ax-01",
       "cards": {
-        "plasma-cannon": 2,
-        "missile-launcher": 2,
-        "reinforced-plating": 2,
-        "targeting-computer": 2,
-        "fusion-reactor": 2,
-        "jump-jets": 2,
-        "repair-nanobots": 2,
-        "energy-cell": 2,
-        "emergency-repair": 2
+        "plasma-cannon": 4,
+        "missile-launcher": 4,
+        "reinforced-plating": 4,
+        "targeting-computer": 4,
+        "fusion-reactor": 4,
+        "jump-jets": 4,
+        "repair-nanobots": 4,
+        "energy-cell": 4,
+        "emergency-repair": 4
       }
     }
   ],
@@ -1593,5 +2020,11 @@
       "result": "lose",
       "scope": "player"
     }
-  ]
+  ],
+  "defaultEquipmentSlots": {
+    "mainHand": 1,
+    "offHand": 1,
+    "body": 1,
+    "head": 1
+  }
 }

@@ -96,7 +96,10 @@ public class StateProjector
             Slot = o.Slot,
             Icon = game.Definition.Cards.FirstOrDefault(c => c.Id == o.DefinitionId)?.Icon,
             HousingCost = game.Definition.Cards.FirstOrDefault(c => c.Id == o.DefinitionId)?.HousingCost,
-            HousingProvided = game.Definition.Cards.FirstOrDefault(c => c.Id == o.DefinitionId)?.HousingProvided
+            HousingProvided = game.Definition.Cards.FirstOrDefault(c => c.Id == o.DefinitionId)?.HousingProvided,
+            UnderConstruction = o.UnderConstruction,
+            ConstructionProgress = o.ConstructionProgress,
+            ConstructionRequirement = game.Definition.Cards.FirstOrDefault(c => c.Id == o.DefinitionId)?.ConstructionRequirement
         };
     }
 

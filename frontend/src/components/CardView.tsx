@@ -97,6 +97,14 @@ export function CardView({
         <span className="card-art-icon">{card.icon || getTypeIcon()}</span>
       </div>
 
+      {card.underConstruction && (
+        <div
+          className="status-indicator construction-indicator tip"
+          data-tip="Under construction — provides no abilities or housing until finished. Builders (tap) add 1 progress each; it can be attacked while unfinished."
+        >
+          🔨 {card.constructionProgress}/{card.constructionRequirement ?? '?'}
+        </div>
+      )}
       {card.isTapped && <div className="tapped-indicator">TAPPED</div>}
       {card.hasSummoningSickness && card.zoneId === 'battlefield' && (
         <div className="status-indicator new-indicator tip" data-tip={STATUS_TIPS.new}>NEW</div>

@@ -21,6 +21,12 @@ public class TriggerService
     {
         switch (evt.Type)
         {
+            case GameEventTypes.TurnStarted:
+                if (evt.Player == null) break;
+                foreach (var obj in GameQueries.BattlefieldObjects(game, evt.Player.Id).ToList())
+                    Fire(game, obj, "onTurnStart");
+                break;
+
             case GameEventTypes.UnitKilled:
                 // Source = killer, Target = victim
                 if (evt.Source != null && !evt.Source.IsDestroyed)
@@ -55,6 +61,12 @@ public class TriggerService
 
         foreach (var trigger in cardDef.Triggers.Where(t => t.Event == eventName))
         {
+            if (obj.UnderConstruction) continue; // unfinished buildings provide nothing
+
+            if (trigger.Conditions.Any(cond => !_services.Conditions.Check(new ConditionContext
+                { Game = game, Condition = cond, Object = obj, Player = controller })))
+                continue;
+
             if (trigger.OncePerTurn)
             {
                 var key = $"{obj.Id}:{eventName}";

@@ -16,6 +16,12 @@ public class AbilityService
     {
         reason = null;
 
+        if (obj.UnderConstruction)
+        {
+            reason = "Still under construction";
+            return false;
+        }
+
         if (obj.HasMovedThisTurn)
         {
             reason = "Already moved this turn";

@@ -18,6 +18,17 @@ public class GameInstance
     public Dictionary<string, List<string>> DeckOrder { get; set; } = new();
     // "objectId:event" keys for once-per-turn triggers; cleared when the turn passes
     public HashSet<string> FiredOncePerTurn { get; set; } = new();
+    // Active cost discounts (e.g. Archery Range: next Archer costs 1 less Training)
+    public List<CostModifierInstance> ActiveCostModifiers { get; set; } = new();
+}
+
+public class CostModifierInstance
+{
+    public string PlayerId { get; set; } = "";
+    public string ResourceId { get; set; } = "";
+    public int Amount { get; set; }
+    public string? TagFilter { get; set; } // applies to cards carrying this tag
+    public int Uses { get; set; } = 1;
 }
 
 public enum GameState
@@ -62,7 +73,10 @@ public class ObjectInstance
     public bool HasMovedThisTurn { get; set; }
     public bool HasSummoningSickness { get; set; } // cannot move or attack the turn it arrived
     public string? AttachedToId { get; set; } // host object when this is an installed module
-    public string? Slot { get; set; }         // which slot this module occupies on its host
+    public string? Slot { get; set; }         // primary slot this attachment occupies on its host
+    public List<string> OccupiedSlots { get; set; } = new(); // all slots occupied (two-handed = both hands)
+    public bool UnderConstruction { get; set; }
+    public int ConstructionProgress { get; set; }
 }
 
 public class ResolutionStack
@@ -95,8 +109,10 @@ public class ModifierInstance
     public string TargetObjectId { get; set; } = "";
     public string PropertyId { get; set; } = "";
     public int Amount { get; set; }
-    public string ExpiresOn { get; set; } = "endOfTurn"; // event type; "never" for permanent
+    // "endOfTurn", "never", or "ownerNextTurnStart" (expires when OwnerPlayerId's next turn begins)
+    public string ExpiresOn { get; set; } = "endOfTurn";
     public string? SourceObjectId { get; set; } // removed when this object leaves the battlefield
+    public string? OwnerPlayerId { get; set; } // for ownerNextTurnStart expiry
 }
 
 public class PendingChoice

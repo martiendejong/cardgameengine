@@ -73,7 +73,7 @@ public class MatchService
                 var cardDef = definition.Cards.FirstOrDefault(c => c.Id == cardId);
                 if (cardDef == null)
                     return (null, $"{setup.Name}: unknown card '{cardId}'");
-                if (!setup.IsAdmin && cardDef.PlayCost == null)
+                if (!setup.IsAdmin && !CardGameEngine.Engine.GameQueries.IsDeckEligible(cardDef))
                     return (null, $"{setup.Name}: card '{cardDef.Name}' is not deck-eligible");
             }
 
@@ -86,8 +86,11 @@ public class MatchService
                     return (null, $"{setup.Name}: deck has {total} cards, maximum is {rules.MaxDeckSize}");
                 foreach (var (cardId, count) in deck)
                 {
-                    if (count > rules.MaxCopies)
-                        return (null, $"{setup.Name}: at most {rules.MaxCopies} copies of '{cardId}' allowed");
+                    var cardDef = definition.Cards.First(c => c.Id == cardId);
+                    if (cardDef.DeckLimit == "unlimited") continue;
+                    var limit = int.TryParse(cardDef.DeckLimit, out var perCard) ? perCard : rules.MaxCopies;
+                    if (count > limit)
+                        return (null, $"{setup.Name}: at most {limit} copies of '{cardId}' allowed");
                 }
             }
 
@@ -138,6 +141,9 @@ public class MatchService
 
             if (card.PlayCost != null)
                 relevant.Add(card.PlayCostResource);
+            if (card.PlayCosts != null)
+                foreach (var res in card.PlayCosts.Keys)
+                    relevant.Add(res);
 
             var abilities = card.Abilities.ToList();
             if (card.OnPlay != null) abilities.Add(card.OnPlay);

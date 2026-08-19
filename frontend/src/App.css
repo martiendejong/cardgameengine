@@ -1601,3 +1601,10 @@
 .resource-chip.housing-full .resource-value { color: #f0883e; }
 .stat.housing { color: #f0883e; }
 .detail-stat.housing { color: #f0883e; }
+
+/* Construction */
+.construction-indicator {
+  background: rgba(255, 152, 0, 0.15);
+  color: #ffb74d;
+}
+.card:has(.construction-indicator) .card-art { opacity: 0.5; }

@@ -39,6 +39,8 @@ public static class DefaultHandlers
         c.Register("own_hero_destroyed", ctx => ctx.Game.Objects.Any(o =>
             o.OwnerId == ctx.Player.Id && o.IsDestroyed &&
             GameQueries.IsObjectTypeOrSubtype(ctx.Game, o.ObjectType, "hero")));
+        c.Register("controls_no_tagged", ctx => !GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
+            .Any(o => o.Tags.Contains(ctx.Condition.Tag ?? "")));
 
         static int GetResource(ConditionContext ctx) =>
             ctx.Condition.Scope == "player"
@@ -188,8 +190,40 @@ public static class DefaultHandlers
             if (obj == null) return;
             var propId = ctx.Effect.PropertyId ?? "attack";
             var amount = ctx.Effect.Amount ?? 1;
-            m.AddModifier(ctx.Game, obj, propId, amount, "endOfTurn");
-            ctx.Game.Log.Add($"{obj.Name} gains +{amount} {propId} until end of turn.");
+            // untilEvent "ownerNextTurnStart" makes the buff survive the opponent's turn (Divine Shield)
+            var expiry = ctx.Effect.UntilEvent ?? "endOfTurn";
+            var mod = m.AddModifier(ctx.Game, obj, propId, amount, expiry);
+            if (expiry == "ownerNextTurnStart") mod.OwnerPlayerId = ctx.Player.Id;
+            ctx.Game.Log.Add($"{obj.Name} gains +{amount} {propId} {(expiry == "ownerNextTurnStart" ? "until your next turn" : "until end of turn")}.");
+        });
+
+        e.Register("add_progress", ctx =>
+        {
+            var obj = ctx.ResolveScope("target");
+            if (obj == null || !obj.UnderConstruction) return;
+            var cardDef = GameQueries.GetCardDefinition(ctx.Game, obj);
+            var req = cardDef?.ConstructionRequirement ?? 0;
+            obj.ConstructionProgress += ctx.Effect.Amount ?? 1;
+            ctx.Game.Log.Add($"{obj.Name} construction: {Math.Min(obj.ConstructionProgress, req)}/{req}.");
+            if (obj.ConstructionProgress >= req)
+            {
+                obj.UnderConstruction = false;
+                obj.ConstructionProgress = req;
+                ctx.Game.Log.Add($"{obj.Name} is completed!");
+            }
+        });
+
+        e.Register("cost_discount", ctx =>
+        {
+            ctx.Game.ActiveCostModifiers.Add(new CostModifierInstance
+            {
+                PlayerId = ctx.Player.Id,
+                ResourceId = ctx.Effect.ResourceId ?? "gold",
+                Amount = ctx.Effect.Amount ?? 1,
+                TagFilter = ctx.Effect.Tag,
+                Uses = 1
+            });
+            ctx.Game.Log.Add($"Next {ctx.Effect.Tag ?? "card"} costs {ctx.Effect.Amount ?? 1} less {ctx.Effect.ResourceId ?? "gold"} this turn.");
         });
 
         e.Register("transform", ctx =>

@@ -3,7 +3,11 @@ using CardGameEngine.Core.Runtime;
 
 namespace CardGameEngine.Engine;
 
-/// <summary>Playing cards from hand: spells, units/buildings, and module installation.</summary>
+/// <summary>
+/// Playing cards from hand: spells, units, buildings (possibly under construction),
+/// hero limit, and attachments (robot modules auto-attach to your hero; equipment
+/// attaches to a chosen character and can occupy multiple slots, e.g. two-handed).
+/// </summary>
 public class CardPlayService
 {
     private readonly EngineServices _s;
@@ -24,17 +28,25 @@ public class CardPlayService
         var cardDef = GameQueries.GetCardDefinition(game, obj);
         if (cardDef == null) return (false, "Card definition not found");
 
-        var cost = cardDef.PlayCost ?? 0;
-        var costRes = cardDef.PlayCostResource;
-        if (player.Resources.GetValueOrDefault(costRes) < cost)
-            return (false, $"Requires {cost} {costRes}");
+        // Multi-resource cost after discounts
+        var costs = GameQueries.EffectivePlayCosts(game, playerId, cardDef);
+        foreach (var (resId, amount) in costs)
+            if (player.Resources.GetValueOrDefault(resId) < amount)
+                return (false, $"Requires {GameQueries.FormatCosts(costs)}");
 
         if (cardDef.HousingCost is int housing &&
             !GameQueries.HasHousingFor(game, playerId, housing))
             return (false, $"Not enough housing ({GameQueries.HousingUsed(game, playerId)}/{GameQueries.HousingCapacity(game, playerId)})");
 
-        // Validate targets before paying anything
+        // One active hero at a time
+        bool isHero = GameQueries.IsObjectTypeOrSubtype(game, obj.ObjectType, "hero");
+        if (isHero && GameQueries.FindLivingHero(game, playerId) != null)
+            return (false, "You already control a Hero");
+
+        // Validate onPlay targets before paying anything
         var targetIds = action.TargetIds ?? new List<string>();
+        var attachSlots = GetAttachSlots(cardDef);
+
         if (cardDef.OnPlay?.Choice != null)
         {
             var choice = cardDef.OnPlay.Choice;
@@ -46,20 +58,39 @@ public class CardPlayService
                     return (false, "Invalid target");
         }
 
-        // Modules need a living hero to be installed on
-        ObjectInstance? moduleHost = null;
-        if (cardDef.Slot != null)
+        // Resolve attachment host
+        ObjectInstance? attachHost = null;
+        if (attachSlots.Count > 0)
         {
-            moduleHost = GameQueries.FindLivingHero(game, playerId);
-            if (moduleHost == null) return (false, "No hero to install this module on");
+            if (cardDef.AttachTo == "chooseCharacter")
+            {
+                if (targetIds.Count != 1) return (false, "Choose a character to equip");
+                attachHost = game.Objects.FirstOrDefault(o => o.Id == targetIds[0]);
+                if (attachHost == null || attachHost.IsDestroyed || attachHost.ZoneId != "battlefield" ||
+                    attachHost.ControllerId != playerId ||
+                    !GameQueries.IsObjectTypeOrSubtype(game, attachHost.ObjectType, "character"))
+                    return (false, "Invalid equip target");
+            }
+            else
+            {
+                attachHost = GameQueries.FindLivingHero(game, playerId);
+                if (attachHost == null) return (false, "No hero to install this module on");
+            }
+
+            var slotError = CheckSlots(game, attachHost, attachSlots);
+            if (slotError != null) return (false, slotError);
         }
 
-        if (cost > 0)
-            _s.Mutator.SpendResource(game, player, costRes, cost);
+        // Pay
+        foreach (var (resId, amount) in costs)
+            if (amount > 0)
+                _s.Mutator.SpendResource(game, player, resId, amount);
+        ConsumeCostModifiers(game, playerId, cardDef);
 
-        if (cardDef.Slot != null && moduleHost != null)
+        // Resolve
+        if (attachHost != null)
         {
-            InstallModule(game, obj, cardDef, moduleHost, player);
+            Attach(game, obj, cardDef, attachHost, attachSlots, player);
         }
         else if (GameQueries.IsObjectTypeOrSubtype(game, obj.ObjectType, "spell"))
         {
@@ -74,7 +105,18 @@ public class CardPlayService
             obj.HasSummoningSickness = true;
             if (game.Definition.BattlefieldLines != null)
                 obj.Line = game.Definition.BattlefieldLines.SpawnLine;
-            game.Log.Add($"{player.Name} plays {obj.Name}!");
+
+            if (cardDef.ConstructionRequirement is int req && req > 0)
+            {
+                obj.UnderConstruction = true;
+                obj.ConstructionProgress = 0;
+                game.Log.Add($"{player.Name} starts constructing {obj.Name} (0/{req}).");
+            }
+            else
+            {
+                game.Log.Add($"{player.Name} plays {obj.Name}!");
+            }
+
             if (cardDef.OnPlay != null)
                 _s.Effects.ApplyAbility(game, cardDef.OnPlay, obj, player, targetIds);
         }
@@ -83,39 +125,108 @@ public class CardPlayService
         return (true, null);
     }
 
-    private void InstallModule(GameInstance game, ObjectInstance module, CardDefinition moduleDef,
-        ObjectInstance host, PlayerInstance player)
+    public static List<string> GetAttachSlots(CardDefinition cardDef)
     {
-        var slot = moduleDef.Slot!;
+        if (cardDef.Slots is { Count: > 0 }) return cardDef.Slots;
+        if (cardDef.Slot != null) return new List<string> { cardDef.Slot };
+        return new List<string>();
+    }
+
+    /// <summary>Slot capacities for a host: its own declaration, or the game default for characters.</summary>
+    public static Dictionary<string, int> HostSlotCapacities(GameInstance game, ObjectInstance host)
+    {
         var hostDef = GameQueries.GetCardDefinition(game, host);
-        var capacity = hostDef?.EquipmentSlots?.GetValueOrDefault(slot, 1) ?? 1;
+        if (hostDef?.EquipmentSlots != null) return hostDef.EquipmentSlots;
+        if (GameQueries.IsObjectTypeOrSubtype(game, host.ObjectType, "character"))
+            return game.Definition.DefaultEquipmentSlots ?? new Dictionary<string, int>();
+        return new Dictionary<string, int>();
+    }
 
-        // Slot full: dismantle the oldest module in that slot
-        var occupying = game.Objects
-            .Where(o => o.AttachedToId == host.Id && o.Slot == slot && !o.IsDestroyed)
+    private string? CheckSlots(GameInstance game, ObjectInstance host, List<string> slots)
+    {
+        var capacities = HostSlotCapacities(game, host);
+        foreach (var slot in slots.Distinct())
+        {
+            var needed = slots.Count(s => s == slot);
+            if (capacities.GetValueOrDefault(slot, 0) < needed)
+                return $"{host.Name} has no {slot} slot";
+        }
+        return null;
+    }
+
+    private void ConsumeCostModifiers(GameInstance game, string playerId, CardDefinition cardDef)
+    {
+        var applicable = game.ActiveCostModifiers
+            .Where(m => m.PlayerId == playerId
+                && (m.TagFilter == null || cardDef.Tags.Contains(m.TagFilter))
+                && GameQueries.BasePlayCosts(cardDef).ContainsKey(m.ResourceId))
             .ToList();
-        while (occupying.Count >= capacity)
+        foreach (var mod in applicable)
         {
-            var oldest = occupying[0];
-            occupying.RemoveAt(0);
-            oldest.AttachedToId = null;
-            oldest.ZoneId = "discard";
-            game.ActiveModifiers.RemoveAll(m => m.SourceObjectId == oldest.Id);
-            game.Log.Add($"{oldest.Name} is dismantled to make room.");
+            mod.Uses--;
+            if (mod.Uses <= 0) game.ActiveCostModifiers.Remove(mod);
+        }
+    }
+
+    private void Attach(GameInstance game, ObjectInstance attachment, CardDefinition attachDef,
+        ObjectInstance host, List<string> slots, PlayerInstance player)
+    {
+        var capacities = HostSlotCapacities(game, host);
+
+        // Evict whatever occupies the required slots
+        foreach (var slot in slots.Distinct())
+        {
+            var capacity = capacities.GetValueOrDefault(slot, 0);
+            var needed = slots.Count(s => s == slot);
+            var occupying = game.Objects
+                .Where(o => o.AttachedToId == host.Id && !o.IsDestroyed && o.OccupiedSlots.Contains(slot))
+                .ToList();
+            while (occupying.Count > capacity - needed)
+            {
+                var oldest = occupying[0];
+                occupying.RemoveAt(0);
+                Unattach(game, oldest);
+                game.Log.Add($"{oldest.Name} is unequipped to make room.");
+            }
         }
 
-        module.ZoneId = "battlefield";
-        module.AttachedToId = host.Id;
-        module.Slot = slot;
-        module.HasSummoningSickness = false;
-        game.Log.Add($"{player.Name} installs {module.Name} on {host.Name} ({slot} slot).");
+        attachment.ZoneId = "battlefield";
+        attachment.AttachedToId = host.Id;
+        attachment.Slot = slots[0];
+        attachment.OccupiedSlots = new List<string>(slots);
+        attachment.HasSummoningSickness = false;
+        game.Log.Add($"{player.Name} equips {attachment.Name} on {host.Name} ({string.Join("+", slots)}).");
 
-        foreach (var attachMod in moduleDef.AttachModifiers)
+        foreach (var attachMod in attachDef.AttachModifiers)
         {
-            _s.Mutator.AddModifier(game, host, attachMod.PropertyId, attachMod.Amount, "never", module);
-            game.Log.Add($"{host.Name} gains +{attachMod.Amount} {attachMod.PropertyId} from {module.Name}.");
+            _s.Mutator.AddModifier(game, host, attachMod.PropertyId, attachMod.Amount, "never", attachment);
+            game.Log.Add($"{host.Name} gains +{attachMod.Amount} {attachMod.PropertyId} from {attachment.Name}.");
         }
 
-        _s.Bus.Publish(game, new GameEvent { Type = GameEventTypes.ModuleInstalled, Source = module, Target = host, Player = player });
+        foreach (var tag in attachDef.AttachTags)
+        {
+            if (!host.Tags.Contains(tag))
+            {
+                host.Tags.Add(tag);
+                game.Log.Add($"{host.Name} gains {tag} from {attachment.Name}.");
+            }
+        }
+
+        _s.Bus.Publish(game, new GameEvent { Type = GameEventTypes.ModuleInstalled, Source = attachment, Target = host, Player = player });
+    }
+
+    private void Unattach(GameInstance game, ObjectInstance attachment)
+    {
+        var host = game.Objects.FirstOrDefault(o => o.Id == attachment.AttachedToId);
+        var attachDef = GameQueries.GetCardDefinition(game, attachment);
+
+        if (host != null && attachDef != null)
+            foreach (var tag in attachDef.AttachTags)
+                host.Tags.Remove(tag);
+
+        game.ActiveModifiers.RemoveAll(m => m.SourceObjectId == attachment.Id);
+        attachment.AttachedToId = null;
+        attachment.OccupiedSlots = new List<string>();
+        attachment.ZoneId = "discard";
     }
 }

@@ -66,6 +66,7 @@ public class RuleEngine
             "activateAbility" => _abilities.ActivateAbility(game, playerId, action),
             "attack" => _combat.ExecuteAttack(game, playerId, action),
             "move" => _turns.ExecuteMove(game, playerId, action),
+            "build" => _turns.ExecuteBuild(game, playerId, action),
             "playCard" => _cardPlay.ExecutePlayCard(game, playerId, action),
             "endPhase" => EndPhaseAction(game, playerId),
             _ => (false, $"Unknown action type: {action.Type}")

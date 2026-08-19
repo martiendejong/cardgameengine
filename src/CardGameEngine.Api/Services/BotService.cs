@@ -87,6 +87,18 @@ public class BotService
             };
         }
 
+        // 3b. Put idle builders to work on construction sites
+        var build = actions.FirstOrDefault(a => a.Type == "build" && a.ValidTargets is { Count: > 0 });
+        if (build != null)
+        {
+            return new ActionRequest
+            {
+                Type = "build",
+                SourceObjectId = build.SourceObjectId,
+                TargetIds = new List<string> { build.ValidTargets![0] }
+            };
+        }
+
         // 4. In combat, advance idle melee attackers from the back line to the front
         if (game.CurrentPhaseId == "combat")
         {
