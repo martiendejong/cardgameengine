@@ -1495,3 +1495,103 @@
   color: #6e7681;
   text-align: center;
 }
+
+/* ============================================================
+   Mobile / responsive
+   ============================================================ */
+
+/* Tablets & narrow windows: log moves below the board */
+@media (max-width: 900px) {
+  .game-board {
+    flex-direction: column;
+  }
+
+  .game-log {
+    width: 100%;
+    height: 140px;
+    border-left: none;
+    border-top: 1px solid #21262d;
+  }
+}
+
+/* Phones */
+@media (max-width: 600px) {
+  /* Header: drop the match id, keep turn + leave */
+  .game-header { padding: 6px 10px; height: 40px; }
+  .match-id { display: none; }
+  .active-turn-label { font-size: 13px; }
+
+  .invite-banner { flex-wrap: wrap; margin: 4px 6px; padding: 6px 10px; }
+  .invite-url { min-width: 0; flex-basis: 100%; }
+
+  /* Compact cards */
+  .card {
+    width: 100px;
+    min-height: 140px;
+    padding: 6px;
+    gap: 3px;
+  }
+  .card-name { font-size: 11px; }
+  .card-art { height: 32px; margin: 3px 0 2px 0; }
+  .card-art-icon { font-size: 18px; }
+  .stat { font-size: 10px; }
+  .action-btn { font-size: 9px; padding: 3px 4px; }
+  .card-back { width: 44px; height: 62px; }
+
+  /* Tighter board */
+  .player-area { padding: 6px 8px; }
+  .player-header { flex-wrap: wrap; gap: 4px; margin-bottom: 4px; }
+  .player-name { font-size: 13px; }
+  .resource-chip { padding: 2px 8px; font-size: 12px; }
+  .battle-line { padding: 4px 6px; min-height: 48px; gap: 6px; }
+  .line-label { font-size: 8px; letter-spacing: 1px; }
+  .line-cards { gap: 6px; }
+  .hand-cards { gap: 6px; }
+  .battlefield-lines { gap: 4px; }
+  .game-log { height: 110px; }
+
+  /* Phase bar */
+  .action-panel { gap: 8px; padding: 6px 10px; }
+  .turn-info { gap: 8px; }
+  .current-phase { font-size: 11px; padding: 2px 8px; }
+  .active-player-label { font-size: 11px; }
+  .end-phase-btn { font-size: 12px; padding: 6px 12px; }
+  .target-select-banner { flex-wrap: wrap; padding: 6px 10px; font-size: 12px; gap: 6px; }
+
+  /* Card inspector fills the phone nicely */
+  .card-detail { padding: 16px 14px; max-width: 96vw; max-height: 90vh; }
+  .detail-header { gap: 12px; }
+  .detail-art { width: 68px; height: 68px; }
+  .detail-art-icon { font-size: 36px; }
+  .detail-title h2 { font-size: 18px; }
+  .detail-stat { padding: 4px 9px; font-size: 12px; }
+  .ability-line { font-size: 12px; }
+
+  /* Touch devices have no hover: pin tooltips to the bottom of the screen
+     so a tap on any stat/tag shows a readable, never-clipped explanation */
+  .tip:hover::after {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    top: auto;
+    transform: none;
+    width: auto;
+    font-size: 12px;
+    z-index: 900;
+  }
+  .tip:hover::before { display: none; }
+
+  /* Lobby */
+  .lobby-page { align-items: flex-start; overflow-y: auto; padding: 12px 0; height: 100vh; }
+  .lobby-card { padding: 20px 16px; width: 94%; }
+  .lobby-wide { width: 94%; }
+  .lobby-title { font-size: 24px; }
+  .deck-builder { padding: 10px; }
+  .deck-builder-header { flex-wrap: wrap; }
+  .card-pool { max-height: 240px; }
+  .mode-option { font-size: 12px; padding: 8px 10px; }
+
+  /* Winner overlay */
+  .winner-box { padding: 24px 20px; width: 88%; box-sizing: border-box; }
+}
