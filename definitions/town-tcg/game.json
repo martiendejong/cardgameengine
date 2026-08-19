@@ -3250,6 +3250,17 @@
       ],
       "resources": {
         "biomass": 2
+      },
+      "onPlay": {
+        "id": "hive-hatch",
+        "name": "The Hive stirs: a Larva crawls out",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "larva"
+          }
+        ]
       }
     },
     {
@@ -3311,7 +3322,18 @@
             }
           ]
         }
-      ]
+      ],
+      "onPlay": {
+        "id": "mother-hatch",
+        "name": "The Broodmother arrives with offspring",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "larva"
+          }
+        ]
+      }
     },
     {
       "id": "egg",

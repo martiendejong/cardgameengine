@@ -21,8 +21,8 @@ public class SetupService
         {
             foreach (var player in game.Players)
             {
-                _s.Factory.PlaceCard(game, player.HqCardId!, "battlefield", player.Id);
-                _s.Factory.PlaceCard(game, player.HeroCardId!, "battlefield", player.Id);
+                PlaceStartingCard(game, player.HqCardId!, player);
+                PlaceStartingCard(game, player.HeroCardId!, player);
             }
         }
         else
@@ -88,5 +88,14 @@ public class SetupService
         _s.Bus.Publish(game, new GameEvent { Type = GameEventTypes.TurnStarted, Player = game.Players[0] });
 
         _turns.RunAutoActions(game, firstPhase);
+    }
+
+    /// <summary>Starting HQ/hero cards fire their onPlay when placed (e.g. the Hive hatches a Larva).</summary>
+    private void PlaceStartingCard(GameInstance game, string cardId, Core.Runtime.PlayerInstance player)
+    {
+        var obj = _s.Factory.PlaceCard(game, cardId, "battlefield", player.Id);
+        var cardDef = GameQueries.GetCardDefinition(game, obj);
+        if (cardDef?.OnPlay != null && cardDef.OnPlay.Choice == null)
+            _s.Effects.ApplyAbility(game, cardDef.OnPlay, obj, player, new List<string>());
     }
 }
