@@ -6,19 +6,22 @@ namespace CardGameEngine.Engine;
 /// <summary>Answers "what can this act on": ability choices and attack reach (line rules).</summary>
 public class TargetingService
 {
-    public List<string> GetValidTargets(GameInstance game, ChoiceDefinition choice, string playerId)
+    public List<string> GetValidTargets(GameInstance game, ChoiceDefinition choice, string playerId, string? sourceObjectId = null)
     {
         return game.Objects
             .Where(o =>
             {
                 if (o.IsDestroyed || o.ZoneId != "battlefield") return false;
                 if (o.AttachedToId != null) return false;
+                if (choice.ExcludeSelf && o.Id == sourceObjectId) return false;
                 if (choice.Controller == "self" && o.ControllerId != playerId) return false;
                 if (choice.Controller == "opponent" && o.ControllerId == playerId) return false;
                 if (choice.ObjectType != null && !GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, choice.ObjectType)) return false;
                 if (choice.Tag != null && !o.Tags.Contains(choice.Tag)) return false;
                 if (choice.RequireUntapped && o.IsTapped) return false;
                 if (choice.RequireUnderConstruction && !o.UnderConstruction) return false;
+                if (choice.RequireResourceId != null &&
+                    o.Resources.GetValueOrDefault(choice.RequireResourceId) < choice.RequireResourceAmount) return false;
                 return true;
             })
             .Select(o => o.Id)
@@ -96,6 +99,15 @@ public class TargetingService
             reachable = reachable.Where(o =>
                 !GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, "hero") &&
                 !GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, "headquarters")).ToList();
+        }
+
+        // Fortification: while an untapped Defense building is in reach, other buildings are protected
+        bool fortInReach = reachable.Any(o => o.Tags.Contains("fortification") && !o.IsTapped);
+        if (fortInReach)
+        {
+            reachable = reachable.Where(o =>
+                o.Tags.Contains("fortification") ||
+                !GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, "building")).ToList();
         }
 
         return reachable.Select(o => o.Id).ToList();

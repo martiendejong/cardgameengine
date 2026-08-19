@@ -1608,3 +1608,28 @@
   color: #ffb74d;
 }
 .card:has(.construction-indicator) .card-art { opacity: 0.5; }
+
+/* Reactions */
+.reaction-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: rgba(255, 193, 7, 0.12);
+  border-bottom: 1px solid #ffc107;
+  font-size: 13px;
+  color: #ffd54f;
+  flex-wrap: wrap;
+}
+
+.pass-btn {
+  background: #6e40c9;
+  color: #fff;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.pass-btn:hover { background: #8250df; }
+
+.stat.lifetime { color: #4dd0e1; }

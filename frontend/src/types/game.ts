@@ -44,6 +44,8 @@ export interface ObjectStateDto {
   underConstruction: boolean;
   constructionProgress: number;
   constructionRequirement?: number | null;
+  lifetime?: number | null;
+  faceDown?: boolean;
 }
 
 export interface ChoiceDefinition {
@@ -87,6 +89,8 @@ export interface GameStateDto {
   log: string[];
   winner?: string;
   turnNumber: number;
+  reactionPlayerId?: string | null;
+  reactionWindowEvent?: string | null;
 }
 
 export interface ActionRequest {

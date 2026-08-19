@@ -16,6 +16,8 @@ public class GameStateDto
     public List<string> Log { get; set; } = new();
     public string? Winner { get; set; }
     public int TurnNumber { get; set; }
+    public string? ReactionPlayerId { get; set; }
+    public string? ReactionWindowEvent { get; set; }
 }
 
 public class PlayerStateDto
@@ -57,4 +59,6 @@ public class ObjectStateDto
     public bool UnderConstruction { get; set; }
     public int ConstructionProgress { get; set; }
     public int? ConstructionRequirement { get; set; }
+    public int? Lifetime { get; set; }
+    public bool FaceDown { get; set; }
 }

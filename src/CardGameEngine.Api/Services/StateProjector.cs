@@ -19,7 +19,9 @@ public class StateProjector
     {
         bool omniscient = string.IsNullOrEmpty(viewerId);
         var winner = game.Players.FirstOrDefault(p => p.IsWinner);
-        var actionsFor = omniscient ? game.ActivePlayerId : viewerId;
+        var actionsFor = omniscient
+            ? (game.State == GameState.WaitingForReaction ? game.ReactionPlayerId ?? game.ActivePlayerId : game.ActivePlayerId)
+            : viewerId;
 
         return new GameStateDto
         {
@@ -45,16 +47,17 @@ public class StateProjector
                 HousingCapacity = GameQueries.HousingCapacity(game, p.Id)
             }).ToList(),
             Objects = game.Objects.Select(o => ProjectObject(game, o, viewerId, omniscient)).ToList(),
-            AvailableActions = game.ActivePlayerId == actionsFor
-                ? _ruleEngine.GetAvailableActions(game, actionsFor)
-                : new List<AvailableAction>(),
-            PendingChoice = game.PendingChoices.FirstOrDefault(c => omniscient || c.PlayerId == viewerId)
+            AvailableActions = _ruleEngine.GetAvailableActions(game, actionsFor), // catalog self-gates
+            PendingChoice = game.PendingChoices.FirstOrDefault(c => omniscient || c.PlayerId == viewerId),
+            ReactionPlayerId = game.ReactionPlayerId,
+            ReactionWindowEvent = game.ReactionWindowEvent
         };
     }
 
     private ObjectStateDto ProjectObject(GameInstance game, ObjectInstance o, string viewerId, bool omniscient)
     {
-        bool hiddenZone = o.ZoneId == "hand" || o.ZoneId == "deck";
+        // Secrets and infiltrated spies are private state; hand/deck as before
+        bool hiddenZone = o.ZoneId == "hand" || o.ZoneId == "deck" || o.ZoneId == "secrets" || o.FaceDown;
         bool visible = omniscient || !hiddenZone || o.OwnerId == viewerId;
 
         // Own deck contents are hidden even from the owner — only counts are known
@@ -71,7 +74,10 @@ public class StateProjector
                 ObjectType = "hidden",
                 OwnerId = o.OwnerId,
                 ControllerId = o.ControllerId,
-                ZoneId = o.ZoneId
+                ZoneId = o.ZoneId,
+                // "something is lurking there" is public information
+                AttachedToId = o.AttachedToId,
+                Slot = o.Slot
             };
         }
 
@@ -99,7 +105,9 @@ public class StateProjector
             HousingProvided = game.Definition.Cards.FirstOrDefault(c => c.Id == o.DefinitionId)?.HousingProvided,
             UnderConstruction = o.UnderConstruction,
             ConstructionProgress = o.ConstructionProgress,
-            ConstructionRequirement = game.Definition.Cards.FirstOrDefault(c => c.Id == o.DefinitionId)?.ConstructionRequirement
+            ConstructionRequirement = game.Definition.Cards.FirstOrDefault(c => c.Id == o.DefinitionId)?.ConstructionRequirement,
+            Lifetime = o.Lifetime,
+            FaceDown = o.FaceDown
         };
     }
 

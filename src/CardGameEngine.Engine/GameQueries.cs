@@ -57,6 +57,31 @@ public static class GameQueries
 
     public static bool IsAttachable(ObjectInstance o) => o.AttachedToId != null;
 
+    // ---- Resource banks ----
+
+    /// <summary>Entity-scoped play costs (mana, corpses, biomass) are paid from your HQ.</summary>
+    public static ObjectInstance? FindResourceBank(GameInstance game, string playerId) =>
+        game.Objects.FirstOrDefault(o =>
+            o.OwnerId == playerId && !o.IsDestroyed && o.ZoneId == "battlefield" &&
+            IsObjectTypeOrSubtype(game, o.ObjectType, "headquarters"));
+
+    public static bool IsEntityScopedResource(GameInstance game, string resourceId) =>
+        game.Definition.Resources.FirstOrDefault(r => r.Id == resourceId)?.Scope == "entity";
+
+    /// <summary>How much of a play-cost resource the player can spend (own pool or HQ bank).</summary>
+    public static int AvailableForPlayCost(GameInstance game, PlayerInstance player, string resourceId)
+    {
+        if (!IsEntityScopedResource(game, resourceId))
+            return player.Resources.GetValueOrDefault(resourceId);
+        return FindResourceBank(game, player.Id)?.Resources.GetValueOrDefault(resourceId) ?? 0;
+    }
+
+    public static int ResourceCapacity(GameInstance game, ObjectInstance obj, string resourceId)
+    {
+        var def = GetCardDefinition(game, obj);
+        return def?.ResourceCapacities?.GetValueOrDefault(resourceId, int.MaxValue) ?? int.MaxValue;
+    }
+
     // ---- Play costs ----
 
     /// <summary>Base multi-resource play cost of a card (PlayCosts wins over PlayCost).</summary>

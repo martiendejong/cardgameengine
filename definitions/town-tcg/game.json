@@ -30,7 +30,10 @@
     {
       "id": "unit",
       "name": "Unit",
-      "parentType": "character"
+      "parentType": "character",
+      "resources": [
+        "glory"
+      ]
     },
     {
       "id": "building",
@@ -90,6 +93,70 @@
       "id": "equipment",
       "name": "Equipment",
       "parentType": "card"
+    },
+    {
+      "id": "caster",
+      "name": "Caster",
+      "parentType": "unit",
+      "resources": [
+        "mana"
+      ]
+    },
+    {
+      "id": "caster-hero",
+      "name": "Caster Hero",
+      "parentType": "hero",
+      "resources": [
+        "mana"
+      ]
+    },
+    {
+      "id": "nexus",
+      "name": "Nexus",
+      "parentType": "headquarters",
+      "resources": [
+        "mana"
+      ]
+    },
+    {
+      "id": "graveyard-hq",
+      "name": "Graveyard",
+      "parentType": "headquarters",
+      "resources": [
+        "corpses"
+      ]
+    },
+    {
+      "id": "necromancer-hero",
+      "name": "Necromancer",
+      "parentType": "hero",
+      "resources": [
+        "dp"
+      ]
+    },
+    {
+      "id": "hive-hq",
+      "name": "Hive",
+      "parentType": "headquarters",
+      "resources": [
+        "biomass"
+      ]
+    },
+    {
+      "id": "spy-unit",
+      "name": "Spy",
+      "parentType": "unit",
+      "resources": [
+        "intel"
+      ]
+    },
+    {
+      "id": "laboratory-hq",
+      "name": "Laboratory",
+      "parentType": "headquarters",
+      "resources": [
+        "reagents"
+      ]
     }
   ],
   "properties": [
@@ -161,6 +228,54 @@
     {
       "id": "ritual",
       "name": "Ritual Progress",
+      "scope": "entity",
+      "defaultValue": 0
+    },
+    {
+      "id": "mana",
+      "name": "Mana",
+      "scope": "entity",
+      "defaultValue": 0
+    },
+    {
+      "id": "corpses",
+      "name": "Corpses",
+      "scope": "entity",
+      "defaultValue": 0
+    },
+    {
+      "id": "dp",
+      "name": "Death Power",
+      "scope": "entity",
+      "defaultValue": 0
+    },
+    {
+      "id": "biomass",
+      "name": "Biomass",
+      "scope": "entity",
+      "defaultValue": 0
+    },
+    {
+      "id": "intel",
+      "name": "Intel",
+      "scope": "entity",
+      "defaultValue": 0
+    },
+    {
+      "id": "glory",
+      "name": "Glory",
+      "scope": "entity",
+      "defaultValue": 0
+    },
+    {
+      "id": "reagents",
+      "name": "Reagents",
+      "scope": "entity",
+      "defaultValue": 0
+    },
+    {
+      "id": "poison",
+      "name": "Poison",
       "scope": "entity",
       "defaultValue": 0
     }
@@ -235,6 +350,18 @@
       "name": "Discard",
       "visibility": "all",
       "ordered": true
+    },
+    {
+      "id": "secrets",
+      "name": "Secrets",
+      "visibility": "owner",
+      "ordered": false
+    },
+    {
+      "id": "stack",
+      "name": "Stack",
+      "visibility": "all",
+      "ordered": true
     }
   ],
   "battlefieldLines": {
@@ -265,7 +392,8 @@
         "autoActions": [
           "untap_all",
           "gain_hero_ap",
-          "draw_card"
+          "draw_card",
+          "tick_lifetimes"
         ]
       },
       {
@@ -280,7 +408,8 @@
         "id": "end",
         "name": "End Phase",
         "autoActions": [
-          "expire_end_of_turn"
+          "expire_end_of_turn",
+          "tick_poison"
         ]
       }
     ]
@@ -894,6 +1023,17 @@
               "amount": 1
             }
           ]
+        },
+        {
+          "event": "onKill",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "glory",
+              "amount": 1
+            }
+          ]
         }
       ],
       "icon": "🐀"
@@ -925,6 +1065,17 @@
               "amount": 2
             }
           ]
+        },
+        {
+          "event": "onKill",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "glory",
+              "amount": 1
+            }
+          ]
         }
       ],
       "icon": "🧨"
@@ -945,7 +1096,20 @@
         "ranged"
       ],
       "artworkDescription": "A raider hurling throwing axes from a distance",
-      "icon": "🪃"
+      "icon": "🪃",
+      "triggers": [
+        {
+          "event": "onKill",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "glory",
+              "amount": 1
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "brute",
@@ -963,7 +1127,20 @@
         "retaliate"
       ],
       "artworkDescription": "A mountain of muscle swinging a spiked club",
-      "icon": "🦍"
+      "icon": "🦍",
+      "triggers": [
+        {
+          "event": "onKill",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "glory",
+              "amount": 1
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "fighting-pit",
@@ -1921,6 +2098,2620 @@
       ],
       "icon": "🏹",
       "artworkDescription": "A yew warbow taller than its bearer"
+    },
+    {
+      "id": "arcane-nexus",
+      "name": "Arcane Nexus",
+      "objectType": "nexus",
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "resources": {
+        "mana": 3
+      },
+      "resourceCapacities": {
+        "mana": 8
+      },
+      "icon": "🔮",
+      "artworkDescription": "A crystalline spire humming with raw magic",
+      "abilities": [
+        {
+          "id": "channel",
+          "name": "Channel",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "mana-exchange",
+          "name": "Mana Exchange",
+          "costs": [],
+          "conditions": [
+            {
+              "type": "resource_gte",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "tag": "caster",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "transfer_resource",
+              "scope": "target",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "archmage",
+      "name": "Archmage",
+      "objectType": "caster-hero",
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "resources": {
+        "mana": 3
+      },
+      "resourceCapacities": {
+        "mana": 6
+      },
+      "tags": [
+        "caster"
+      ],
+      "icon": "🧙",
+      "artworkDescription": "Robes of midnight blue, eyes alight with arcana",
+      "abilities": [
+        {
+          "id": "meditate",
+          "name": "Meditate",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "summon-familiar",
+          "name": "Summon Familiar",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "arcane-familiar"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arcane-familiar",
+      "name": "Arcane Familiar",
+      "objectType": "caster",
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "resourceCapacities": {
+        "mana": 2
+      },
+      "tags": [
+        "caster"
+      ],
+      "icon": "🦉",
+      "artworkDescription": "A shimmering spirit-owl"
+    },
+    {
+      "id": "apprentice-mage",
+      "name": "Apprentice Mage",
+      "objectType": "caster",
+      "playCost": 2,
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "resourceCapacities": {
+        "mana": 3
+      },
+      "tags": [
+        "caster"
+      ],
+      "icon": "🎓",
+      "artworkDescription": "Ink-stained fingers, boundless ambition",
+      "abilities": [
+        {
+          "id": "study",
+          "name": "Study",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "arcane-spark",
+          "name": "Arcane Spark",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mana-seer",
+      "name": "Mana Seer",
+      "objectType": "caster",
+      "playCost": 3,
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 1
+      },
+      "resourceCapacities": {
+        "mana": 4
+      },
+      "tags": [
+        "caster"
+      ],
+      "icon": "👁️",
+      "artworkDescription": "She dreams in leylines",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pyromancer",
+      "name": "Pyromancer",
+      "objectType": "caster",
+      "playCost": 3,
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "resources": {
+        "mana": 1
+      },
+      "resourceCapacities": {
+        "mana": 4
+      },
+      "tags": [
+        "caster"
+      ],
+      "icon": "🔥",
+      "artworkDescription": "Smoke curls from her fingertips",
+      "abilities": [
+        {
+          "id": "flame-bolt",
+          "name": "Flame Bolt",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "conjurer",
+      "name": "Conjurer",
+      "objectType": "caster",
+      "playCost": 4,
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "resourceCapacities": {
+        "mana": 5
+      },
+      "tags": [
+        "caster"
+      ],
+      "icon": "🌀",
+      "artworkDescription": "Reality bends around his outstretched hand",
+      "abilities": [
+        {
+          "id": "summon-elemental",
+          "name": "Summon Fire Elemental",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 4
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "fire-elemental"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fire-elemental",
+      "name": "Fire Elemental",
+      "objectType": "unit",
+      "duration": 3,
+      "properties": {
+        "attack": 5,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "icon": "🌋",
+      "artworkDescription": "A roaring pillar of living flame — it will not last"
+    },
+    {
+      "id": "mana-burst",
+      "name": "Mana Burst",
+      "objectType": "spell",
+      "playCost": 0,
+      "icon": "✨",
+      "artworkDescription": "Raw magic, freely given",
+      "onPlay": {
+        "id": "burst",
+        "name": "Grant 3 Mana",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "tag": "caster",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "target",
+            "resourceId": "mana",
+            "amount": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "arcane-rain",
+      "name": "Arcane Rain",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "🌧️",
+      "artworkDescription": "Motes of light drift down on the faithful",
+      "onPlay": {
+        "id": "rain",
+        "name": "All casters +1 Mana",
+        "effects": [
+          {
+            "type": "gain_resource_all_tagged",
+            "tag": "caster",
+            "resourceId": "mana",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "overcharge",
+      "name": "Overcharge",
+      "objectType": "spell",
+      "playCost": 0,
+      "icon": "⚡",
+      "artworkDescription": "More power than a body should hold",
+      "onPlay": {
+        "id": "oc",
+        "name": "+4 Mana, 2 damage",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "tag": "caster",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "target",
+            "resourceId": "mana",
+            "amount": 4
+          },
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "arcane-fireball",
+      "name": "Fireball",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 3
+      },
+      "icon": "☄️",
+      "artworkDescription": "The classic, for a reason",
+      "onPlay": {
+        "id": "fb",
+        "name": "Deal 4 damage",
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 4
+          }
+        ]
+      }
+    },
+    {
+      "id": "counterspell",
+      "name": "Counterspell",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 3
+      },
+      "timing": "reaction",
+      "reactionTo": [
+        "spellCast"
+      ],
+      "icon": "🚫",
+      "artworkDescription": "A single word of unmaking",
+      "onPlay": {
+        "id": "cs",
+        "name": "Counter target spell",
+        "effects": [
+          {
+            "type": "counter_spell"
+          }
+        ]
+      }
+    },
+    {
+      "id": "arcane-shield",
+      "name": "Arcane Shield",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 2
+      },
+      "timing": "both",
+      "reactionTo": [
+        "attackDeclared"
+      ],
+      "icon": "💠",
+      "artworkDescription": "A lattice of light springs into being",
+      "onPlay": {
+        "id": "as",
+        "name": "+2 Armor until end of turn",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "character",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "buff_target_until_end_of_turn",
+            "scope": "target",
+            "propertyId": "armor",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "mage-armor",
+      "name": "Mage Armor",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 3
+      },
+      "slots": [
+        "body"
+      ],
+      "attachTo": "chooseCharacter",
+      "duration": 3,
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 2
+        }
+      ],
+      "icon": "🥋",
+      "artworkDescription": "Woven force, fading a little each dawn"
+    },
+    {
+      "id": "arcane-blade",
+      "name": "Arcane Blade",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 2
+      },
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "duration": 3,
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 2
+        }
+      ],
+      "icon": "🔷",
+      "artworkDescription": "A sword of pure conjured edge"
+    },
+    {
+      "id": "mana-potion",
+      "name": "Mana Potion",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "🧉",
+      "artworkDescription": "Bottled starlight, slightly fizzy",
+      "onPlay": {
+        "id": "mp",
+        "name": "+2 Mana",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "tag": "caster",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "target",
+            "resourceId": "mana",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "graveyard",
+      "name": "Graveyard",
+      "objectType": "graveyard-hq",
+      "properties": {
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 1
+      },
+      "resourceCapacities": {
+        "corpses": 8
+      },
+      "icon": "🪦",
+      "artworkDescription": "Crooked headstones under a moonless sky",
+      "abilities": [
+        {
+          "id": "exhume",
+          "name": "Exhume",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "oncePerTurn": true,
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "necromancer",
+      "name": "Necromancer",
+      "objectType": "necromancer-hero",
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "resourceCapacities": {
+        "dp": 5
+      },
+      "icon": "💀",
+      "artworkDescription": "Death is not an ending. It is a workforce.",
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "dp",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "id": "raise-zombie",
+          "name": "Raise Corpse",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "dp",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "zombie"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zombie",
+      "name": "Zombie",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 1
+      },
+      "tags": [
+        "undead"
+      ],
+      "icon": "🧟",
+      "artworkDescription": "It remembers just enough to hate"
+    },
+    {
+      "id": "skeleton",
+      "name": "Skeleton",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 1
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 1
+      },
+      "tags": [
+        "undead"
+      ],
+      "icon": "☠️",
+      "artworkDescription": "Rattling, tireless, expendable"
+    },
+    {
+      "id": "shambling-corpse",
+      "name": "Shambling Corpse",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 1
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "undead"
+      ],
+      "icon": "🫀",
+      "artworkDescription": "Fresh from the dirt"
+    },
+    {
+      "id": "plague-zombie",
+      "name": "Plague Zombie",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 2
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "undead"
+      ],
+      "icon": "🤢",
+      "artworkDescription": "Kill it and its sickness becomes yours",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "target",
+              "resourceId": "poison",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tomb-spider",
+      "name": "Tomb Spider",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 2
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "undead"
+      ],
+      "icon": "🕷️",
+      "artworkDescription": "It nests in ribcages",
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "target",
+              "resourceId": "poison",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grave-ghoul",
+      "name": "Grave Ghoul",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "tags": [
+        "undead",
+        "retaliate"
+      ],
+      "icon": "👻",
+      "artworkDescription": "Hunger given teeth"
+    },
+    {
+      "id": "bone-collector",
+      "name": "Bone Collector",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 2
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "tags": [
+        "undead"
+      ],
+      "icon": "🦴",
+      "artworkDescription": "Every death makes it stronger",
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "oncePerTurn": true,
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "restless-dead",
+      "name": "Restless Dead",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 2
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "undead"
+      ],
+      "icon": "🌫️",
+      "artworkDescription": "They do not stay down quietly"
+    },
+    {
+      "id": "flesh-golem",
+      "name": "Flesh Golem",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 5
+      },
+      "properties": {
+        "attack": 6,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "tags": [
+        "undead",
+        "retaliate"
+      ],
+      "icon": "🧌",
+      "artworkDescription": "Stitched from the fallen of both armies"
+    },
+    {
+      "id": "corpse-explosion",
+      "name": "Corpse Explosion",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 1
+      },
+      "icon": "💥",
+      "artworkDescription": "Waste not",
+      "onPlay": {
+        "id": "ce",
+        "name": "2 direct damage",
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "deathly-wail",
+      "name": "Deathly Wail",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 2
+      },
+      "icon": "😱",
+      "artworkDescription": "A scream that saps the will to fight",
+      "onPlay": {
+        "id": "dw",
+        "name": "-2 Attack until end of turn",
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "buff_target_until_end_of_turn",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": -2
+          }
+        ]
+      }
+    },
+    {
+      "id": "ossuary",
+      "name": "Ossuary",
+      "objectType": "building",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "icon": "🏚️",
+      "artworkDescription": "Walls of femurs, rafters of ribs",
+      "abilities": [
+        {
+          "id": "assemble",
+          "name": "Assemble Skeleton",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lich",
+      "name": "Lich",
+      "objectType": "hero",
+      "playCosts": {
+        "corpses": 6
+      },
+      "properties": {
+        "attack": 4,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
+      },
+      "tags": [
+        "undead"
+      ],
+      "icon": "🧿",
+      "artworkDescription": "The Necromancer perfected: deathless and patient",
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "id": "mass-res",
+          "name": "Mass Resurrection",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-hive",
+      "name": "The Hive",
+      "objectType": "hive-hq",
+      "properties": {
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 1
+      },
+      "resourceCapacities": {
+        "biomass": 12
+      },
+      "tags": [
+        "hive"
+      ],
+      "icon": "🕳️",
+      "artworkDescription": "A pulsing mound of chitin and wet warmth",
+      "abilities": [
+        {
+          "id": "consume",
+          "name": "Consume",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "tag": "organic",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            },
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "spawn",
+          "name": "Spawn",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "resource_gte",
+              "resourceId": "biomass",
+              "amount": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "biomass",
+              "amount": -1
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "broodmother",
+      "name": "Broodmother",
+      "objectType": "hero",
+      "properties": {
+        "attack": 3,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 1
+      },
+      "icon": "🦂",
+      "artworkDescription": "Mother to thousands, mourner of none",
+      "abilities": [
+        {
+          "id": "lay-eggs",
+          "name": "Lay Eggs",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "egg"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "egg"
+            }
+          ]
+        },
+        {
+          "id": "devour",
+          "name": "Devour",
+          "costs": [],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "tag": "organic",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            },
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "egg",
+      "name": "Egg",
+      "objectType": "unit",
+      "duration": 1,
+      "expiresInto": "larva",
+      "properties": {
+        "attack": 0,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "icon": "🥚",
+      "artworkDescription": "Something moves inside"
+    },
+    {
+      "id": "larva",
+      "name": "Larva",
+      "objectType": "unit",
+      "properties": {
+        "attack": 1,
+        "currentHp": 1,
+        "maxHp": 1,
+        "armor": 0
+      },
+      "tags": [
+        "organic",
+        "larva"
+      ],
+      "icon": "🐛",
+      "artworkDescription": "Food, soldier, and future all at once"
+    },
+    {
+      "id": "ravager",
+      "name": "Ravager",
+      "objectType": "unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 1
+      },
+      "tags": [
+        "organic",
+        "ravager"
+      ],
+      "icon": "🦖",
+      "artworkDescription": "All sinew and scythes"
+    },
+    {
+      "id": "carapace-drone",
+      "name": "Carapace Drone",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 3
+      },
+      "tags": [
+        "organic",
+        "retaliate"
+      ],
+      "icon": "🪲",
+      "artworkDescription": "A walking wall of chitin"
+    },
+    {
+      "id": "spitter",
+      "name": "Spitter",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "organic",
+        "ranged"
+      ],
+      "icon": "🦎",
+      "artworkDescription": "Its venom hisses where it lands",
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "target",
+              "resourceId": "poison",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "brood-behemoth",
+      "name": "Brood Behemoth",
+      "objectType": "unit",
+      "properties": {
+        "attack": 7,
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 3
+      },
+      "tags": [
+        "organic",
+        "retaliate"
+      ],
+      "icon": "🐲",
+      "artworkDescription": "The Cocoon delivered on its promise"
+    },
+    {
+      "id": "cocoon-shell",
+      "name": "Cocoon",
+      "objectType": "unit",
+      "duration": 2,
+      "expiresInto": "brood-behemoth",
+      "properties": {
+        "attack": 0,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "tags": [
+        "organic"
+      ],
+      "icon": "🛡️",
+      "artworkDescription": "Break it now or regret it in two turns"
+    },
+    {
+      "id": "evolve-ravager",
+      "name": "Evolve: Ravager",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 1
+      },
+      "icon": "🧬",
+      "artworkDescription": "The flesh reshapes itself",
+      "onPlay": {
+        "id": "er",
+        "name": "Larva becomes Ravager",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "tag": "larva",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "transform",
+            "scope": "target",
+            "cardId": "ravager"
+          }
+        ]
+      }
+    },
+    {
+      "id": "evolve-carapace",
+      "name": "Evolve: Carapace Drone",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 2
+      },
+      "icon": "🧬",
+      "artworkDescription": "Armor grows where skin was",
+      "onPlay": {
+        "id": "ec",
+        "name": "Larva becomes Carapace Drone",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "tag": "larva",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "transform",
+            "scope": "target",
+            "cardId": "carapace-drone"
+          }
+        ]
+      }
+    },
+    {
+      "id": "evolve-spitter",
+      "name": "Evolve: Spitter",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 1
+      },
+      "icon": "🧬",
+      "artworkDescription": "Venom sacs swell along its spine",
+      "onPlay": {
+        "id": "es",
+        "name": "Larva becomes Spitter",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "tag": "larva",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "transform",
+            "scope": "target",
+            "cardId": "spitter"
+          }
+        ]
+      }
+    },
+    {
+      "id": "metamorphosis",
+      "name": "Metamorphosis",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 3
+      },
+      "icon": "🦋",
+      "artworkDescription": "Patience becomes monstrosity",
+      "onPlay": {
+        "id": "meta",
+        "name": "Ravager becomes Cocoon",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "tag": "ravager",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "transform",
+            "scope": "target",
+            "cardId": "cocoon-shell"
+          }
+        ]
+      }
+    },
+    {
+      "id": "egg-cluster",
+      "name": "Egg Cluster",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 1
+      },
+      "icon": "🪺",
+      "artworkDescription": "The next generation, in bulk",
+      "onPlay": {
+        "id": "ecl",
+        "name": "Create two Eggs",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "egg"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "egg"
+          }
+        ]
+      }
+    },
+    {
+      "id": "brood-warrior",
+      "name": "Brood Warrior",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 2
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 1
+      },
+      "tags": [
+        "organic"
+      ],
+      "icon": "🦗",
+      "artworkDescription": "Grown for one purpose"
+    },
+    {
+      "id": "ravenous-swarm",
+      "name": "Ravenous Swarm",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 4
+      },
+      "properties": {
+        "attack": 5,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "tags": [
+        "organic"
+      ],
+      "icon": "🦟",
+      "artworkDescription": "A cloud with an appetite"
+    },
+    {
+      "id": "broodguard",
+      "name": "Broodguard",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 3
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "tags": [
+        "organic",
+        "guard",
+        "retaliate"
+      ],
+      "icon": "🦂",
+      "artworkDescription": "It dies before the Hive does"
+    },
+    {
+      "id": "bloated-spawn",
+      "name": "Bloated Spawn",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 2
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "icon": "🎈",
+      "artworkDescription": "It is full of... more of them",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "corpse-harvester",
+      "name": "Corpse Harvester",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 2
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "tags": [
+        "organic"
+      ],
+      "icon": "🪱",
+      "artworkDescription": "Nothing is wasted in the Brood",
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "oncePerTurn": true,
+          "effects": [
+            {
+              "type": "gain_resource_all_tagged",
+              "tag": "hive",
+              "resourceId": "biomass",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hardened-carapace",
+      "name": "Hardened Carapace",
+      "objectType": "equipment",
+      "playCosts": {
+        "biomass": 1
+      },
+      "slots": [
+        "mutation"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "icon": "🐚",
+      "artworkDescription": "A permanent gift from the gene-pool"
+    },
+    {
+      "id": "additional-limbs",
+      "name": "Additional Limbs",
+      "objectType": "equipment",
+      "playCosts": {
+        "biomass": 1
+      },
+      "slots": [
+        "mutation"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "icon": "🦾",
+      "artworkDescription": "More arms, more harm"
+    },
+    {
+      "id": "thieves-guild",
+      "name": "Thieves' Guild",
+      "objectType": "headquarters",
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 1
+      },
+      "icon": "🎭",
+      "artworkDescription": "Behind the tailor shop, down the stairs, third knock",
+      "abilities": [
+        {
+          "id": "extort",
+          "name": "Extort",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spymaster",
+      "name": "Spymaster",
+      "objectType": "hero",
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "resources": {
+        "ap": 0
+      },
+      "icon": "🕴️",
+      "artworkDescription": "Knows what you had for breakfast. And why.",
+      "abilities": [
+        {
+          "id": "shadow-step",
+          "name": "Shadow Step",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "plant-evidence",
+          "name": "Plant Evidence",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "steal_resource",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spy",
+      "name": "Spy",
+      "objectType": "spy-unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "icon": "🕵️",
+      "artworkDescription": "You have already forgotten this face",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "id": "infiltrate",
+          "name": "Infiltrate",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "infiltrate"
+            }
+          ]
+        },
+        {
+          "id": "steal-secrets",
+          "name": "Steal Secrets",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "intel",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "steal_resource",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "sabotage",
+          "name": "Sabotage",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "intel",
+              "amount": 4
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "host"
+            },
+            {
+              "type": "destroy",
+              "scope": "self"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ambush",
+      "name": "Ambush",
+      "objectType": "spell",
+      "playCost": 1,
+      "isSecret": true,
+      "icon": "🗡️",
+      "artworkDescription": "The alley was a little too quiet",
+      "triggers": [
+        {
+          "event": "onEnemyAttack",
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "smoke-bomb",
+      "name": "Smoke Bomb",
+      "objectType": "spell",
+      "playCost": 1,
+      "timing": "reaction",
+      "reactionTo": [
+        "attackDeclared"
+      ],
+      "icon": "💨",
+      "artworkDescription": "Now you see them...",
+      "onPlay": {
+        "id": "sb",
+        "name": "+3 Armor until end of turn",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "character",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "buff_target_until_end_of_turn",
+            "scope": "target",
+            "propertyId": "armor",
+            "amount": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "cutthroat",
+      "name": "Cutthroat",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 1
+      },
+      "icon": "🔪",
+      "artworkDescription": "Paid by the throat",
+      "triggers": [
+        {
+          "event": "onKill",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "footpad",
+      "name": "Footpad",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 1
+      },
+      "icon": "🥾",
+      "artworkDescription": "Quick fingers, quicker feet"
+    },
+    {
+      "id": "informant",
+      "name": "Informant",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "icon": "🗣️",
+      "artworkDescription": "Everyone talks. Eventually.",
+      "abilities": [
+        {
+          "id": "tip-off",
+          "name": "Tip Off",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shadow-blade",
+      "name": "Shadow Blade",
+      "objectType": "equipment",
+      "playCost": 2,
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 2
+        }
+      ],
+      "icon": "🌑",
+      "artworkDescription": "It drinks the light around it"
+    },
+    {
+      "id": "dagger-throw",
+      "name": "Dagger Throw",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "🎯",
+      "artworkDescription": "From nowhere, to the point",
+      "onPlay": {
+        "id": "dt",
+        "name": "2 direct damage",
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "laboratory",
+      "name": "Laboratory",
+      "objectType": "laboratory-hq",
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "resourceCapacities": {
+        "reagents": 10
+      },
+      "tags": [
+        "lab"
+      ],
+      "icon": "⚗️",
+      "artworkDescription": "Please do not touch the bubbling green one",
+      "abilities": [
+        {
+          "id": "distill",
+          "name": "Distill",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "reagents",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "master-alchemist",
+      "name": "Master Alchemist",
+      "objectType": "hero",
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "resources": {
+        "ap": 0
+      },
+      "icon": "🧑‍🔬",
+      "artworkDescription": "Considers explosions a form of peer review",
+      "abilities": [
+        {
+          "id": "experiment",
+          "name": "Experiment",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource_all_tagged",
+              "tag": "lab",
+              "resourceId": "reagents",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sheep",
+      "name": "Sheep",
+      "objectType": "unit",
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "icon": "🐑",
+      "artworkDescription": "Baa."
+    },
+    {
+      "id": "freeze",
+      "name": "Freeze",
+      "objectType": "spell",
+      "playCosts": {
+        "reagents": 2
+      },
+      "icon": "🧊",
+      "artworkDescription": "Flash-frozen mid-swing",
+      "onPlay": {
+        "id": "fr",
+        "name": "Tap; skips its next untap",
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "character",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "freeze",
+            "scope": "target"
+          }
+        ]
+      }
+    },
+    {
+      "id": "corrosive-acid",
+      "name": "Corrosive Acid",
+      "objectType": "spell",
+      "playCosts": {
+        "reagents": 2
+      },
+      "icon": "🧪",
+      "artworkDescription": "Armor, meet solvent",
+      "onPlay": {
+        "id": "ca",
+        "name": "-2 Armor until end of turn",
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "buff_target_until_end_of_turn",
+            "scope": "target",
+            "propertyId": "armor",
+            "amount": -2
+          }
+        ]
+      }
+    },
+    {
+      "id": "weaken",
+      "name": "Weaken",
+      "objectType": "spell",
+      "playCosts": {
+        "reagents": 2
+      },
+      "icon": "🫗",
+      "artworkDescription": "Suddenly the sword feels very heavy",
+      "onPlay": {
+        "id": "wk",
+        "name": "-2 Attack until your next turn",
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "buff_target_until_end_of_turn",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": -2,
+            "untilEvent": "ownerNextTurnStart"
+          }
+        ]
+      }
+    },
+    {
+      "id": "acid-flask",
+      "name": "Acid Flask",
+      "objectType": "spell",
+      "playCosts": {
+        "reagents": 3
+      },
+      "icon": "🍶",
+      "artworkDescription": "Handle with gloves. Throw without hesitation.",
+      "onPlay": {
+        "id": "af",
+        "name": "3 direct damage",
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "alchemists-fire",
+      "name": "Alchemist's Fire",
+      "objectType": "spell",
+      "playCosts": {
+        "reagents": 4
+      },
+      "icon": "🔥",
+      "artworkDescription": "It burns. Then it keeps burning.",
+      "onPlay": {
+        "id": "alf",
+        "name": "2 damage + 2 poison",
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 2
+          },
+          {
+            "type": "gain_resource",
+            "scope": "target",
+            "resourceId": "poison",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "transmutation",
+      "name": "Transmutation",
+      "objectType": "spell",
+      "playCosts": {
+        "reagents": 5
+      },
+      "icon": "🐑",
+      "artworkDescription": "The council ruled it \"technically not murder\"",
+      "onPlay": {
+        "id": "tm",
+        "name": "Unit becomes a Sheep",
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "transform",
+            "scope": "target",
+            "cardId": "sheep"
+          }
+        ]
+      }
+    },
+    {
+      "id": "reagent-infusion",
+      "name": "Reagent Infusion",
+      "objectType": "spell",
+      "playCosts": {
+        "reagents": 1
+      },
+      "icon": "💉",
+      "artworkDescription": "Entirely safe. Probably.",
+      "onPlay": {
+        "id": "ri",
+        "name": "+2 Attack until end of turn",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "character",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "buff_target_until_end_of_turn",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "philosophers-stone",
+      "name": "Philosopher's Stone",
+      "objectType": "spell",
+      "playCosts": {
+        "reagents": 2
+      },
+      "icon": "💛",
+      "artworkDescription": "Lead in, gold out",
+      "onPlay": {
+        "id": "ps",
+        "name": "Gain 3 Gold",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "gold",
+            "amount": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "vial-carrier",
+      "name": "Vial Carrier",
+      "objectType": "unit",
+      "playCosts": {
+        "reagents": 1
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 1
+      },
+      "icon": "🧫",
+      "artworkDescription": "Walks very, very carefully"
+    },
+    {
+      "id": "guard-golem",
+      "name": "Guard Golem",
+      "objectType": "unit",
+      "playCosts": {
+        "reagents": 3
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 2
+      },
+      "tags": [
+        "guard",
+        "retaliate"
+      ],
+      "icon": "🗿",
+      "artworkDescription": "Alchemy given a jawline"
+    },
+    {
+      "id": "iron-golem",
+      "name": "Iron Golem",
+      "objectType": "unit",
+      "playCosts": {
+        "reagents": 5
+      },
+      "properties": {
+        "attack": 4,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 3
+      },
+      "tags": [
+        "retaliate"
+      ],
+      "icon": "🤖",
+      "artworkDescription": "Slow, patient, unstoppable"
+    },
+    {
+      "id": "bloodfang",
+      "name": "Bloodfang, Raider Chief",
+      "objectType": "hero",
+      "playCost": 0,
+      "properties": {
+        "attack": 6,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "resources": {
+        "ap": 0
+      },
+      "icon": "🐺",
+      "artworkDescription": "Promoted by acclamation. The acclamation was screaming.",
+      "onPlay": {
+        "id": "promote",
+        "name": "Promote a blooded Raider (3+ Glory)",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "tag": "raider",
+          "min": 1,
+          "max": 1,
+          "requireResourceId": "glory",
+          "requireResourceAmount": 3
+        },
+        "effects": [
+          {
+            "type": "destroy",
+            "scope": "target"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "frenzy",
+          "name": "Frenzy",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "blood-price",
+          "name": "Blood Price",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1,
+            "excludeSelf": true
+          },
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            },
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 3
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dirty-trick",
+      "name": "Dirty Trick",
+      "objectType": "spell",
+      "playCost": 1,
+      "timing": "reaction",
+      "reactionTo": [
+        "attackDeclared"
+      ],
+      "icon": "🃏",
+      "artworkDescription": "Sand in the eyes never goes out of style",
+      "onPlay": {
+        "id": "dtk",
+        "name": "-1 Armor until end of turn",
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "buff_target_until_end_of_turn",
+            "scope": "target",
+            "propertyId": "armor",
+            "amount": -1
+          }
+        ]
+      }
+    },
+    {
+      "id": "wooden-palisade",
+      "name": "Wooden Palisade",
+      "objectType": "building",
+      "playCost": 1,
+      "constructionRequirement": 1,
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 2
+      },
+      "tags": [
+        "fortification"
+      ],
+      "icon": "🪵",
+      "artworkDescription": "Sharpened logs and stubbornness"
+    },
+    {
+      "id": "marketplace",
+      "name": "Marketplace",
+      "objectType": "building",
+      "playCost": 4,
+      "constructionRequirement": 3,
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "icon": "🏪",
+      "artworkDescription": "Everything has a price; most of it is fair",
+      "abilities": [
+        {
+          "id": "trade",
+          "name": "Trade",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "merchant",
+      "name": "Merchant",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "icon": "🧳",
+      "artworkDescription": "Knows a supplier for everything",
+      "abilities": [
+        {
+          "id": "deal",
+          "name": "Make a Deal",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "emergency-repairs",
+      "name": "Emergency Repairs",
+      "objectType": "spell",
+      "playCost": 2,
+      "timing": "reaction",
+      "reactionTo": [
+        "attackDeclared"
+      ],
+      "icon": "🔨",
+      "artworkDescription": "Hold the beam! HOLD THE BEAM!",
+      "onPlay": {
+        "id": "emr",
+        "name": "+3 Armor until end of turn",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "building",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "buff_target_until_end_of_turn",
+            "scope": "target",
+            "propertyId": "armor",
+            "amount": 3
+          }
+        ]
+      }
     }
   ],
   "decks": [
@@ -1931,14 +4722,18 @@
       "hq": "town-hall",
       "hero": "town-chief",
       "cards": {
-        "gold-mine": 6,
-        "bag-of-gold": 3,
-        "peasant": 6,
+        "gold-mine": 4,
+        "bag-of-gold": 2,
+        "peasant": 5,
         "barracks": 3,
-        "archery-range": 2,
+        "archery-range": 1,
         "tavern": 2,
         "shrine": 1,
-        "soldier": 3,
+        "wooden-palisade": 2,
+        "marketplace": 1,
+        "merchant": 1,
+        "emergency-repairs": 2,
+        "soldier": 2,
         "archer": 2,
         "town-guard": 2,
         "mercenary": 2,
@@ -1970,8 +4765,9 @@
         "battle-axe": 2,
         "wooden-shield": 2,
         "mercenary": 2,
-        "fireball": 2,
-        "healing-salve": 3
+        "fireball": 1,
+        "dirty-trick": 3,
+        "bloodfang": 1
       }
     },
     {
@@ -1990,6 +4786,112 @@
         "repair-nanobots": 4,
         "energy-cell": 4,
         "emergency-repair": 4
+      }
+    },
+    {
+      "id": "conclave",
+      "name": "Arcane Conclave",
+      "description": "A network of casters pooling mana into the Nexus. Counterspells, fading summons, and fireballs for everyone.",
+      "hq": "arcane-nexus",
+      "hero": "archmage",
+      "cards": {
+        "apprentice-mage": 4,
+        "mana-seer": 4,
+        "pyromancer": 3,
+        "conjurer": 3,
+        "mana-burst": 4,
+        "arcane-rain": 3,
+        "overcharge": 3,
+        "mana-potion": 2,
+        "arcane-fireball": 4,
+        "counterspell": 3,
+        "arcane-shield": 3,
+        "mage-armor": 2,
+        "arcane-blade": 2
+      }
+    },
+    {
+      "id": "undead",
+      "name": "The Restless Court",
+      "description": "Death is inventory. The Graveyard banks corpses; the Necromancer turns every casualty into power.",
+      "hq": "graveyard",
+      "hero": "necromancer",
+      "cards": {
+        "skeleton": 4,
+        "shambling-corpse": 4,
+        "plague-zombie": 4,
+        "tomb-spider": 4,
+        "grave-ghoul": 4,
+        "bone-collector": 4,
+        "restless-dead": 3,
+        "flesh-golem": 2,
+        "corpse-explosion": 4,
+        "deathly-wail": 4,
+        "ossuary": 2,
+        "lich": 1
+      }
+    },
+    {
+      "id": "brood",
+      "name": "The Brood",
+      "description": "Eggs hatch, larvae evolve, and everything is food. Wants its own units to die almost as much as yours.",
+      "hq": "the-hive",
+      "hero": "broodmother",
+      "cards": {
+        "evolve-ravager": 4,
+        "evolve-carapace": 3,
+        "evolve-spitter": 3,
+        "metamorphosis": 2,
+        "egg-cluster": 4,
+        "brood-warrior": 4,
+        "ravenous-swarm": 3,
+        "broodguard": 2,
+        "bloated-spawn": 4,
+        "corpse-harvester": 3,
+        "hardened-carapace": 2,
+        "additional-limbs": 2,
+        "carapace-drone": 2,
+        "spitter": 2
+      }
+    },
+    {
+      "id": "shadow",
+      "name": "Shadow Guild",
+      "description": "Spies burrow under enemy buildings, secrets wait face-down, and gold changes pockets unseen.",
+      "hq": "thieves-guild",
+      "hero": "spymaster",
+      "cards": {
+        "spy": 4,
+        "ambush": 4,
+        "cutthroat": 4,
+        "smoke-bomb": 3,
+        "shadow-blade": 2,
+        "footpad": 4,
+        "informant": 4,
+        "loot": 4,
+        "bag-of-gold": 3,
+        "mercenary": 4,
+        "dagger-throw": 4
+      }
+    },
+    {
+      "id": "alchemists",
+      "name": "Alchemist Guild",
+      "description": "Weak bodies, strong chemistry. Freeze, dissolve, weaken and transmute the mighty into mutton.",
+      "hq": "laboratory",
+      "hero": "master-alchemist",
+      "cards": {
+        "freeze": 4,
+        "corrosive-acid": 4,
+        "weaken": 4,
+        "acid-flask": 4,
+        "alchemists-fire": 3,
+        "transmutation": 2,
+        "reagent-infusion": 4,
+        "philosophers-stone": 4,
+        "vial-carrier": 4,
+        "guard-golem": 4,
+        "iron-golem": 3
       }
     }
   ],
@@ -2025,6 +4927,7 @@
     "mainHand": 1,
     "offHand": 1,
     "body": 1,
-    "head": 1
+    "head": 1,
+    "mutation": 3
   }
 }

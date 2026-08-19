@@ -16,7 +16,9 @@ public class CardPlayService
 
     public (bool, string?) ExecutePlayCard(GameInstance game, string playerId, ActionRequest action)
     {
-        if (game.CurrentPhaseId != "main")
+        bool inReactionWindow = game.State == GameState.WaitingForReaction;
+
+        if (!inReactionWindow && game.CurrentPhaseId != "main")
             return (false, "Can only play cards during Main Phase");
 
         var player = game.Players.First(p => p.Id == playerId);
@@ -28,10 +30,22 @@ public class CardPlayService
         var cardDef = GameQueries.GetCardDefinition(game, obj);
         if (cardDef == null) return (false, "Card definition not found");
 
-        // Multi-resource cost after discounts
+        if (inReactionWindow)
+        {
+            if (cardDef.Timing != "reaction" && cardDef.Timing != "both")
+                return (false, "Only reaction cards can be played now");
+            if (game.ReactionWindowEvent != null && !cardDef.ReactionTo.Contains(game.ReactionWindowEvent))
+                return (false, "This reaction does not answer the current event");
+        }
+        else if (cardDef.Timing == "reaction")
+        {
+            return (false, "Reaction — play it when an enemy acts");
+        }
+
+        // Multi-resource cost after discounts; entity-scoped resources come from your HQ bank
         var costs = GameQueries.EffectivePlayCosts(game, playerId, cardDef);
         foreach (var (resId, amount) in costs)
-            if (player.Resources.GetValueOrDefault(resId) < amount)
+            if (GameQueries.AvailableForPlayCost(game, player, resId) < amount)
                 return (false, $"Requires {GameQueries.FormatCosts(costs)}");
 
         if (cardDef.HousingCost is int housing &&
@@ -81,19 +95,56 @@ public class CardPlayService
             if (slotError != null) return (false, slotError);
         }
 
-        // Pay
+        // Pay (entity-scoped costs drain the HQ bank)
         foreach (var (resId, amount) in costs)
-            if (amount > 0)
+        {
+            if (amount <= 0) continue;
+            if (GameQueries.IsEntityScopedResource(game, resId))
+            {
+                var bank = GameQueries.FindResourceBank(game, playerId)!;
+                _s.Mutator.GainEntityResource(game, bank, resId, -amount);
+            }
+            else
+            {
                 _s.Mutator.SpendResource(game, player, resId, amount);
+            }
+        }
         ConsumeCostModifiers(game, playerId, cardDef);
 
         // Resolve
-        if (attachHost != null)
+        if (cardDef.IsSecret)
+        {
+            obj.ZoneId = "secrets";
+            obj.FaceDown = true;
+            game.Log.Add($"{player.Name} plays a card face-down.");
+        }
+        else if (attachHost != null)
         {
             Attach(game, obj, cardDef, attachHost, attachSlots, player);
         }
         else if (GameQueries.IsObjectTypeOrSubtype(game, obj.ObjectType, "spell"))
         {
+            // Sorceries can be countered: open a window when the opponent holds an answer
+            var opponent = GameQueries.GetOpponent(game, player);
+            if (!inReactionWindow && opponent != null &&
+                HasReactionTo(game, opponent.Id, "spellCast"))
+            {
+                obj.ZoneId = "stack";
+                game.Stack.Push(new StackItem
+                {
+                    Id = $"stk_{game.Stack.Items.Count + 1}_{game.TurnNumber}",
+                    Kind = "spell",
+                    ControllerId = playerId,
+                    SourceObjectId = obj.Id,
+                    TargetIds = targetIds
+                });
+                game.State = GameState.WaitingForReaction;
+                game.ReactionPlayerId = opponent.Id;
+                game.ReactionWindowEvent = "spellCast";
+                game.Log.Add($"{player.Name} begins casting {obj.Name}... {opponent.Name} may respond.");
+                return (true, null);
+            }
+
             game.Log.Add($"{player.Name} casts {obj.Name}!");
             if (cardDef.OnPlay != null)
                 _s.Effects.ApplyAbility(game, cardDef.OnPlay, obj, player, targetIds);
@@ -103,6 +154,7 @@ public class CardPlayService
         {
             obj.ZoneId = "battlefield";
             obj.HasSummoningSickness = true;
+            if (cardDef.Duration is int lifetime) obj.Lifetime = lifetime;
             if (game.Definition.BattlefieldLines != null)
                 obj.Line = game.Definition.BattlefieldLines.SpawnLine;
 
@@ -123,6 +175,30 @@ public class CardPlayService
 
         _s.Bus.Publish(game, new GameEvent { Type = GameEventTypes.CardPlayed, Target = obj, Player = player });
         return (true, null);
+    }
+
+    private static bool HasReactionTo(GameInstance game, string playerId, string evt) =>
+        CombatService.HasPlayableReaction(game, playerId, evt);
+
+    /// <summary>Resolve a spell that sat on the stack (unless it was countered).</summary>
+    public void ResolveSpellItem(GameInstance game, StackItem item)
+    {
+        var obj = game.Objects.FirstOrDefault(o => o.Id == item.SourceObjectId);
+        if (obj == null) return;
+        var player = game.Players.First(p => p.Id == item.ControllerId);
+        var cardDef = GameQueries.GetCardDefinition(game, obj);
+
+        if (item.Cancelled)
+        {
+            game.Log.Add($"{obj.Name} fizzles.");
+            obj.ZoneId = "discard";
+            return;
+        }
+
+        game.Log.Add($"{player.Name} casts {obj.Name}!");
+        if (cardDef?.OnPlay != null)
+            _s.Effects.ApplyAbility(game, cardDef.OnPlay, obj, player, item.TargetIds);
+        obj.ZoneId = "discard";
     }
 
     public static List<string> GetAttachSlots(CardDefinition cardDef)
@@ -195,6 +271,7 @@ public class CardPlayService
         attachment.Slot = slots[0];
         attachment.OccupiedSlots = new List<string>(slots);
         attachment.HasSummoningSickness = false;
+        if (attachDef.Duration is int lifetime) attachment.Lifetime = lifetime; // magic equipment fades
         game.Log.Add($"{player.Name} equips {attachment.Name} on {host.Name} ({string.Join("+", slots)}).");
 
         foreach (var attachMod in attachDef.AttachModifiers)

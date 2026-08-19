@@ -8,7 +8,16 @@ public class TurnService
 {
     private readonly EngineServices _s;
 
-    public TurnService(EngineServices services) => _s = services;
+    public TurnService(EngineServices services)
+    {
+        _s = services;
+        // draw_cards effects route through the bus so effect handlers stay decoupled
+        services.Bus.Subscribe((game, evt) =>
+        {
+            if (evt.Type == "requestDraw" && evt.Player != null)
+                DrawCard(game, evt.Player);
+        });
+    }
 
     public void EndPhase(GameInstance game, string playerId)
     {
@@ -69,11 +78,59 @@ public class TurnService
                     {
                         if (obj.IsTapped)
                         {
-                            obj.IsTapped = false;
-                            game.Log.Add($"{obj.Name} untapped.");
+                            if (obj.SkipNextUntap)
+                            {
+                                obj.SkipNextUntap = false;
+                                game.Log.Add($"{obj.Name} is frozen and stays tapped.");
+                            }
+                            else
+                            {
+                                obj.IsTapped = false;
+                                game.Log.Add($"{obj.Name} untapped.");
+                            }
                         }
                         obj.HasMovedThisTurn = false;
                         obj.HasSummoningSickness = false;
+                    }
+                    break;
+
+                case "tick_lifetimes":
+                    foreach (var obj in game.Objects
+                        .Where(o => o.ControllerId == game.ActivePlayerId && !o.IsDestroyed &&
+                            o.ZoneId == "battlefield" && o.Lifetime.HasValue).ToList())
+                    {
+                        obj.Lifetime--;
+                        if (obj.Lifetime > 0)
+                        {
+                            game.Log.Add($"{obj.Name} has {obj.Lifetime} turn(s) remaining.");
+                            continue;
+                        }
+                        var def = GameQueries.GetCardDefinition(game, obj);
+                        if (def?.ExpiresInto != null)
+                        {
+                            var newDef = game.Definition.Cards.FirstOrDefault(c => c.Id == def.ExpiresInto);
+                            if (newDef != null)
+                            {
+                                obj.Lifetime = newDef.Duration;
+                                _s.Factory.Transform(game, obj, newDef);
+                                continue;
+                            }
+                        }
+                        game.Log.Add($"{obj.Name} expires!");
+                        _s.Mutator.DestroyObject(game, obj);
+                    }
+                    break;
+
+                case "tick_poison":
+                    foreach (var obj in game.Objects
+                        .Where(o => o.ControllerId == game.ActivePlayerId && !o.IsDestroyed &&
+                            o.ZoneId == "battlefield" && o.Resources.GetValueOrDefault("poison") > 0).ToList())
+                    {
+                        var stacks = obj.Resources["poison"];
+                        game.Log.Add($"{obj.Name} suffers from poison ({stacks} stack{(stacks > 1 ? "s" : "")}).");
+                        _s.Mutator.ApplyDirectDamage(game, obj, stacks);
+                        if (!obj.IsDestroyed)
+                            obj.Resources["poison"] = stacks - 1;
                     }
                     break;
 

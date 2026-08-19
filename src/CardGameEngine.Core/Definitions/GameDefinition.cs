@@ -122,6 +122,12 @@ public class CardDefinition
     public List<string>? Slots { get; set; } // multi-slot equipment (e.g. two-handed: mainHand+offHand); overrides Slot
     public string AttachTo { get; set; } = "hero"; // "hero" (auto-attach, robot modules) or "chooseCharacter" (equipment)
     public List<string> AttachTags { get; set; } = new(); // tags granted to the bearer while attached (e.g. longbow -> ranged)
+    public int? Duration { get; set; } // lifetime in own turns; at 0 the card expires (destroyed or transforms)
+    public string? ExpiresInto { get; set; } // card id this transforms into when Duration runs out (Cocoon -> Behemoth)
+    public Dictionary<string, int>? ResourceCapacities { get; set; } // per-card entity resource caps (mana 6, corpses 8, ...)
+    public string Timing { get; set; } = "main"; // "main", "reaction" (instant), or "both"
+    public List<string> ReactionTo { get; set; } = new(); // events this reaction answers: "attackDeclared", "spellCast"
+    public bool IsSecret { get; set; } // played face-down; auto-reveals when its trigger event occurs
     public AbilityDefinition? OnPlay { get; set; } // resolved when the card is played from hand
     public List<TriggerDefinition> Triggers { get; set; } = new();
     public int? BonusAttackVsBuildings { get; set; } // extra attack when the target is a building
@@ -188,6 +194,9 @@ public class ChoiceDefinition
     public int Max { get; set; } = 1;
     public bool RequireUntapped { get; set; } // e.g. harvest needs an untapped Worker
     public bool RequireUnderConstruction { get; set; } // e.g. builders target unfinished buildings
+    public string? RequireResourceId { get; set; } // target must hold at least RequireResourceAmount of this
+    public int RequireResourceAmount { get; set; }
+    public bool ExcludeSelf { get; set; } // target may not be the ability's source (sacrifice another unit)
 }
 
 public class EffectDefinition

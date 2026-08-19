@@ -146,6 +146,7 @@ public static class DefaultHandlers
             }
             var obj = s.Factory.CreateObjectInstance(ctx.Game, cardDef, ctx.Player.Id, "battlefield");
             obj.HasSummoningSickness = true;
+            if (cardDef.Duration is int lifetime) obj.Lifetime = lifetime;
             ctx.Game.Objects.Add(obj);
             ctx.Game.Log.Add($"{ctx.Player.Name} summons {cardDef.Name}!");
             s.Bus.Publish(ctx.Game, new GameEvent { Type = GameEventTypes.ObjectSummoned, Target = obj, Player = ctx.Player });
@@ -279,8 +280,85 @@ public static class DefaultHandlers
             ctx.Game.Log.Add($"{ctx.Source.Name} plunders {taken} {resId} from {opponent.Name}! ({taken} tokens stored)");
         });
 
+        e.Register("direct_damage", ctx =>
+        {
+            var obj = ctx.ResolveScope("target");
+            if (obj != null) m.ApplyDirectDamage(ctx.Game, obj, ctx.Effect.Amount ?? 0, ctx.Source);
+        });
+
+        e.Register("draw_cards", ctx =>
+        {
+            // Draw is a turn concern; publish an event the RuleEngine wires to TurnService
+            for (int i = 0; i < (ctx.Effect.Amount ?? 1); i++)
+                s.Bus.Publish(ctx.Game, new GameEvent { Type = "requestDraw", Player = ctx.Player });
+        });
+
+        // Move an entity resource between the ability's source and its target
+        e.Register("transfer_resource", ctx =>
+        {
+            if (ctx.Source == null || ctx.Target == null) return;
+            var resId = ctx.Effect.ResourceId ?? "mana";
+            bool toTarget = (ctx.Effect.Scope ?? "target") != "self";
+            var from = toTarget ? ctx.Source : ctx.Target;
+            var to = toTarget ? ctx.Target : ctx.Source;
+
+            var amount = Math.Min(ctx.Effect.Amount ?? int.MaxValue, from.Resources.GetValueOrDefault(resId));
+            var room = GameQueries.ResourceCapacity(ctx.Game, to, resId) - to.Resources.GetValueOrDefault(resId);
+            amount = Math.Max(0, Math.Min(amount, room));
+            if (amount == 0) return;
+
+            from.Resources[resId] = from.Resources.GetValueOrDefault(resId) - amount;
+            to.Resources[resId] = to.Resources.GetValueOrDefault(resId) + amount;
+            ctx.Game.Log.Add($"{amount} {resId} flows from {from.Name} to {to.Name}.");
+        });
+
+        e.Register("gain_resource_all_tagged", ctx =>
+        {
+            var resId = ctx.Effect.ResourceId ?? "mana";
+            var amount = ctx.Effect.Amount ?? 1;
+            foreach (var obj in GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
+                         .Where(o => o.Tags.Contains(ctx.Effect.Tag ?? "")).ToList())
+                m.GainEntityResource(ctx.Game, obj, resId, amount);
+        });
+
+        // A spy leaves your battlefield and burrows under an enemy building
+        e.Register("infiltrate", ctx =>
+        {
+            if (ctx.Source == null || ctx.Target == null) return;
+            ctx.Source.AttachedToId = ctx.Target.Id;
+            ctx.Source.Slot = "infiltrated";
+            ctx.Source.OccupiedSlots = new List<string>();
+            ctx.Source.FaceDown = true;
+            ctx.Game.Log.Add($"{ctx.Source.Name} infiltrates {ctx.Target.Name}!");
+        });
+
+        // Counterspell: cancel the spell currently on the stack
+        e.Register("counter_spell", ctx =>
+        {
+            var item = ctx.Game.Stack.Items.LastOrDefault(i => i.Kind == "spell" && !i.Cancelled);
+            if (item == null)
+            {
+                ctx.Game.Log.Add("...but there is no spell to counter.");
+                return;
+            }
+            item.Cancelled = true;
+            var spellObj = ctx.Game.Objects.FirstOrDefault(o => o.Id == item.SourceObjectId);
+            ctx.Game.Log.Add($"{spellObj?.Name ?? "The spell"} is countered!");
+        });
+
+        // Freeze: tap and skip the next untap step
+        e.Register("freeze", ctx =>
+        {
+            var obj = ctx.ResolveScope("target");
+            if (obj == null) return;
+            m.Tap(ctx.Game, obj);
+            obj.SkipNextUntap = true;
+            ctx.Game.Log.Add($"{obj.Name} is frozen solid!");
+        });
+
         e.Register("revive_hero", ctx =>
         {
+            if (GameQueries.FindLivingHero(ctx.Game, ctx.Player.Id) != null) return; // hero limit 1
             var deadHero = ctx.Game.Objects.FirstOrDefault(o =>
                 o.OwnerId == ctx.Player.Id && o.IsDestroyed &&
                 GameQueries.IsObjectTypeOrSubtype(ctx.Game, o.ObjectType, "hero"));

@@ -20,6 +20,9 @@ public class GameInstance
     public HashSet<string> FiredOncePerTurn { get; set; } = new();
     // Active cost discounts (e.g. Archery Range: next Archer costs 1 less Training)
     public List<CostModifierInstance> ActiveCostModifiers { get; set; } = new();
+    // Reaction window: who may respond while State == WaitingForReaction
+    public string? ReactionPlayerId { get; set; }
+    public string? ReactionWindowEvent { get; set; } // "attackDeclared" or "spellCast"
 }
 
 public class CostModifierInstance
@@ -77,6 +80,9 @@ public class ObjectInstance
     public List<string> OccupiedSlots { get; set; } = new(); // all slots occupied (two-handed = both hands)
     public bool UnderConstruction { get; set; }
     public int ConstructionProgress { get; set; }
+    public int? Lifetime { get; set; } // remaining turns for duration cards; expires at 0
+    public bool SkipNextUntap { get; set; } // frozen: stays tapped through one untap step
+    public bool FaceDown { get; set; } // secrets: identity hidden from opponents until revealed
 }
 
 public class ResolutionStack
@@ -96,10 +102,12 @@ public class ResolutionStack
 public class StackItem
 {
     public string Id { get; set; } = "";
+    public string Kind { get; set; } = ""; // "attack" or "spell"
     public string ControllerId { get; set; } = "";
     public string SourceObjectId { get; set; } = "";
     public string AbilityId { get; set; } = "";
     public List<string> TargetIds { get; set; } = new();
+    public bool Cancelled { get; set; } // countered — fizzles instead of resolving
     public Dictionary<string, object> Parameters { get; set; } = new();
 }
 

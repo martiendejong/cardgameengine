@@ -3,14 +3,29 @@ using CardGameEngine.Core.Runtime;
 namespace CardGameEngine.Engine;
 
 /// <summary>
-/// Attack resolution. Publishes DamageDealt/UnitKilled/AttackResolved events —
-/// triggers (Spoils of War, Scavenger bounty, ...) react via the bus, not here.
+/// Attack resolution with a declaration step: declaring an attack publishes
+/// attackDeclared (revealing Ambush-style secrets) and — when the defender holds a
+/// playable reaction — opens a reaction window before damage resolves.
 /// </summary>
 public class CombatService
 {
     private readonly EngineServices _s;
 
     public CombatService(EngineServices services) => _s = services;
+
+    /// <summary>Does this player hold a playable reaction card answering the given event?</summary>
+    public static bool HasPlayableReaction(GameInstance game, string playerId, string windowEvent)
+    {
+        var player = game.Players.First(p => p.Id == playerId);
+        return game.Objects
+            .Where(o => o.OwnerId == playerId && o.ZoneId == "hand" && !o.IsDestroyed)
+            .Select(o => GameQueries.GetCardDefinition(game, o))
+            .Any(def => def != null
+                && (def.Timing == "reaction" || def.Timing == "both")
+                && def.ReactionTo.Contains(windowEvent)
+                && GameQueries.EffectivePlayCosts(game, playerId, def)
+                    .All(kv => GameQueries.AvailableForPlayCost(game, player, kv.Key) >= kv.Value));
+    }
 
     public (bool, string?) ExecuteAttack(GameInstance game, string playerId, ActionRequest action)
     {
@@ -33,12 +48,59 @@ public class CombatService
         if (!_s.Targeting.GetAttackTargets(game, attacker).Contains(defender.Id))
             return (false, "Target is out of reach");
 
+        // Declaration: commit the attacker, reveal secrets, maybe open a reaction window
+        _s.Mutator.Tap(game, attacker);
+        game.Log.Add($"{attacker.Name} declares an attack on {defender.Name}!");
+        _s.Bus.Publish(game, new GameEvent { Type = "attackDeclared", Source = attacker, Target = defender });
+
+        if (attacker.IsDestroyed)
+        {
+            game.Log.Add($"{attacker.Name} never gets to strike!");
+            return (true, null);
+        }
+        if (defender.IsDestroyed)
+            return (true, null);
+
+        if (HasPlayableReaction(game, defender.ControllerId, "attackDeclared"))
+        {
+            game.Stack.Push(new StackItem
+            {
+                Id = $"stk_{game.Stack.Items.Count + 1}_{game.TurnNumber}",
+                Kind = "attack",
+                ControllerId = playerId,
+                SourceObjectId = attacker.Id,
+                TargetIds = new List<string> { defender.Id }
+            });
+            game.State = GameState.WaitingForReaction;
+            game.ReactionPlayerId = defender.ControllerId;
+            game.ReactionWindowEvent = "attackDeclared";
+            game.Log.Add($"{game.Players.First(p => p.Id == defender.ControllerId).Name} may respond...");
+            return (true, null);
+        }
+
+        ResolveDeclaredAttack(game, attacker, defender);
+        return (true, null);
+    }
+
+    /// <summary>Damage step — runs after any reaction window closes.</summary>
+    public void ResolveDeclaredAttack(GameInstance game, ObjectInstance attacker, ObjectInstance defender)
+    {
+        if (attacker.IsDestroyed)
+        {
+            game.Log.Add($"{attacker.Name} was destroyed before the attack landed!");
+            return;
+        }
+        if (defender.IsDestroyed)
+        {
+            game.Log.Add($"{attacker.Name}'s target is already gone.");
+            return;
+        }
+
         int attackerAttack = GameQueries.GetEffectiveProperty(game, attacker, "attack");
         int defenderAttack = GameQueries.GetEffectiveProperty(game, defender, "attack");
         int attackerArmor = GameQueries.GetEffectiveProperty(game, attacker, "armor");
         int defenderArmor = GameQueries.GetEffectiveProperty(game, defender, "armor");
 
-        // Anti-building bonus (e.g. Pillager)
         var attackerDef = GameQueries.GetCardDefinition(game, attacker);
         bool defenderIsBuilding = GameQueries.IsObjectTypeOrSubtype(game, defender.ObjectType, "building");
         if (defenderIsBuilding && attackerDef?.BonusAttackVsBuildings is int bonus && bonus > 0)
@@ -49,19 +111,14 @@ public class CombatService
 
         int damageToDefender = Math.Max(0, attackerAttack - defenderArmor);
 
-        // Defenders do not strike back by default. Only the Retaliate keyword lets a
-        // defender hit back, and even then only when the attacker is within its reach.
         bool defenderRetaliates = defender.Tags.Contains("retaliate")
             && _s.Targeting.GetAttackTargets(game, defender).Contains(attacker.Id);
         int damageToAttacker = defenderRetaliates ? Math.Max(0, defenderAttack - attackerArmor) : 0;
 
         game.Log.Add($"{attacker.Name} attacks {defender.Name}! ({attackerAttack} ATK vs {defenderArmor} ARM = {damageToDefender} dmg{(defenderRetaliates ? $"; retaliation: {defenderAttack} ATK vs {attackerArmor} ARM = {damageToAttacker} dmg" : "")})");
 
-        // Apply damage simultaneously (events published by the mutator)
         _s.Mutator.ApplyDamage(game, attacker, damageToAttacker, defender);
         _s.Mutator.ApplyDamage(game, defender, damageToDefender, attacker);
-
-        _s.Mutator.Tap(game, attacker);
 
         if (defender.IsDestroyed)
             _s.Bus.Publish(game, new GameEvent { Type = GameEventTypes.UnitKilled, Source = attacker, Target = defender });
@@ -69,7 +126,5 @@ public class CombatService
             _s.Bus.Publish(game, new GameEvent { Type = GameEventTypes.UnitKilled, Source = defender, Target = attacker });
 
         _s.Bus.Publish(game, new GameEvent { Type = GameEventTypes.AttackResolved, Source = attacker, Target = defender });
-
-        return (true, null);
     }
 }

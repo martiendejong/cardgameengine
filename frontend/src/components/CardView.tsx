@@ -132,11 +132,25 @@ export function CardView({
           )}
           {Object.entries(card.resources)
             .filter(([key, val]) => key !== 'ap' && val > 0)
-            .map(([key, val]) => (
-              <span key={key} className="stat tokens tip" data-tip={STAT_TIPS[key] ?? key}>
-                ◈ {val}
-              </span>
-            ))}
+            .map(([key, val]) => {
+              const icons: Record<string, string> = {
+                mana: '🔮', corpses: '⚰️', dp: '💀', biomass: '🧬',
+                intel: '🕵', glory: '🏆', reagents: '⚗️', poison: '☠️', loot: '💎',
+              };
+              return (
+                <span key={key} className="stat tokens tip" data-tip={STAT_TIPS[key] ?? key}>
+                  {icons[key] ?? '◈'} {val}
+                </span>
+              );
+            })}
+          {card.lifetime != null && (
+            <span
+              className="stat lifetime tip"
+              data-tip="Duration — this card expires when the countdown reaches 0 at the start of its controller's turn."
+            >
+              ⏳ {card.lifetime}
+            </span>
+          )}
           {card.housingCost != null && (
             <span className="stat housing tip" data-tip={HOUSING_COST_TIP(card.housingCost)}>
               🏠 {card.housingCost}

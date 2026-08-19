@@ -22,6 +22,47 @@ public class ActionCatalog
     {
         var actions = new List<AvailableAction>();
         if (game.State == GameState.GameEnded) return actions;
+
+        // Reaction window: the reacting player sees matching reaction cards + pass
+        if (game.State == GameState.WaitingForReaction)
+        {
+            if (playerId != game.ReactionPlayerId) return actions;
+            var reactor = game.Players.First(p => p.Id == playerId);
+
+            foreach (var obj in game.Objects.Where(o => o.OwnerId == playerId && o.ZoneId == "hand" && !o.IsDestroyed))
+            {
+                var def = GameQueries.GetCardDefinition(game, obj);
+                if (def == null || (def.Timing != "reaction" && def.Timing != "both")) continue;
+                if (game.ReactionWindowEvent != null && !def.ReactionTo.Contains(game.ReactionWindowEvent)) continue;
+
+                var rCosts = GameQueries.EffectivePlayCosts(game, playerId, def);
+                bool affordable = rCosts.All(kv => GameQueries.AvailableForPlayCost(game, reactor, kv.Key) >= kv.Value);
+                var rAction = new AvailableAction
+                {
+                    Type = "playCard",
+                    SourceObjectId = obj.Id,
+                    Label = $"{obj.Name}: Play ({GameQueries.FormatCosts(rCosts)})",
+                    Available = affordable,
+                    UnavailableReason = affordable ? null : $"Requires {GameQueries.FormatCosts(rCosts)}"
+                };
+                if (affordable && def.OnPlay?.Choice != null)
+                {
+                    var t = _s.Targeting.GetValidTargets(game, def.OnPlay.Choice, playerId, obj.Id);
+                    if (t.Count == 0) { rAction.Available = false; rAction.UnavailableReason = "No valid targets"; }
+                    else { rAction.RequiresChoice = def.OnPlay.Choice; rAction.ValidTargets = t; }
+                }
+                actions.Add(rAction);
+            }
+
+            actions.Add(new AvailableAction
+            {
+                Type = "pass",
+                Label = "Pass — let it resolve",
+                Available = true
+            });
+            return actions;
+        }
+
         if (game.ActivePlayerId != playerId) return actions;
 
         var player = game.Players.First(p => p.Id == playerId);
@@ -161,9 +202,11 @@ public class ActionCatalog
             bool needsEquipTarget = attachSlots.Count > 0 && cardDef.AttachTo == "chooseCharacter";
 
             string? reason = null;
-            if (game.CurrentPhaseId != "main")
+            if (cardDef.Timing == "reaction")
+                reason = "Reaction — play it when an enemy acts";
+            else if (game.CurrentPhaseId != "main")
                 reason = "Can only play cards during Main Phase";
-            else if (costs.Any(kv => player.Resources.GetValueOrDefault(kv.Key) < kv.Value))
+            else if (costs.Any(kv => GameQueries.AvailableForPlayCost(game, player, kv.Key) < kv.Value))
                 reason = $"Requires {GameQueries.FormatCosts(costs)}";
             else if (attachSlots.Count > 0 && cardDef.AttachTo != "chooseCharacter" &&
                      GameQueries.FindLivingHero(game, playerId) == null)

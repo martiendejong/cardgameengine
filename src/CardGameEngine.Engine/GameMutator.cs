@@ -35,11 +35,25 @@ public class GameMutator
     public void GainEntityResource(GameInstance game, ObjectInstance obj, string resourceId, int amount)
     {
         if (amount == 0) return;
-        obj.Resources[resourceId] = obj.Resources.GetValueOrDefault(resourceId) + amount;
+        var next = obj.Resources.GetValueOrDefault(resourceId) + amount;
+        var cap = GameQueries.ResourceCapacity(game, obj, resourceId);
+        obj.Resources[resourceId] = Math.Max(0, Math.Min(next, cap));
         if (amount > 0)
-            game.Log.Add($"{obj.Name} gains {amount} {resourceId}. (Total: {obj.Resources[resourceId]})");
+            game.Log.Add($"{obj.Name} gains {amount} {resourceId}. (Total: {obj.Resources[resourceId]}{(cap != int.MaxValue ? $"/{cap}" : "")})");
         else
             game.Log.Add($"{obj.Name} spends {-amount} {resourceId}. (Remaining: {obj.Resources[resourceId]})");
+    }
+
+    /// <summary>Direct damage ignores Armor (poison, overcharge burn, acid).</summary>
+    public void ApplyDirectDamage(GameInstance game, ObjectInstance obj, int damage, ObjectInstance? source = null)
+    {
+        if (damage <= 0) return;
+        var current = obj.Properties.GetValueOrDefault("currentHp");
+        var newHp = Math.Max(0, current - damage);
+        obj.Properties["currentHp"] = newHp;
+        game.Log.Add($"{obj.Name} takes {damage} direct damage (ignores Armor). (HP: {current} → {newHp})");
+        if (newHp <= 0)
+            DestroyObject(game, obj, source);
     }
 
     // ---- Damage / healing / destruction ----

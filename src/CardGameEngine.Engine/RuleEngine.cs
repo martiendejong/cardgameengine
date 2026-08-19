@@ -58,6 +58,29 @@ public class RuleEngine
     {
         if (game.State == GameState.GameEnded)
             return (false, "Game has ended");
+
+        // Reaction window: only the reacting player may act, with reactions or a pass
+        if (game.State == GameState.WaitingForReaction)
+        {
+            if (playerId != game.ReactionPlayerId)
+                return (false, "Waiting for the opponent's reaction");
+
+            if (action.Type == "pass")
+            {
+                game.Log.Add($"{game.Players.First(p => p.Id == playerId).Name} passes.");
+                ResolveStack(game);
+                CheckEndConditions(game);
+                return (true, null);
+            }
+            if (action.Type == "playCard")
+            {
+                var r = _cardPlay.ExecutePlayCard(game, playerId, action);
+                if (r.Item1) CheckEndConditions(game);
+                return r;
+            }
+            return (false, "Respond with a reaction card or pass");
+        }
+
         if (game.ActivePlayerId != playerId)
             return (false, "Not your turn");
 
@@ -81,6 +104,31 @@ public class RuleEngine
     {
         _turns.EndPhase(game, playerId);
         return (true, null);
+    }
+
+    /// <summary>Resolve everything on the stack, latest first (LIFO).</summary>
+    public void ResolveStack(GameInstance game)
+    {
+        while (!game.Stack.IsEmpty)
+        {
+            var item = game.Stack.Pop();
+            if (item.Kind == "attack")
+            {
+                var attacker = game.Objects.FirstOrDefault(o => o.Id == item.SourceObjectId);
+                var defender = game.Objects.FirstOrDefault(o => o.Id == item.TargetIds.FirstOrDefault());
+                if (attacker != null && defender != null)
+                    _combat.ResolveDeclaredAttack(game, attacker, defender);
+            }
+            else if (item.Kind == "spell")
+            {
+                _cardPlay.ResolveSpellItem(game, item);
+            }
+        }
+
+        game.ReactionPlayerId = null;
+        game.ReactionWindowEvent = null;
+        if (game.State != GameState.GameEnded)
+            game.State = GameState.WaitingForAction;
     }
 
     public (bool success, string? error) ResolveChoice(GameInstance game, string playerId, string choiceId, List<string> selectedIds)

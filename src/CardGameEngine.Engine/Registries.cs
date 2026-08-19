@@ -64,6 +64,10 @@ public class EffectContext
         {
             "self" => Source,
             "target" => Target,
+            // the object this card is attached to / infiltrated into
+            "host" => Source?.AttachedToId != null
+                ? Game.Objects.FirstOrDefault(o => o.Id == Source.AttachedToId)
+                : null,
             _ => Source
         };
     }

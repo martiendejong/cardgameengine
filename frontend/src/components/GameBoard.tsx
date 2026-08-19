@@ -84,6 +84,9 @@ export function GameBoard({
   }
 
   const isMyTurn = gameState.activePlayerId === myPlayerId;
+  const isReactionMine = gameState.state === GameState.WaitingForReaction
+    && gameState.reactionPlayerId === myPlayerId;
+  const passAction = gameState.availableActions.find(a => a.type === 'pass');
 
   return (
     <div className="game-board">
@@ -117,6 +120,26 @@ export function GameBoard({
 
         {/* Middle zone: action panel + target selection banner */}
         <div className="middle-zone">
+          {gameState.state === GameState.WaitingForReaction && (
+            <div className="reaction-banner">
+              {isReactionMine ? (
+                <>
+                  <span>
+                    ⚡ {gameState.reactionWindowEvent === 'spellCast'
+                      ? 'The enemy is casting a spell!'
+                      : 'The enemy declared an attack!'} Play a reaction or pass.
+                  </span>
+                  {passAction && (
+                    <button className="pass-btn" onClick={() => onAction(passAction, [])}>
+                      Pass — let it resolve
+                    </button>
+                  )}
+                </>
+              ) : (
+                <span>⏳ Waiting for the opponent's reaction...</span>
+              )}
+            </div>
+          )}
           {pendingAction && (
             <div className="target-select-banner">
               <span>Select target for: <strong>{pendingAction.label}</strong></span>
@@ -146,7 +169,7 @@ export function GameBoard({
           <PlayerArea
             player={myPlayer}
             objects={gameState.objects}
-            actions={isMyTurn ? gameState.availableActions : []}
+            actions={isMyTurn || isReactionMine ? gameState.availableActions : []}
             isActivePlayer={isMyTurn}
             isBottom={true}
             selectableTargets={selectableTargets}

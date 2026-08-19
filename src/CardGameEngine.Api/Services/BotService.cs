@@ -24,6 +24,15 @@ public class BotService
         int safety = 0;
         while (game.State != GameState.GameEnded && safety++ < 300)
         {
+            // In a reaction window, a bot reactor simply passes (v1 policy)
+            if (game.State == GameState.WaitingForReaction)
+            {
+                var reactor = game.Players.FirstOrDefault(p => p.Id == game.ReactionPlayerId);
+                if (reactor is not { IsBot: true }) break;
+                _engine.ExecuteAction(game, reactor.Id, new ActionRequest { Type = "pass" });
+                continue;
+            }
+
             var bot = game.Players.FirstOrDefault(p => p.Id == game.ActivePlayerId && p.IsBot);
             if (bot == null) break;
 
