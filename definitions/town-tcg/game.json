@@ -4840,18 +4840,16 @@
       "cards": {
         "evolve-ravager": 4,
         "evolve-carapace": 3,
-        "evolve-spitter": 3,
-        "metamorphosis": 2,
+        "evolve-spitter": 4,
+        "metamorphosis": 3,
         "egg-cluster": 4,
         "brood-warrior": 4,
         "ravenous-swarm": 3,
         "broodguard": 2,
         "bloated-spawn": 4,
         "corpse-harvester": 3,
-        "hardened-carapace": 2,
-        "additional-limbs": 2,
-        "carapace-drone": 2,
-        "spitter": 2
+        "hardened-carapace": 3,
+        "additional-limbs": 3
       }
     },
     {
