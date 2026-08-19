@@ -22,6 +22,7 @@ public class PlayerStateDto
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";
     public Dictionary<string, int> Resources { get; set; } = new();
+    public List<string> RelevantResources { get; set; } = new();
     public bool IsWinner { get; set; }
     public bool IsLoser { get; set; }
 }
@@ -45,4 +46,5 @@ public class ObjectStateDto
     public bool HasSummoningSickness { get; set; }
     public string? AttachedToId { get; set; }
     public string? Slot { get; set; }
+    public string? Icon { get; set; }
 }

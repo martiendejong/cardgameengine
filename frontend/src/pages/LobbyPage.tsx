@@ -271,7 +271,9 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
                     return (
                       <div key={card.id} className={`pool-card ${count > 0 ? 'in-deck' : ''}`}>
                         <div className="pool-card-info">
-                          <span className="pool-card-name">{card.name}</span>
+                          <span className="pool-card-name">
+                            {card.icon ? `${card.icon} ` : ''}{card.name}
+                          </span>
                           <span className="pool-card-meta">
                             {typeLabel(card.objectType)}
                             {card.playCost !== null && card.playCost !== undefined

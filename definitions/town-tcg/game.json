@@ -3,46 +3,190 @@
   "name": "Town Wars",
   "version": "1.0",
   "objectTypes": [
-    { "id": "card", "name": "Card" },
-    { "id": "character", "name": "Character", "parentType": "card", "properties": ["attack", "currentHp", "maxHp", "armor"], "resources": [] },
-    { "id": "hero", "name": "Hero", "parentType": "character", "resources": ["ap"] },
-    { "id": "unit", "name": "Unit", "parentType": "character" },
-    { "id": "building", "name": "Building", "parentType": "card", "properties": ["currentHp", "maxHp", "armor"] },
-    { "id": "headquarters", "name": "Headquarters", "parentType": "building" },
-    { "id": "spell", "name": "Spell", "parentType": "card" },
-    { "id": "item", "name": "Item", "parentType": "spell" },
-    { "id": "treasure", "name": "Treasure", "parentType": "building", "resources": ["loot"] },
-    { "id": "module", "name": "Module", "parentType": "card" }
+    {
+      "id": "card",
+      "name": "Card"
+    },
+    {
+      "id": "character",
+      "name": "Character",
+      "parentType": "card",
+      "properties": [
+        "attack",
+        "currentHp",
+        "maxHp",
+        "armor"
+      ],
+      "resources": []
+    },
+    {
+      "id": "hero",
+      "name": "Hero",
+      "parentType": "character",
+      "resources": [
+        "ap"
+      ]
+    },
+    {
+      "id": "unit",
+      "name": "Unit",
+      "parentType": "character"
+    },
+    {
+      "id": "building",
+      "name": "Building",
+      "parentType": "card",
+      "properties": [
+        "currentHp",
+        "maxHp",
+        "armor"
+      ]
+    },
+    {
+      "id": "headquarters",
+      "name": "Headquarters",
+      "parentType": "building"
+    },
+    {
+      "id": "spell",
+      "name": "Spell",
+      "parentType": "card"
+    },
+    {
+      "id": "item",
+      "name": "Item",
+      "parentType": "spell"
+    },
+    {
+      "id": "treasure",
+      "name": "Treasure",
+      "parentType": "building",
+      "resources": [
+        "loot"
+      ]
+    },
+    {
+      "id": "module",
+      "name": "Module",
+      "parentType": "card"
+    }
   ],
   "properties": [
-    { "id": "attack", "name": "Attack", "type": "int", "defaultValue": 0, "minValue": 0 },
-    { "id": "currentHp", "name": "HP", "type": "int", "defaultValue": 1, "minValue": 0 },
-    { "id": "maxHp", "name": "Max HP", "type": "int", "defaultValue": 1 },
-    { "id": "armor", "name": "Armor", "type": "int", "defaultValue": 0, "minValue": 0 }
+    {
+      "id": "attack",
+      "name": "Attack",
+      "type": "int",
+      "defaultValue": 0,
+      "minValue": 0
+    },
+    {
+      "id": "currentHp",
+      "name": "HP",
+      "type": "int",
+      "defaultValue": 1,
+      "minValue": 0
+    },
+    {
+      "id": "maxHp",
+      "name": "Max HP",
+      "type": "int",
+      "defaultValue": 1
+    },
+    {
+      "id": "armor",
+      "name": "Armor",
+      "type": "int",
+      "defaultValue": 0,
+      "minValue": 0
+    }
   ],
   "resources": [
-    { "id": "gold", "name": "Gold", "scope": "player", "defaultValue": 0 },
-    { "id": "energy", "name": "Energy", "scope": "player", "defaultValue": 0 },
-    { "id": "ap", "name": "Action Points", "scope": "entity", "defaultValue": 0 },
-    { "id": "loot", "name": "Loot Tokens", "scope": "entity", "defaultValue": 0 }
+    {
+      "id": "gold",
+      "name": "Gold",
+      "scope": "player",
+      "defaultValue": 0
+    },
+    {
+      "id": "energy",
+      "name": "Energy",
+      "scope": "player",
+      "defaultValue": 0
+    },
+    {
+      "id": "ap",
+      "name": "Action Points",
+      "scope": "entity",
+      "defaultValue": 0
+    },
+    {
+      "id": "loot",
+      "name": "Loot Tokens",
+      "scope": "entity",
+      "defaultValue": 0
+    }
   ],
   "tags": [
-    { "id": "peasant", "name": "Peasant" },
-    { "id": "worker", "name": "Worker" },
-    { "id": "builder", "name": "Builder" },
-    { "id": "soldier", "name": "Soldier" },
-    { "id": "ranged", "name": "Ranged" },
-    { "id": "mercenary", "name": "Mercenary" },
-    { "id": "raider", "name": "Raider" }
+    {
+      "id": "peasant",
+      "name": "Peasant"
+    },
+    {
+      "id": "worker",
+      "name": "Worker"
+    },
+    {
+      "id": "builder",
+      "name": "Builder"
+    },
+    {
+      "id": "soldier",
+      "name": "Soldier"
+    },
+    {
+      "id": "ranged",
+      "name": "Ranged"
+    },
+    {
+      "id": "mercenary",
+      "name": "Mercenary"
+    },
+    {
+      "id": "raider",
+      "name": "Raider"
+    }
   ],
   "zones": [
-    { "id": "deck", "name": "Deck", "visibility": "none", "ordered": true },
-    { "id": "hand", "name": "Hand", "visibility": "owner", "ordered": false },
-    { "id": "battlefield", "name": "Battlefield", "visibility": "all", "ordered": false },
-    { "id": "discard", "name": "Discard", "visibility": "all", "ordered": true }
+    {
+      "id": "deck",
+      "name": "Deck",
+      "visibility": "none",
+      "ordered": true
+    },
+    {
+      "id": "hand",
+      "name": "Hand",
+      "visibility": "owner",
+      "ordered": false
+    },
+    {
+      "id": "battlefield",
+      "name": "Battlefield",
+      "visibility": "all",
+      "ordered": false
+    },
+    {
+      "id": "discard",
+      "name": "Discard",
+      "visibility": "all",
+      "ordered": true
+    }
   ],
   "battlefieldLines": {
-    "lines": ["front", "back"],
+    "lines": [
+      "front",
+      "back"
+    ],
     "spawnLine": "back"
   },
   "deckRules": {
@@ -50,127 +194,286 @@
     "maxDeckSize": 20,
     "startingHandSize": 3,
     "drawPerTurn": 1,
-    "defaultDeck": { "soldier": 2, "archer": 2, "barracks": 1, "healing-salve": 2, "fireball": 1 }
+    "defaultDeck": {
+      "soldier": 2,
+      "archer": 2,
+      "barracks": 1,
+      "healing-salve": 2,
+      "fireball": 1
+    }
   },
   "flow": {
     "phases": [
-      { "id": "start", "name": "Start Phase", "autoActions": ["untap_all", "gain_hero_ap", "draw_card"] },
-      { "id": "main", "name": "Main Phase" },
-      { "id": "combat", "name": "Combat Phase" },
-      { "id": "end", "name": "End Phase", "autoActions": ["expire_end_of_turn"] }
+      {
+        "id": "start",
+        "name": "Start Phase",
+        "autoActions": [
+          "untap_all",
+          "gain_hero_ap",
+          "draw_card"
+        ]
+      },
+      {
+        "id": "main",
+        "name": "Main Phase"
+      },
+      {
+        "id": "combat",
+        "name": "Combat Phase"
+      },
+      {
+        "id": "end",
+        "name": "End Phase",
+        "autoActions": [
+          "expire_end_of_turn"
+        ]
+      }
     ]
   },
-  "resolutionPolicy": { "type": "stack", "order": "LIFO" },
+  "resolutionPolicy": {
+    "type": "stack",
+    "order": "LIFO"
+  },
   "cards": [
     {
       "id": "town-hall",
       "name": "Town Hall",
       "objectType": "headquarters",
-      "properties": { "currentHp": 8, "maxHp": 8, "armor": 2 },
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
       "artworkDescription": "A grand stone town hall with a bell tower",
       "abilities": [
         {
           "id": "collect-taxes",
           "name": "Collect Taxes",
-          "costs": [{ "type": "tap" }],
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
           "conditions": [],
-          "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "gold", "amount": 2 }]
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
         },
         {
           "id": "recruit-peasant",
           "name": "Recruit Peasant",
           "costs": [
-            { "type": "resource", "scope": "player", "resourceId": "gold", "amount": 2 },
-            { "type": "tap" }
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
           ],
           "conditions": [],
-          "effects": [{ "type": "summon", "scope": "player", "cardId": "peasant" }]
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "peasant"
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "🏛️"
     },
     {
       "id": "town-chief",
       "name": "Town Chief",
       "objectType": "hero",
-      "properties": { "attack": 4, "currentHp": 5, "maxHp": 5, "armor": 2 },
-      "resources": { "ap": 0 },
+      "properties": {
+        "attack": 4,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 2
+      },
+      "resources": {
+        "ap": 0
+      },
       "artworkDescription": "A weathered leader with a wooden staff and chainmail",
       "abilities": [
         {
           "id": "call-to-arms",
           "name": "Call to Arms",
-          "costs": [{ "type": "resource", "scope": "self", "resourceId": "ap", "amount": 3 }],
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 3
+            }
+          ],
           "conditions": [],
-          "effects": [{ "type": "buff_tag_until_end_of_turn", "tag": "peasant", "propertyId": "attack", "amount": 1 }]
+          "effects": [
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "peasant",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
         },
         {
           "id": "regenerate",
           "name": "Regenerate",
           "costs": [
-            { "type": "resource", "scope": "self", "resourceId": "ap", "amount": 2 },
-            { "type": "tap" }
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
           ],
           "conditions": [],
-          "effects": [{ "type": "heal", "scope": "self", "amount": 3 }]
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 3
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "👑"
     },
     {
       "id": "peasant",
       "name": "Peasant",
       "objectType": "unit",
-      "properties": { "attack": 2, "currentHp": 3, "maxHp": 3, "armor": 1 },
-      "tags": ["peasant", "worker", "builder"],
-      "artworkDescription": "A simple farmer with a pitchfork"
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 1
+      },
+      "tags": [
+        "peasant",
+        "worker",
+        "builder"
+      ],
+      "artworkDescription": "A simple farmer with a pitchfork",
+      "icon": "🧑‍🌾"
     },
     {
       "id": "soldier",
       "name": "Soldier",
       "objectType": "unit",
       "playCost": 3,
-      "properties": { "attack": 3, "currentHp": 4, "maxHp": 4, "armor": 1 },
-      "tags": ["soldier"],
-      "artworkDescription": "A disciplined footman with sword and shield"
+      "properties": {
+        "attack": 3,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "tags": [
+        "soldier"
+      ],
+      "artworkDescription": "A disciplined footman with sword and shield",
+      "icon": "⚔️"
     },
     {
       "id": "archer",
       "name": "Archer",
       "objectType": "unit",
       "playCost": 2,
-      "properties": { "attack": 2, "currentHp": 2, "maxHp": 2, "armor": 0 },
-      "tags": ["soldier", "ranged"],
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
       "artworkDescription": "A hooded archer with a longbow",
       "abilities": [
         {
           "id": "ranged-shot",
           "name": "Ranged Shot",
-          "costs": [{ "type": "tap" }],
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
           "conditions": [],
-          "choice": { "type": "entity", "controller": "opponent", "min": 1, "max": 1 },
-          "effects": [{ "type": "damage", "scope": "target", "amount": 2 }]
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "🏹"
     },
     {
       "id": "barracks",
       "name": "Barracks",
       "objectType": "building",
       "playCost": 4,
-      "properties": { "currentHp": 6, "maxHp": 6, "armor": 1 },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
       "artworkDescription": "A sturdy wooden barracks with training grounds",
       "abilities": [
         {
           "id": "train-soldier",
           "name": "Train Soldier",
           "costs": [
-            { "type": "resource", "scope": "player", "resourceId": "gold", "amount": 2 },
-            { "type": "tap" }
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
           ],
           "conditions": [],
-          "choice": { "type": "entity", "controller": "self", "tag": "peasant", "min": 1, "max": 1 },
-          "effects": [{ "type": "transform", "scope": "target", "cardId": "soldier" }]
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "tag": "peasant",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "transform",
+              "scope": "target",
+              "cardId": "soldier"
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "🏯"
     },
     {
       "id": "healing-salve",
@@ -181,9 +484,21 @@
       "onPlay": {
         "id": "heal-target",
         "name": "Heal 3 HP",
-        "choice": { "type": "entity", "controller": "self", "min": 1, "max": 1 },
-        "effects": [{ "type": "heal", "scope": "target", "amount": 3 }]
-      }
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "heal",
+            "scope": "target",
+            "amount": 3
+          }
+        ]
+      },
+      "icon": "🧪"
     },
     {
       "id": "fireball",
@@ -194,79 +509,166 @@
       "onPlay": {
         "id": "fireball-damage",
         "name": "Deal 4 damage",
-        "choice": { "type": "entity", "controller": "opponent", "min": 1, "max": 1 },
-        "effects": [{ "type": "damage", "scope": "target", "amount": 4 }]
-      }
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 4
+          }
+        ]
+      },
+      "icon": "🔥"
     },
     {
       "id": "archery-range",
       "name": "Archery Range",
       "objectType": "building",
       "playCost": 3,
-      "properties": { "currentHp": 5, "maxHp": 5, "armor": 1 },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
       "artworkDescription": "Straw targets and a rack of longbows",
       "abilities": [
         {
           "id": "train-archer",
           "name": "Train Archer",
           "costs": [
-            { "type": "resource", "scope": "player", "resourceId": "gold", "amount": 2 },
-            { "type": "tap" }
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
           ],
           "conditions": [],
-          "choice": { "type": "entity", "controller": "self", "tag": "peasant", "min": 1, "max": 1 },
-          "effects": [{ "type": "transform", "scope": "target", "cardId": "archer" }]
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "tag": "peasant",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "transform",
+              "scope": "target",
+              "cardId": "archer"
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "🎯"
     },
     {
       "id": "tavern",
       "name": "Tavern",
       "objectType": "building",
       "playCost": 2,
-      "properties": { "currentHp": 5, "maxHp": 5, "armor": 1 },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
       "artworkDescription": "A rowdy tavern where sellswords gather",
       "abilities": [
         {
           "id": "hire-mercenary",
           "name": "Hire Mercenary",
           "costs": [
-            { "type": "resource", "scope": "player", "resourceId": "gold", "amount": 3 },
-            { "type": "tap" }
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
           ],
           "conditions": [],
-          "effects": [{ "type": "summon", "scope": "player", "cardId": "mercenary" }]
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "mercenary"
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "🍺"
     },
     {
       "id": "mercenary",
       "name": "Mercenary",
       "objectType": "unit",
-      "properties": { "attack": 3, "currentHp": 3, "maxHp": 3, "armor": 1 },
-      "tags": ["mercenary"],
-      "artworkDescription": "A scarred sellsword who fights for coin, not loyalty"
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 1
+      },
+      "tags": [
+        "mercenary"
+      ],
+      "artworkDescription": "A scarred sellsword who fights for coin, not loyalty",
+      "icon": "🥷"
     },
     {
       "id": "blacksmith",
       "name": "Blacksmith",
       "objectType": "building",
       "playCost": 3,
-      "properties": { "currentHp": 5, "maxHp": 5, "armor": 2 },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 2
+      },
       "artworkDescription": "A soot-stained forge ringing with hammer blows",
       "abilities": [
         {
           "id": "forge-weapon",
           "name": "Forge Weapon",
           "costs": [
-            { "type": "resource", "scope": "player", "resourceId": "gold", "amount": 2 },
-            { "type": "tap" }
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
           ],
           "conditions": [],
-          "choice": { "type": "entity", "controller": "self", "objectType": "character", "min": 1, "max": 1 },
-          "effects": [{ "type": "modify_property", "scope": "target", "propertyId": "attack", "amount": 1 }]
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "character",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "⚒️"
     },
     {
       "id": "bag-of-gold",
@@ -277,8 +679,16 @@
       "onPlay": {
         "id": "bag-gain",
         "name": "Gain 3 gold",
-        "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "gold", "amount": 3 }]
-      }
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "gold",
+            "amount": 3
+          }
+        ]
+      },
+      "icon": "💰"
     },
     {
       "id": "iron-sword",
@@ -289,9 +699,23 @@
       "onPlay": {
         "id": "equip-sword",
         "name": "+1 Attack",
-        "choice": { "type": "entity", "controller": "self", "objectType": "character", "min": 1, "max": 1 },
-        "effects": [{ "type": "modify_property", "scope": "target", "propertyId": "attack", "amount": 1 }]
-      }
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "character",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "modify_property",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": 1
+          }
+        ]
+      },
+      "icon": "🗡️"
     },
     {
       "id": "shield",
@@ -302,9 +726,23 @@
       "onPlay": {
         "id": "equip-shield",
         "name": "+1 Armor",
-        "choice": { "type": "entity", "controller": "self", "objectType": "character", "min": 1, "max": 1 },
-        "effects": [{ "type": "modify_property", "scope": "target", "propertyId": "armor", "amount": 1 }]
-      }
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "character",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "modify_property",
+            "scope": "target",
+            "propertyId": "armor",
+            "amount": 1
+          }
+        ]
+      },
+      "icon": "🛡️"
     },
     {
       "id": "battle-axe",
@@ -315,154 +753,323 @@
       "onPlay": {
         "id": "equip-axe",
         "name": "+2 Attack",
-        "choice": { "type": "entity", "controller": "self", "objectType": "character", "min": 1, "max": 1 },
-        "effects": [{ "type": "modify_property", "scope": "target", "propertyId": "attack", "amount": 2 }]
-      }
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "character",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "modify_property",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": 2
+          }
+        ]
+      },
+      "icon": "🪓"
     },
     {
       "id": "raider-camp",
       "name": "Raider Camp",
       "objectType": "headquarters",
-      "properties": { "currentHp": 9, "maxHp": 9, "armor": 1 },
+      "properties": {
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 1
+      },
       "artworkDescription": "A palisade of sharpened stakes around smoking campfires",
       "abilities": [
         {
           "id": "raid-party",
           "name": "Raid Party",
           "costs": [
-            { "type": "resource", "scope": "player", "resourceId": "gold", "amount": 2 },
-            { "type": "tap" }
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
           ],
           "conditions": [],
-          "effects": [{ "type": "summon", "scope": "player", "cardId": "scavenger" }]
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "scavenger"
+            }
+          ]
         }
       ],
       "triggers": [
         {
           "event": "onFriendlyDamageHqOrHero",
           "oncePerTurn": true,
-          "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "gold", "amount": 1 }]
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "🏕️"
     },
     {
       "id": "warchief",
       "name": "Warchief",
       "objectType": "hero",
-      "properties": { "attack": 5, "currentHp": 6, "maxHp": 6, "armor": 2 },
-      "resources": { "ap": 0 },
+      "properties": {
+        "attack": 5,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "resources": {
+        "ap": 0
+      },
       "artworkDescription": "A hulking warlord draped in trophies of past raids",
       "abilities": [
         {
           "id": "bloodlust",
           "name": "Bloodlust",
-          "costs": [{ "type": "resource", "scope": "self", "resourceId": "ap", "amount": 3 }],
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 3
+            }
+          ],
           "conditions": [],
-          "effects": [{ "type": "buff_tag_until_end_of_turn", "tag": "raider", "propertyId": "attack", "amount": 1 }]
+          "effects": [
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "raider",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
         },
         {
           "id": "pillage",
           "name": "Pillage",
           "costs": [
-            { "type": "resource", "scope": "self", "resourceId": "ap", "amount": 2 },
-            { "type": "tap" }
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
           ],
           "conditions": [],
-          "effects": [{ "type": "steal_resource", "resourceId": "gold", "amount": 2 }]
+          "effects": [
+            {
+              "type": "steal_resource",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "👹"
     },
     {
       "id": "scavenger",
       "name": "Scavenger",
       "objectType": "unit",
       "playCost": 2,
-      "properties": { "attack": 2, "currentHp": 3, "maxHp": 3, "armor": 1 },
-      "tags": ["raider"],
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 1
+      },
+      "tags": [
+        "raider"
+      ],
       "artworkDescription": "A wiry looter picking through the wreckage of battle",
       "triggers": [
         {
           "event": "onKill",
-          "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "gold", "amount": 1 }]
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "🐀"
     },
     {
       "id": "pillager",
       "name": "Pillager",
       "objectType": "unit",
       "playCost": 3,
-      "properties": { "attack": 3, "currentHp": 4, "maxHp": 4, "armor": 1 },
-      "tags": ["raider"],
+      "properties": {
+        "attack": 3,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "tags": [
+        "raider"
+      ],
       "bonusAttackVsBuildings": 2,
       "artworkDescription": "A torch-bearing brute who lives to burn towns",
       "triggers": [
         {
           "event": "onDestroyBuilding",
-          "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "gold", "amount": 2 }]
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "🧨"
     },
     {
       "id": "axe-thrower",
       "name": "Axe Thrower",
       "objectType": "unit",
       "playCost": 2,
-      "properties": { "attack": 2, "currentHp": 2, "maxHp": 2, "armor": 0 },
-      "tags": ["raider", "ranged"],
-      "artworkDescription": "A raider hurling throwing axes from a distance"
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "raider",
+        "ranged"
+      ],
+      "artworkDescription": "A raider hurling throwing axes from a distance",
+      "icon": "🪃"
     },
     {
       "id": "brute",
       "name": "Brute",
       "objectType": "unit",
       "playCost": 4,
-      "properties": { "attack": 4, "currentHp": 5, "maxHp": 5, "armor": 1 },
-      "tags": ["raider"],
-      "artworkDescription": "A mountain of muscle swinging a spiked club"
+      "properties": {
+        "attack": 4,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "raider"
+      ],
+      "artworkDescription": "A mountain of muscle swinging a spiked club",
+      "icon": "🦍"
     },
     {
       "id": "fighting-pit",
       "name": "Fighting Pit",
       "objectType": "building",
       "playCost": 3,
-      "properties": { "currentHp": 6, "maxHp": 6, "armor": 1 },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
       "artworkDescription": "A blood-stained arena where raiders spar for sport",
       "abilities": [
         {
           "id": "rally",
           "name": "Rally",
-          "costs": [{ "type": "tap" }],
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
           "conditions": [],
-          "choice": { "type": "entity", "controller": "self", "tag": "raider", "min": 1, "max": 1 },
-          "effects": [{ "type": "buff_target_until_end_of_turn", "scope": "target", "propertyId": "attack", "amount": 1 }]
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "tag": "raider",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "target",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "🥊"
     },
     {
       "id": "stolen-treasure",
       "name": "Stolen Treasure",
       "objectType": "treasure",
       "playCost": 1,
-      "properties": { "currentHp": 4, "maxHp": 4, "armor": 0 },
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
       "artworkDescription": "A cracked chest overflowing with someone else's gold",
       "onPlay": {
         "id": "plunder",
         "name": "Plunder up to 4 gold",
-        "effects": [{ "type": "plunder_resource", "resourceId": "gold", "amount": 4, "tag": "loot" }]
+        "effects": [
+          {
+            "type": "plunder_resource",
+            "resourceId": "gold",
+            "amount": 4,
+            "tag": "loot"
+          }
+        ]
       },
       "abilities": [
         {
           "id": "claim-spoils",
           "name": "Claim Spoils",
           "costs": [
-            { "type": "resource", "scope": "self", "resourceId": "loot", "amount": 1 },
-            { "type": "tap" }
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "loot",
+              "amount": 1
+            },
+            {
+              "type": "tap"
+            }
           ],
           "conditions": [],
-          "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "gold", "amount": 1 }]
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "💎"
     },
     {
       "id": "loot",
@@ -473,63 +1080,149 @@
       "onPlay": {
         "id": "loot-steal",
         "name": "Steal up to 2 gold",
-        "effects": [{ "type": "steal_resource", "resourceId": "gold", "amount": 2 }]
-      }
+        "effects": [
+          {
+            "type": "steal_resource",
+            "resourceId": "gold",
+            "amount": 2
+          }
+        ]
+      },
+      "icon": "👛"
     },
     {
       "id": "landing-pad",
       "name": "Landing Pad",
       "objectType": "headquarters",
-      "properties": { "currentHp": 10, "maxHp": 10, "armor": 2 },
+      "properties": {
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 2
+      },
       "artworkDescription": "A scorched launch platform humming with power conduits",
       "abilities": [
         {
           "id": "recharge",
           "name": "Recharge",
-          "costs": [{ "type": "tap" }],
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
           "conditions": [],
-          "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "energy", "amount": 2 }]
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ]
         },
         {
           "id": "repair-bay",
           "name": "Repair Bay",
           "costs": [
-            { "type": "resource", "scope": "player", "resourceId": "energy", "amount": 2 },
-            { "type": "tap" }
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
           ],
           "conditions": [],
-          "choice": { "type": "entity", "controller": "self", "objectType": "hero", "min": 1, "max": 1 },
-          "effects": [{ "type": "heal", "scope": "target", "amount": 3 }]
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "hero",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 3
+            }
+          ]
         },
         {
           "id": "emergency-reconstruction",
           "name": "Emergency Reconstruction",
           "costs": [
-            { "type": "resource", "scope": "player", "resourceId": "energy", "amount": 6 },
-            { "type": "tap" }
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 6
+            },
+            {
+              "type": "tap"
+            }
           ],
-          "conditions": [{ "type": "own_hero_destroyed" }],
-          "effects": [{ "type": "revive_hero" }]
+          "conditions": [
+            {
+              "type": "own_hero_destroyed"
+            }
+          ],
+          "effects": [
+            {
+              "type": "revive_hero"
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "🛸"
     },
     {
       "id": "ax-01",
       "name": "AX-01",
       "objectType": "hero",
-      "properties": { "attack": 5, "currentHp": 10, "maxHp": 10, "armor": 3 },
-      "resources": { "ap": 0 },
-      "equipmentSlots": { "arm": 2, "torso": 1, "head": 1, "core": 1, "legs": 1, "utility": 2 },
+      "properties": {
+        "attack": 5,
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 3
+      },
+      "resources": {
+        "ap": 0
+      },
+      "equipmentSlots": {
+        "arm": 2,
+        "torso": 1,
+        "head": 1,
+        "core": 1,
+        "legs": 1,
+        "utility": 2
+      },
       "artworkDescription": "A towering war robot, scarred plating over a glowing core",
       "abilities": [
         {
           "id": "overdrive",
           "name": "Overdrive",
-          "costs": [{ "type": "resource", "scope": "self", "resourceId": "ap", "amount": 3 }],
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 3
+            }
+          ],
           "conditions": [],
-          "effects": [{ "type": "buff_target_until_end_of_turn", "scope": "self", "propertyId": "attack", "amount": 2 }]
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "🤖"
     },
     {
       "id": "plasma-cannon",
@@ -538,18 +1231,44 @@
       "playCost": 3,
       "playCostResource": "energy",
       "slot": "arm",
-      "attachModifiers": [{ "propertyId": "attack", "amount": 3 }],
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 3
+        }
+      ],
       "artworkDescription": "An arm-mounted cannon dripping with superheated plasma",
       "abilities": [
         {
           "id": "overcharge-shot",
           "name": "Overcharge",
-          "costs": [{ "type": "resource", "scope": "player", "resourceId": "energy", "amount": 2 }],
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ],
           "conditions": [],
-          "choice": { "type": "entity", "controller": "self", "objectType": "hero", "min": 1, "max": 1 },
-          "effects": [{ "type": "buff_target_until_end_of_turn", "scope": "target", "propertyId": "attack", "amount": 2 }]
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "hero",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "target",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "🔫"
     },
     {
       "id": "missile-launcher",
@@ -564,14 +1283,33 @@
           "id": "launch-missile",
           "name": "Launch Missile",
           "costs": [
-            { "type": "resource", "scope": "player", "resourceId": "energy", "amount": 3 },
-            { "type": "tap" }
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
           ],
           "conditions": [],
-          "choice": { "type": "entity", "controller": "opponent", "min": 1, "max": 1 },
-          "effects": [{ "type": "damage", "scope": "target", "amount": 4 }]
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 4
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "🚀"
     },
     {
       "id": "reinforced-plating",
@@ -580,8 +1318,14 @@
       "playCost": 2,
       "playCostResource": "energy",
       "slot": "torso",
-      "attachModifiers": [{ "propertyId": "armor", "amount": 2 }],
-      "artworkDescription": "Layered composite armor bolted over the chassis"
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 2
+        }
+      ],
+      "artworkDescription": "Layered composite armor bolted over the chassis",
+      "icon": "🧱"
     },
     {
       "id": "targeting-computer",
@@ -590,8 +1334,14 @@
       "playCost": 2,
       "playCostResource": "energy",
       "slot": "head",
-      "attachModifiers": [{ "propertyId": "attack", "amount": 1 }],
-      "artworkDescription": "A sensor array of whirring lenses and rangefinders"
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "artworkDescription": "A sensor array of whirring lenses and rangefinders",
+      "icon": "📡"
     },
     {
       "id": "fusion-reactor",
@@ -605,11 +1355,23 @@
         {
           "id": "generate",
           "name": "Generate",
-          "costs": [{ "type": "tap" }],
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
           "conditions": [],
-          "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "energy", "amount": 2 }]
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "☢️"
     },
     {
       "id": "jump-jets",
@@ -618,8 +1380,14 @@
       "playCost": 2,
       "playCostResource": "energy",
       "slot": "legs",
-      "attachModifiers": [{ "propertyId": "armor", "amount": 1 }],
-      "artworkDescription": "Thrusters that let a war machine strike and reposition"
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "artworkDescription": "Thrusters that let a war machine strike and reposition",
+      "icon": "🦿"
     },
     {
       "id": "repair-nanobots",
@@ -634,14 +1402,34 @@
           "id": "nanorepair",
           "name": "Nanorepair",
           "costs": [
-            { "type": "resource", "scope": "player", "resourceId": "energy", "amount": 1 },
-            { "type": "tap" }
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 1
+            },
+            {
+              "type": "tap"
+            }
           ],
           "conditions": [],
-          "choice": { "type": "entity", "controller": "self", "objectType": "hero", "min": 1, "max": 1 },
-          "effects": [{ "type": "heal", "scope": "target", "amount": 2 }]
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "hero",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
         }
-      ]
+      ],
+      "icon": "🔧"
     },
     {
       "id": "energy-cell",
@@ -653,8 +1441,16 @@
       "onPlay": {
         "id": "cell-gain",
         "name": "Gain 3 energy",
-        "effects": [{ "type": "gain_resource", "scope": "player", "resourceId": "energy", "amount": 3 }]
-      }
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "energy",
+            "amount": 3
+          }
+        ]
+      },
+      "icon": "🔋"
     },
     {
       "id": "emergency-repair",
@@ -666,9 +1462,22 @@
       "onPlay": {
         "id": "emergency-heal",
         "name": "Heal your hero 4 HP",
-        "choice": { "type": "entity", "controller": "self", "objectType": "hero", "min": 1, "max": 1 },
-        "effects": [{ "type": "heal", "scope": "target", "amount": 4 }]
-      }
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "hero",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "heal",
+            "scope": "target",
+            "amount": 4
+          }
+        ]
+      },
+      "icon": "🚑"
     }
   ],
   "decks": [
@@ -732,15 +1541,28 @@
   ],
   "setup": {
     "actions": [
-      { "type": "place_card", "scope": "eachPlayer", "cardId": "town-hall", "zone": "battlefield" },
-      { "type": "place_card", "scope": "eachPlayer", "cardId": "town-chief", "zone": "battlefield" }
+      {
+        "type": "place_card",
+        "scope": "eachPlayer",
+        "cardId": "town-hall",
+        "zone": "battlefield"
+      },
+      {
+        "type": "place_card",
+        "scope": "eachPlayer",
+        "cardId": "town-chief",
+        "zone": "battlefield"
+      }
     ]
   },
   "endConditions": [
     {
       "id": "player-loses",
       "type": "all_destroyed",
-      "targets": ["headquarters", "hero"],
+      "targets": [
+        "headquarters",
+        "hero"
+      ],
       "result": "lose",
       "scope": "player"
     }

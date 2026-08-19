@@ -50,13 +50,18 @@ export function PlayerArea({
           {player.isLoser && <span className="loser-badge">DEFEATED</span>}
         </div>
         <div className="player-resources">
-          {Object.entries(player.resources).map(([key, val]) => (
-            <div key={key} className="resource-chip">
-              <span className="resource-icon">{key === 'gold' ? '💰' : '⚡'}</span>
-              <span className="resource-label">{key === 'gold' ? 'Gold' : key}</span>
-              <span className="resource-value">{val}</span>
-            </div>
-          ))}
+          {Object.entries(player.resources)
+            .filter(([key]) =>
+              !player.relevantResources || player.relevantResources.length === 0
+                ? true
+                : player.relevantResources.includes(key))
+            .map(([key, val]) => (
+              <div key={key} className="resource-chip">
+                <span className="resource-icon">{key === 'gold' ? '💰' : '⚡'}</span>
+                <span className="resource-label">{key === 'gold' ? 'Gold' : key}</span>
+                <span className="resource-value">{val}</span>
+              </div>
+            ))}
         </div>
       </div>
 

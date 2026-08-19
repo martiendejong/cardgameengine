@@ -35,6 +35,7 @@ public class StateProjector
                 Id = p.Id,
                 Name = p.Name,
                 Resources = new Dictionary<string, int>(p.Resources),
+                RelevantResources = new List<string>(p.RelevantResources),
                 IsWinner = p.IsWinner,
                 IsLoser = p.IsLoser
             }).ToList(),
@@ -87,7 +88,8 @@ public class StateProjector
             HasMovedThisTurn = o.HasMovedThisTurn,
             HasSummoningSickness = o.HasSummoningSickness,
             AttachedToId = o.AttachedToId,
-            Slot = o.Slot
+            Slot = o.Slot,
+            Icon = game.Definition.Cards.FirstOrDefault(c => c.Id == o.DefinitionId)?.Icon
         };
     }
 

@@ -95,7 +95,7 @@ public class MatchService
                 for (int i = 0; i < count; i++)
                     deckList.Add(cardId);
 
-            game.Players.Add(new PlayerInstance
+            var player = new PlayerInstance
             {
                 Id = setup.Id ?? Guid.NewGuid().ToString("N")[..8],
                 Name = setup.Name,
@@ -103,7 +103,9 @@ public class MatchService
                 DeckList = deckList,
                 HqCardId = precon?.Hq,
                 HeroCardId = precon?.Hero
-            });
+            };
+            player.RelevantResources = ComputeRelevantResources(definition, player);
+            game.Players.Add(player);
         }
 
         _ruleEngine.ExecuteSetup(game);
@@ -111,6 +113,56 @@ public class MatchService
 
         _logger.LogInformation("Created match {MatchId} for game {GameId}", matchId, gameId);
         return (game, null);
+    }
+
+    /// <summary>
+    /// Which player-scoped resources this player's deck actually touches: play costs,
+    /// ability costs/effects, triggers — following summon/transform chains. Drives
+    /// which resource chips the UI shows for this player.
+    /// </summary>
+    private static List<string> ComputeRelevantResources(Core.Definitions.GameDefinition def, PlayerInstance player)
+    {
+        var relevant = new HashSet<string>();
+        var seen = new HashSet<string>(player.DeckList);
+        if (player.HqCardId != null) seen.Add(player.HqCardId);
+        if (player.HeroCardId != null) seen.Add(player.HeroCardId);
+
+        var queue = new Queue<string>(seen);
+        while (queue.Count > 0)
+        {
+            var cardId = queue.Dequeue();
+            var card = def.Cards.FirstOrDefault(c => c.Id == cardId);
+            if (card == null) continue;
+
+            if (card.PlayCost != null)
+                relevant.Add(card.PlayCostResource);
+
+            var abilities = card.Abilities.ToList();
+            if (card.OnPlay != null) abilities.Add(card.OnPlay);
+
+            var effects = abilities.SelectMany(a => a.Effects)
+                .Concat(card.Triggers.SelectMany(t => t.Effects))
+                .ToList();
+
+            foreach (var cost in abilities.SelectMany(a => a.Costs))
+                if (cost.Scope == "player" && cost.ResourceId != null)
+                    relevant.Add(cost.ResourceId);
+
+            foreach (var eff in effects)
+            {
+                if (eff.ResourceId != null &&
+                    (eff.Scope == "player" || eff.Type is "steal_resource" or "plunder_resource"))
+                    relevant.Add(eff.ResourceId);
+                if (eff.CardId != null && (eff.Type == "summon" || eff.Type == "transform") && seen.Add(eff.CardId))
+                    queue.Enqueue(eff.CardId);
+            }
+        }
+
+        if (relevant.Count == 0) relevant.Add("gold");
+        return def.Resources
+            .Where(r => r.Scope == "player" && relevant.Contains(r.Id))
+            .Select(r => r.Id)
+            .ToList();
     }
 
     public GameInstance? GetMatch(string matchId) =>

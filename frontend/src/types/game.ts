@@ -11,6 +11,7 @@ export interface PlayerStateDto {
   id: string;
   name: string;
   resources: Record<string, number>;
+  relevantResources: string[];
   isWinner: boolean;
   isLoser: boolean;
 }
@@ -33,6 +34,7 @@ export interface ObjectStateDto {
   hasSummoningSickness: boolean;
   attachedToId?: string | null;
   slot?: string | null;
+  icon?: string | null;
 }
 
 export interface ChoiceDefinition {
@@ -106,6 +108,7 @@ export interface CardDefinitionDto {
   id: string;
   name: string;
   objectType: string;
+  icon?: string | null;
   playCost?: number | null;
   properties: Record<string, number>;
   tags: string[];

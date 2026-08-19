@@ -111,6 +111,7 @@ public class CardDefinition
     public List<AbilityDefinition> Abilities { get; set; } = new();
     public PlayTimingDefinition? PlayTiming { get; set; }
     public string? ArtworkDescription { get; set; }
+    public string? Icon { get; set; } // emoji shown in the card's art area
     public int? PlayCost { get; set; } // cost to play from hand; null = not deck-eligible
     public string PlayCostResource { get; set; } = "gold"; // which player resource pays the play cost
     public AbilityDefinition? OnPlay { get; set; } // resolved when the card is played from hand

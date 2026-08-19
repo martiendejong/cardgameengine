@@ -40,6 +40,7 @@ public class PlayerInstance
     public List<string> DeckList { get; set; } = new(); // expanded card definition ids
     public string? HqCardId { get; set; }   // headquarters placed at setup
     public string? HeroCardId { get; set; } // hero placed at setup
+    public List<string> RelevantResources { get; set; } = new(); // player resources this deck actually uses
 }
 
 public class ObjectInstance

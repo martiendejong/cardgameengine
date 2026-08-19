@@ -43,7 +43,19 @@ export function CardView({
     if (card.objectType === 'unit') return '⚔';
     if (card.objectType === 'building') return '🏠';
     if (card.objectType === 'spell') return '✨';
+    if (card.objectType === 'module') return '⚙';
     return '□';
+  }
+
+  // Deterministic art gradient per card definition
+  function artGradient(): string {
+    let hash = 0;
+    for (let i = 0; i < card.definitionId.length; i++) {
+      hash = (hash * 31 + card.definitionId.charCodeAt(i)) >>> 0;
+    }
+    const hue1 = hash % 360;
+    const hue2 = (hue1 + 45) % 360;
+    return `linear-gradient(135deg, hsl(${hue1}, 45%, 22%), hsl(${hue2}, 55%, 14%))`;
   }
 
   function getTypeLabel() {
@@ -75,6 +87,10 @@ export function CardView({
         <span className="card-type-icon">{getTypeIcon()}</span>
         <span className="card-name">{card.name}</span>
         <span className="card-type-label">{getTypeLabel()}</span>
+      </div>
+
+      <div className="card-art" style={{ background: artGradient() }}>
+        <span className="card-art-icon">{card.icon || getTypeIcon()}</span>
       </div>
 
       {card.isTapped && <div className="tapped-indicator">TAPPED</div>}
