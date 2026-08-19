@@ -9,7 +9,6 @@ interface CardViewProps {
   isSelectedTarget: boolean;
   onAction: (action: AvailableAction, targetIds?: string[]) => void;
   onSelectTarget: (id: string) => void;
-  flipped?: boolean;
 }
 
 export function CardView({
@@ -20,7 +19,6 @@ export function CardView({
   isSelectedTarget,
   onAction,
   onSelectTarget,
-  flipped = false,
 }: CardViewProps) {
   const hp = card.properties['currentHp'] ?? 0;
   const maxHp = card.properties['maxHp'] ?? 0;
@@ -69,7 +67,6 @@ export function CardView({
         isSelectedTarget ? 'selected-target' : '',
         `card-type-${card.objectType}`,
       ].filter(Boolean).join(' ')}
-      style={{ transform: flipped ? 'rotate(180deg)' : undefined }}
       onClick={() => {
         if (isSelectableTarget) onSelectTarget(card.id);
       }}

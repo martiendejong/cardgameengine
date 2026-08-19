@@ -78,7 +78,6 @@ export function PlayerArea({
                     isSelectedTarget={selectedTargets.includes(card.id)}
                     onAction={onAction}
                     onSelectTarget={onSelectTarget}
-                    flipped={!isBottom}
                   />
                 ))}
               </div>

@@ -196,7 +196,7 @@
   padding: 10px 12px;
   border: 1px solid #21262d;
   transition: border-color 0.2s;
-  overflow: hidden;
+  overflow-y: auto;
   min-height: 0;
 }
 
@@ -359,9 +359,9 @@
 }
 
 .card.tapped {
-  transform: rotate(90deg) !important;
-  opacity: 0.8;
-  margin: 24px 4px;
+  transform: rotate(2.5deg);
+  opacity: 0.55;
+  filter: saturate(0.4);
 }
 
 .card.destroyed {
