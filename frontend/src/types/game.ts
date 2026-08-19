@@ -67,6 +67,7 @@ export interface PendingChoice {
 
 export interface GameStateDto {
   matchId: string;
+  gameId: string;
   currentPhaseId: string;
   activePlayerId: string;
   state: GameState;
@@ -99,9 +100,50 @@ export interface PlayerSetup {
   isAdmin?: boolean;
 }
 
-export interface AbilitySummary {
+export interface CostDto {
+  type: string;
+  resourceId?: string | null;
+  amount?: number | null;
+  scope?: string | null;
+}
+
+export interface ConditionDto {
+  type: string;
+  resourceId?: string | null;
+  amount?: number | null;
+  tag?: string | null;
+  phase?: string | null;
+  scope?: string | null;
+}
+
+export interface EffectDto {
+  type: string;
+  scope?: string | null;
+  resourceId?: string | null;
+  propertyId?: string | null;
+  amount?: number | null;
+  cardId?: string | null;
+  tag?: string | null;
+}
+
+export interface AbilityDto {
   id: string;
   name: string;
+  costs: CostDto[];
+  conditions: ConditionDto[];
+  choice?: ChoiceDefinition | null;
+  effects: EffectDto[];
+}
+
+export interface TriggerDto {
+  event: string;
+  oncePerTurn: boolean;
+  effects: EffectDto[];
+}
+
+export interface AttachModifierDto {
+  propertyId: string;
+  amount: number;
 }
 
 export interface CardDefinitionDto {
@@ -110,11 +152,17 @@ export interface CardDefinitionDto {
   objectType: string;
   icon?: string | null;
   playCost?: number | null;
+  playCostResource?: string;
   properties: Record<string, number>;
   tags: string[];
-  abilities: AbilitySummary[];
-  onPlay?: AbilitySummary | null;
-  artworkDescription?: string;
+  abilities: AbilityDto[];
+  onPlay?: AbilityDto | null;
+  triggers?: TriggerDto[];
+  slot?: string | null;
+  attachModifiers?: AttachModifierDto[];
+  equipmentSlots?: Record<string, number> | null;
+  bonusAttackVsBuildings?: number | null;
+  artworkDescription?: string | null;
 }
 
 export interface DeckRulesDto {

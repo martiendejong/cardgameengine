@@ -1,13 +1,15 @@
-import React, { useState, useCallback } from 'react';
-import { GameStateDto, AvailableAction, GameState } from '../types/game';
+import { useState } from 'react';
+import { GameStateDto, AvailableAction, GameState, CardDefinitionDto } from '../types/game';
 import { PlayerArea } from './PlayerArea';
 import { ActionPanel } from './ActionPanel';
 import { ChoiceDialog } from './ChoiceDialog';
 import { GameLog } from './GameLog';
+import { CardDetailModal } from './CardDetailModal';
 
 interface GameBoardProps {
   gameState: GameStateDto;
   myPlayerId: string;
+  cardDefs: Record<string, CardDefinitionDto>;
   onAction: (action: AvailableAction, targetIds?: string[]) => void;
   onEndPhase: () => void;
   onResolveChoice: (choiceId: string, selectedIds: string[]) => void;
@@ -16,12 +18,18 @@ interface GameBoardProps {
 export function GameBoard({
   gameState,
   myPlayerId,
+  cardDefs,
   onAction,
   onEndPhase,
   onResolveChoice,
 }: GameBoardProps) {
   const [pendingAction, setPendingAction] = useState<AvailableAction | null>(null);
   const [selectedTargets, setSelectedTargets] = useState<string[]>([]);
+  const [inspectedId, setInspectedId] = useState<string | null>(null);
+
+  const inspectedCard = inspectedId
+    ? gameState.objects.find(o => o.id === inspectedId) ?? null
+    : null;
 
   const myPlayer = gameState.players.find(p => p.id === myPlayerId);
   const opponentPlayer = gameState.players.find(p => p.id !== myPlayerId);
@@ -89,7 +97,7 @@ export function GameBoard({
         </div>
       )}
 
-      {/* Opponent area (top, flipped visually) */}
+      {/* Opponent area (top) */}
       {opponentPlayer && (
         <PlayerArea
           player={opponentPlayer}
@@ -101,6 +109,7 @@ export function GameBoard({
           selectedTargets={selectedTargets}
           onAction={handleActionClick}
           onSelectTarget={handleSelectTarget}
+          onInspect={setInspectedId}
         />
       )}
 
@@ -142,6 +151,7 @@ export function GameBoard({
           selectedTargets={selectedTargets}
           onAction={handleActionClick}
           onSelectTarget={handleSelectTarget}
+          onInspect={setInspectedId}
         />
       )}
 
@@ -154,6 +164,18 @@ export function GameBoard({
           choice={gameState.pendingChoice}
           objects={gameState.objects}
           onResolve={onResolveChoice}
+        />
+      )}
+
+      {/* Card inspector */}
+      {inspectedCard && (
+        <CardDetailModal
+          card={inspectedCard}
+          def={cardDefs[inspectedCard.definitionId]}
+          attachments={gameState.objects.filter(o => o.attachedToId === inspectedCard.id && !o.isDestroyed)}
+          nameOf={id => cardDefs[id]?.name ?? id}
+          onClose={() => setInspectedId(null)}
+          onInspect={setInspectedId}
         />
       )}
     </div>

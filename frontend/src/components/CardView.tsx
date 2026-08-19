@@ -1,5 +1,6 @@
 import React from 'react';
 import { ObjectStateDto, AvailableAction } from '../types/game';
+import { STAT_TIPS, TAG_TIPS, STATUS_TIPS } from '../utils/cardText';
 
 interface CardViewProps {
   card: ObjectStateDto;
@@ -9,6 +10,7 @@ interface CardViewProps {
   isSelectedTarget: boolean;
   onAction: (action: AvailableAction, targetIds?: string[]) => void;
   onSelectTarget: (id: string) => void;
+  onInspect?: (objectId: string) => void;
 }
 
 export function CardView({
@@ -19,6 +21,7 @@ export function CardView({
   isSelectedTarget,
   onAction,
   onSelectTarget,
+  onInspect,
 }: CardViewProps) {
   const hp = card.properties['currentHp'] ?? 0;
   const maxHp = card.properties['maxHp'] ?? 0;
@@ -81,6 +84,7 @@ export function CardView({
       ].filter(Boolean).join(' ')}
       onClick={() => {
         if (isSelectableTarget) onSelectTarget(card.id);
+        else if (onInspect && card.definitionId !== 'hidden') onInspect(card.id);
       }}
     >
       <div className="card-header">
@@ -95,10 +99,10 @@ export function CardView({
 
       {card.isTapped && <div className="tapped-indicator">TAPPED</div>}
       {card.hasSummoningSickness && card.zoneId === 'battlefield' && (
-        <div className="status-indicator new-indicator">NEW</div>
+        <div className="status-indicator new-indicator tip" data-tip={STATUS_TIPS.new}>NEW</div>
       )}
       {card.hasMovedThisTurn && !card.hasSummoningSickness && (
-        <div className="status-indicator moved-indicator">MOVED</div>
+        <div className="status-indicator moved-indicator tip" data-tip={STATUS_TIPS.moved}>MOVED</div>
       )}
 
       <div className="card-stats">
@@ -113,15 +117,15 @@ export function CardView({
         )}
 
         <div className="stat-row">
-          {attack > 0 && <span className="stat atk" title="Attack">⚔ {attack}</span>}
-          {armor > 0 && <span className="stat arm" title="Armor">🛡 {armor}</span>}
+          {attack > 0 && <span className="stat atk tip" data-tip={STAT_TIPS.attack}>⚔ {attack}</span>}
+          {armor > 0 && <span className="stat arm tip" data-tip={STAT_TIPS.armor}>🛡 {armor}</span>}
           {ap !== undefined && (
-            <span className="stat ap" title="Action Points">AP: {ap}</span>
+            <span className="stat ap tip" data-tip={STAT_TIPS.ap}>AP: {ap}</span>
           )}
           {Object.entries(card.resources)
             .filter(([key, val]) => key !== 'ap' && val > 0)
             .map(([key, val]) => (
-              <span key={key} className="stat tokens" title={key}>
+              <span key={key} className="stat tokens tip" data-tip={STAT_TIPS[key] ?? key}>
                 ◈ {val}
               </span>
             ))}
@@ -130,7 +134,7 @@ export function CardView({
         {card.tags.length > 0 && (
           <div className="tags">
             {card.tags.map(tag => (
-              <span key={tag} className="tag">{tag}</span>
+              <span key={tag} className="tag tip" data-tip={TAG_TIPS[tag] ?? tag}>{tag}</span>
             ))}
           </div>
         )}
@@ -142,8 +146,15 @@ export function CardView({
             const modActions = actions.filter(a => a.sourceObjectId === mod.id);
             return (
               <div key={mod.id} className={`module-chip ${mod.isTapped ? 'module-tapped' : ''}`}>
-                <span className="module-name" title={mod.slot ?? ''}>
-                  ⚙ {mod.name}
+                <span
+                  className="module-name"
+                  title={mod.slot ?? ''}
+                  onClick={e => {
+                    e.stopPropagation();
+                    if (onInspect) onInspect(mod.id);
+                  }}
+                >
+                  {mod.icon ?? '⚙'} {mod.name}
                 </span>
                 {modActions.map(action => (
                   <button

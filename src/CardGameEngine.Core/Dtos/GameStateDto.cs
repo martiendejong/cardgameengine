@@ -5,6 +5,7 @@ namespace CardGameEngine.Core.Dtos;
 public class GameStateDto
 {
     public string MatchId { get; set; } = "";
+    public string GameId { get; set; } = "";
     public string CurrentPhaseId { get; set; } = "";
     public string ActivePlayerId { get; set; } = "";
     public GameState State { get; set; }

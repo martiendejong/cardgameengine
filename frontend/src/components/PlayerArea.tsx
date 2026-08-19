@@ -12,6 +12,7 @@ interface PlayerAreaProps {
   selectedTargets: string[];
   onAction: (action: AvailableAction) => void;
   onSelectTarget: (id: string) => void;
+  onInspect: (objectId: string) => void;
 }
 
 export function PlayerArea({
@@ -24,6 +25,7 @@ export function PlayerArea({
   selectedTargets,
   onAction,
   onSelectTarget,
+  onInspect,
 }: PlayerAreaProps) {
   const battlefieldCards = objects.filter(
     o => o.controllerId === player.id && o.zoneId === 'battlefield' && !o.isDestroyed && !o.attachedToId
@@ -83,6 +85,7 @@ export function PlayerArea({
                     isSelectedTarget={selectedTargets.includes(card.id)}
                     onAction={onAction}
                     onSelectTarget={onSelectTarget}
+                    onInspect={onInspect}
                   />
                 ))}
               </div>
@@ -107,6 +110,7 @@ export function PlayerArea({
                 isSelectedTarget={false}
                 onAction={onAction}
                 onSelectTarget={onSelectTarget}
+                onInspect={onInspect}
               />
             ))}
           </div>

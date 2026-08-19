@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { GameStateDto, AvailableAction, GameState } from '../types/game';
+import { useState, useCallback, useEffect } from 'react';
+import { GameStateDto, AvailableAction, GameState, GameDefinitionFull, CardDefinitionDto } from '../types/game';
 import { useGameHub } from '../hooks/useGameHub';
 import { GameBoard } from '../components/GameBoard';
 
@@ -14,8 +14,23 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   const [error, setError] = useState('');
   const [myPlayerId, setMyPlayerId] = useState(seat);
   const [copied, setCopied] = useState(false);
+  const [cardDefs, setCardDefs] = useState<Record<string, CardDefinitionDto>>({});
 
   const isHotseat = seat === '';
+
+  // Load the static card definitions once (for the card inspector)
+  const gameId = gameState?.gameId;
+  useEffect(() => {
+    if (!gameId) return;
+    fetch(`/api/definitions/${gameId}`)
+      .then(r => r.json())
+      .then((def: GameDefinitionFull) => {
+        const map: Record<string, CardDefinitionDto> = {};
+        for (const card of def.cards) map[card.id] = card;
+        setCardDefs(map);
+      })
+      .catch(() => { /* inspector will show runtime info only */ });
+  }, [gameId]);
 
   const handleStateUpdate = useCallback((state: GameStateDto) => {
     setGameState(state);
@@ -143,6 +158,7 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
       <GameBoard
         gameState={gameState}
         myPlayerId={actAs}
+        cardDefs={cardDefs}
         onAction={handleAction}
         onEndPhase={handleEndPhase}
         onResolveChoice={handleResolveChoice}

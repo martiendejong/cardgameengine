@@ -24,6 +24,7 @@ public class StateProjector
         return new GameStateDto
         {
             MatchId = game.Id,
+            GameId = game.Definition.Id,
             CurrentPhaseId = game.CurrentPhaseId,
             ActivePlayerId = game.ActivePlayerId,
             State = game.State,
