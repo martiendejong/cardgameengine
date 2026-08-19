@@ -1595,3 +1595,9 @@
   /* Winner overlay */
   .winner-box { padding: 24px 20px; width: 88%; box-sizing: border-box; }
 }
+
+/* Housing */
+.resource-chip.housing-full { border-color: #f0883e; }
+.resource-chip.housing-full .resource-value { color: #f0883e; }
+.stat.housing { color: #f0883e; }
+.detail-stat.housing { color: #f0883e; }

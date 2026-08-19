@@ -27,6 +27,9 @@ public class PlayerStateDto
     public bool IsWinner { get; set; }
     public bool IsLoser { get; set; }
     public bool IsBot { get; set; }
+    public bool UsesHousing { get; set; }
+    public int HousingUsed { get; set; }
+    public int HousingCapacity { get; set; }
 }
 
 public class ObjectStateDto
@@ -49,4 +52,6 @@ public class ObjectStateDto
     public string? AttachedToId { get; set; }
     public string? Slot { get; set; }
     public string? Icon { get; set; }
+    public int? HousingCost { get; set; }
+    public int? HousingProvided { get; set; }
 }

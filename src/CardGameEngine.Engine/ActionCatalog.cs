@@ -134,6 +134,8 @@ public class ActionCatalog
                 reason = $"Requires {cost} {costRes}";
             else if (cardDef.Slot != null && GameQueries.FindLivingHero(game, playerId) == null)
                 reason = "No hero to install this module on";
+            else if (cardDef.HousingCost is int housing && !GameQueries.HasHousingFor(game, playerId, housing))
+                reason = $"Not enough housing ({GameQueries.HousingUsed(game, playerId)}/{GameQueries.HousingCapacity(game, playerId)})";
 
             var costLabel = costRes == "gold" ? $"{cost}g" : $"{cost} {costRes}";
             var playAction = new AvailableAction

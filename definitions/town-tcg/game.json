@@ -292,7 +292,8 @@
           ]
         }
       ],
-      "icon": "🏛️"
+      "icon": "🏛️",
+      "housingProvided": 5
     },
     {
       "id": "town-chief",
@@ -372,7 +373,8 @@
         "builder"
       ],
       "artworkDescription": "A simple farmer with a pitchfork",
-      "icon": "🧑‍🌾"
+      "icon": "🧑‍🌾",
+      "housingCost": 1
     },
     {
       "id": "soldier",
@@ -390,7 +392,8 @@
         "retaliate"
       ],
       "artworkDescription": "A disciplined footman with sword and shield",
-      "icon": "⚔️"
+      "icon": "⚔️",
+      "housingCost": 1
     },
     {
       "id": "archer",
@@ -433,7 +436,8 @@
           ]
         }
       ],
-      "icon": "🏹"
+      "icon": "🏹",
+      "housingCost": 1
     },
     {
       "id": "barracks",
@@ -611,7 +615,8 @@
           ]
         }
       ],
-      "icon": "🍺"
+      "icon": "🍺",
+      "housingProvided": 2
     },
     {
       "id": "mercenary",
@@ -627,7 +632,8 @@
         "mercenary"
       ],
       "artworkDescription": "A scarred sellsword who fights for coin, not loyalty",
-      "icon": "🥷"
+      "icon": "🥷",
+      "housingCost": 1
     },
     {
       "id": "blacksmith",
@@ -1484,6 +1490,20 @@
         ]
       },
       "icon": "🚑"
+    },
+    {
+      "id": "house",
+      "name": "House",
+      "objectType": "building",
+      "playCost": 2,
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "housingProvided": 3,
+      "icon": "🏠",
+      "artworkDescription": "A cozy timber cottage with a smoking chimney"
     }
   ],
   "decks": [
@@ -1504,7 +1524,8 @@
         "fireball": 1,
         "bag-of-gold": 2,
         "iron-sword": 1,
-        "shield": 1
+        "shield": 1,
+        "house": 2
       }
     },
     {

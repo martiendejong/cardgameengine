@@ -40,6 +40,18 @@ public class AbilityService
             }
         }
 
+        // Summoning abilities need housing for what they summon
+        foreach (var effect in ability.Effects.Where(e => e.Type == "summon" && e.CardId != null))
+        {
+            var summonDef = game.Definition.Cards.FirstOrDefault(c => c.Id == effect.CardId);
+            if (summonDef?.HousingCost is int housing &&
+                !GameQueries.HasHousingFor(game, player.Id, housing))
+            {
+                reason = $"Not enough housing ({GameQueries.HousingUsed(game, player.Id)}/{GameQueries.HousingCapacity(game, player.Id)})";
+                return false;
+            }
+        }
+
         return true;
     }
 

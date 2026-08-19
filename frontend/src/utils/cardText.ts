@@ -96,6 +96,15 @@ export function explainTrigger(t: TriggerDto, nameOf: NameOf): string {
 
 // ---- Hover tooltips ------------------------------------------------------
 
+export const HOUSING_TIP =
+  'Housing — units need living space. Your capacity comes from buildings (Town Hall +5, House +3, Tavern +2); each unit occupies 1. At the cap you cannot play or recruit more units until you build housing — and losing a building can lock recruitment until you are back under capacity. Heroes need no housing.';
+
+export const HOUSING_COST_TIP = (n: number) =>
+  `Needs ${n} housing while on the battlefield. If your housing is full, this card cannot enter play.`;
+
+export const HOUSING_PROVIDED_TIP = (n: number) =>
+  `Provides ${n} housing while on the battlefield. Lose this building and the capacity goes with it.`;
+
 export const STAT_TIPS: Record<string, string> = {
   attack: 'Attack — damage this card deals in combat. Damage to the target = Attack minus the target’s Armor.',
   armor: 'Armor — reduces every hit taken by this amount. Damage taken = attacker’s Attack minus this Armor.',

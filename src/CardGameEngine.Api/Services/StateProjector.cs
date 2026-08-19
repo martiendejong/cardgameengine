@@ -39,7 +39,10 @@ public class StateProjector
                 RelevantResources = new List<string>(p.RelevantResources),
                 IsWinner = p.IsWinner,
                 IsLoser = p.IsLoser,
-                IsBot = p.IsBot
+                IsBot = p.IsBot,
+                UsesHousing = PlayerUsesHousing(game, p.Id),
+                HousingUsed = GameQueries.HousingUsed(game, p.Id),
+                HousingCapacity = GameQueries.HousingCapacity(game, p.Id)
             }).ToList(),
             Objects = game.Objects.Select(o => ProjectObject(game, o, viewerId, omniscient)).ToList(),
             AvailableActions = game.ActivePlayerId == actionsFor
@@ -91,8 +94,19 @@ public class StateProjector
             HasSummoningSickness = o.HasSummoningSickness,
             AttachedToId = o.AttachedToId,
             Slot = o.Slot,
-            Icon = game.Definition.Cards.FirstOrDefault(c => c.Id == o.DefinitionId)?.Icon
+            Icon = game.Definition.Cards.FirstOrDefault(c => c.Id == o.DefinitionId)?.Icon,
+            HousingCost = game.Definition.Cards.FirstOrDefault(c => c.Id == o.DefinitionId)?.HousingCost,
+            HousingProvided = game.Definition.Cards.FirstOrDefault(c => c.Id == o.DefinitionId)?.HousingProvided
         };
+    }
+
+    /// <summary>Housing only matters (and only shows) for players whose cards reference it.</summary>
+    private static bool PlayerUsesHousing(GameInstance game, string playerId)
+    {
+        return game.Objects
+            .Where(o => o.OwnerId == playerId)
+            .Select(o => game.Definition.Cards.FirstOrDefault(c => c.Id == o.DefinitionId))
+            .Any(def => def?.HousingCost != null || def?.HousingProvided != null);
     }
 
     private Dictionary<string, int> BuildEffectiveProperties(GameInstance game, ObjectInstance obj)

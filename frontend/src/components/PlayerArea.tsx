@@ -1,7 +1,7 @@
 import React from 'react';
 import { PlayerStateDto, ObjectStateDto, AvailableAction } from '../types/game';
 import { CardView } from './CardView';
-import { LINE_TIP_FRONT, LINE_TIP_BACK } from '../utils/cardText';
+import { LINE_TIP_FRONT, LINE_TIP_BACK, HOUSING_TIP } from '../utils/cardText';
 
 interface PlayerAreaProps {
   player: PlayerStateDto;
@@ -53,6 +53,16 @@ export function PlayerArea({
           {player.isLoser && <span className="loser-badge">DEFEATED</span>}
         </div>
         <div className="player-resources">
+          {player.usesHousing && (
+            <div
+              className={`resource-chip tip ${player.housingUsed >= player.housingCapacity ? 'housing-full' : ''}`}
+              data-tip={HOUSING_TIP}
+            >
+              <span className="resource-icon">🏠</span>
+              <span className="resource-label">Housing</span>
+              <span className="resource-value">{player.housingUsed}/{player.housingCapacity}</span>
+            </div>
+          )}
           {Object.entries(player.resources)
             .filter(([key]) =>
               !player.relevantResources || player.relevantResources.length === 0

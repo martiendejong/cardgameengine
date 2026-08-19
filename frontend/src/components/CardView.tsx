@@ -1,6 +1,6 @@
 import React from 'react';
 import { ObjectStateDto, AvailableAction } from '../types/game';
-import { STAT_TIPS, TAG_TIPS, STATUS_TIPS } from '../utils/cardText';
+import { STAT_TIPS, TAG_TIPS, STATUS_TIPS, HOUSING_COST_TIP, HOUSING_PROVIDED_TIP } from '../utils/cardText';
 
 interface CardViewProps {
   card: ObjectStateDto;
@@ -129,6 +129,16 @@ export function CardView({
                 ◈ {val}
               </span>
             ))}
+          {card.housingCost != null && (
+            <span className="stat housing tip" data-tip={HOUSING_COST_TIP(card.housingCost)}>
+              🏠 {card.housingCost}
+            </span>
+          )}
+          {card.housingProvided != null && (
+            <span className="stat housing tip" data-tip={HOUSING_PROVIDED_TIP(card.housingProvided)}>
+              🏠 +{card.housingProvided}
+            </span>
+          )}
         </div>
 
         {card.tags.length > 0 && (

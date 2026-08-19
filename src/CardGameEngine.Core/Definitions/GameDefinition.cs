@@ -120,6 +120,8 @@ public class CardDefinition
     public string? Slot { get; set; } // module slot ("arm", "core", ...); modules attach to your hero
     public List<AttachModifierDefinition> AttachModifiers { get; set; } = new(); // stat bonuses while attached
     public Dictionary<string, int>? EquipmentSlots { get; set; } // on heroes: slot id -> capacity
+    public int? HousingCost { get; set; }     // living space this unit occupies while on the battlefield
+    public int? HousingProvided { get; set; } // living space this card supplies while on the battlefield
 }
 
 public class AttachModifierDefinition

@@ -3,6 +3,7 @@ import { ObjectStateDto, CardDefinitionDto } from '../types/game';
 import {
   explainCost, explainCondition, explainChoice, explainEffect, explainTrigger,
   STAT_TIPS, TAG_TIPS, TYPE_TIPS, STATUS_TIPS, playCostTip, slotTip,
+  HOUSING_COST_TIP, HOUSING_PROVIDED_TIP,
 } from '../utils/cardText';
 
 interface CardDetailModalProps {
@@ -103,6 +104,16 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
               data-tip="This bonus is added to Attack when the target is a building."
             >
               +{def.bonusAttackVsBuildings} vs Buildings
+            </span>
+          )}
+          {def?.housingCost != null && (
+            <span className="tip detail-stat housing" data-tip={HOUSING_COST_TIP(def.housingCost)}>
+              🏠 Needs {def.housingCost} housing
+            </span>
+          )}
+          {def?.housingProvided != null && (
+            <span className="tip detail-stat housing" data-tip={HOUSING_PROVIDED_TIP(def.housingProvided)}>
+              🏠 Provides {def.housingProvided} housing
             </span>
           )}
         </div>

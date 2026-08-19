@@ -136,6 +136,12 @@ public static class DefaultHandlers
         {
             var cardDef = ctx.Game.Definition.Cards.FirstOrDefault(c => c.Id == ctx.Effect.CardId);
             if (cardDef == null) return;
+            if (cardDef.HousingCost is int housing &&
+                !GameQueries.HasHousingFor(ctx.Game, ctx.Player.Id, housing))
+            {
+                ctx.Game.Log.Add($"{ctx.Player.Name} has no housing left for a {cardDef.Name}!");
+                return;
+            }
             var obj = s.Factory.CreateObjectInstance(ctx.Game, cardDef, ctx.Player.Id, "battlefield");
             obj.HasSummoningSickness = true;
             ctx.Game.Objects.Add(obj);
@@ -191,6 +197,16 @@ public static class DefaultHandlers
             if (ctx.Target == null || ctx.Effect.CardId == null) return;
             var newDef = ctx.Game.Definition.Cards.FirstOrDefault(c => c.Id == ctx.Effect.CardId);
             if (newDef == null) return;
+
+            // If the new form needs more living space than the old one, the delta must fit
+            var oldDef = GameQueries.GetCardDefinition(ctx.Game, ctx.Target);
+            var delta = (newDef.HousingCost ?? 0) - (oldDef?.HousingCost ?? 0);
+            if (delta > 0 && !GameQueries.HasHousingFor(ctx.Game, ctx.Player.Id, delta))
+            {
+                ctx.Game.Log.Add($"{ctx.Player.Name} has no housing left to train a {newDef.Name}!");
+                return;
+            }
+
             s.Factory.Transform(ctx.Game, ctx.Target, newDef);
             s.Bus.Publish(ctx.Game, new GameEvent { Type = GameEventTypes.ObjectTransformed, Target = ctx.Target, Player = ctx.Player });
         });

@@ -56,4 +56,21 @@ public static class GameQueries
             (controllerId == null || o.ControllerId == controllerId));
 
     public static bool IsAttachable(ObjectInstance o) => o.AttachedToId != null;
+
+    // ---- Housing ----
+
+    public static int HousingUsed(GameInstance game, string playerId) =>
+        BattlefieldObjects(game, playerId)
+            .Sum(o => GetCardDefinition(game, o)?.HousingCost ?? 0);
+
+    public static int HousingCapacity(GameInstance game, string playerId) =>
+        BattlefieldObjects(game, playerId)
+            .Sum(o => GetCardDefinition(game, o)?.HousingProvided ?? 0);
+
+    /// <summary>Free living space; effectively unlimited for decks that never use housing.</summary>
+    public static bool HasHousingFor(GameInstance game, string playerId, int cost)
+    {
+        if (cost <= 0) return true;
+        return HousingUsed(game, playerId) + cost <= HousingCapacity(game, playerId);
+    }
 }

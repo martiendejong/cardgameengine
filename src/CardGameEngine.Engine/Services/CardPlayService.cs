@@ -29,6 +29,10 @@ public class CardPlayService
         if (player.Resources.GetValueOrDefault(costRes) < cost)
             return (false, $"Requires {cost} {costRes}");
 
+        if (cardDef.HousingCost is int housing &&
+            !GameQueries.HasHousingFor(game, playerId, housing))
+            return (false, $"Not enough housing ({GameQueries.HousingUsed(game, playerId)}/{GameQueries.HousingCapacity(game, playerId)})");
+
         // Validate targets before paying anything
         var targetIds = action.TargetIds ?? new List<string>();
         if (cardDef.OnPlay?.Choice != null)

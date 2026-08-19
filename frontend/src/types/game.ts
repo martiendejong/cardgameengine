@@ -15,6 +15,9 @@ export interface PlayerStateDto {
   isWinner: boolean;
   isLoser: boolean;
   isBot: boolean;
+  usesHousing: boolean;
+  housingUsed: number;
+  housingCapacity: number;
 }
 
 export interface ObjectStateDto {
@@ -36,6 +39,8 @@ export interface ObjectStateDto {
   attachedToId?: string | null;
   slot?: string | null;
   icon?: string | null;
+  housingCost?: number | null;
+  housingProvided?: number | null;
 }
 
 export interface ChoiceDefinition {
@@ -164,6 +169,8 @@ export interface CardDefinitionDto {
   equipmentSlots?: Record<string, number> | null;
   bonusAttackVsBuildings?: number | null;
   artworkDescription?: string | null;
+  housingCost?: number | null;
+  housingProvided?: number | null;
 }
 
 export interface DeckRulesDto {
