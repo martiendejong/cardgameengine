@@ -17,6 +17,12 @@ import imgArcheryRange from '../assets/cards/archery-range.png';
 import imgBarracks from '../assets/cards/barracks.png';
 import imgPaladin from '../assets/cards/paladin.png';
 import imgSoldier from '../assets/cards/soldier.png';
+import imgArchmage from '../assets/cards/archmage.png';
+import imgHealingSalve from '../assets/cards/healing-salve.png';
+import imgWoodenPalisade from '../assets/cards/wooden-palisade.png';
+import imgPyromancer from '../assets/cards/pyromancer.png';
+import imgScavenger from '../assets/cards/scavenger.png';
+import imgWarchief from '../assets/cards/warchief.png';
 
 const CARD_ART: Record<string, string> = {
   'town-chief': imgTownChief,
@@ -30,6 +36,12 @@ const CARD_ART: Record<string, string> = {
   'barracks': imgBarracks,
   'paladin': imgPaladin,
   'soldier': imgSoldier,
+  'archmage': imgArchmage,
+  'healing-salve': imgHealingSalve,
+  'wooden-palisade': imgWoodenPalisade,
+  'pyromancer': imgPyromancer,
+  'scavenger': imgScavenger,
+  'warchief': imgWarchief,
 };
 
 interface CardDetailModalProps {
@@ -94,9 +106,6 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
         <div className="detail-header">
           <h2 className="detail-name">{card.name}</h2>
           <div className="detail-header-meta">
-            <span className="tip detail-type" data-tip={TYPE_TIPS[card.objectType] ?? ''}>
-              {typeLabel(card.objectType)}
-            </span>
             {def?.playCost !== null && def?.playCost !== undefined && (
               <span className="tip detail-cost" data-tip={playCostTip(def.playCost, def.playCostResource ?? 'gold')}>
                 {def.playCost} {def.playCostResource === 'energy' ? '⚡' : '💰'}
@@ -153,6 +162,9 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
               🏠 Provides {def.housingProvided} housing
             </span>
           )}
+          <span className="tip detail-type" data-tip={TYPE_TIPS[card.objectType] ?? ''}>
+            {typeLabel(card.objectType)}
+          </span>
         </div>
 
         {(card.tags.length > 0 || card.isTapped || card.hasSummoningSickness || card.hasMovedThisTurn) && (

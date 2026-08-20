@@ -13,6 +13,12 @@ import imgArcheryRange from '../assets/cards/archery-range.png';
 import imgBarracks from '../assets/cards/barracks.png';
 import imgPaladin from '../assets/cards/paladin.png';
 import imgSoldier from '../assets/cards/soldier.png';
+import imgArchmage from '../assets/cards/archmage.png';
+import imgHealingSalve from '../assets/cards/healing-salve.png';
+import imgWoodenPalisade from '../assets/cards/wooden-palisade.png';
+import imgPyromancer from '../assets/cards/pyromancer.png';
+import imgScavenger from '../assets/cards/scavenger.png';
+import imgWarchief from '../assets/cards/warchief.png';
 
 const CARD_ART: Record<string, string> = {
   'town-chief': imgTownChief,
@@ -26,6 +32,12 @@ const CARD_ART: Record<string, string> = {
   'barracks': imgBarracks,
   'paladin': imgPaladin,
   'soldier': imgSoldier,
+  'archmage': imgArchmage,
+  'healing-salve': imgHealingSalve,
+  'wooden-palisade': imgWoodenPalisade,
+  'pyromancer': imgPyromancer,
+  'scavenger': imgScavenger,
+  'warchief': imgWarchief,
 };
 
 interface CardViewProps {
