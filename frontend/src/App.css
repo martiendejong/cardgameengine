@@ -1736,3 +1736,30 @@
   .mission-row { flex-direction: column; align-items: stretch; }
   .mission-start-btn { width: 100%; }
 }
+
+/* Multiplayer unlock progress (campaign) */
+.unlock-progress {
+  background: #0f3460;
+  border: 1px solid #1d5a94;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+.unlock-progress.unlock-done { border-color: #4caf50; }
+.unlock-progress-text { font-size: 13px; color: #dce; margin-bottom: 8px; line-height: 1.4; }
+.unlock-done .unlock-progress-text { color: #8ee08e; }
+.unlock-progress-bar {
+  height: 8px;
+  background: #16213e;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.unlock-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffd700, #ffe44d);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+.unlock-done .unlock-progress-fill { background: linear-gradient(90deg, #4caf50, #6fdf73); }
+
+.back-btn:disabled { opacity: 0.6; cursor: not-allowed; }

@@ -19,6 +19,9 @@ public class CreateMatchRequest
 {
     public string GameId { get; set; } = "";
     public List<PlayerSetup> Players { get; set; } = new();
+    // Campaign profile of the person creating the match; multiplayer requires
+    // a collection that can field a minimum-size deck (admins bypass)
+    public string? Profile { get; set; }
 }
 
 public class MatchService

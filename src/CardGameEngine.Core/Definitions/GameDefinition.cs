@@ -44,6 +44,8 @@ public class DeckRulesDefinition
 {
     public int MaxCopies { get; set; } = 2;
     public int MaxDeckSize { get; set; } = 15;
+    // Multiplayer unlocks once a profile's collection can field a deck this big
+    public int MinDeckSize { get; set; } = 40;
     public int StartingHandSize { get; set; } = 3;
     public int DrawPerTurn { get; set; } = 1;
     public Dictionary<string, int> DefaultDeck { get; set; } = new();

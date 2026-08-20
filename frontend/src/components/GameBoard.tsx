@@ -123,7 +123,9 @@ export function GameBoard({
                     <div className="mission-reward-list">
                       <p>New cards for your collection:</p>
                       {enc.rewardCards.map((id, i) => (
-                        <span key={i} className="collection-card">{rewardLabel(id)}</span>
+                        <span key={i} className="collection-card">
+                          {rewardLabel(id)}{enc.rewardCopies > 1 ? ` ×${enc.rewardCopies}` : ''}
+                        </span>
                       ))}
                     </div>
                   )}

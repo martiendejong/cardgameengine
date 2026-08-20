@@ -164,6 +164,7 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign }: LobbyPageProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           gameId: selectedGame,
+          profile: localStorage.getItem('campaignProfile') ?? '',
           players: players.map((p, i) => ({
             id: `p${i + 1}`,
             name: mode === 'bot' && i === 1 ? 'Computer' : p.name,

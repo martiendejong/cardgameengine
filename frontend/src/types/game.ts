@@ -98,6 +98,7 @@ export interface EncounterDto {
   missionId: string;
   playerId: string; // the human seat in a campaign match
   rewardCards: string[];
+  rewardCopies: number; // playset size granted per reward card
   pendingSpawnCount: number;
 }
 
@@ -116,6 +117,9 @@ export interface CampaignOverview {
     completedMissions: string[];
     collection: Record<string, number>;
   };
+  collectionCount: number;
+  requiredCards: number;
+  multiplayerUnlocked: boolean;
   missions: CampaignMission[];
 }
 

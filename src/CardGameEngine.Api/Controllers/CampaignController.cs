@@ -37,6 +37,9 @@ public class CampaignController : ControllerBase
         return Ok(new
         {
             profile = new { prof.Name, prof.CompletedMissions, prof.Collection },
+            collectionCount = CampaignService.CollectionCount(prof),
+            requiredCards = _campaign.RequiredCards(gameId),
+            multiplayerUnlocked = _campaign.IsMultiplayerUnlocked(gameId, prof),
             missions = missions.Select(m => new
             {
                 m.Id,

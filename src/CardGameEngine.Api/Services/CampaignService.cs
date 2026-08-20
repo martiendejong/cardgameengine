@@ -104,6 +104,22 @@ public class CampaignService
     public bool IsUnlocked(PlayerProfile profile, MissionDefinition mission) =>
         mission.Requires == null || profile.CompletedMissions.Contains(mission.Requires);
 
+    public static int CollectionCount(PlayerProfile profile) =>
+        profile.Collection.Values.Sum();
+
+    public int RequiredCards(string gameId) =>
+        _definitions.GetById(gameId)?.DeckRules?.MinDeckSize ?? 40;
+
+    /// <summary>
+    /// Multiplayer opens once the collection can field a minimum-size deck.
+    /// Completing the whole campaign (playset rewards) gets you there exactly.
+    /// </summary>
+    public bool IsMultiplayerUnlocked(string gameId, PlayerProfile profile)
+    {
+        var minDeck = _definitions.GetById(gameId)?.DeckRules?.MinDeckSize ?? 40;
+        return CollectionCount(profile) >= minDeck;
+    }
+
     // ---- encounter match construction ----
 
     public (GameInstance? game, string? error) StartMission(string gameId, string missionId, string profileName)
@@ -171,8 +187,12 @@ public class CampaignService
         var profile = GetProfile(enc.ProfileName);
         if (!profile.CompletedMissions.Contains(enc.MissionId))
             profile.CompletedMissions.Add(enc.MissionId);
+        // Rewards come as a full playset, capped so replays cannot farm past it —
+        // finishing all missions yields exactly a minimum multiplayer deck
+        var playset = game.Definition.DeckRules?.MaxCopies ?? 4;
         foreach (var cardId in enc.RewardCards)
-            profile.Collection[cardId] = profile.Collection.GetValueOrDefault(cardId) + 1;
+            profile.Collection[cardId] =
+                Math.Min(profile.Collection.GetValueOrDefault(cardId) + playset, playset);
         SaveProfile(profile);
         enc.RewardsGranted = true;
 

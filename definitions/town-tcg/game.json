@@ -396,7 +396,8 @@
       "barracks": 1,
       "healing-salve": 2,
       "fireball": 1
-    }
+    },
+    "minDeckSize": 40
   },
   "flow": {
     "phases": [

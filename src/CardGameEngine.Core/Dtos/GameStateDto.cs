@@ -27,6 +27,7 @@ public class EncounterDto
     public string MissionId { get; set; } = "";
     public string PlayerId { get; set; } = "";
     public List<string> RewardCards { get; set; } = new();
+    public int RewardCopies { get; set; } = 1; // playset size granted per reward card
     public int PendingSpawnCount { get; set; }
 }
 

@@ -9,17 +9,35 @@ interface Session {
   seat: string; // player id for a fixed seat, '' for hotseat (omniscient)
 }
 
+const GAME_ID = 'town-tcg';
+
 function App() {
   const [session, setSession] = useState<Session | null>(null);
-  const [view, setView] = useState<'lobby' | 'campaign'>('lobby');
+  const [view, setView] = useState<'loading' | 'lobby' | 'campaign'>('loading');
 
-  // Allow a second browser window to join via ?match=...&player=...
+  // New players start in the campaign; the lobby is for unlocked profiles.
+  // A second browser window can still join any match via ?match=...&player=...
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const match = params.get('match');
     const player = params.get('player');
-    if (match) setSession({ matchId: match, seat: player ?? '' });
-    else if (params.get('campaign')) setView('campaign');
+    if (match) {
+      setSession({ matchId: match, seat: player ?? '' });
+      return;
+    }
+    if (params.get('campaign')) {
+      setView('campaign');
+      return;
+    }
+    const profile = localStorage.getItem('campaignProfile');
+    if (!profile) {
+      setView('campaign');
+      return;
+    }
+    fetch(`/api/campaign?gameId=${GAME_ID}&profile=${encodeURIComponent(profile)}`)
+      .then(r => r.json())
+      .then(data => setView(data.multiplayerUnlocked ? 'lobby' : 'campaign'))
+      .catch(() => setView('campaign'));
   }, []);
 
   function handleMatchCreated(matchId: string, seat: string) {
@@ -57,7 +75,7 @@ function App() {
     setView('campaign');
   }
 
-  function closeCampaign() {
+  function openLobby() {
     window.history.replaceState(null, '', window.location.pathname);
     setView('lobby');
   }
@@ -72,8 +90,12 @@ function App() {
     );
   }
 
+  if (view === 'loading') {
+    return <div className="lobby-page"><div className="lobby-card"><p>Loading...</p></div></div>;
+  }
+
   if (view === 'campaign') {
-    return <CampaignPage onMissionStarted={handleMissionStarted} onBack={closeCampaign} />;
+    return <CampaignPage onMissionStarted={handleMissionStarted} onOpenLobby={openLobby} />;
   }
 
   return <LobbyPage onMatchCreated={handleMatchCreated} onOpenCampaign={openCampaign} />;

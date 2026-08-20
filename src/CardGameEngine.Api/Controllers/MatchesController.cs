@@ -8,15 +8,33 @@ namespace CardGameEngine.Api.Controllers;
 public class MatchesController : ControllerBase
 {
     private readonly MatchService _matchService;
+    private readonly CampaignService _campaign;
 
-    public MatchesController(MatchService matchService)
+    public MatchesController(MatchService matchService, CampaignService campaign)
     {
         _matchService = matchService;
+        _campaign = campaign;
     }
 
     [HttpPost]
     public IActionResult Create([FromBody] CreateMatchRequest request)
     {
+        // Multiplayer gate: non-admin human seats require a campaign profile
+        // whose collection can field a minimum-size deck. Admin mode bypasses.
+        var needsUnlock = request.Players.Any(p => !p.IsAdmin && !p.IsBot);
+        if (needsUnlock)
+        {
+            var profile = _campaign.GetProfile(request.Profile ?? "");
+            if (!_campaign.IsMultiplayerUnlocked(request.GameId, profile))
+            {
+                var needed = _campaign.RequiredCards(request.GameId);
+                var have = CampaignService.CollectionCount(profile);
+                return BadRequest(
+                    $"Multiplayer unlocks once your collection holds {needed} cards. " +
+                    $"You have {have} — complete campaign missions to earn more.");
+            }
+        }
+
         var (game, error) = _matchService.CreateMatch(request.GameId, request.Players);
         if (game == null)
             return BadRequest(error);

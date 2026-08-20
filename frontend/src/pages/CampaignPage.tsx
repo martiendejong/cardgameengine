@@ -3,12 +3,12 @@ import { CampaignOverview, GameDefinitionFull } from '../types/game';
 
 interface CampaignPageProps {
   onMissionStarted: (matchId: string, seat: string) => void;
-  onBack: () => void;
+  onOpenLobby: () => void;
 }
 
 const GAME_ID = 'town-tcg';
 
-export function CampaignPage({ onMissionStarted, onBack }: CampaignPageProps) {
+export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProps) {
   const [profileName, setProfileName] = useState(
     () => localStorage.getItem('campaignProfile') ?? '',
   );
@@ -60,12 +60,18 @@ export function CampaignPage({ onMissionStarted, onBack }: CampaignPageProps) {
   }
 
   const collection = overview ? Object.entries(overview.profile.collection) : [];
+  const unlocked = overview?.multiplayerUnlocked ?? false;
+  const have = overview?.collectionCount ?? 0;
+  const needed = overview?.requiredCards ?? 40;
 
   return (
     <div className="lobby-page">
       <div className="lobby-card lobby-wide campaign-card">
-        <h1 className="lobby-title">Campaign</h1>
-        <p className="lobby-subtitle">Defend the town, learn the game, earn new cards</p>
+        <h1 className="lobby-title">Town Wars</h1>
+        <p className="lobby-subtitle">
+          {overview ? 'Campaign — defend the town, learn the game, earn your collection'
+            : 'Welcome, commander. Enter your name to begin.'}
+        </p>
 
         {error && <div className="error-box">{error}</div>}
 
@@ -79,6 +85,22 @@ export function CampaignPage({ onMissionStarted, onBack }: CampaignPageProps) {
             placeholder="Enter your name to load your progress"
           />
         </div>
+
+        {overview && (
+          <div className={`unlock-progress ${unlocked ? 'unlock-done' : ''}`}>
+            <div className="unlock-progress-text">
+              {unlocked
+                ? `🔓 Multiplayer unlocked! Collection: ${have} cards`
+                : `🔒 Multiplayer unlocks at ${needed} cards — you have ${have}. Win missions to grow your collection.`}
+            </div>
+            <div className="unlock-progress-bar">
+              <div
+                className="unlock-progress-fill"
+                style={{ width: `${Math.min(100, (have / needed) * 100)}%` }}
+              />
+            </div>
+          </div>
+        )}
 
         {overview && (
           <div className="mission-list">
@@ -111,7 +133,7 @@ export function CampaignPage({ onMissionStarted, onBack }: CampaignPageProps) {
 
         {overview && collection.length > 0 && (
           <div className="campaign-collection">
-            <h3>Your collection</h3>
+            <h3>Your collection ({have} cards)</h3>
             <div className="collection-cards">
               {collection.map(([id, count]) => (
                 <span key={id} className="collection-card">
@@ -122,7 +144,16 @@ export function CampaignPage({ onMissionStarted, onBack }: CampaignPageProps) {
           </div>
         )}
 
-        <button className="back-btn" onClick={onBack}>← Back to lobby</button>
+        <button
+          className={unlocked ? 'start-btn' : 'back-btn'}
+          disabled={!unlocked}
+          onClick={onOpenLobby}
+          title={unlocked ? '' : `Unlocks at ${needed} cards`}
+        >
+          {unlocked
+            ? '⚔️ Multiplayer Lobby'
+            : `🔒 Multiplayer — ${have}/${needed} cards`}
+        </button>
       </div>
     </div>
   );
