@@ -345,17 +345,18 @@
   aspect-ratio: 980 / 1434;
   background-color: transparent;
   border: 2px solid transparent;
-  border-radius: 8px;
-  padding: 8px;
+  border-radius: 12px;
+  padding: 5px 8px 8px 10px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 0;
   transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
   cursor: default;
   position: relative;
   flex-shrink: 0;
   overflow: hidden;
   box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.55);
 }
 
 .card:hover {
@@ -430,7 +431,7 @@
 }
 
 .card-stats {
-  flex: 1;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -438,7 +439,7 @@
 
 .hp-bar-container {
   position: relative;
-  height: 16px;
+  height: 11px;
   background: #21262d;
   border-radius: 4px;
   overflow: hidden;
@@ -456,7 +457,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 700;
   color: #fff;
   text-shadow: 0 1px 2px rgba(0,0,0,0.8);
@@ -1240,14 +1241,15 @@
    Card art
    ============================================================ */
 .card-art {
-  flex: 1;
-  min-height: 40px;
+  width: 100%;
+  aspect-ratio: 3/2;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0;
-  background-size: contain;
+  flex-shrink: 0;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -1570,7 +1572,7 @@
     gap: 3px;
   }
   .card-name { font-size: 11px; }
-  .card-art { min-height: 30px; }
+  .card-art { aspect-ratio: 3/2; }
   .card-art-icon { font-size: 18px; }
   .stat { font-size: 10px; }
   .action-btn { font-size: 9px; padding: 3px 4px; }
