@@ -1350,8 +1350,7 @@
   background-repeat: no-repeat;
   border: none;
   border-radius: 14px;
-  padding: 0 20px 22px 20px;
-  /* top padding comes from detail-header */
+  padding: 0 16px 22px 16px;
   box-shadow: 0 0 48px rgba(0, 0, 0, 0.6);
   box-sizing: border-box;
 }
@@ -1392,8 +1391,7 @@
 }
 
 .detail-art-banner {
-  width: calc(100% + 40px);
-  margin: 0 -20px 0 -20px;
+  width: 100%;
   aspect-ratio: 3/2;
   border-radius: 8px 8px 0 0;
   background-size: cover;
@@ -1411,8 +1409,8 @@
 }
 
 .detail-hp-container {
-  width: calc(100% + 40px);
-  margin: 0 -20px 12px -20px;
+  width: 100%;
+  margin: 0 0 12px 0;
   height: 20px;
   background: #21262d;
   border-radius: 0 0 6px 6px;
