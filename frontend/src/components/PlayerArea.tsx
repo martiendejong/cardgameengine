@@ -1,5 +1,5 @@
 import React from 'react';
-import { PlayerStateDto, ObjectStateDto, AvailableAction } from '../types/game';
+import { PlayerStateDto, ObjectStateDto, AvailableAction, CardDefinitionDto } from '../types/game';
 import { CardView } from './CardView';
 import { LINE_TIP_FRONT, LINE_TIP_BACK, HOUSING_TIP } from '../utils/cardText';
 
@@ -7,6 +7,7 @@ interface PlayerAreaProps {
   player: PlayerStateDto;
   objects: ObjectStateDto[];
   actions: AvailableAction[];
+  cardDefs: Record<string, CardDefinitionDto>;
   isActivePlayer: boolean;
   isBottom: boolean;
   selectableTargets: string[];
@@ -20,6 +21,7 @@ export function PlayerArea({
   player,
   objects,
   actions,
+  cardDefs,
   isActivePlayer,
   isBottom,
   selectableTargets,
@@ -99,6 +101,8 @@ export function PlayerArea({
                     actions={isBottom ? actions : []}
                     isSelectableTarget={selectableTargets.includes(card.id)}
                     isSelectedTarget={selectedTargets.includes(card.id)}
+                    playCost={cardDefs[card.definitionId]?.playCost}
+                    playCostResource={cardDefs[card.definitionId]?.playCostResource}
                     onAction={onAction}
                     onSelectTarget={onSelectTarget}
                     onInspect={onInspect}
@@ -124,6 +128,8 @@ export function PlayerArea({
                 actions={actions}
                 isSelectableTarget={false}
                 isSelectedTarget={false}
+                playCost={cardDefs[card.definitionId]?.playCost}
+                playCostResource={cardDefs[card.definitionId]?.playCostResource}
                 onAction={onAction}
                 onSelectTarget={onSelectTarget}
                 onInspect={onInspect}

@@ -343,13 +343,13 @@
 .card {
   width: 130px;
   aspect-ratio: 980 / 1434;
-  background-color: #161b22;
-  border: 2px solid #30363d;
+  background-color: transparent;
+  border: 2px solid transparent;
   border-radius: 8px;
   padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
   cursor: default;
   position: relative;
@@ -391,10 +391,7 @@
   50% { box-shadow: 0 0 16px rgba(255,152,0,0.7); }
 }
 
-.card-type-hero { border-color: #ffd700; }
-.card-type-headquarters { border-color: #8b5cf6; }
-.card-type-unit { border-color: #3b82f6; }
-.card-type-building { border-color: #6d7580; }
+/* type-specific borders removed; card.png frame provides the visual identity */
 
 .card-header {
   display: flex;
@@ -1243,14 +1240,27 @@
    Card art
    ============================================================ */
 .card-art {
-  height: 46px;
+  height: 36px;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 6px 0 4px 0;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  margin: 0;
   flex-shrink: 0;
+}
+
+.card-cost {
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffd700;
+  background: rgba(0,0,0,0.55);
+  border-radius: 4px;
+  padding: 1px 4px;
+  line-height: 1.3;
+  pointer-events: none;
 }
 
 .card-art-icon {
@@ -1324,14 +1334,17 @@
 
 .card-detail {
   position: relative;
-  width: 460px;
+  width: 360px;
   max-width: 92vw;
   max-height: 86vh;
   overflow-y: auto;
-  background: #161b22;
-  border: 2px solid #58a6ff;
+  background-color: #111827;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: top center;
+  border: 2px solid rgba(88, 166, 255, 0.3);
   border-radius: 14px;
-  padding: 22px 24px;
+  padding: 22px 20px;
   box-shadow: 0 0 48px rgba(88, 166, 255, 0.25);
 }
 
@@ -1357,13 +1370,12 @@
 }
 
 .detail-art {
-  width: 96px;
-  height: 96px;
-  border-radius: 10px;
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.08);
   flex-shrink: 0;
 }
 

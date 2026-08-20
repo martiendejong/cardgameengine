@@ -152,6 +152,7 @@ export function GameBoard({
             player={opponentPlayer}
             objects={gameState.objects}
             actions={gameState.availableActions}
+            cardDefs={cardDefs}
             isActivePlayer={gameState.activePlayerId === opponentPlayer.id}
             isBottom={false}
             selectableTargets={selectableTargets}
@@ -214,6 +215,7 @@ export function GameBoard({
             player={myPlayer}
             objects={gameState.objects}
             actions={isMyTurn || isReactionMine ? gameState.availableActions : []}
+            cardDefs={cardDefs}
             isActivePlayer={isMyTurn}
             isBottom={true}
             selectableTargets={selectableTargets}

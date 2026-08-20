@@ -5,6 +5,7 @@ import {
   STAT_TIPS, TAG_TIPS, TYPE_TIPS, STATUS_TIPS, playCostTip, slotTip,
   HOUSING_COST_TIP, HOUSING_PROVIDED_TIP,
 } from '../utils/cardText';
+import cardBg from '../assets/card.png';
 
 interface CardDetailModalProps {
   card: ObjectStateDto;
@@ -54,7 +55,11 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
-      <div className="card-detail" onClick={e => e.stopPropagation()}>
+      <div
+        className="card-detail"
+        style={{ backgroundImage: `url(${cardBg})`, backgroundSize: '100% auto', backgroundRepeat: 'no-repeat', backgroundPosition: 'top center' }}
+        onClick={e => e.stopPropagation()}
+      >
         <button className="modal-close" onClick={onClose}>✕</button>
 
         <div className="detail-header">
