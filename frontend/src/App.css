@@ -434,20 +434,20 @@
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 1px;
 }
 
 .hp-bar-container {
   position: relative;
   height: 11px;
   background: #21262d;
-  border-radius: 4px;
+  border-radius: 0 0 3px 3px;
   overflow: hidden;
 }
 
 .hp-bar {
   height: 100%;
-  border-radius: 4px;
+  border-radius: 0 0 3px 3px;
   transition: width 0.3s ease;
 }
 
@@ -457,9 +457,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 700;
   color: #fff;
+  line-height: 11px;
   text-shadow: 0 1px 2px rgba(0,0,0,0.8);
 }
 
@@ -470,9 +471,9 @@
 }
 
 .stat {
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 600;
-  padding: 2px 5px;
+  padding: 1px 4px;
   border-radius: 3px;
 }
 
@@ -500,14 +501,14 @@
 .card-actions {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  margin-top: 4px;
+  gap: 2px;
+  margin-top: 2px;
   flex-shrink: 0;
 }
 
 .action-btn {
-  font-size: 10px;
-  padding: 4px 6px;
+  font-size: 9px;
+  padding: 2px 5px;
   border-radius: 3px;
   font-weight: 600;
   text-align: center;
@@ -1243,7 +1244,7 @@
 .card-art {
   width: 100%;
   aspect-ratio: 3/2;
-  border-radius: 5px;
+  border-radius: 5px 5px 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
