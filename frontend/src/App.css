@@ -1240,13 +1240,16 @@
    Card art
    ============================================================ */
 .card-art {
-  height: 36px;
+  flex: 1;
+  min-height: 40px;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0;
-  flex-shrink: 0;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .card-cost {
@@ -1344,36 +1347,35 @@
   background-repeat: no-repeat;
   border: none;
   border-radius: 14px;
-  padding: 22px 20px;
+  padding: 0 20px 22px 20px;
   box-shadow: 0 0 48px rgba(0, 0, 0, 0.6);
   box-sizing: border-box;
 }
 
 .modal-close {
   position: absolute;
-  top: 10px;
-  right: 12px;
-  background: transparent;
+  top: 8px;
+  right: 10px;
+  background: rgba(0,0,0,0.45);
   border: none;
-  color: #8b949e;
+  color: #e0e0e0;
   font-size: 16px;
   cursor: pointer;
   padding: 4px 8px;
+  border-radius: 4px;
+  z-index: 10;
 }
 
 .modal-close:hover { color: #e0e0e0; }
 
-.detail-header {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  margin-bottom: 14px;
-}
-
-.detail-art {
-  width: 72px;
-  height: 72px;
-  border-radius: 8px;
+.detail-art-banner {
+  width: calc(100% + 40px);
+  margin: 0 -20px 14px -20px;
+  height: 150px;
+  border-radius: 14px 14px 0 0;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1381,8 +1383,12 @@
 }
 
 .detail-art-icon {
-  font-size: 52px;
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.5));
+  font-size: 64px;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.6));
+}
+
+.detail-header {
+  margin-bottom: 14px;
 }
 
 .detail-title h2 {
@@ -1475,16 +1481,30 @@
   background: #0d1117;
   border: 1px solid #21262d;
   border-radius: 8px;
-  padding: 10px 14px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: default;
 }
 
 .detail-ability.trigger { border-color: rgba(255, 193, 7, 0.3); }
 
 .ability-name {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   color: #e0e0e0;
-  margin-bottom: 4px;
+  flex: 1;
+}
+
+.ability-cost-badge {
+  font-size: 11px;
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
+  border-radius: 4px;
+  padding: 1px 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .ability-line {
@@ -1550,7 +1570,7 @@
     gap: 3px;
   }
   .card-name { font-size: 11px; }
-  .card-art { height: 32px; margin: 3px 0 2px 0; }
+  .card-art { min-height: 30px; }
   .card-art-icon { font-size: 18px; }
   .stat { font-size: 10px; }
   .action-btn { font-size: 9px; padding: 3px 4px; }

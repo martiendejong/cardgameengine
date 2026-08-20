@@ -102,7 +102,6 @@ export function CardView({
       {costLabel && <span className="card-cost">{costLabel}</span>}
 
       <div className="card-header">
-        <span className="card-type-icon">{getTypeIcon()}</span>
         <span className="card-name">{card.name}</span>
       </div>
 
@@ -111,8 +110,6 @@ export function CardView({
           className="card-art"
           style={{
             backgroundImage: `url(${CARD_ART[card.definitionId]})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
           }}
         />
       ) : (

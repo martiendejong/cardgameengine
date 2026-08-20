@@ -77,21 +77,18 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
       >
         <button className="modal-close" onClick={onClose}>✕</button>
 
+        {CARD_ART[card.definitionId] ? (
+          <div
+            className="detail-art-banner"
+            style={{ backgroundImage: `url(${CARD_ART[card.definitionId]})` }}
+          />
+        ) : (
+          <div className="detail-art-banner" style={{ background: artGradient(card.definitionId) }}>
+            <span className="detail-art-icon">{card.icon || '□'}</span>
+          </div>
+        )}
+
         <div className="detail-header">
-          {CARD_ART[card.definitionId] ? (
-            <div
-              className="detail-art"
-              style={{
-                backgroundImage: `url(${CARD_ART[card.definitionId]})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-          ) : (
-            <div className="detail-art" style={{ background: artGradient(card.definitionId) }}>
-              <span className="detail-art-icon">{card.icon || '□'}</span>
-            </div>
-          )}
           <div className="detail-title">
             <h2>{card.name}</h2>
             <span className="tip detail-type" data-tip={TYPE_TIPS[card.objectType] ?? ''}>
@@ -167,67 +164,63 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
         )}
 
         <div className="detail-body">
-          {def?.onPlay && (
-            <div className="detail-ability">
-              <div className="ability-name">✨ On Play{def.onPlay.name ? ` — ${def.onPlay.name}` : ''}</div>
-              {def.onPlay.choice && <div className="ability-line target">{explainChoice(def.onPlay.choice)}</div>}
-              {def.onPlay.effects.map((e, i) => (
-                <div key={i} className="ability-line effect">→ {explainEffect(e, nameOf)}</div>
-              ))}
-            </div>
-          )}
+          {def?.onPlay && (() => {
+            const tip = [
+              def.onPlay.choice ? explainChoice(def.onPlay.choice) : '',
+              ...def.onPlay.effects.map(e => explainEffect(e, nameOf)),
+            ].filter(Boolean).join(' · ');
+            return (
+              <div className="detail-ability tip" data-tip={tip || undefined}>
+                <span className="ability-name">✨ On Play{def.onPlay.name ? ` — ${def.onPlay.name}` : ''}</span>
+              </div>
+            );
+          })()}
 
-          {abilities.map(ability => (
-            <div key={ability.id} className="detail-ability">
-              <div className="ability-name">◆ {ability.name}</div>
-              {ability.costs.length > 0 && (
-                <div className="ability-line cost">
-                  Cost: {ability.costs.map(explainCost).join(' + ')}
-                </div>
-              )}
-              {ability.conditions.map((c, i) => (
-                <div key={i} className="ability-line condition">{explainCondition(c)}</div>
-              ))}
-              {ability.choice && <div className="ability-line target">{explainChoice(ability.choice)}</div>}
-              {ability.effects.map((e, i) => (
-                <div key={i} className="ability-line effect">→ {explainEffect(e, nameOf)}</div>
-              ))}
-            </div>
-          ))}
+          {abilities.map(ability => {
+            const tip = [
+              ability.costs.length > 0 ? `Cost: ${ability.costs.map(explainCost).join(' + ')}` : '',
+              ...ability.conditions.map(explainCondition),
+              ability.choice ? explainChoice(ability.choice) : '',
+              ...ability.effects.map(e => explainEffect(e, nameOf)),
+            ].filter(Boolean).join(' · ');
+            const costLabel = ability.costs.length > 0 ? ability.costs.map(explainCost).join(' + ') : '';
+            return (
+              <div key={ability.id} className="detail-ability tip" data-tip={tip || undefined}>
+                <span className="ability-name">◆ {ability.name}</span>
+                {costLabel && <span className="ability-cost-badge">{costLabel}</span>}
+              </div>
+            );
+          })}
 
           {triggers.map((t, i) => (
-            <div key={i} className="detail-ability trigger">
-              <div className="ability-name">⚡ Trigger</div>
-              <div className="ability-line effect">{explainTrigger(t, nameOf)}</div>
+            <div key={i} className="detail-ability tip" data-tip={explainTrigger(t, nameOf)}>
+              <span className="ability-name">⚡ Trigger</span>
             </div>
           ))}
 
-          {def?.attachModifiers && def.attachModifiers.length > 0 && (
-            <div className="detail-ability">
-              <div className="ability-name">🔩 While installed</div>
-              {def.attachModifiers.map((m, i) => (
-                <div key={i} className="ability-line effect">
-                  → Your hero gets +{m.amount} {m.propertyId === 'attack' ? 'Attack' : m.propertyId === 'armor' ? 'Armor' : m.propertyId}
-                </div>
-              ))}
-            </div>
-          )}
+          {def?.attachModifiers && def.attachModifiers.length > 0 && (() => {
+            const tip = def.attachModifiers.map(m =>
+              `+${m.amount} ${m.propertyId === 'attack' ? 'Attack' : m.propertyId === 'armor' ? 'Armor' : m.propertyId} to your hero`
+            ).join(' · ');
+            return (
+              <div className="detail-ability tip" data-tip={tip}>
+                <span className="ability-name">🔩 While installed</span>
+              </div>
+            );
+          })()}
 
           {def?.equipmentSlots && (
-            <div className="detail-ability">
-              <div className="ability-name">🔧 Equipment slots</div>
-              <div className="ability-line effect">
-                {Object.entries(def.equipmentSlots).map(([slot, cap]) => `${slot} ×${cap}`).join(' · ')}
-              </div>
+            <div className="detail-ability tip" data-tip={Object.entries(def.equipmentSlots).map(([slot, cap]) => `${slot} ×${cap}`).join(' · ')}>
+              <span className="ability-name">🔧 Equipment slots</span>
             </div>
           )}
 
           {attachments.length > 0 && (
             <div className="detail-ability">
-              <div className="ability-name">⚙ Installed modules</div>
+              <span className="ability-name">⚙ Installed modules</span>
               {attachments.map(mod => (
                 <div key={mod.id} className="ability-line effect module-link" onClick={() => onInspect(mod.id)}>
-                  {mod.icon ?? '⚙'} {mod.name} ({mod.slot}){mod.isTapped ? ' — tapped' : ''} — click to inspect
+                  {mod.icon ?? '⚙'} {mod.name}{mod.isTapped ? ' — tapped' : ''} — click to inspect
                 </div>
               ))}
             </div>
@@ -236,7 +229,7 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
           {abilities.length === 0 && !def?.onPlay && triggers.length === 0 &&
             (!def?.attachModifiers || def.attachModifiers.length === 0) && (
             <div className="detail-ability">
-              <div className="ability-line effect">No special abilities — it fights with its stats.</div>
+              <span className="ability-line effect">No special abilities — it fights with its stats.</span>
             </div>
           )}
         </div>
