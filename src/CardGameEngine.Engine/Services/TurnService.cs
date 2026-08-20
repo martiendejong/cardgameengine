@@ -42,6 +42,7 @@ public class TurnService
             game.ActivePlayerId = nextPlayer.Id;
             game.TurnNumber++;
             game.FiredOncePerTurn.Clear();
+            game.AbilityUsesThisTurn.Clear();
             game.ActiveCostModifiers.Clear(); // "this turn" discounts do not carry over
 
             // Modifiers that last "until the owner's next turn" (e.g. Divine Shield) expire now

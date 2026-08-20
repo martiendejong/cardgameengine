@@ -157,6 +157,14 @@
       "resources": [
         "reagents"
       ]
+    },
+    {
+      "id": "homestead-hq",
+      "name": "Homestead",
+      "parentType": "headquarters",
+      "resources": [
+        "growth"
+      ]
     }
   ],
   "properties": [
@@ -276,6 +284,12 @@
     {
       "id": "poison",
       "name": "Poison",
+      "scope": "entity",
+      "defaultValue": 0
+    },
+    {
+      "id": "growth",
+      "name": "Growth",
       "scope": "entity",
       "defaultValue": 0
     }
@@ -491,7 +505,18 @@
             }
           ]
         }
-      ]
+      ],
+      "onPlay": {
+        "id": "th-start",
+        "name": "The town wakes: a Peasant reports for work",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "peasant"
+          }
+        ]
+      }
     },
     {
       "id": "town-chief",
@@ -933,7 +958,18 @@
           ]
         }
       ],
-      "icon": "🏕️"
+      "icon": "🏕️",
+      "onPlay": {
+        "id": "rc-start",
+        "name": "The camp stirs: a Scavenger joins the warband",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "scavenger"
+          }
+        ]
+      }
     },
     {
       "id": "warchief",
@@ -1335,7 +1371,19 @@
           ]
         }
       ],
-      "icon": "🛸"
+      "icon": "🛸",
+      "onPlay": {
+        "id": "lp-start",
+        "name": "Residual charge in the capacitors",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "energy",
+            "amount": 2
+          }
+        ]
+      }
     },
     {
       "id": "ax-01",
@@ -2163,7 +2211,18 @@
       ],
       "tags": [
         "nexus-core"
-      ]
+      ],
+      "onPlay": {
+        "id": "an-start",
+        "name": "The Nexus hums: an Apprentice answers the call",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "apprentice-mage"
+          }
+        ]
+      }
     },
     {
       "id": "archmage",
@@ -2761,7 +2820,10 @@
       ],
       "tags": [
         "boneyard"
-      ]
+      ],
+      "resources": {
+        "corpses": 2
+      }
     },
     {
       "id": "necromancer",
@@ -3805,7 +3867,18 @@
             }
           ]
         }
-      ]
+      ],
+      "onPlay": {
+        "id": "tg-start",
+        "name": "A Footpad slips out of the shadows",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "footpad"
+          }
+        ]
+      }
     },
     {
       "id": "spymaster",
@@ -4172,7 +4245,10 @@
             }
           ]
         }
-      ]
+      ],
+      "resources": {
+        "reagents": 2
+      }
     },
     {
       "id": "master-alchemist",
@@ -6136,6 +6212,162 @@
           }
         ]
       }
+    },
+    {
+      "id": "settlement",
+      "name": "Settlement",
+      "objectType": "headquarters",
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "icon": "🏘️",
+      "artworkDescription": "No coffers, no charters - just hands willing to work",
+      "onPlay": {
+        "id": "st-start",
+        "name": "Two Peasants call this place home",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "peasant"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "peasant"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "put-to-work",
+          "name": "Put to Work",
+          "usesPerTurn": 3,
+          "costs": [],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "tag": "peasant",
+            "min": 1,
+            "max": 1,
+            "requireUntapped": true
+          },
+          "effects": [
+            {
+              "type": "tap",
+              "scope": "target"
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [
+            {
+              "type": "controls_no_tagged",
+              "tag": "peasant"
+            }
+          ],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "peasant"
+            }
+          ]
+        }
+      ],
+      "housingProvided": 5
+    },
+    {
+      "id": "homestead",
+      "name": "Homestead",
+      "objectType": "homestead-hq",
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "icon": "🏡",
+      "artworkDescription": "Families grow here, and so does the town",
+      "onPlay": {
+        "id": "hs-start",
+        "name": "A Peasant tends the first field",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "peasant"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "small-levy",
+          "name": "Small Levy",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "growth",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "event": "onTurnStart",
+          "conditions": [
+            {
+              "type": "resource_gte",
+              "resourceId": "growth",
+              "amount": 2
+            }
+          ],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "peasant"
+            },
+            {
+              "type": "set_resource",
+              "scope": "self",
+              "resourceId": "growth",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "housingProvided": 5
     }
   ],
   "decks": [
@@ -6177,7 +6409,17 @@
         "muster": 2,
         "stone-mason": 3,
         "watchtower": 2
-      }
+      },
+      "hqOptions": [
+        "town-hall",
+        "settlement",
+        "homestead"
+      ],
+      "heroOptions": [
+        "town-chief",
+        "paladin",
+        "master-builder"
+      ]
     },
     {
       "id": "raiders",
@@ -6206,7 +6448,13 @@
         "plunder-cart": 3,
         "reinforcements": 3,
         "skull-totem": 3
-      }
+      },
+      "hqOptions": [
+        "raider-camp"
+      ],
+      "heroOptions": [
+        "warchief"
+      ]
     },
     {
       "id": "machine",
@@ -6230,7 +6478,13 @@
         "salvage": 4,
         "ablative-armor": 4,
         "targeting-uplink": 4
-      }
+      },
+      "hqOptions": [
+        "landing-pad"
+      ],
+      "heroOptions": [
+        "ax-01"
+      ]
     },
     {
       "id": "conclave",
@@ -6258,7 +6512,13 @@
         "frost-nova": 3,
         "arcane-barrage": 3,
         "blink-ward": 3
-      }
+      },
+      "hqOptions": [
+        "arcane-nexus"
+      ],
+      "heroOptions": [
+        "archmage"
+      ]
     },
     {
       "id": "undead",
@@ -6285,7 +6545,13 @@
         "wraith": 4,
         "plague-cloud": 3,
         "bone-colossus": 2
-      }
+      },
+      "hqOptions": [
+        "graveyard"
+      ],
+      "heroOptions": [
+        "necromancer"
+      ]
     },
     {
       "id": "brood",
@@ -6312,7 +6578,13 @@
         "devouring-maw": 2,
         "winged-drone": 3,
         "regenerative-flesh": 3
-      }
+      },
+      "hqOptions": [
+        "the-hive"
+      ],
+      "heroOptions": [
+        "broodmother"
+      ]
     },
     {
       "id": "shadow",
@@ -6338,7 +6610,13 @@
         "decoy": 3,
         "assassinate": 3,
         "master-thief": 3
-      }
+      },
+      "hqOptions": [
+        "thieves-guild"
+      ],
+      "heroOptions": [
+        "spymaster"
+      ]
     },
     {
       "id": "alchemists",
@@ -6364,7 +6642,13 @@
         "adaptive-golem": 3,
         "reagent-condenser": 3,
         "shrink-ray": 3
-      }
+      },
+      "hqOptions": [
+        "laboratory"
+      ],
+      "heroOptions": [
+        "master-alchemist"
+      ]
     }
   ],
   "setup": {

@@ -8,6 +8,8 @@ public class PlayerSetup
     public string Name { get; set; } = "";
     public string? Id { get; set; }
     public string? DeckId { get; set; }                // preconstructed deck (brings HQ + hero)
+    public string? HqId { get; set; }                  // chosen HQ (must be in the deck's hqOptions)
+    public string? HeroId { get; set; }                // chosen starting hero (must be in heroOptions)
     public Dictionary<string, int>? Deck { get; set; } // cardId -> copies (overrides precon card list)
     public bool IsAdmin { get; set; }
     public bool IsBot { get; set; }                    // seat is played by the server-side bot
@@ -99,6 +101,24 @@ public class MatchService
                 for (int i = 0; i < count; i++)
                     deckList.Add(cardId);
 
+            // HQ / hero choice within the faction's options
+            var hqId = precon?.Hq;
+            var heroId = precon?.Hero;
+            if (setup.HqId != null && precon != null)
+            {
+                var hqOptions = precon.HqOptions.Count > 0 ? precon.HqOptions : new List<string> { precon.Hq };
+                if (!setup.IsAdmin && !hqOptions.Contains(setup.HqId))
+                    return (null, $"{setup.Name}: HQ '{setup.HqId}' is not available for this faction");
+                hqId = setup.HqId;
+            }
+            if (setup.HeroId != null && precon != null)
+            {
+                var heroOptions = precon.HeroOptions.Count > 0 ? precon.HeroOptions : new List<string> { precon.Hero };
+                if (!setup.IsAdmin && !heroOptions.Contains(setup.HeroId))
+                    return (null, $"{setup.Name}: hero '{setup.HeroId}' is not available for this faction");
+                heroId = setup.HeroId;
+            }
+
             var player = new PlayerInstance
             {
                 Id = setup.Id ?? Guid.NewGuid().ToString("N")[..8],
@@ -106,8 +126,8 @@ public class MatchService
                 IsAdmin = setup.IsAdmin,
                 IsBot = setup.IsBot,
                 DeckList = deckList,
-                HqCardId = precon?.Hq,
-                HeroCardId = precon?.Hero
+                HqCardId = hqId,
+                HeroCardId = heroId
             };
             player.RelevantResources = ComputeRelevantResources(definition, player);
             game.Players.Add(player);

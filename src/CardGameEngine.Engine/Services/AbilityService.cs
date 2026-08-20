@@ -28,6 +28,13 @@ public class AbilityService
             return false;
         }
 
+        if (ability.UsesPerTurn is int cap &&
+            game.AbilityUsesThisTurn.GetValueOrDefault($"{obj.Id}:{ability.Id}") >= cap)
+        {
+            reason = $"Already used {cap}x this turn";
+            return false;
+        }
+
         foreach (var cost in ability.Costs)
         {
             if (!_s.Costs.CanPay(new CostContext { Game = game, Cost = cost, Object = obj, Player = player }))
@@ -95,6 +102,12 @@ public class AbilityService
 
         foreach (var cost in ability.Costs)
             _s.Costs.Pay(new CostContext { Game = game, Cost = cost, Object = obj, Player = player });
+
+        if (ability.UsesPerTurn != null)
+        {
+            var key = $"{obj.Id}:{ability.Id}";
+            game.AbilityUsesThisTurn[key] = game.AbilityUsesThisTurn.GetValueOrDefault(key) + 1;
+        }
 
         game.Log.Add($"{player.Name}: {obj.Name} uses '{ability.Name}'.");
 

@@ -18,6 +18,8 @@ public class GameInstance
     public Dictionary<string, List<string>> DeckOrder { get; set; } = new();
     // "objectId:event" keys for once-per-turn triggers; cleared when the turn passes
     public HashSet<string> FiredOncePerTurn { get; set; } = new();
+    // "objectId:abilityId" -> activations this turn (for UsesPerTurn abilities)
+    public Dictionary<string, int> AbilityUsesThisTurn { get; set; } = new();
     // Active cost discounts (e.g. Archery Range: next Archer costs 1 less Training)
     public List<CostModifierInstance> ActiveCostModifiers { get; set; } = new();
     // Reaction window: who may respond while State == WaitingForReaction

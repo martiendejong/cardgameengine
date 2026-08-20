@@ -1633,3 +1633,12 @@
 .pass-btn:hover { background: #8250df; }
 
 .stat.lifetime { color: #4dd0e1; }
+
+.hq-select {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  color: #ffd700;
+  padding: 4px 6px;
+  font-size: 12px;
+}

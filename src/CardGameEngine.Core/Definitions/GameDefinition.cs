@@ -27,8 +27,10 @@ public class PreconDeckDefinition
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";
     public string Description { get; set; } = "";
-    public string Hq { get; set; } = "";   // headquarters card id
-    public string Hero { get; set; } = ""; // hero card id
+    public string Hq { get; set; } = "";   // default headquarters card id
+    public string Hero { get; set; } = ""; // default hero card id
+    public List<string> HqOptions { get; set; } = new();   // selectable HQs for this faction
+    public List<string> HeroOptions { get; set; } = new(); // selectable starting heroes
     public Dictionary<string, int> Cards { get; set; } = new();
 }
 
@@ -164,6 +166,7 @@ public class AbilityDefinition
     public List<ConditionDefinition> Conditions { get; set; } = new();
     public ChoiceDefinition? Choice { get; set; }
     public List<EffectDefinition> Effects { get; set; } = new();
+    public int? UsesPerTurn { get; set; } // cap without tapping (Settlement: 3 workers per turn)
 }
 
 public class CostDefinition

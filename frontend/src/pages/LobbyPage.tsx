@@ -14,6 +14,8 @@ interface PlayerDeckState {
   name: string;
   isAdmin: boolean;
   deckId: string;
+  hqId: string;
+  heroId: string;
   deck: Record<string, number>;
 }
 
@@ -44,8 +46,8 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
   const [selectedGame, setSelectedGame] = useState('');
   const [fullDef, setFullDef] = useState<GameDefinitionFull | null>(null);
   const [players, setPlayers] = useState<PlayerDeckState[]>([
-    { name: 'Player 1', isAdmin: false, deckId: '', deck: {} },
-    { name: 'Player 2', isAdmin: false, deckId: '', deck: {} },
+    { name: 'Player 1', isAdmin: false, deckId: '', hqId: '', heroId: '', deck: {} },
+    { name: 'Player 2', isAdmin: false, deckId: '', hqId: '', heroId: '', deck: {} },
   ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -70,8 +72,8 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
         // Seed each player with a precon deck (P1 gets the first, P2 the second, etc.)
         setPlayers(prev => prev.map((p, i) => {
           const precon = def.decks[i % Math.max(def.decks.length, 1)];
-          if (precon) return { ...p, deckId: precon.id, deck: { ...precon.cards } };
-          return { ...p, deckId: '', deck: { ...(def.deckRules?.defaultDeck ?? {}) } };
+          if (precon) return { ...p, deckId: precon.id, hqId: precon.hq, heroId: precon.hero, deck: { ...precon.cards } };
+          return { ...p, deckId: '', hqId: '', heroId: '', deck: { ...(def.deckRules?.defaultDeck ?? {}) } };
         }));
       })
       .catch(() => setError('Failed to load game definition details'));
@@ -115,8 +117,17 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
     const precon = fullDef?.decks.find(d => d.id === deckId);
     setPlayers(prev => prev.map((p, i) => {
       if (i !== playerIdx) return p;
-      return { ...p, deckId, deck: precon ? { ...precon.cards } : p.deck };
+      return {
+        ...p, deckId,
+        hqId: precon?.hq ?? p.hqId,
+        heroId: precon?.hero ?? p.heroId,
+        deck: precon ? { ...precon.cards } : p.deck,
+      };
     }));
+  }
+
+  function setPlayerField(playerIdx: number, field: 'hqId' | 'heroId', value: string) {
+    setPlayers(prev => prev.map((p, i) => (i === playerIdx ? { ...p, [field]: value } : p)));
   }
 
   function toggleAdmin(playerIdx: number) {
@@ -156,6 +167,8 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
             id: `p${i + 1}`,
             name: mode === 'bot' && i === 1 ? 'Computer' : p.name,
             deckId: p.deckId || undefined,
+            hqId: p.hqId || undefined,
+            heroId: p.heroId || undefined,
             deck: p.deck,
             isAdmin: p.isAdmin,
             isBot: mode === 'bot' && i === 1,
@@ -246,12 +259,33 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
                     {(() => {
                       const precon = fullDef.decks.find(d => d.id === player.deckId);
                       if (!precon) return null;
-                      const hqCard = fullDef.cards.find(c => c.id === precon.hq);
-                      const heroCard = fullDef.cards.find(c => c.id === precon.hero);
+                      const cardName = (id: string) => fullDef.cards.find(c => c.id === id)?.name ?? id;
+                      const hqOptions = precon.hqOptions?.length ? precon.hqOptions : [precon.hq];
+                      const heroOptions = precon.heroOptions?.length ? precon.heroOptions : [precon.hero];
                       return (
                         <div className="deck-precon-info">
-                          <span className="precon-hq">🏛 {hqCard?.name ?? precon.hq}</span>
-                          <span className="precon-hero">★ {heroCard?.name ?? precon.hero}</span>
+                          {hqOptions.length > 1 ? (
+                            <select
+                              className="hq-select"
+                              value={player.hqId}
+                              onChange={e => setPlayerField(idx, 'hqId', e.target.value)}
+                            >
+                              {hqOptions.map(id => <option key={id} value={id}>🏛 {cardName(id)}</option>)}
+                            </select>
+                          ) : (
+                            <span className="precon-hq">🏛 {cardName(precon.hq)}</span>
+                          )}
+                          {heroOptions.length > 1 ? (
+                            <select
+                              className="hq-select"
+                              value={player.heroId}
+                              onChange={e => setPlayerField(idx, 'heroId', e.target.value)}
+                            >
+                              {heroOptions.map(id => <option key={id} value={id}>★ {cardName(id)}</option>)}
+                            </select>
+                          ) : (
+                            <span className="precon-hero">★ {cardName(precon.hero)}</span>
+                          )}
                         </div>
                       );
                     })()}

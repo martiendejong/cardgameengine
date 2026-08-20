@@ -199,6 +199,8 @@ export interface PreconDeckDto {
   description: string;
   hq: string;
   hero: string;
+  hqOptions: string[];
+  heroOptions: string[];
   cards: Record<string, number>;
 }
 
