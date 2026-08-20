@@ -1,13 +1,9 @@
 [
   {
-    "id": "m1-defend-the-town",
-    "name": "Mission 1: Defend the Town",
-    "description": "Raiders have been spotted near the town. Put your peasant to work, muster your militia, and hold the Town Hall. Survive every attacker to win.",
-    "player": {
-      "hq": "town-hall",
-      "hero": null,
-      "cards": ["militia", "militia"]
-    },
+    "id": "m1-first-assault",
+    "name": "Mission 1: The First Assault",
+    "description": "Raiders have been spotted near the town. You have only a few militiamen — hold the Town Hall until the attack is repelled.",
+    "player": { "hq": "town-hall", "hero": null, "cards": ["militia", "militia"] },
     "enemy": { "hq": null, "hero": null, "cards": [] },
     "victory": "cleared",
     "spawns": [
@@ -15,90 +11,310 @@
       { "turn": 4, "cardId": "raider-brigand" },
       { "turn": 6, "cardId": "raider-scout" }
     ],
-    "rewards": ["militia", "gold-mine"]
+    "rewards": ["militia"]
   },
   {
-    "id": "m2-rebuild-the-walls",
-    "name": "Mission 2: Rebuild the Walls",
-    "description": "The raids will not stop. Build a Gold Mine for income and raise a Palisade — buildings take time to construct, so put your peasants to work early.",
-    "requires": "m1-defend-the-town",
-    "player": {
-      "hq": "town-hall",
-      "hero": null,
-      "cards": ["peasant", "gold-mine", "wooden-palisade", "militia", "militia"]
-    },
+    "id": "m2-dig-for-gold",
+    "name": "Mission 2: Dig for Gold",
+    "description": "The raids keep coming. Build a Gold Mine to fund more defenders — income wins wars.",
+    "requires": "m1-first-assault",
+    "player": { "hq": "town-hall", "hero": null, "cards": ["militia", "militia", "militia", "gold-mine"] },
     "enemy": { "hq": null, "hero": null, "cards": [] },
     "victory": "cleared",
     "spawns": [
       { "turn": 2, "cardId": "raider-scout" },
-      { "turn": 4, "cardId": "raider-scout", "count": 2 },
+      { "turn": 4, "cardId": "raider-brigand" },
+      { "turn": 4, "cardId": "raider-scout" },
       { "turn": 6, "cardId": "raider-brigand" },
-      { "turn": 8, "cardId": "raider-brigand" }
+      { "turn": 8, "cardId": "raider-scout" }
     ],
-    "rewards": ["wooden-palisade", "peasant"]
+    "rewards": ["gold-mine"]
   },
   {
-    "id": "m3-the-chief-returns",
-    "name": "Mission 3: The Chief Returns",
-    "description": "The Town Chief is back from the capital. Heroes fight on the battlefield and have powerful abilities — use them, because a Raider Champion is coming.",
-    "requires": "m2-rebuild-the-walls",
-    "player": {
-      "hq": "town-hall",
-      "hero": "town-chief",
-      "cards": ["militia", "militia", "soldier", "gold-mine"]
-    },
+    "id": "m3-raise-the-palisade",
+    "name": "Mission 3: Raise the Palisade",
+    "description": "Buildings provide housing and block attackers. Raise a Wooden Palisade before the raiders punch through.",
+    "requires": "m2-dig-for-gold",
+    "player": { "hq": "town-hall", "hero": null, "cards": ["militia", "militia", "gold-mine", "gold-mine", "wooden-palisade"] },
     "enemy": { "hq": null, "hero": null, "cards": [] },
     "victory": "cleared",
     "spawns": [
       { "turn": 2, "cardId": "raider-brigand" },
       { "turn": 4, "cardId": "raider-brigand" },
       { "turn": 4, "cardId": "raider-scout" },
-      { "turn": 6, "cardId": "raider-champion" }
+      { "turn": 6, "cardId": "raider-brigand" },
+      { "turn": 6, "cardId": "raider-brigand" },
+      { "turn": 9, "cardId": "raider-champion" }
     ],
-    "rewards": ["soldier", "barracks"]
+    "rewards": ["wooden-palisade"]
   },
   {
-    "id": "m4-strike-back",
-    "name": "Mission 4: Strike Back",
-    "description": "Scouts found the raiders' forward camp. This time you attack: destroy the Raider Camp before their reinforcements wear you down.",
-    "requires": "m3-the-chief-returns",
-    "player": {
-      "hq": "town-hall",
-      "hero": "town-chief",
-      "cards": ["militia", "militia", "soldier", "archer", "gold-mine", "barracks"]
-    },
-    "enemy": {
-      "hq": "raider-camp",
-      "hero": null,
-      "deck": { "pillager": 2, "axe-thrower": 2 }
-    },
+    "id": "m4-peasants-to-arms",
+    "name": "Mission 4: Peasants to Arms",
+    "description": "Peasants normally work the fields — today they grab pitchforks. A Raider Champion leads this assault.",
+    "requires": "m3-raise-the-palisade",
+    "player": { "hq": "town-hall", "hero": null, "cards": ["militia", "militia", "militia", "gold-mine", "wooden-palisade", "peasant"] },
+    "enemy": { "hq": null, "hero": null, "cards": [] },
+    "victory": "cleared",
+    "spawns": [
+      { "turn": 2, "cardId": "raider-brigand" },
+      { "turn": 4, "cardId": "raider-brigand" },
+      { "turn": 4, "cardId": "raider-brigand" },
+      { "turn": 6, "cardId": "raider-champion" },
+      { "turn": 8, "cardId": "raider-brigand" },
+      { "turn": 9, "cardId": "raider-champion" }
+    ],
+    "rewards": ["peasant"]
+  },
+  {
+    "id": "m5-the-first-soldier",
+    "name": "Mission 5: The First Soldier",
+    "description": "The Town Chief has returned from the capital. Heroes fight beside your troops — train your first Soldier and let the Chief lead the charge.",
+    "requires": "m4-peasants-to-arms",
+    "player": { "hq": "town-hall", "hero": "town-chief", "cards": ["militia", "militia", "gold-mine", "peasant", "soldier"] },
+    "enemy": { "hq": null, "hero": null, "cards": [] },
+    "victory": "cleared",
+    "spawns": [
+      { "turn": 2, "cardId": "raider-brigand" },
+      { "turn": 4, "cardId": "raider-brigand" },
+      { "turn": 4, "cardId": "raider-scout" },
+      { "turn": 5, "cardId": "raider-champion" },
+      { "turn": 7, "cardId": "raider-brigand" },
+      { "turn": 8, "cardId": "raider-champion" }
+    ],
+    "rewards": ["soldier"]
+  },
+  {
+    "id": "m6-build-the-barracks",
+    "name": "Mission 6: Build the Barracks",
+    "description": "Soldiers and archers need military training before they can fight. Build the Barracks — its training turns gold into an army.",
+    "requires": "m5-the-first-soldier",
+    "player": { "hq": "town-hall", "hero": "town-chief", "cards": ["militia", "gold-mine", "peasant", "wooden-palisade", "soldier", "barracks"] },
+    "enemy": { "hq": null, "hero": null, "cards": [] },
+    "victory": "cleared",
+    "spawns": [
+      { "turn": 2, "cardId": "raider-brigand" },
+      { "turn": 4, "cardId": "raider-brigand" },
+      { "turn": 5, "cardId": "raider-champion" },
+      { "turn": 6, "cardId": "raider-brigand" },
+      { "turn": 7, "cardId": "raider-champion" },
+      { "turn": 8, "cardId": "raider-champion" },
+      { "turn": 9, "cardId": "raider-champion" }
+    ],
+    "rewards": ["barracks"]
+  },
+  {
+    "id": "m7-arrows-fly",
+    "name": "Mission 7: Arrows Fly",
+    "description": "Archers pick off raiders from a distance before they reach the walls. Train your first archers and rain arrows down.",
+    "requires": "m6-build-the-barracks",
+    "player": { "hq": "town-hall", "hero": "town-chief", "cards": ["militia", "soldier", "soldier", "barracks", "gold-mine", "peasant", "archer"] },
+    "enemy": { "hq": null, "hero": null, "cards": [] },
+    "victory": "cleared",
+    "spawns": [
+      { "turn": 2, "cardId": "raider-brigand" },
+      { "turn": 3, "cardId": "raider-champion" },
+      { "turn": 5, "cardId": "raider-brigand" },
+      { "turn": 6, "cardId": "raider-champion" },
+      { "turn": 7, "cardId": "raider-champion" },
+      { "turn": 8, "cardId": "raider-champion" },
+      { "turn": 9, "cardId": "raider-champion" }
+    ],
+    "rewards": ["archer"]
+  },
+  {
+    "id": "m8-the-watchtower",
+    "name": "Mission 8: The Watchtower",
+    "description": "From the Watchtower, archers can fire over the walls. Build it and weather the fiercest assault yet.",
+    "requires": "m7-arrows-fly",
+    "player": { "hq": "town-hall", "hero": "town-chief", "cards": ["soldier", "soldier", "archer", "barracks", "gold-mine", "peasant", "watchtower"] },
+    "enemy": { "hq": null, "hero": null, "cards": [] },
+    "victory": "cleared",
+    "spawns": [
+      { "turn": 2, "cardId": "raider-champion" },
+      { "turn": 3, "cardId": "raider-champion" },
+      { "turn": 5, "cardId": "raider-brigand" },
+      { "turn": 6, "cardId": "raider-champion" },
+      { "turn": 7, "cardId": "raider-champion" },
+      { "turn": 8, "cardId": "raider-champion" },
+      { "turn": 9, "cardId": "raider-champion" },
+      { "turn": 10, "cardId": "raider-champion" }
+    ],
+    "rewards": ["watchtower"]
+  },
+  {
+    "id": "m9-strike-back",
+    "name": "Mission 9: Strike Back",
+    "description": "Scouts have found the raiders' forward camp. Ride out and destroy it before they can regroup.",
+    "requires": "m8-the-watchtower",
+    "player": { "hq": "town-hall", "hero": "town-chief", "cards": ["soldier", "soldier", "archer", "barracks", "gold-mine", "peasant", "wooden-palisade"] },
+    "enemy": { "hq": "raider-camp", "hero": null, "deck": { "pillager": 2, "axe-thrower": 2, "scavenger": 2 } },
     "victory": "default",
     "spawns": [
       { "turn": 2, "cardId": "raider-scout" },
-      { "turn": 5, "cardId": "raider-brigand" }
+      { "turn": 5, "cardId": "raider-brigand" },
+      { "turn": 8, "cardId": "raider-brigand" }
     ],
-    "rewards": ["archer", "watchtower"]
+    "rewards": ["knight"]
   },
   {
-    "id": "m5-the-warchief",
-    "name": "Mission 5: The Warchief",
-    "description": "The Warchief himself marches on the town. A real battle: he has a camp, a warband, and no mercy. Destroy the Raider Camp and end the raids for good.",
-    "requires": "m4-strike-back",
-    "player": {
-      "hq": "town-hall",
-      "hero": "town-chief",
-      "cards": ["militia", "militia", "soldier", "soldier", "archer", "gold-mine", "barracks", "wooden-palisade"]
-    },
-    "enemy": {
-      "hq": "raider-camp",
-      "hero": "warchief",
-      "deck": { "pillager": 2, "brute": 2, "axe-thrower": 2, "battle-axe": 1, "mercenary": 1 }
-    },
+    "id": "m10-the-warchief",
+    "name": "Mission 10: The Warchief",
+    "description": "The Warchief himself marches on the town at the head of his warband. Bring everything you have — end the raids for good.",
+    "requires": "m9-strike-back",
+    "player": { "hq": "town-hall", "hero": "town-chief", "cards": ["militia", "soldier", "soldier", "archer", "barracks", "gold-mine", "peasant", "wooden-palisade", "knight"] },
+    "enemy": { "hq": "raider-camp", "hero": "warchief", "deck": { "pillager": 2, "brute": 2, "axe-thrower": 2, "scavenger": 2 } },
     "victory": "default",
     "spawns": [
       { "turn": 3, "cardId": "raider-brigand" },
       { "turn": 7, "cardId": "raider-champion" }
     ],
-    "rewards": ["knight", "siege-ram"]
+    "rewards": ["siege-ram"]
+  },
+  {
+    "id": "m11-join-the-warband",
+    "name": "Mission 11: Join the Warband",
+    "description": "You have switched sides. The Warband's economy runs on loot and plunder — use Bag of Gold for instant income and Loot to drain the enemy. Destroy the undefended town.",
+    "requires": "m10-the-warchief",
+    "player": { "hq": "raider-camp", "hero": null, "cards": ["scavenger", "scavenger", "bag-of-gold", "loot", "loot"] },
+    "enemy": { "hq": "town-hall", "hero": null, "deck": {} },
+    "victory": "default",
+    "spawns": [
+      { "turn": 5, "cardId": "militia" }
+    ],
+    "rewards": ["scavenger"]
+  },
+  {
+    "id": "m12-raid-the-village",
+    "name": "Mission 12: Raid the Village",
+    "description": "A village militia stands between you and the gold. Axe-throwers clear the walls from a distance — use them.",
+    "requires": "m11-join-the-warband",
+    "player": { "hq": "raider-camp", "hero": null, "cards": ["scavenger", "axe-thrower", "bag-of-gold", "loot", "loot"] },
+    "enemy": { "hq": "town-hall", "hero": null, "deck": { "militia": 3 } },
+    "victory": "default",
+    "spawns": [
+      { "turn": 5, "cardId": "militia" }
+    ],
+    "rewards": ["axe-thrower"]
+  },
+  {
+    "id": "m13-burn-the-farms",
+    "name": "Mission 13: Burn the Farms",
+    "description": "Pillagers excel at destroying buildings. The town has started raising walls — burn it all before they finish.",
+    "requires": "m12-raid-the-village",
+    "player": { "hq": "raider-camp", "hero": null, "cards": ["scavenger", "pillager", "axe-thrower", "bag-of-gold", "loot"] },
+    "enemy": { "hq": "town-hall", "hero": null, "deck": { "militia": 2, "wooden-palisade": 1 } },
+    "victory": "default",
+    "spawns": [
+      { "turn": 3, "cardId": "militia" },
+      { "turn": 6, "cardId": "militia" }
+    ],
+    "rewards": ["pillager"]
+  },
+  {
+    "id": "m14-the-fighting-pit",
+    "name": "Mission 14: The Fighting Pit",
+    "description": "The Fighting Pit trains your warriors just as the Barracks trains theirs. Build it before the town soldiers arrive.",
+    "requires": "m13-burn-the-farms",
+    "player": { "hq": "raider-camp", "hero": null, "cards": ["scavenger", "pillager", "axe-thrower", "fighting-pit", "bag-of-gold", "loot"] },
+    "enemy": { "hq": "town-hall", "hero": null, "deck": { "militia": 2, "barracks": 1, "soldier": 2 } },
+    "victory": "default",
+    "spawns": [
+      { "turn": 3, "cardId": "militia" },
+      { "turn": 6, "cardId": "soldier" }
+    ],
+    "rewards": ["fighting-pit"]
+  },
+  {
+    "id": "m15-the-chiefs-guard",
+    "name": "Mission 15: The Chief's Guard",
+    "description": "The Town Chief himself leads the defense — his hero abilities make him dangerous. Bring a Brute to crush the elite guards.",
+    "requires": "m14-the-fighting-pit",
+    "player": { "hq": "raider-camp", "hero": null, "cards": ["scavenger", "pillager", "brute", "axe-thrower", "fighting-pit", "bag-of-gold", "loot"] },
+    "enemy": { "hq": "town-hall", "hero": "town-chief", "deck": { "militia": 2, "barracks": 1, "soldier": 2, "archer": 1 } },
+    "victory": "default",
+    "spawns": [
+      { "turn": 4, "cardId": "soldier" },
+      { "turn": 7, "cardId": "archer" }
+    ],
+    "rewards": ["brute"]
+  },
+  {
+    "id": "m16-claim-the-spoils",
+    "name": "Mission 16: Claim the Spoils",
+    "description": "Stolen Treasure floods your warband with resources — the more the enemy has built, the more you take. Strike when their gold is flowing.",
+    "requires": "m15-the-chiefs-guard",
+    "player": { "hq": "raider-camp", "hero": null, "cards": ["scavenger", "pillager", "brute", "axe-thrower", "fighting-pit", "stolen-treasure", "bag-of-gold"] },
+    "enemy": { "hq": "town-hall", "hero": "town-chief", "deck": { "militia": 2, "barracks": 1, "soldier": 2, "archer": 2 } },
+    "victory": "default",
+    "spawns": [
+      { "turn": 3, "cardId": "soldier" },
+      { "turn": 5, "cardId": "archer" },
+      { "turn": 8, "cardId": "soldier" }
+    ],
+    "rewards": ["stolen-treasure"]
+  },
+  {
+    "id": "m17-the-grand-plunder",
+    "name": "Mission 17: The Grand Plunder",
+    "description": "A wealthy town with a gold mine — the richest target you have ever raided. Use Loot to drain their economy and Pillagers to tear down their buildings.",
+    "requires": "m16-claim-the-spoils",
+    "player": { "hq": "raider-camp", "hero": null, "cards": ["scavenger", "pillager", "brute", "axe-thrower", "fighting-pit", "stolen-treasure", "loot", "bag-of-gold"] },
+    "enemy": { "hq": "town-hall", "hero": "town-chief", "deck": { "militia": 2, "barracks": 2, "soldier": 2, "archer": 2, "gold-mine": 1 } },
+    "victory": "default",
+    "spawns": [
+      { "turn": 3, "cardId": "soldier" },
+      { "turn": 5, "cardId": "soldier" },
+      { "turn": 8, "cardId": "archer" }
+    ],
+    "rewards": ["loot"]
+  },
+  {
+    "id": "m18-swords-for-hire",
+    "name": "Mission 18: Swords for Hire",
+    "description": "The Warchief rides with you now — and so do Mercenaries who fight for any side that pays. The town is beginning to field Knights.",
+    "requires": "m17-the-grand-plunder",
+    "player": { "hq": "raider-camp", "hero": "warchief", "cards": ["scavenger", "pillager", "brute", "axe-thrower", "fighting-pit", "stolen-treasure", "loot", "mercenary", "bag-of-gold"] },
+    "enemy": { "hq": "town-hall", "hero": "town-chief", "deck": { "militia": 2, "barracks": 2, "soldier": 2, "archer": 2, "gold-mine": 1, "knight": 1 } },
+    "victory": "default",
+    "spawns": [
+      { "turn": 3, "cardId": "soldier" },
+      { "turn": 5, "cardId": "knight" },
+      { "turn": 8, "cardId": "soldier" }
+    ],
+    "rewards": ["mercenary"]
+  },
+  {
+    "id": "m19-the-final-forge",
+    "name": "Mission 19: The Final Forge",
+    "description": "The Battle-Axe is the finest weapon in the Warband's arsenal. Win this battle and forge one for yourself.",
+    "requires": "m18-swords-for-hire",
+    "player": { "hq": "raider-camp", "hero": "warchief", "cards": ["scavenger", "brute", "brute", "pillager", "axe-thrower", "fighting-pit", "stolen-treasure", "loot", "mercenary"] },
+    "enemy": { "hq": "town-hall", "hero": "town-chief", "deck": { "soldier": 3, "archer": 2, "barracks": 2, "knight": 1, "gold-mine": 1 } },
+    "victory": "default",
+    "spawns": [
+      { "turn": 3, "cardId": "soldier" },
+      { "turn": 5, "cardId": "knight" },
+      { "turn": 7, "cardId": "archer" },
+      { "turn": 9, "cardId": "soldier" }
+    ],
+    "rewards": ["battle-axe"]
+  },
+  {
+    "id": "m20-sack-the-capital",
+    "name": "Mission 20: Sack the Capital",
+    "description": "The capital. The wealthiest town in the land, defended by every knight and archer they have. Sack it and your legend is complete.",
+    "requires": "m19-the-final-forge",
+    "player": { "hq": "raider-camp", "hero": "warchief", "cards": ["scavenger", "scavenger", "brute", "brute", "pillager", "axe-thrower", "fighting-pit", "stolen-treasure", "loot", "mercenary", "battle-axe", "bag-of-gold"] },
+    "enemy": { "hq": "town-hall", "hero": "town-chief", "deck": { "soldier": 3, "archer": 2, "barracks": 2, "knight": 2, "gold-mine": 1, "wooden-palisade": 1 } },
+    "victory": "default",
+    "spawns": [
+      { "turn": 3, "cardId": "soldier" },
+      { "turn": 5, "cardId": "knight" },
+      { "turn": 7, "cardId": "archer" },
+      { "turn": 8, "cardId": "knight" },
+      { "turn": 10, "cardId": "soldier" }
+    ],
+    "rewards": ["bag-of-gold"]
   }
 ]

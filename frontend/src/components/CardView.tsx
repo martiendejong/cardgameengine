@@ -1,6 +1,7 @@
 import React from 'react';
 import { ObjectStateDto, AvailableAction } from '../types/game';
 import { STAT_TIPS, TAG_TIPS, STATUS_TIPS, HOUSING_COST_TIP, HOUSING_PROVIDED_TIP } from '../utils/cardText';
+import cardBg from '../assets/card.png';
 
 interface CardViewProps {
   card: ObjectStateDto;
@@ -82,6 +83,7 @@ export function CardView({
         isSelectedTarget ? 'selected-target' : '',
         `card-type-${card.objectType}`,
       ].filter(Boolean).join(' ')}
+      style={{ backgroundImage: `url(${cardBg})`, backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat' }}
       onClick={() => {
         if (isSelectableTarget) onSelectTarget(card.id);
         else if (onInspect && card.definitionId !== 'hidden') onInspect(card.id);

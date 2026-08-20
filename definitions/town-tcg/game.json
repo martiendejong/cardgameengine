@@ -658,7 +658,7 @@
       "name": "Barracks",
       "objectType": "building",
       "playCost": 3,
-      "constructionRequirement": 3,
+      "constructionRequirement": 1,
       "properties": {
         "currentHp": 6,
         "maxHp": 6,

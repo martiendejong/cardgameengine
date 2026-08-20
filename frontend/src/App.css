@@ -4,9 +4,12 @@
 .lobby-page {
   height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  overflow-y: auto;
+  padding: 24px 0;
+  box-sizing: border-box;
 }
 
 .lobby-card {
@@ -339,8 +342,8 @@
    ============================================================ */
 .card {
   width: 130px;
-  min-height: 170px;
-  background: #161b22;
+  aspect-ratio: 980 / 1434;
+  background-color: #161b22;
   border: 2px solid #30363d;
   border-radius: 8px;
   padding: 8px;
@@ -351,6 +354,8 @@
   cursor: default;
   position: relative;
   flex-shrink: 0;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .card:hover {
@@ -1527,7 +1532,7 @@
   /* Compact cards */
   .card {
     width: 100px;
-    min-height: 140px;
+    aspect-ratio: 980 / 1434;
     padding: 6px;
     gap: 3px;
   }
@@ -1583,7 +1588,7 @@
   .tip:hover::before { display: none; }
 
   /* Lobby */
-  .lobby-page { align-items: flex-start; overflow-y: auto; padding: 12px 0; height: 100vh; }
+  .lobby-page { padding: 12px 0; }
   .lobby-card { padding: 20px 16px; width: 94%; }
   .lobby-wide { width: 94%; }
   .lobby-title { font-size: 24px; }
