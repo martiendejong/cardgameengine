@@ -4,10 +4,18 @@ import { STAT_TIPS, TAG_TIPS, STATUS_TIPS, HOUSING_COST_TIP, HOUSING_PROVIDED_TI
 import cardBg from '../assets/card.png';
 import imgTownChief from '../assets/cards/town-chief.png';
 import imgPeasant from '../assets/cards/peasant.png';
+import imgBagOfGold from '../assets/cards/bag-of-gold.png';
+import imgGoldMine from '../assets/cards/gold-mine.png';
+import imgMilitia from '../assets/cards/militia.png';
+import imgTownHall from '../assets/cards/town-hall.png';
 
 const CARD_ART: Record<string, string> = {
   'town-chief': imgTownChief,
   'peasant': imgPeasant,
+  'bag-of-gold': imgBagOfGold,
+  'gold-mine': imgGoldMine,
+  'militia': imgMilitia,
+  'town-hall': imgTownHall,
 };
 
 interface CardViewProps {
