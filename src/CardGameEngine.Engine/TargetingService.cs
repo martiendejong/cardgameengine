@@ -111,6 +111,13 @@ public class TargetingService
                 !GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, "building")).ToList();
         }
 
+        // Blocking: while an untapped blocker is in reach, only blockers can be attacked
+        bool blockerInReach = reachable.Any(o => o.Tags.Contains("blocking") && !o.IsTapped);
+        if (blockerInReach)
+        {
+            reachable = reachable.Where(o => o.Tags.Contains("blocking")).ToList();
+        }
+
         return reachable.Select(o => o.Id).ToList();
     }
 }

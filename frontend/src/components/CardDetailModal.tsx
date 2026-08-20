@@ -6,6 +6,13 @@ import {
   HOUSING_COST_TIP, HOUSING_PROVIDED_TIP,
 } from '../utils/cardText';
 import cardBg from '../assets/card.png';
+import imgTownChief from '../assets/cards/town-chief.png';
+import imgPeasant from '../assets/cards/peasant.png';
+
+const CARD_ART: Record<string, string> = {
+  'town-chief': imgTownChief,
+  'peasant': imgPeasant,
+};
 
 interface CardDetailModalProps {
   card: ObjectStateDto;
@@ -63,9 +70,20 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
         <button className="modal-close" onClick={onClose}>✕</button>
 
         <div className="detail-header">
-          <div className="detail-art" style={{ background: artGradient(card.definitionId) }}>
-            <span className="detail-art-icon">{card.icon || '□'}</span>
-          </div>
+          {CARD_ART[card.definitionId] ? (
+            <div
+              className="detail-art"
+              style={{
+                backgroundImage: `url(${CARD_ART[card.definitionId]})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+          ) : (
+            <div className="detail-art" style={{ background: artGradient(card.definitionId) }}>
+              <span className="detail-art-icon">{card.icon || '□'}</span>
+            </div>
+          )}
           <div className="detail-title">
             <h2>{card.name}</h2>
             <span className="tip detail-type" data-tip={TYPE_TIPS[card.objectType] ?? ''}>

@@ -2,6 +2,13 @@ import React from 'react';
 import { ObjectStateDto, AvailableAction } from '../types/game';
 import { STAT_TIPS, TAG_TIPS, STATUS_TIPS, HOUSING_COST_TIP, HOUSING_PROVIDED_TIP } from '../utils/cardText';
 import cardBg from '../assets/card.png';
+import imgTownChief from '../assets/cards/town-chief.png';
+import imgPeasant from '../assets/cards/peasant.png';
+
+const CARD_ART: Record<string, string> = {
+  'town-chief': imgTownChief,
+  'peasant': imgPeasant,
+};
 
 interface CardViewProps {
   card: ObjectStateDto;
@@ -91,9 +98,20 @@ export function CardView({
         <span className="card-name">{card.name}</span>
       </div>
 
-      <div className="card-art" style={{ background: artGradient() }}>
-        <span className="card-art-icon">{card.icon || getTypeIcon()}</span>
-      </div>
+      {CARD_ART[card.definitionId] ? (
+        <div
+          className="card-art"
+          style={{
+            backgroundImage: `url(${CARD_ART[card.definitionId]})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+      ) : (
+        <div className="card-art" style={{ background: artGradient() }}>
+          <span className="card-art-icon">{card.icon || getTypeIcon()}</span>
+        </div>
+      )}
 
       {card.isTapped && <div className="tapped-indicator">TAPPED</div>}
       {card.underConstruction && (

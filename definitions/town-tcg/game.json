@@ -4727,7 +4727,8 @@
         "armor": 2
       },
       "tags": [
-        "fortification"
+        "fortification",
+        "blocking"
       ],
       "icon": "🪵",
       "artworkDescription": "Sharpened logs and stubbornness"
