@@ -57,7 +57,7 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
     <div className="modal-backdrop" onClick={onClose}>
       <div
         className="card-detail"
-        style={{ backgroundImage: `url(${cardBg})`, backgroundSize: '100% auto', backgroundRepeat: 'no-repeat', backgroundPosition: 'top center' }}
+        style={{ backgroundImage: `url(${cardBg})`, backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat' }}
         onClick={e => e.stopPropagation()}
       >
         <button className="modal-close" onClick={onClose}>✕</button>

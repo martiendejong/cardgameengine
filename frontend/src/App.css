@@ -1336,16 +1336,17 @@
   position: relative;
   width: 360px;
   max-width: 92vw;
-  max-height: 86vh;
+  aspect-ratio: 980 / 1434;
+  max-height: 90vh;
   overflow-y: auto;
   background-color: #111827;
-  background-size: 100% auto;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-position: top center;
-  border: 2px solid rgba(88, 166, 255, 0.3);
+  border: none;
   border-radius: 14px;
   padding: 22px 20px;
-  box-shadow: 0 0 48px rgba(88, 166, 255, 0.25);
+  box-shadow: 0 0 48px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
 }
 
 .modal-close {
