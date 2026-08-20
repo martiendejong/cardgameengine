@@ -42,3 +42,6 @@ desktop.ini
 
 design-conversation.md
 design-conversation-readable.md
+
+# Campaign player save data (runtime state, not content)
+profiles/

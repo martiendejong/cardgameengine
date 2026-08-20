@@ -93,9 +93,50 @@ export function GameBoard({
       {gameState.state === GameState.GameEnded && gameState.winner && (
         <div className="winner-overlay">
           <div className="winner-box">
-            <h2>Game Over!</h2>
-            <p className="winner-text">{gameState.winner} wins!</p>
-            <button onClick={() => window.location.href = '/'}>Back to Lobby</button>
+            {gameState.encounter ? (() => {
+              const enc = gameState.encounter;
+              const me = gameState.players.find(p => p.id === enc.playerId);
+              const won = me?.isWinner ?? false;
+              const rewardLabel = (id: string) => {
+                const def = cardDefs[id];
+                return def ? `${def.icon ? def.icon + ' ' : ''}${def.name}` : id;
+              };
+              const finish = async () => {
+                if (won) {
+                  try {
+                    await fetch('/api/campaign/complete', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ matchId: gameState.matchId }),
+                    });
+                  } catch { /* progress check happens again on the campaign page */ }
+                }
+                window.location.href = '/?campaign=1';
+              };
+              return (
+                <>
+                  <h2>{won ? 'Victory!' : 'The town has fallen...'}</h2>
+                  <p className="winner-text">
+                    {won ? 'The attack is repelled!' : 'The raiders were too strong this time.'}
+                  </p>
+                  {won && enc.rewardCards.length > 0 && (
+                    <div className="mission-reward-list">
+                      <p>New cards for your collection:</p>
+                      {enc.rewardCards.map((id, i) => (
+                        <span key={i} className="collection-card">{rewardLabel(id)}</span>
+                      ))}
+                    </div>
+                  )}
+                  <button onClick={finish}>{won ? 'Continue' : 'Try Again'}</button>
+                </>
+              );
+            })() : (
+              <>
+                <h2>Game Over!</h2>
+                <p className="winner-text">{gameState.winner} wins!</p>
+                <button onClick={() => window.location.href = '/'}>Back to Lobby</button>
+              </>
+            )}
           </div>
         </div>
       )}

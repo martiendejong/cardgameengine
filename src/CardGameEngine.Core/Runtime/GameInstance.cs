@@ -20,11 +20,31 @@ public class GameInstance
     public HashSet<string> FiredOncePerTurn { get; set; } = new();
     // "objectId:abilityId" -> activations this turn (for UsesPerTurn abilities)
     public Dictionary<string, int> AbilityUsesThisTurn { get; set; } = new();
+    // Campaign encounter scripting (null in normal matches)
+    public EncounterState? Encounter { get; set; }
     // Active cost discounts (e.g. Archery Range: next Archer costs 1 less Training)
     public List<CostModifierInstance> ActiveCostModifiers { get; set; } = new();
     // Reaction window: who may respond while State == WaitingForReaction
     public string? ReactionPlayerId { get; set; }
     public string? ReactionWindowEvent { get; set; } // "attackDeclared" or "spellCast"
+}
+
+public class EncounterState
+{
+    public string MissionId { get; set; } = "";
+    public string ProfileName { get; set; } = "";
+    public string PlayerId { get; set; } = "";      // the human seat
+    public string EnemyPlayerId { get; set; } = "";
+    public bool VictoryOnCleared { get; set; }       // win when all spawns are dealt with
+    public List<SpawnEntry> PendingSpawns { get; set; } = new();
+    public List<string> RewardCards { get; set; } = new();
+    public bool RewardsGranted { get; set; }
+}
+
+public class SpawnEntry
+{
+    public int Turn { get; set; }       // game TurnNumber at which this spawns
+    public string CardId { get; set; } = "";
 }
 
 public class CostModifierInstance

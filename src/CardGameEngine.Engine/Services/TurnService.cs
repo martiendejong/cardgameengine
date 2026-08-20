@@ -61,6 +61,7 @@ public class TurnService
             game.CurrentPhaseId = firstPhase.Id;
             game.Log.Add($"=== {nextPlayer.Name}'s Turn (Turn {game.TurnNumber}) ===");
             game.Log.Add($"--- {firstPhase.Name} ---");
+            ProcessEncounterSpawns(game);
             _s.Bus.Publish(game, new GameEvent { Type = GameEventTypes.TurnStarted, Player = nextPlayer });
             RunAutoActions(game, firstPhase);
         }
@@ -162,6 +163,24 @@ public class TurnService
                         DrawCard(game, activePlayer);
                     break;
             }
+        }
+    }
+
+    /// <summary>Campaign encounters: scripted attackers appear at their scheduled turn.</summary>
+    public void ProcessEncounterSpawns(GameInstance game)
+    {
+        if (game.Encounter == null) return;
+        var due = game.Encounter.PendingSpawns.Where(s => s.Turn <= game.TurnNumber).ToList();
+        foreach (var spawn in due)
+        {
+            game.Encounter.PendingSpawns.Remove(spawn);
+            var cardDef = game.Definition.Cards.FirstOrDefault(c => c.Id == spawn.CardId);
+            if (cardDef == null) continue;
+            var obj = _s.Factory.CreateObjectInstance(game, cardDef, game.Encounter.EnemyPlayerId, "battlefield");
+            obj.HasSummoningSickness = true;
+            game.Objects.Add(obj);
+            game.Log.Add($"⚠ {cardDef.Name} appears at the edge of town!");
+            _s.Bus.Publish(game, new GameEvent { Type = GameEventTypes.ObjectSummoned, Target = obj });
         }
     }
 

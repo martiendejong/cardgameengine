@@ -36,7 +36,8 @@ public class MatchService
         _logger = logger;
     }
 
-    public (GameInstance? game, string? error) CreateMatch(string gameId, List<PlayerSetup> players)
+    public (GameInstance? game, string? error) CreateMatch(string gameId, List<PlayerSetup> players,
+        Action<GameInstance>? setupOverride = null)
     {
         var definition = _definitionService.GetById(gameId);
         if (definition == null)
@@ -132,6 +133,9 @@ public class MatchService
             player.RelevantResources = ComputeRelevantResources(definition, player);
             game.Players.Add(player);
         }
+
+        // Campaign encounters adjust HQ/hero/scripting before the board is set up
+        setupOverride?.Invoke(game);
 
         _ruleEngine.ExecuteSetup(game);
         _matches[matchId] = game;

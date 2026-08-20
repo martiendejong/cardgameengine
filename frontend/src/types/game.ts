@@ -91,6 +91,32 @@ export interface GameStateDto {
   turnNumber: number;
   reactionPlayerId?: string | null;
   reactionWindowEvent?: string | null;
+  encounter?: EncounterDto | null;
+}
+
+export interface EncounterDto {
+  missionId: string;
+  playerId: string; // the human seat in a campaign match
+  rewardCards: string[];
+  pendingSpawnCount: number;
+}
+
+export interface CampaignMission {
+  id: string;
+  name: string;
+  description: string;
+  rewards: string[];
+  completed: boolean;
+  unlocked: boolean;
+}
+
+export interface CampaignOverview {
+  profile: {
+    name: string;
+    completedMissions: string[];
+    collection: Record<string, number>;
+  };
+  missions: CampaignMission[];
 }
 
 export interface ActionRequest {

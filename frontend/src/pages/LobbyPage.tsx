@@ -8,6 +8,7 @@ import {
 
 interface LobbyPageProps {
   onMatchCreated: (matchId: string, seat: string) => void;
+  onOpenCampaign: () => void;
 }
 
 interface PlayerDeckState {
@@ -41,7 +42,7 @@ function typeLabel(objectType: string): string {
   }
 }
 
-export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
+export function LobbyPage({ onMatchCreated, onOpenCampaign }: LobbyPageProps) {
   const [definitions, setDefinitions] = useState<GameDefinitionSummary[]>([]);
   const [selectedGame, setSelectedGame] = useState('');
   const [fullDef, setFullDef] = useState<GameDefinitionFull | null>(null);
@@ -197,6 +198,10 @@ export function LobbyPage({ onMatchCreated }: LobbyPageProps) {
       <div className="lobby-card lobby-wide">
         <h1 className="lobby-title">Town Wars</h1>
         <p className="lobby-subtitle">Trading Card Game Engine</p>
+
+        <button className="campaign-btn" onClick={onOpenCampaign}>
+          🏰 Campaign — learn the game mission by mission
+        </button>
 
         {error && <div className="error-box">{error}</div>}
 

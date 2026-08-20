@@ -15,14 +15,16 @@ public class SetupService
 
     public void ExecuteSetup(GameInstance game)
     {
-        // Players with a chosen deck bring their own HQ + hero; otherwise fall back to setup actions
-        bool perPlayerSetup = game.Players.All(p => p.HqCardId != null && p.HeroCardId != null);
+        // Players with chosen starting cards bring them; heroes (and even HQs, for
+        // scripted encounter enemies) are optional. Legacy setup actions only run
+        // when nobody declares anything.
+        bool perPlayerSetup = game.Players.Any(p => p.HqCardId != null || p.HeroCardId != null);
         if (perPlayerSetup)
         {
             foreach (var player in game.Players)
             {
-                PlaceStartingCard(game, player.HqCardId!, player);
-                PlaceStartingCard(game, player.HeroCardId!, player);
+                if (player.HqCardId != null) PlaceStartingCard(game, player.HqCardId, player);
+                if (player.HeroCardId != null) PlaceStartingCard(game, player.HeroCardId, player);
             }
         }
         else

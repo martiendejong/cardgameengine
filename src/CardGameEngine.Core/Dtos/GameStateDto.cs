@@ -18,6 +18,16 @@ public class GameStateDto
     public int TurnNumber { get; set; }
     public string? ReactionPlayerId { get; set; }
     public string? ReactionWindowEvent { get; set; }
+    public EncounterDto? Encounter { get; set; }
+}
+
+/// <summary>Campaign context shown in the winner overlay (mission + rewards).</summary>
+public class EncounterDto
+{
+    public string MissionId { get; set; } = "";
+    public string PlayerId { get; set; } = "";
+    public List<string> RewardCards { get; set; } = new();
+    public int PendingSpawnCount { get; set; }
 }
 
 public class PlayerStateDto

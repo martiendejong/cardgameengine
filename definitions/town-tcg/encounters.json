@@ -1,0 +1,104 @@
+[
+  {
+    "id": "m1-defend-the-town",
+    "name": "Mission 1: Defend the Town",
+    "description": "Raiders have been spotted near the town. Put your peasant to work, muster your militia, and hold the Town Hall. Survive every attacker to win.",
+    "player": {
+      "hq": "town-hall",
+      "hero": null,
+      "cards": ["militia", "militia"]
+    },
+    "enemy": { "hq": null, "hero": null, "cards": [] },
+    "victory": "cleared",
+    "spawns": [
+      { "turn": 2, "cardId": "raider-scout" },
+      { "turn": 4, "cardId": "raider-brigand" },
+      { "turn": 6, "cardId": "raider-scout" }
+    ],
+    "rewards": ["militia", "gold-mine"]
+  },
+  {
+    "id": "m2-rebuild-the-walls",
+    "name": "Mission 2: Rebuild the Walls",
+    "description": "The raids will not stop. Build a Gold Mine for income and raise a Palisade — buildings take time to construct, so put your peasants to work early.",
+    "requires": "m1-defend-the-town",
+    "player": {
+      "hq": "town-hall",
+      "hero": null,
+      "cards": ["peasant", "gold-mine", "wooden-palisade", "militia", "militia"]
+    },
+    "enemy": { "hq": null, "hero": null, "cards": [] },
+    "victory": "cleared",
+    "spawns": [
+      { "turn": 2, "cardId": "raider-scout" },
+      { "turn": 4, "cardId": "raider-scout", "count": 2 },
+      { "turn": 6, "cardId": "raider-brigand" },
+      { "turn": 8, "cardId": "raider-brigand" }
+    ],
+    "rewards": ["wooden-palisade", "peasant"]
+  },
+  {
+    "id": "m3-the-chief-returns",
+    "name": "Mission 3: The Chief Returns",
+    "description": "The Town Chief is back from the capital. Heroes fight on the battlefield and have powerful abilities — use them, because a Raider Champion is coming.",
+    "requires": "m2-rebuild-the-walls",
+    "player": {
+      "hq": "town-hall",
+      "hero": "town-chief",
+      "cards": ["militia", "militia", "soldier", "gold-mine"]
+    },
+    "enemy": { "hq": null, "hero": null, "cards": [] },
+    "victory": "cleared",
+    "spawns": [
+      { "turn": 2, "cardId": "raider-brigand" },
+      { "turn": 4, "cardId": "raider-brigand" },
+      { "turn": 4, "cardId": "raider-scout" },
+      { "turn": 6, "cardId": "raider-champion" }
+    ],
+    "rewards": ["soldier", "barracks"]
+  },
+  {
+    "id": "m4-strike-back",
+    "name": "Mission 4: Strike Back",
+    "description": "Scouts found the raiders' forward camp. This time you attack: destroy the Raider Camp before their reinforcements wear you down.",
+    "requires": "m3-the-chief-returns",
+    "player": {
+      "hq": "town-hall",
+      "hero": "town-chief",
+      "cards": ["militia", "militia", "soldier", "archer", "gold-mine", "barracks"]
+    },
+    "enemy": {
+      "hq": "raider-camp",
+      "hero": null,
+      "deck": { "pillager": 2, "axe-thrower": 2 }
+    },
+    "victory": "default",
+    "spawns": [
+      { "turn": 2, "cardId": "raider-scout" },
+      { "turn": 5, "cardId": "raider-brigand" }
+    ],
+    "rewards": ["archer", "watchtower"]
+  },
+  {
+    "id": "m5-the-warchief",
+    "name": "Mission 5: The Warchief",
+    "description": "The Warchief himself marches on the town. A real battle: he has a camp, a warband, and no mercy. Destroy the Raider Camp and end the raids for good.",
+    "requires": "m4-strike-back",
+    "player": {
+      "hq": "town-hall",
+      "hero": "town-chief",
+      "cards": ["militia", "militia", "soldier", "soldier", "archer", "gold-mine", "barracks", "wooden-palisade"]
+    },
+    "enemy": {
+      "hq": "raider-camp",
+      "hero": "warchief",
+      "deck": { "pillager": 2, "brute": 2, "axe-thrower": 2, "battle-axe": 1, "mercenary": 1 }
+    },
+    "victory": "default",
+    "spawns": [
+      { "turn": 3, "cardId": "raider-brigand" },
+      { "turn": 7, "cardId": "raider-champion" }
+    ],
+    "rewards": ["knight", "siege-ram"]
+  }
+]

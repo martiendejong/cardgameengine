@@ -163,19 +163,38 @@ public class RuleEngine
 
             foreach (var player in game.Players)
             {
+                // A type the player never had counts as gone, but at least one listed
+                // type must have existed — supports heroless campaign starts while an
+                // HQ-less scripted enemy can't lose this way at all.
+                bool hadAny = false;
                 bool allDestroyed = endCond.Targets.All(targetType =>
                 {
                     var playerObjects = game.Objects.Where(o =>
                         o.OwnerId == player.Id &&
                         GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, targetType)).ToList();
-                    return playerObjects.Count > 0 && playerObjects.All(o => o.IsDestroyed);
+                    if (playerObjects.Count == 0) return true;
+                    hadAny = true;
+                    return playerObjects.All(o => o.IsDestroyed);
                 });
 
-                if (allDestroyed && endCond.Result == "lose" && !player.IsLoser)
+                if (hadAny && allDestroyed && endCond.Result == "lose" && !player.IsLoser)
                 {
                     player.IsLoser = true;
                     game.Log.Add($"{player.Name} has lost all their {string.Join(" and ", endCond.Targets)}!");
                 }
+            }
+        }
+
+        // Encounter victory: every scripted attacker has spawned and been destroyed
+        if (game.Encounter is { VictoryOnCleared: true } enc &&
+            !game.Players.Any(p => p.IsLoser))
+        {
+            bool enemiesAlive = game.Objects.Any(o =>
+                o.ControllerId == enc.EnemyPlayerId && !o.IsDestroyed && o.ZoneId == "battlefield");
+            if (enc.PendingSpawns.Count == 0 && !enemiesAlive)
+            {
+                game.Players.First(p => p.Id == enc.EnemyPlayerId).IsLoser = true;
+                game.Log.Add("The attack is repelled!");
             }
         }
 

@@ -50,7 +50,14 @@ public class StateProjector
             AvailableActions = _ruleEngine.GetAvailableActions(game, actionsFor), // catalog self-gates
             PendingChoice = game.PendingChoices.FirstOrDefault(c => omniscient || c.PlayerId == viewerId),
             ReactionPlayerId = game.ReactionPlayerId,
-            ReactionWindowEvent = game.ReactionWindowEvent
+            ReactionWindowEvent = game.ReactionWindowEvent,
+            Encounter = game.Encounter == null ? null : new EncounterDto
+            {
+                MissionId = game.Encounter.MissionId,
+                PlayerId = game.Encounter.PlayerId,
+                RewardCards = game.Encounter.RewardCards,
+                PendingSpawnCount = game.Encounter.PendingSpawns.Count
+            }
         };
     }
 

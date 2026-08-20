@@ -8,6 +8,9 @@ public class GameDefinitionService
     private readonly Dictionary<string, GameDefinition> _definitions = new();
     private readonly ILogger<GameDefinitionService> _logger;
 
+    /// <summary>Resolved definitions directory (campaign encounters live beside game.json).</summary>
+    public string? DefinitionsPath { get; private set; }
+
     public GameDefinitionService(ILogger<GameDefinitionService> logger, IWebHostEnvironment env)
     {
         _logger = logger;
@@ -42,6 +45,7 @@ public class GameDefinitionService
             return;
         }
 
+        DefinitionsPath = definitionsPath;
         _logger.LogInformation("Loading definitions from: {Path}", definitionsPath);
 
         var jsonFiles = Directory.GetFiles(definitionsPath, "game.json", SearchOption.AllDirectories);
