@@ -68,6 +68,9 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
   const abilities = def?.abilities ?? [];
   const triggers = def?.triggers ?? [];
 
+  const hpPct = (maxHp ?? 0) > 0 ? ((hp ?? 0) / (maxHp as number)) * 100 : 0;
+  const hpColor = hpPct > 60 ? '#4caf50' : hpPct > 30 ? '#ff9800' : '#f44336';
+
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div
@@ -77,45 +80,44 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
       >
         <button className="modal-close" onClick={onClose}>✕</button>
 
+        {/* Title */}
+        <div className="detail-header">
+          <h2 className="detail-name">{card.name}</h2>
+          <div className="detail-header-meta">
+            <span className="tip detail-type" data-tip={TYPE_TIPS[card.objectType] ?? ''}>
+              {typeLabel(card.objectType)}
+            </span>
+            {def?.playCost !== null && def?.playCost !== undefined && (
+              <span className="tip detail-cost" data-tip={playCostTip(def.playCost, def.playCostResource ?? 'gold')}>
+                {def.playCost} {def.playCostResource === 'energy' ? '⚡' : '💰'}
+              </span>
+            )}
+            {def?.slot && (
+              <span className="tip detail-slot" data-tip={slotTip(def.slot)}>Slot: {def.slot}</span>
+            )}
+          </div>
+        </div>
+
+        {/* Art */}
         {CARD_ART[card.definitionId] ? (
-          <div
-            className="detail-art-banner"
-            style={{ backgroundImage: `url(${CARD_ART[card.definitionId]})` }}
-          />
+          <div className="detail-art-banner" style={{ backgroundImage: `url(${CARD_ART[card.definitionId]})` }} />
         ) : (
           <div className="detail-art-banner" style={{ background: artGradient(card.definitionId) }}>
             <span className="detail-art-icon">{card.icon || '□'}</span>
           </div>
         )}
 
-        <div className="detail-header">
-          <div className="detail-title">
-            <h2>{card.name}</h2>
-            <span className="tip detail-type" data-tip={TYPE_TIPS[card.objectType] ?? ''}>
-              {typeLabel(card.objectType)}
-            </span>
-            {def?.playCost !== null && def?.playCost !== undefined && (
-              <span
-                className="tip detail-cost"
-                data-tip={playCostTip(def.playCost, def.playCostResource ?? 'gold')}
-              >
-                Cost: {def.playCost} {def.playCostResource === 'energy' ? '⚡' : '💰'}
-              </span>
-            )}
-            {def?.slot && (
-              <span className="tip detail-slot" data-tip={slotTip(def.slot)}>
-                Slot: {def.slot}
-              </span>
-            )}
+        {/* HP bar directly below art */}
+        {hasHp && (
+          <div className="detail-hp-container">
+            <div className="detail-hp-bar" style={{ width: `${hpPct}%`, backgroundColor: hpColor }} />
+            <span className="detail-hp-text">{hp}/{maxHp} HP</span>
           </div>
-        </div>
+        )}
 
         <div className="detail-stats">
           {attack > 0 && (
             <span className="tip detail-stat atk" data-tip={STAT_TIPS.attack}>⚔ {attack} Attack</span>
-          )}
-          {hasHp && (
-            <span className="tip detail-stat hp" data-tip={STAT_TIPS.hp}>❤ {hp}/{maxHp} HP</span>
           )}
           {armor > 0 && (
             <span className="tip detail-stat arm" data-tip={STAT_TIPS.armor}>🛡 {armor} Armor</span>
@@ -127,10 +129,7 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
             <span className="tip detail-stat loot" data-tip={STAT_TIPS.loot}>◈ {card.resources['loot']} Tokens</span>
           )}
           {def?.bonusAttackVsBuildings && (
-            <span
-              className="tip detail-stat bonus"
-              data-tip="This bonus is added to Attack when the target is a building."
-            >
+            <span className="tip detail-stat bonus" data-tip="This bonus is added to Attack when the target is a building.">
               +{def.bonusAttackVsBuildings} vs Buildings
             </span>
           )}
