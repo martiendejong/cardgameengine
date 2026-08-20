@@ -12,6 +12,11 @@ import imgBagOfGold from '../assets/cards/bag-of-gold.png';
 import imgGoldMine from '../assets/cards/gold-mine.png';
 import imgMilitia from '../assets/cards/militia.png';
 import imgTownHall from '../assets/cards/town-hall.png';
+import imgArcher from '../assets/cards/archer.png';
+import imgArcheryRange from '../assets/cards/archery-range.png';
+import imgBarracks from '../assets/cards/barracks.png';
+import imgPaladin from '../assets/cards/paladin.png';
+import imgSoldier from '../assets/cards/soldier.png';
 
 const CARD_ART: Record<string, string> = {
   'town-chief': imgTownChief,
@@ -20,6 +25,11 @@ const CARD_ART: Record<string, string> = {
   'gold-mine': imgGoldMine,
   'militia': imgMilitia,
   'town-hall': imgTownHall,
+  'archer': imgArcher,
+  'archery-range': imgArcheryRange,
+  'barracks': imgBarracks,
+  'paladin': imgPaladin,
+  'soldier': imgSoldier,
 };
 
 interface CardDetailModalProps {
