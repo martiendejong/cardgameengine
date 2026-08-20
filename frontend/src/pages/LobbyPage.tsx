@@ -5,6 +5,7 @@ import {
   CardDefinitionDto,
   CreateMatchResponse,
 } from '../types/game';
+import { BASE } from '../config';
 
 interface LobbyPageProps {
   onMatchCreated: (matchId: string, seat: string) => void;
@@ -55,7 +56,7 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign }: LobbyPageProps) {
   const [mode, setMode] = useState<'hotseat' | 'seats' | 'bot'>('hotseat');
 
   useEffect(() => {
-    fetch('/api/definitions')
+    fetch(`${BASE}api/definitions`)
       .then(r => r.json())
       .then((data: GameDefinitionSummary[]) => {
         setDefinitions(data);
@@ -66,7 +67,7 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign }: LobbyPageProps) {
 
   useEffect(() => {
     if (!selectedGame) return;
-    fetch(`/api/definitions/${selectedGame}`)
+    fetch(`${BASE}api/definitions/${selectedGame}`)
       .then(r => r.json())
       .then((def: GameDefinitionFull) => {
         setFullDef(def);
@@ -159,7 +160,7 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign }: LobbyPageProps) {
     setError('');
 
     try {
-      const res = await fetch('/api/matches', {
+      const res = await fetch(`${BASE}api/matches`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

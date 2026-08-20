@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CampaignOverview, GameDefinitionFull } from '../types/game';
+import { BASE } from '../config';
 
 interface CampaignPageProps {
   onMissionStarted: (matchId: string, seat: string) => void;
@@ -18,7 +19,7 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
   const [starting, setStarting] = useState('');
 
   useEffect(() => {
-    fetch(`/api/definitions/${GAME_ID}`)
+    fetch(`${BASE}api/definitions/${GAME_ID}`)
       .then(r => r.json())
       .then((def: GameDefinitionFull) => {
         const names: Record<string, string> = {};
@@ -32,7 +33,7 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
     if (!profileName.trim()) { setOverview(null); return; }
     localStorage.setItem('campaignProfile', profileName);
     const t = setTimeout(() => {
-      fetch(`/api/campaign?gameId=${GAME_ID}&profile=${encodeURIComponent(profileName)}`)
+      fetch(`${BASE}api/campaign?gameId=${GAME_ID}&profile=${encodeURIComponent(profileName)}`)
         .then(r => r.json())
         .then(setOverview)
         .catch(() => setError('Failed to load the campaign. Is the backend running?'));
@@ -44,7 +45,7 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
     setStarting(missionId);
     setError('');
     try {
-      const res = await fetch('/api/campaign/start', {
+      const res = await fetch(`${BASE}api/campaign/start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ gameId: GAME_ID, missionId, profile: profileName }),

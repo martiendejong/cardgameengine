@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { GameStateDto, AvailableAction, GameState, GameDefinitionFull, CardDefinitionDto } from '../types/game';
 import { useGameHub } from '../hooks/useGameHub';
 import { GameBoard } from '../components/GameBoard';
+import { BASE } from '../config';
 
 interface GamePageProps {
   matchId: string;
@@ -22,7 +23,7 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   const gameId = gameState?.gameId;
   useEffect(() => {
     if (!gameId) return;
-    fetch(`/api/definitions/${gameId}`)
+    fetch(`${BASE}api/definitions/${gameId}`)
       .then(r => r.json())
       .then((def: GameDefinitionFull) => {
         const map: Record<string, CardDefinitionDto> = {};

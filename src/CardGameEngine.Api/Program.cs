@@ -34,6 +34,12 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Support running at a subpath (e.g. /townwars) behind a reverse proxy.
+// Set ASPNETCORE_PATHBASE env var on the server; has no effect when empty.
+var pathBase = Environment.GetEnvironmentVariable("ASPNETCORE_PATHBASE") ?? "";
+if (!string.IsNullOrEmpty(pathBase))
+    app.UsePathBase(pathBase);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

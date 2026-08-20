@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { LobbyPage } from './pages/LobbyPage';
 import { GamePage } from './pages/GamePage';
 import { CampaignPage } from './pages/CampaignPage';
+import { BASE } from './config';
 import './App.css';
 
 interface Session {
@@ -34,7 +35,7 @@ function App() {
       setView('campaign');
       return;
     }
-    fetch(`/api/campaign?gameId=${GAME_ID}&profile=${encodeURIComponent(profile)}`)
+    fetch(`${BASE}api/campaign?gameId=${GAME_ID}&profile=${encodeURIComponent(profile)}`)
       .then(r => r.json())
       .then(data => setView(data.multiplayerUnlocked ? 'lobby' : 'campaign'))
       .catch(() => setView('campaign'));

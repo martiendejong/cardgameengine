@@ -5,6 +5,7 @@ import { ActionPanel } from './ActionPanel';
 import { ChoiceDialog } from './ChoiceDialog';
 import { GameLog } from './GameLog';
 import { CardDetailModal } from './CardDetailModal';
+import { BASE } from '../config';
 
 interface GameBoardProps {
   gameState: GameStateDto;
@@ -104,14 +105,14 @@ export function GameBoard({
               const finish = async () => {
                 if (won) {
                   try {
-                    await fetch('/api/campaign/complete', {
+                    await fetch(`${BASE}api/campaign/complete`, {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({ matchId: gameState.matchId }),
                     });
                   } catch { /* progress check happens again on the campaign page */ }
                 }
-                window.location.href = '/?campaign=1';
+                window.location.href = `${BASE}?campaign=1`;
               };
               return (
                 <>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as signalR from '@microsoft/signalr';
 import { GameStateDto, ActionRequest } from '../types/game';
+import { BASE } from '../config';
 
 interface UseGameHubOptions {
   matchId: string;
@@ -17,10 +18,7 @@ export function useGameHub({ matchId, playerId, onStateUpdate, onError }: UseGam
     let cancelled = false;
 
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl('/gamehub', {
-        skipNegotiation: true,
-        transport: signalR.HttpTransportType.WebSockets,
-      })
+      .withUrl(`${BASE}gamehub`)
       .withAutomaticReconnect()
       .build();
 
