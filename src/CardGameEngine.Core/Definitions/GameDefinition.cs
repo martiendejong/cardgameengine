@@ -173,10 +173,11 @@ public class AbilityDefinition
 
 public class CostDefinition
 {
-    public string Type { get; set; } = ""; // "tap", "resource", "sacrifice"
+    public string Type { get; set; } = ""; // "tap", "resource", "sacrifice", "crew"
     public string? ResourceId { get; set; }
     public int? Amount { get; set; }
     public string? Scope { get; set; } // "self", "player"
+    public string? Tag { get; set; } // "crew": tap Amount untapped friendly units carrying this tag
 }
 
 public class ConditionDefinition
@@ -203,6 +204,9 @@ public class ChoiceDefinition
     public int RequireResourceAmount { get; set; }
     public bool ExcludeSelf { get; set; } // target may not be the ability's source (sacrifice another unit)
     public bool AttachmentsOnly { get; set; } // target equipment/modules installed on cards (Dissolve)
+    public bool ChooseAmount { get; set; } = false;
+    public int AmountMin { get; set; } = 1;
+    public string? AmountMaxResource { get; set; } // resource on source object that caps the choosable amount
 }
 
 public class EffectDefinition

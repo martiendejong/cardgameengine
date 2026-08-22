@@ -71,6 +71,26 @@ public static class DefaultHandlers
             canPay: ctx => !ctx.Object.IsDestroyed,
             pay: ctx => s.Mutator.DestroyObject(ctx.Game, ctx.Object));
 
+        // Crew: tap Amount untapped friendly units with Tag (the operators of a machine).
+        // Crew members are auto-selected; excludes the source object itself.
+        s.Costs.Register("crew",
+            canPay: ctx => GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
+                .Count(o => o.Id != ctx.Object.Id && !o.IsTapped && !o.HasSummoningSickness
+                    && o.Tags.Contains(ctx.Cost.Tag ?? "")) >= (ctx.Cost.Amount ?? 1),
+            pay: ctx =>
+            {
+                var crew = GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
+                    .Where(o => o.Id != ctx.Object.Id && !o.IsTapped && !o.HasSummoningSickness
+                        && o.Tags.Contains(ctx.Cost.Tag ?? ""))
+                    .Take(ctx.Cost.Amount ?? 1)
+                    .ToList();
+                foreach (var member in crew)
+                {
+                    s.Mutator.Tap(ctx.Game, member);
+                    ctx.Game.Log.Add($"{member.Name} crews {ctx.Object.Name}.");
+                }
+            });
+
         static int GetResource(CostContext ctx) =>
             ctx.Cost.Scope == "player"
                 ? ctx.Player.Resources.GetValueOrDefault(ctx.Cost.ResourceId ?? "")
@@ -361,7 +381,7 @@ public static class DefaultHandlers
             var from = toTarget ? ctx.Source : ctx.Target;
             var to = toTarget ? ctx.Target : ctx.Source;
 
-            var amount = Math.Min(ctx.Effect.Amount ?? int.MaxValue, from.Resources.GetValueOrDefault(resId));
+            var amount = Math.Min(ctx.ChosenAmount ?? ctx.Effect.Amount ?? int.MaxValue, from.Resources.GetValueOrDefault(resId));
             var room = GameQueries.ResourceCapacity(ctx.Game, to, resId) - to.Resources.GetValueOrDefault(resId);
             amount = Math.Max(0, Math.Min(amount, room));
             if (amount == 0) return;
@@ -434,6 +454,20 @@ public static class DefaultHandlers
 
             ctx.Game.Log.Add($"{deadHero.Name} is reconstructed and returns to the battlefield!");
             s.Bus.Publish(ctx.Game, new GameEvent { Type = GameEventTypes.HeroRevived, Target = deadHero, Player = ctx.Player });
+        });
+
+        // Consume a module installed on your hero and convert it to energy
+        e.Register("salvage_module", ctx =>
+        {
+            var obj = ctx.ResolveScope("target");
+            if (obj == null || obj.AttachedToId == null) return;
+
+            var def = GameQueries.GetCardDefinition(ctx.Game, obj);
+            var energyGained = def?.PlayCost ?? 2;
+
+            m.DestroyObject(ctx.Game, obj, ctx.Source);
+            m.GainResource(ctx.Game, ctx.Player, "energy", energyGained);
+            ctx.Game.Log.Add($"{ctx.Player.Name} salvages {obj.Name} for {energyGained} energy!");
         });
     }
 }

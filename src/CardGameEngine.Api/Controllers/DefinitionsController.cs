@@ -32,6 +32,7 @@ public class DefinitionsController : ControllerBase
         var def = _definitionService.GetById(id);
         if (def == null)
             return NotFound($"Game definition '{id}' not found");
+        Response.Headers["Cache-Control"] = "no-store";
         return Ok(def);
     }
 }

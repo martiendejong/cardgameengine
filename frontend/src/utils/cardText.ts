@@ -29,6 +29,11 @@ export function explainCost(c: CostDto): string {
         ? `Pay ${c.amount} ${resName(c.resourceId)}`
         : `Spend ${c.amount} ${resName(c.resourceId)} from this card`;
     case 'sacrifice': return 'Sacrifice this card';
+    case 'crew': {
+      const n = c.amount ?? 1;
+      const who = c.tag ? c.tag.charAt(0).toUpperCase() + c.tag.slice(1) : 'unit';
+      return `Crew ${n} — tap ${n} untapped ${who}${n > 1 ? 's' : ''}`;
+    }
     default: return c.type;
   }
 }

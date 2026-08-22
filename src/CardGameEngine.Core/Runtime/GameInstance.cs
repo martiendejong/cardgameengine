@@ -129,6 +129,7 @@ public class StackItem
     public string SourceObjectId { get; set; } = "";
     public string AbilityId { get; set; } = "";
     public List<string> TargetIds { get; set; } = new();
+    public int? ChosenAmount { get; set; }
     public bool Cancelled { get; set; } // countered — fizzles instead of resolving
     public Dictionary<string, object> Parameters { get; set; } = new();
 }
@@ -164,6 +165,7 @@ public class AvailableAction
     public string? UnavailableReason { get; set; }
     public Definitions.ChoiceDefinition? RequiresChoice { get; set; }
     public List<string>? ValidTargets { get; set; }
+    public int? AmountMax { get; set; } // set when RequiresChoice.ChooseAmount is true
 }
 
 public class ActionRequest
@@ -172,4 +174,5 @@ public class ActionRequest
     public string? SourceObjectId { get; set; }
     public string? AbilityId { get; set; }
     public List<string> TargetIds { get; set; } = new();
+    public int? ChosenAmount { get; set; }
 }

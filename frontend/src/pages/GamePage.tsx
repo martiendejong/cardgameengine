@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { GameStateDto, AvailableAction, GameState, GameDefinitionFull, CardDefinitionDto } from '../types/game';
 import { useGameHub } from '../hooks/useGameHub';
 import { GameBoard } from '../components/GameBoard';
+import { ActionPanel } from '../components/ActionPanel';
 import { BASE } from '../config';
 
 interface GamePageProps {
@@ -23,7 +24,7 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   const gameId = gameState?.gameId;
   useEffect(() => {
     if (!gameId) return;
-    fetch(`${BASE}api/definitions/${gameId}`)
+    fetch(`${BASE}api/definitions/${gameId}?t=${Date.now()}`, { cache: 'no-store' })
       .then(r => r.json())
       .then((def: GameDefinitionFull) => {
         const map: Record<string, CardDefinitionDto> = {};
@@ -53,7 +54,7 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   // In hotseat mode we act as whoever is active; in seat mode always as our seat
   const actAs = isHotseat ? myPlayerId : seat;
 
-  async function handleAction(action: AvailableAction, targetIds?: string[]) {
+  async function handleAction(action: AvailableAction, targetIds?: string[], chosenAmount?: number) {
     try {
       if (action.type === 'endPhase') {
         await endPhase(actAs);
@@ -64,6 +65,7 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
         sourceObjectId: action.sourceObjectId,
         abilityId: action.abilityId,
         targetIds: targetIds ?? [],
+        chosenAmount,
       });
     } catch (err: any) {
       handleError(err.message ?? 'Action failed');
@@ -136,12 +138,6 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
           Match: {matchId}
           {!isHotseat && mySeatPlayer && <span className="seat-label"> — playing as {mySeatPlayer.name}</span>}
         </span>
-        <span className="active-turn-label">
-          {gameState.state === GameState.GameEnded
-            ? `Game Over - ${gameState.winner} wins!`
-            : `${activePlayer?.name ?? '...'}'s Turn`}
-        </span>
-        <button className="leave-btn" onClick={onLeave}>Leave</button>
       </div>
 
       {inviteUrl && opponentJoined && gameState.turnNumber <= 1 && (
@@ -161,8 +157,14 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
         myPlayerId={actAs}
         cardDefs={cardDefs}
         onAction={handleAction}
-        onEndPhase={handleEndPhase}
         onResolveChoice={handleResolveChoice}
+      />
+
+      <ActionPanel
+        gameState={gameState}
+        myPlayerId={actAs}
+        onEndPhase={handleEndPhase}
+        onLeave={onLeave}
       />
     </div>
   );

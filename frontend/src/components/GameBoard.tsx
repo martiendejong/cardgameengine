@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { GameStateDto, AvailableAction, GameState, CardDefinitionDto } from '../types/game';
 import { PlayerArea } from './PlayerArea';
-import { ActionPanel } from './ActionPanel';
 import { ChoiceDialog } from './ChoiceDialog';
 import { GameLog } from './GameLog';
 import { CardDetailModal } from './CardDetailModal';
@@ -11,8 +10,7 @@ interface GameBoardProps {
   gameState: GameStateDto;
   myPlayerId: string;
   cardDefs: Record<string, CardDefinitionDto>;
-  onAction: (action: AvailableAction, targetIds?: string[]) => void;
-  onEndPhase: () => void;
+  onAction: (action: AvailableAction, targetIds?: string[], chosenAmount?: number) => void;
   onResolveChoice: (choiceId: string, selectedIds: string[]) => void;
 }
 
@@ -21,11 +19,78 @@ export function GameBoard({
   myPlayerId,
   cardDefs,
   onAction,
-  onEndPhase,
   onResolveChoice,
 }: GameBoardProps) {
   const [pendingAction, setPendingAction] = useState<AvailableAction | null>(null);
   const [selectedTargets, setSelectedTargets] = useState<string[]>([]);
+  const [chosenAmount, setChosenAmount] = useState<number>(1);
+  const [cardAnims, setCardAnims] = useState<Record<string, string>>({});
+  const prevStateRef = useRef<typeof gameState | null>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
+
+  function scrollBoard(to: 'top' | 'bottom') {
+    const el = boardRef.current;
+    if (!el) return;
+    el.scrollTo({ top: to === 'top' ? 0 : el.scrollHeight, behavior: 'smooth' });
+  }
+
+  // My turn → show my side; opponent's turn → show theirs
+  useEffect(() => {
+    scrollBoard(gameState.activePlayerId === myPlayerId ? 'bottom' : 'top');
+  }, [gameState.activePlayerId, myPlayerId]);
+
+  // Target selection: follow where the valid targets are
+  useEffect(() => {
+    if (!pendingAction) {
+      if (gameState.activePlayerId === myPlayerId) scrollBoard('bottom');
+      return;
+    }
+    const targetIds = pendingAction.validTargets ?? [];
+    const targetObjs = gameState.objects.filter(o => targetIds.includes(o.id));
+    const anyEnemy = targetObjs.some(o => o.controllerId !== myPlayerId);
+    scrollBoard(anyEnemy ? 'top' : 'bottom');
+  }, [pendingAction]);
+
+  useEffect(() => {
+    const prev = prevStateRef.current;
+    prevStateRef.current = gameState;
+    if (!prev) return;
+
+    const newAnims: Record<string, string> = {};
+    const prevMap = new Map(prev.objects.map(o => [o.id, o]));
+
+    for (const obj of gameState.objects) {
+      if (obj.isDestroyed || obj.zoneId !== 'battlefield') continue;
+      const p = prevMap.get(obj.id);
+
+      if (!p && !obj.hasSummoningSickness) {
+        // Newly appeared on battlefield (play from hand handled by summoningSickness flag absence)
+        newAnims[obj.id] = 'anim-summon';
+      } else if (!p) {
+        newAnims[obj.id] = 'anim-summon';
+      } else {
+        const prevHp = p.properties['currentHp'] ?? 0;
+        const currHp = obj.properties['currentHp'] ?? 0;
+        if (currHp < prevHp) {
+          newAnims[obj.id] = 'anim-hit';
+        } else if (!p.isTapped && obj.isTapped) {
+          newAnims[obj.id] = 'anim-attack';
+        }
+      }
+    }
+
+    if (Object.keys(newAnims).length === 0) return;
+
+    setCardAnims(cur => ({ ...cur, ...newAnims }));
+    const ids = Object.keys(newAnims);
+    setTimeout(() => {
+      setCardAnims(cur => {
+        const next = { ...cur };
+        ids.forEach(id => delete next[id]);
+        return next;
+      });
+    }, 650);
+  }, [gameState]);
   const [inspectedId, setInspectedId] = useState<string | null>(null);
 
   const inspectedCard = inspectedId
@@ -41,14 +106,15 @@ export function GameBoard({
     if (!action.available) return;
 
     if (action.type === 'endPhase') {
-      onEndPhase();
+      onAction(action, []);
       return;
     }
 
     if (action.requiresChoice && action.validTargets && action.validTargets.length > 0) {
-      // Need to select targets
+      // Need to select targets (and optionally an amount)
       setPendingAction(action);
       setSelectedTargets([]);
+      setChosenAmount(action.requiresChoice.amountMin ?? 1);
     } else if (action.requiresChoice && (!action.validTargets || action.validTargets.length === 0)) {
       // No valid targets, send with empty
       onAction(action, []);
@@ -74,9 +140,11 @@ export function GameBoard({
     const min = pendingAction.requiresChoice?.min ?? 1;
     if (selectedTargets.length < min) return;
 
-    onAction(pendingAction, selectedTargets);
+    const amount = pendingAction.requiresChoice?.chooseAmount ? chosenAmount : undefined;
+    onAction(pendingAction, selectedTargets, amount);
     setPendingAction(null);
     setSelectedTargets([]);
+    setChosenAmount(1);
   }
 
   function handleCancelTargetSelect() {
@@ -145,7 +213,7 @@ export function GameBoard({
       )}
 
       {/* Main play area: one scroll container for both player sections */}
-      <div className="board-main">
+      <div className="board-main" ref={boardRef}>
         {/* Opponent area (top) */}
         {opponentPlayer && (
           <PlayerArea
@@ -157,6 +225,7 @@ export function GameBoard({
             isBottom={false}
             selectableTargets={selectableTargets}
             selectedTargets={selectedTargets}
+            cardAnims={cardAnims}
             onAction={handleActionClick}
             onSelectTarget={handleSelectTarget}
             onInspect={setInspectedId}
@@ -189,6 +258,18 @@ export function GameBoard({
             <div className="target-select-banner">
               <span>Select target for: <strong>{pendingAction.label}</strong></span>
               <span className="target-count">({selectedTargets.length}/{pendingAction.requiresChoice?.max ?? 1} selected)</span>
+              {pendingAction.requiresChoice?.chooseAmount && pendingAction.amountMax != null && (
+                <div className="amount-slider">
+                  <label>Amount: <strong>{chosenAmount}</strong></label>
+                  <input
+                    type="range"
+                    min={pendingAction.requiresChoice.amountMin ?? 1}
+                    max={pendingAction.amountMax}
+                    value={chosenAmount}
+                    onChange={e => setChosenAmount(Number(e.target.value))}
+                  />
+                </div>
+              )}
               <button
                 className="confirm-target-btn"
                 disabled={selectedTargets.length < (pendingAction.requiresChoice?.min ?? 1)}
@@ -201,12 +282,6 @@ export function GameBoard({
               </button>
             </div>
           )}
-          <ActionPanel
-            gameState={gameState}
-            myPlayerId={myPlayerId}
-            onEndPhase={onEndPhase}
-            onAction={handleActionClick}
-          />
         </div>
 
         {/* My area (bottom) */}
@@ -220,6 +295,7 @@ export function GameBoard({
             isBottom={true}
             selectableTargets={selectableTargets}
             selectedTargets={selectedTargets}
+            cardAnims={cardAnims}
             onAction={handleActionClick}
             onSelectTarget={handleSelectTarget}
             onInspect={setInspectedId}
@@ -246,6 +322,8 @@ export function GameBoard({
           def={cardDefs[inspectedCard.definitionId]}
           attachments={gameState.objects.filter(o => o.attachedToId === inspectedCard.id && !o.isDestroyed)}
           nameOf={id => cardDefs[id]?.name ?? id}
+          actions={gameState.availableActions.filter(a => a.sourceObjectId === inspectedCard.id)}
+          onAction={a => { handleActionClick(a); setInspectedId(null); }}
           onClose={() => setInspectedId(null)}
           onInspect={setInspectedId}
         />

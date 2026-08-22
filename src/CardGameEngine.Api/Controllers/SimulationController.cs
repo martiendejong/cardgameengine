@@ -9,6 +9,7 @@ public class SimulationRequest
     public string DeckA { get; set; } = "town";
     public string DeckB { get; set; } = "raiders";
     public int Games { get; set; } = 20;
+    public bool IncludeLog { get; set; } // diagnostics: return the last game's full log
 }
 
 /// <summary>
@@ -34,6 +35,7 @@ public class SimulationController : ControllerBase
         var games = Math.Clamp(request.Games, 1, 100);
         int winsA = 0, winsB = 0, draws = 0;
         var turns = new List<int>();
+        List<string>? lastLog = null;
 
         for (int i = 0; i < games; i++)
         {
@@ -63,6 +65,7 @@ public class SimulationController : ControllerBase
             else if (winner.Name == "A") winsA++;
             else winsB++;
             turns.Add(game.TurnNumber);
+            lastLog = request.IncludeLog ? game.Log.ToList() : null;
         }
 
         return Ok(new
@@ -76,7 +79,8 @@ public class SimulationController : ControllerBase
             winRateA = Math.Round((double)winsA / games, 3),
             avgTurns = Math.Round(turns.Average(), 1),
             minTurns = turns.Min(),
-            maxTurns = turns.Max()
+            maxTurns = turns.Max(),
+            log = lastLog
         });
     }
 }

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ObjectStateDto, CardDefinitionDto } from '../types/game';
+import { ObjectStateDto, CardDefinitionDto, AvailableAction } from '../types/game';
 import {
   explainCost, explainCondition, explainChoice, explainEffect, explainTrigger,
   STAT_TIPS, TAG_TIPS, TYPE_TIPS, STATUS_TIPS, playCostTip, slotTip,
@@ -23,6 +23,52 @@ import imgWoodenPalisade from '../assets/cards/wooden-palisade.png';
 import imgPyromancer from '../assets/cards/pyromancer.png';
 import imgScavenger from '../assets/cards/scavenger.png';
 import imgWarchief from '../assets/cards/warchief.png';
+import imgBoneCollector from '../assets/cards/bone-collector.png';
+import imgLeatherArmor from '../assets/cards/leather-armor.png';
+import imgRaiderCamp from '../assets/cards/raider-camp.png';
+import imgRaider from '../assets/cards/raider.png';
+import imgSkeleton from '../assets/cards/skeleton.png';
+import imgZombie from '../assets/cards/zombie.png';
+import imgArcaneNexus from '../assets/cards/arcane-nexus.png';
+import imgGraveyard from '../assets/cards/graveyard.png';
+import imgCutthroat from '../assets/cards/cutthroat.png';
+import imgMercenary from '../assets/cards/mercenary.png';
+import imgTownGuard from '../assets/cards/town-guard.png';
+import imgThievesGuild from '../assets/cards/thieves-guild.png';
+import imgSpymaster from '../assets/cards/spymaster.png';
+import imgFootpad from '../assets/cards/footpad.png';
+import imgAxeThrower from '../assets/cards/axe-thrower.png';
+import imgKnight from '../assets/cards/knight.png';
+import imgConjuror from '../assets/cards/conjuror.png';
+import imgKnifeThrower from '../assets/cards/knife-thrower.png';
+import imgMageApprentice from '../assets/cards/mage-apprentice.png';
+import imgFireElemental from '../assets/cards/fire-elemental.png';
+import imgLeylineConduit from '../assets/cards/leyline-conduit.png';
+import imgArcaneSentinel from '../assets/cards/arcane-sentinel.png';
+import imgShrine from '../assets/cards/shrine.png';
+import imgLarva from '../assets/cards/larva.png';
+import imgEgg from '../assets/cards/egg.png';
+import imgTheHive from '../assets/cards/the-hive.png';
+import imgBroodmother from '../assets/cards/broodmother.png';
+import imgAx01 from '../assets/cards/ax-01.png';
+import imgHiveGuardian from '../assets/cards/hive-guardian.png';
+import imgLandingPad from '../assets/cards/landing-pad.png';
+import imgMuster from '../assets/cards/muster.png';
+import imgTavern from '../assets/cards/tavern.png';
+import imgSiegeRam from '../assets/cards/siege-ram.png';
+import imgPlateArmor from '../assets/cards/plate-armor.png';
+import imgLibrary from '../assets/cards/library.png';
+import imgEmergencyRepairs from '../assets/cards/emergency-repairs.png';
+import imgPillager from '../assets/cards/pillager.png';
+import imgNecromancer from '../assets/cards/necromancer.png';
+import icoAttack from '../assets/icons/icon-attack.png';
+import icoHitPoints from '../assets/icons/icon-hit-points.png';
+import icoArmor from '../assets/icons/icon-armor.png';
+import icoGold from '../assets/icons/icon-gold.png';
+import icoHousing from '../assets/icons/icon-housing.png';
+import icoAP from '../assets/icons/icon-action-points.png';
+import icoMagic from '../assets/icons/icon-magic-points.png';
+import icoTrigger from '../assets/icons/icon-trigger.png';
 
 const CARD_ART: Record<string, string> = {
   'town-chief': imgTownChief,
@@ -42,6 +88,59 @@ const CARD_ART: Record<string, string> = {
   'pyromancer': imgPyromancer,
   'scavenger': imgScavenger,
   'warchief': imgWarchief,
+  'bone-collector': imgBoneCollector,
+  'leather-armor': imgLeatherArmor,
+  'raider-camp': imgRaiderCamp,
+  'raider': imgRaider,
+  'raider-brigand': imgRaider,
+  'skeleton': imgSkeleton,
+  'zombie': imgZombie,
+  'arcane-nexus': imgArcaneNexus,
+  'graveyard': imgGraveyard,
+  'cutthroat': imgCutthroat,
+  'mercenary': imgMercenary,
+  'town-guard': imgTownGuard,
+  'thieves-guild': imgThievesGuild,
+  'spymaster': imgSpymaster,
+  'footpad': imgFootpad,
+  'axe-thrower': imgAxeThrower,
+  'knight': imgKnight,
+  'conjuror': imgConjuror,
+  'conjurer': imgConjuror,
+  'knife-thrower': imgKnifeThrower,
+  'mage-apprentice': imgMageApprentice,
+  'apprentice-mage': imgMageApprentice,
+  'fire-elemental': imgFireElemental,
+  'leyline-conduit': imgLeylineConduit,
+  'arcane-sentinel': imgArcaneSentinel,
+  'shrine': imgShrine,
+  'larva': imgLarva,
+  'egg': imgEgg,
+  'the-hive': imgTheHive,
+  'broodmother': imgBroodmother,
+  'ax-01': imgAx01,
+  'hive-guardian': imgHiveGuardian,
+  'hive-warden': imgHiveGuardian,
+  'landing-pad': imgLandingPad,
+  'muster': imgMuster,
+  'tavern': imgTavern,
+  'siege-ram': imgSiegeRam,
+  'plate-armor': imgPlateArmor,
+  'library': imgLibrary,
+  'emergency-repairs': imgEmergencyRepairs,
+  'pillager': imgPillager,
+  'necromancer': imgNecromancer,
+};
+
+const STAT_ICONS: Record<string, string> = {
+  attack: icoAttack,
+  hp: icoHitPoints,
+  armor: icoArmor,
+  gold: icoGold,
+  housing: icoHousing,
+  ap: icoAP,
+  magic: icoMagic,
+  trigger: icoTrigger,
 };
 
 interface CardDetailModalProps {
@@ -49,6 +148,8 @@ interface CardDetailModalProps {
   def?: CardDefinitionDto;
   attachments: ObjectStateDto[];
   nameOf: (cardId: string) => string;
+  actions?: AvailableAction[];
+  onAction?: (action: AvailableAction) => void;
   onClose: () => void;
   onInspect: (objectId: string) => void;
 }
@@ -71,7 +172,7 @@ function artGradient(definitionId: string): string {
   return `linear-gradient(135deg, hsl(${hue1}, 45%, 24%), hsl(${hue2}, 55%, 14%))`;
 }
 
-export function CardDetailModal({ card, def, attachments, nameOf, onClose, onInspect }: CardDetailModalProps) {
+export function CardDetailModal({ card, def, attachments, nameOf, actions, onAction, onClose, onInspect }: CardDetailModalProps) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
@@ -108,7 +209,7 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
           <div className="detail-header-meta">
             {def?.playCost !== null && def?.playCost !== undefined && (
               <span className="tip detail-cost" data-tip={playCostTip(def.playCost, def.playCostResource ?? 'gold')}>
-                {def.playCost} {def.playCostResource === 'energy' ? '⚡' : '💰'}
+                {def.playCost} <img src={def.playCostResource === 'energy' ? STAT_ICONS.ap : STAT_ICONS.gold} className="detail-stat-icon" alt="" />
               </span>
             )}
             {def?.slot && (
@@ -130,23 +231,55 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
         {hasHp && (
           <div className="detail-hp-container">
             <div className="detail-hp-bar" style={{ width: `${hpPct}%`, backgroundColor: hpColor }} />
-            <span className="detail-hp-text">{hp}/{maxHp} HP</span>
+            <span className="detail-hp-text"><img src={STAT_ICONS.hp} className="stat-icon stat-icon-hp-detail" alt="" />{hp}/{maxHp}</span>
+          </div>
+        )}
+
+        {/* Scrollable content area */}
+        <div className="card-detail-scroll">
+
+        {/* Action buttons — top of scroll so always reachable */}
+        {actions && actions.length > 0 && (
+          <div className="detail-live-actions">
+            {actions.map(action => (
+              <button
+                key={`${action.sourceObjectId}-${action.abilityId || action.type}`}
+                className={`action-btn detail-action-btn ${action.available ? 'available' : ''}`}
+                disabled={!action.available}
+                onClick={() => { if (onAction) { onAction(action); onClose(); } }}
+                title={action.available ? action.label : 'Not available right now'}
+              >
+                {action.type === 'attack' ? '⚔ Attack' : action.label.split(': ')[1] || action.label}
+              </button>
+            ))}
           </div>
         )}
 
         <div className="detail-stats">
           {attack > 0 && (
-            <span className="tip detail-stat atk" data-tip={STAT_TIPS.attack}>⚔ {attack} Attack</span>
+            <span className="tip detail-stat atk" data-tip={STAT_TIPS.attack}><img src={STAT_ICONS.attack} className="detail-stat-icon" alt="" />{attack} Attack</span>
           )}
           {armor > 0 && (
-            <span className="tip detail-stat arm" data-tip={STAT_TIPS.armor}>🛡 {armor} Armor</span>
+            <span className="tip detail-stat arm" data-tip={STAT_TIPS.armor}><img src={STAT_ICONS.armor} className="detail-stat-icon" alt="" />{armor} Armor</span>
           )}
           {ap !== undefined && (
-            <span className="tip detail-stat ap" data-tip={STAT_TIPS.ap}>⚡ {ap} AP</span>
+            <span className="tip detail-stat ap" data-tip={STAT_TIPS.ap}><img src={STAT_ICONS.ap} className="detail-stat-icon" alt="" />{ap} AP</span>
+          )}
+          {card.resources['mana'] !== undefined && (
+            <span className="tip detail-stat mana" data-tip="Mana — spent on caster abilities and spells."><img src={STAT_ICONS.magic} className="detail-stat-icon" alt="" />{card.resources['mana']} Mana</span>
           )}
           {card.resources['loot'] !== undefined && card.resources['loot'] > 0 && (
             <span className="tip detail-stat loot" data-tip={STAT_TIPS.loot}>◈ {card.resources['loot']} Tokens</span>
           )}
+          {Object.entries(card.resources)
+            .filter(([k]) => !['ap', 'mana', 'loot'].includes(k))
+            .filter(([, v]) => (v as number) > 0)
+            .map(([k, v]) => (
+              <span key={k} className="tip detail-stat res-other" data-tip={k}>
+                {k} {v as number}
+              </span>
+            ))
+          }
           {def?.bonusAttackVsBuildings && (
             <span className="tip detail-stat bonus" data-tip="This bonus is added to Attack when the target is a building.">
               +{def.bonusAttackVsBuildings} vs Buildings
@@ -154,12 +287,12 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
           )}
           {def?.housingCost != null && (
             <span className="tip detail-stat housing" data-tip={HOUSING_COST_TIP(def.housingCost)}>
-              🏠 Needs {def.housingCost} housing
+              <img src={STAT_ICONS.housing} className="detail-stat-icon" alt="" />Needs {def.housingCost}
             </span>
           )}
           {def?.housingProvided != null && (
             <span className="tip detail-stat housing" data-tip={HOUSING_PROVIDED_TIP(def.housingProvided)}>
-              🏠 Provides {def.housingProvided} housing
+              <img src={STAT_ICONS.housing} className="detail-stat-icon" alt="" />+{def.housingProvided} Housing
             </span>
           )}
           <span className="tip detail-type" data-tip={TYPE_TIPS[card.objectType] ?? ''}>
@@ -253,11 +386,14 @@ export function CardDetailModal({ card, def, attachments, nameOf, onClose, onIns
               <span className="ability-line effect">No special abilities — it fights with its stats.</span>
             </div>
           )}
+
         </div>
 
         {def?.artworkDescription && (
-          <div className="detail-flavor">“{def.artworkDescription}”</div>
+          <div className="detail-flavor">{def.artworkDescription}</div>
         )}
+
+        </div>
       </div>
     </div>
   );

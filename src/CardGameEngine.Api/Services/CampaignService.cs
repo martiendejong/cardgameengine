@@ -9,9 +9,10 @@ namespace CardGameEngine.Api.Services;
 public class MissionDefinition
 {
     public string Id { get; set; } = "";
+    public string Campaign { get; set; } = "town"; // "town" or "raiders"
     public string Name { get; set; } = "";
     public string Description { get; set; } = "";
-    public string? Requires { get; set; } // previous mission id
+    public string? Requires { get; set; } // previous mission id (may cross campaigns)
     public MissionSide Player { get; set; } = new();
     public MissionSide Enemy { get; set; } = new();
     public string Victory { get; set; } = "default"; // "cleared" = defeat all spawns
@@ -122,7 +123,8 @@ public class CampaignService
 
     // ---- encounter match construction ----
 
-    public (GameInstance? game, string? error) StartMission(string gameId, string missionId, string profileName)
+    public (GameInstance? game, string? error) StartMission(string gameId, string missionId, string profileName,
+        Dictionary<string, int>? customDeck = null, string? customHq = null, string? customHero = null)
     {
         var mission = GetMissions(gameId).FirstOrDefault(m => m.Id == missionId);
         if (mission == null) return (null, $"Unknown mission '{missionId}'");
@@ -131,16 +133,19 @@ public class CampaignService
         if (!IsUnlocked(profile, mission))
             return (null, "Complete the previous mission first");
 
+        // Use the player's custom deck if provided, otherwise fall back to the mission default
+        var playerDeck = (customDeck != null && customDeck.Count > 0)
+            ? customDeck
+            : mission.Player.Deck
+              ?? mission.Player.Cards.GroupBy(c => c).ToDictionary(g => g.Key, g => g.Count());
+
         var players = new List<PlayerSetup>
         {
             new()
             {
                 Id = "p1", Name = profile.Name,
-                // encounter sides bypass precon validation via admin flag; starting
-                // cards become a tiny deck that is drawn as the opening hand
                 IsAdmin = true,
-                Deck = mission.Player.Deck
-                    ?? mission.Player.Cards.GroupBy(c => c).ToDictionary(g => g.Key, g => g.Count()),
+                Deck = playerDeck,
             },
             new()
             {
@@ -152,8 +157,8 @@ public class CampaignService
 
         var (game, error) = _matchService.CreateMatch(gameId, players, setupOverride: g =>
         {
-            g.Players[0].HqCardId = mission.Player.Hq;
-            g.Players[0].HeroCardId = mission.Player.Hero;
+            g.Players[0].HqCardId = !string.IsNullOrEmpty(customHq) ? customHq : mission.Player.Hq;
+            g.Players[0].HeroCardId = !string.IsNullOrEmpty(customHero) ? customHero : mission.Player.Hero;
             g.Players[1].HqCardId = mission.Enemy.Hq;
             g.Players[1].HeroCardId = mission.Enemy.Hero;
             g.Encounter = new EncounterState

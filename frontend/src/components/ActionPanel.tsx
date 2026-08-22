@@ -5,7 +5,7 @@ interface ActionPanelProps {
   gameState: GameStateDto;
   myPlayerId: string;
   onEndPhase: () => void;
-  onAction: (action: AvailableAction) => void;
+  onLeave: () => void;
 }
 
 const PHASE_LABELS: Record<string, string> = {
@@ -15,14 +15,14 @@ const PHASE_LABELS: Record<string, string> = {
   end: 'End Phase',
 };
 
-export function ActionPanel({ gameState, myPlayerId, onEndPhase, onAction }: ActionPanelProps) {
+export function ActionPanel({ gameState, myPlayerId, onEndPhase, onLeave }: ActionPanelProps) {
   const isMyTurn = gameState.activePlayerId === myPlayerId;
   const phase = PHASE_LABELS[gameState.currentPhaseId] || gameState.currentPhaseId;
   const activePlayer = gameState.players.find(p => p.id === gameState.activePlayerId);
 
-  const globalActions = gameState.availableActions.filter(
-    a => a.type === 'endPhase' && a.available
-  );
+  function handleLeave() {
+    if (window.confirm('This will end the game. Are you sure?')) onLeave();
+  }
 
   return (
     <div className="action-panel">
@@ -35,14 +35,9 @@ export function ActionPanel({ gameState, myPlayerId, onEndPhase, onAction }: Act
       </div>
 
       {isMyTurn && gameState.state !== GameState.GameEnded && (
-        <div className="phase-actions">
-          <button
-            className="end-phase-btn"
-            onClick={onEndPhase}
-          >
-            End {phase}
-          </button>
-        </div>
+        <button className="end-phase-btn" onClick={onEndPhase}>
+          End {phase}
+        </button>
       )}
 
       {!isMyTurn && gameState.state !== GameState.GameEnded && (
@@ -52,6 +47,8 @@ export function ActionPanel({ gameState, myPlayerId, onEndPhase, onAction }: Act
       {gameState.state === GameState.GameEnded && (
         <div className="game-over-label">Game Over</div>
       )}
+
+      <button className="leave-btn" onClick={handleLeave}>Leave</button>
     </div>
   );
 }

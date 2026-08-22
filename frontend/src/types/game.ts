@@ -55,6 +55,9 @@ export interface ChoiceDefinition {
   tag?: string;
   min: number;
   max: number;
+  chooseAmount?: boolean;
+  amountMin?: number;
+  amountMaxResource?: string;
 }
 
 export interface AvailableAction {
@@ -66,6 +69,7 @@ export interface AvailableAction {
   unavailableReason?: string;
   requiresChoice?: ChoiceDefinition;
   validTargets?: string[];
+  amountMax?: number;
 }
 
 export interface PendingChoice {
@@ -104,6 +108,7 @@ export interface EncounterDto {
 
 export interface CampaignMission {
   id: string;
+  campaign: string;
   name: string;
   description: string;
   rewards: string[];
@@ -128,6 +133,7 @@ export interface ActionRequest {
   sourceObjectId?: string;
   abilityId?: string;
   targetIds: string[];
+  chosenAmount?: number;
 }
 
 export interface GameDefinitionSummary {
@@ -148,6 +154,7 @@ export interface CostDto {
   resourceId?: string | null;
   amount?: number | null;
   scope?: string | null;
+  tag?: string | null;
 }
 
 export interface ConditionDto {

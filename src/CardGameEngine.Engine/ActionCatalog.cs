@@ -133,6 +133,8 @@ public class ActionCatalog
                     {
                         action.RequiresChoice = ability.Choice;
                         action.ValidTargets = choiceTargets;
+                        if (ability.Choice.ChooseAmount && ability.Choice.AmountMaxResource != null)
+                            action.AmountMax = obj.Resources.GetValueOrDefault(ability.Choice.AmountMaxResource);
                     }
                 }
 
@@ -142,8 +144,9 @@ public class ActionCatalog
             bool isCharacter = GameQueries.IsObjectTypeOrSubtype(game, obj.ObjectType, "character");
             bool isAttached = obj.AttachedToId != null;
 
-            // Attack (combat phase, characters only)
-            if (game.CurrentPhaseId == "combat" && isCharacter && !isAttached && !obj.IsTapped)
+            // Attack (combat phase, characters only; 0-attack units like Big Friend can't attack)
+            if (game.CurrentPhaseId == "combat" && isCharacter && !isAttached && !obj.IsTapped
+                && obj.Properties.GetValueOrDefault("attack") > 0)
             {
                 string? attackReason = null;
                 if (obj.HasSummoningSickness) attackReason = "Cannot attack the turn it was summoned";

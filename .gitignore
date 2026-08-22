@@ -45,3 +45,11 @@ design-conversation-readable.md
 
 # Campaign player save data (runtime state, not content)
 profiles/
+
+# Build/publish output
+publish/
+src/CardGameEngine.Api/publish/
+frontend/tsconfig.tsbuildinfo
+
+# Raw source art at repo root (processed copies live in frontend/src/assets)
+/*.png

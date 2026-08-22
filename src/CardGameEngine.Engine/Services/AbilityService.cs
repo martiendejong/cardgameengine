@@ -113,7 +113,7 @@ public class AbilityService
 
         if (ability.Choice != null && action.TargetIds.Count > 0)
         {
-            _s.Effects.ApplyAbility(game, ability, obj, player, action.TargetIds);
+            _s.Effects.ApplyAbility(game, ability, obj, player, action.TargetIds, action.ChosenAmount);
         }
         else if (ability.Choice != null)
         {
@@ -125,7 +125,8 @@ public class AbilityService
                 ControllerId = playerId,
                 SourceObjectId = obj.Id,
                 AbilityId = ability.Id,
-                TargetIds = new List<string>()
+                TargetIds = new List<string>(),
+                ChosenAmount = action.ChosenAmount
             };
             game.Stack.Push(stackItem);
 
@@ -175,7 +176,7 @@ public class AbilityService
                 var cardDef = GameQueries.GetCardDefinition(game, source);
                 var ability = cardDef?.Abilities.FirstOrDefault(a => a.Id == stackItem.AbilityId);
                 if (ability != null)
-                    _s.Effects.ApplyAbility(game, ability, source, player, selectedIds);
+                    _s.Effects.ApplyAbility(game, ability, source, player, selectedIds, stackItem.ChosenAmount);
             }
         }
 

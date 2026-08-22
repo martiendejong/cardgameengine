@@ -2,6 +2,23 @@ import React from 'react';
 import { PlayerStateDto, ObjectStateDto, AvailableAction, CardDefinitionDto } from '../types/game';
 import { CardView } from './CardView';
 import { LINE_TIP_FRONT, LINE_TIP_BACK, HOUSING_TIP } from '../utils/cardText';
+import bgHuman from '../assets/bg-human.png';
+import bgRaiders from '../assets/bg-raiders.png';
+import bgArcane from '../assets/bg-arcane.png';
+import bgBrood from '../assets/bg-brood.png';
+import bgShadows from '../assets/bg-shadows.png';
+import bgAx01 from '../assets/bg-ax01.png';
+import cardBack from '../assets/card-back.png';
+
+const HQ_BACKGROUNDS: Record<string, string> = {
+  'town-hall': bgHuman,
+  'settlement': bgHuman,
+  'raider-camp': bgRaiders,
+  'arcane-nexus': bgArcane,
+  'the-hive': bgBrood,
+  'thieves-guild': bgShadows,
+  'landing-pad': bgAx01,
+};
 
 interface PlayerAreaProps {
   player: PlayerStateDto;
@@ -12,6 +29,7 @@ interface PlayerAreaProps {
   isBottom: boolean;
   selectableTargets: string[];
   selectedTargets: string[];
+  cardAnims: Record<string, string>;
   onAction: (action: AvailableAction) => void;
   onSelectTarget: (id: string) => void;
   onInspect: (objectId: string) => void;
@@ -26,10 +44,15 @@ export function PlayerArea({
   isBottom,
   selectableTargets,
   selectedTargets,
+  cardAnims,
   onAction,
   onSelectTarget,
   onInspect,
 }: PlayerAreaProps) {
+  // HQ objectType varies per faction ('headquarters', 'nexus', 'hive-hq', ...) so match on known HQ ids
+  const hq = objects.find(o => o.ownerId === player.id && HQ_BACKGROUNDS[o.definitionId] !== undefined);
+  const bg = hq ? HQ_BACKGROUNDS[hq.definitionId] : undefined;
+
   const battlefieldCards = objects.filter(
     o => o.controllerId === player.id && o.zoneId === 'battlefield' && !o.isDestroyed && !o.attachedToId
   );
@@ -45,8 +68,46 @@ export function PlayerArea({
     o => o.ownerId === player.id && o.zoneId === 'deck'
   ).length;
 
+  const handArea = (
+    <div className="hand-area">
+      <span className="hand-label">
+        Hand ({handCards.length}) · Deck ({deckCount})
+      </span>
+      {isBottom ? (
+        <div className="hand-cards">
+          {handCards.length === 0 && <span className="empty-hand">No cards in hand</span>}
+          {handCards.map(card => (
+            <CardView
+              key={card.id}
+              card={card}
+              actions={actions}
+              isSelectableTarget={false}
+              isSelectedTarget={false}
+              playCost={cardDefs[card.definitionId]?.playCost}
+              playCostResource={cardDefs[card.definitionId]?.playCostResource}
+              animClass={cardAnims[card.id]}
+              onAction={onAction}
+              onSelectTarget={onSelectTarget}
+              onInspect={onInspect}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="hand-cards">
+          {handCards.map(card => (
+            <img key={card.id} className="card-back" src={cardBack} title="Opponent's card" alt="" />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
   return (
-    <div className={`player-area ${isBottom ? 'bottom-player' : 'top-player'} ${isActivePlayer ? 'active-player' : ''} ${player.isLoser ? 'loser' : ''} ${player.isWinner ? 'winner' : ''}`}>
+    <div
+      className={`player-area ${isBottom ? 'bottom-player' : 'top-player'} ${isActivePlayer ? 'active-player' : ''} ${player.isLoser ? 'loser' : ''} ${player.isWinner ? 'winner' : ''}`}
+      style={bg ? { backgroundImage: `url(${bg})`, backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}
+    >
+      {!isBottom && handArea}
       <div className="player-header">
         <div className="player-name-section">
           <span className="player-name">{player.name}</span>
@@ -103,6 +164,7 @@ export function PlayerArea({
                     isSelectedTarget={selectedTargets.includes(card.id)}
                     playCost={cardDefs[card.definitionId]?.playCost}
                     playCostResource={cardDefs[card.definitionId]?.playCostResource}
+                    animClass={cardAnims[card.id]}
                     onAction={onAction}
                     onSelectTarget={onSelectTarget}
                     onInspect={onInspect}
@@ -114,36 +176,7 @@ export function PlayerArea({
         })}
       </div>
 
-      <div className="hand-area">
-        <span className="hand-label">
-          Hand ({handCards.length}) · Deck ({deckCount})
-        </span>
-        {isBottom ? (
-          <div className="hand-cards">
-            {handCards.length === 0 && <span className="empty-hand">No cards in hand</span>}
-            {handCards.map(card => (
-              <CardView
-                key={card.id}
-                card={card}
-                actions={actions}
-                isSelectableTarget={false}
-                isSelectedTarget={false}
-                playCost={cardDefs[card.definitionId]?.playCost}
-                playCostResource={cardDefs[card.definitionId]?.playCostResource}
-                onAction={onAction}
-                onSelectTarget={onSelectTarget}
-                onInspect={onInspect}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="hand-cards">
-            {handCards.map(card => (
-              <div key={card.id} className="card-back" title="Opponent's card" />
-            ))}
-          </div>
-        )}
-      </div>
+      {isBottom && handArea}
 
       {discardedCards.length > 0 && (
         <div className="discard-area">

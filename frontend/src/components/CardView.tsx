@@ -19,6 +19,52 @@ import imgWoodenPalisade from '../assets/cards/wooden-palisade.png';
 import imgPyromancer from '../assets/cards/pyromancer.png';
 import imgScavenger from '../assets/cards/scavenger.png';
 import imgWarchief from '../assets/cards/warchief.png';
+import imgBoneCollector from '../assets/cards/bone-collector.png';
+import imgLeatherArmor from '../assets/cards/leather-armor.png';
+import imgRaiderCamp from '../assets/cards/raider-camp.png';
+import imgRaider from '../assets/cards/raider.png';
+import imgSkeleton from '../assets/cards/skeleton.png';
+import imgZombie from '../assets/cards/zombie.png';
+import imgArcaneNexus from '../assets/cards/arcane-nexus.png';
+import imgGraveyard from '../assets/cards/graveyard.png';
+import imgCutthroat from '../assets/cards/cutthroat.png';
+import imgMercenary from '../assets/cards/mercenary.png';
+import imgTownGuard from '../assets/cards/town-guard.png';
+import imgThievesGuild from '../assets/cards/thieves-guild.png';
+import imgSpymaster from '../assets/cards/spymaster.png';
+import imgFootpad from '../assets/cards/footpad.png';
+import imgAxeThrower from '../assets/cards/axe-thrower.png';
+import imgKnight from '../assets/cards/knight.png';
+import imgConjuror from '../assets/cards/conjuror.png';
+import imgKnifeThrower from '../assets/cards/knife-thrower.png';
+import imgMageApprentice from '../assets/cards/mage-apprentice.png';
+import imgFireElemental from '../assets/cards/fire-elemental.png';
+import imgLeylineConduit from '../assets/cards/leyline-conduit.png';
+import imgArcaneSentinel from '../assets/cards/arcane-sentinel.png';
+import imgShrine from '../assets/cards/shrine.png';
+import imgLarva from '../assets/cards/larva.png';
+import imgEgg from '../assets/cards/egg.png';
+import imgTheHive from '../assets/cards/the-hive.png';
+import imgBroodmother from '../assets/cards/broodmother.png';
+import imgAx01 from '../assets/cards/ax-01.png';
+import imgHiveGuardian from '../assets/cards/hive-guardian.png';
+import imgLandingPad from '../assets/cards/landing-pad.png';
+import imgMuster from '../assets/cards/muster.png';
+import imgTavern from '../assets/cards/tavern.png';
+import imgSiegeRam from '../assets/cards/siege-ram.png';
+import imgPlateArmor from '../assets/cards/plate-armor.png';
+import imgLibrary from '../assets/cards/library.png';
+import imgEmergencyRepairs from '../assets/cards/emergency-repairs.png';
+import imgPillager from '../assets/cards/pillager.png';
+import imgNecromancer from '../assets/cards/necromancer.png';
+import icoAttack from '../assets/icons/icon-attack.png';
+import icoHitPoints from '../assets/icons/icon-hit-points.png';
+import icoArmor from '../assets/icons/icon-armor.png';
+import icoGold from '../assets/icons/icon-gold.png';
+import icoHousing from '../assets/icons/icon-housing.png';
+import icoAP from '../assets/icons/icon-action-points.png';
+import icoMagic from '../assets/icons/icon-magic-points.png';
+import icoTrigger from '../assets/icons/icon-trigger.png';
 
 const CARD_ART: Record<string, string> = {
   'town-chief': imgTownChief,
@@ -38,6 +84,59 @@ const CARD_ART: Record<string, string> = {
   'pyromancer': imgPyromancer,
   'scavenger': imgScavenger,
   'warchief': imgWarchief,
+  'bone-collector': imgBoneCollector,
+  'leather-armor': imgLeatherArmor,
+  'raider-camp': imgRaiderCamp,
+  'raider': imgRaider,
+  'raider-brigand': imgRaider,
+  'skeleton': imgSkeleton,
+  'zombie': imgZombie,
+  'arcane-nexus': imgArcaneNexus,
+  'graveyard': imgGraveyard,
+  'cutthroat': imgCutthroat,
+  'mercenary': imgMercenary,
+  'town-guard': imgTownGuard,
+  'thieves-guild': imgThievesGuild,
+  'spymaster': imgSpymaster,
+  'footpad': imgFootpad,
+  'axe-thrower': imgAxeThrower,
+  'knight': imgKnight,
+  'conjuror': imgConjuror,
+  'conjurer': imgConjuror,
+  'knife-thrower': imgKnifeThrower,
+  'mage-apprentice': imgMageApprentice,
+  'apprentice-mage': imgMageApprentice,
+  'fire-elemental': imgFireElemental,
+  'leyline-conduit': imgLeylineConduit,
+  'arcane-sentinel': imgArcaneSentinel,
+  'shrine': imgShrine,
+  'larva': imgLarva,
+  'egg': imgEgg,
+  'the-hive': imgTheHive,
+  'broodmother': imgBroodmother,
+  'ax-01': imgAx01,
+  'hive-guardian': imgHiveGuardian,
+  'hive-warden': imgHiveGuardian,
+  'landing-pad': imgLandingPad,
+  'muster': imgMuster,
+  'tavern': imgTavern,
+  'siege-ram': imgSiegeRam,
+  'plate-armor': imgPlateArmor,
+  'library': imgLibrary,
+  'emergency-repairs': imgEmergencyRepairs,
+  'pillager': imgPillager,
+  'necromancer': imgNecromancer,
+};
+
+const STAT_ICONS: Record<string, string> = {
+  attack: icoAttack,
+  hp: icoHitPoints,
+  armor: icoArmor,
+  gold: icoGold,
+  housing: icoHousing,
+  ap: icoAP,
+  magic: icoMagic,
+  trigger: icoTrigger,
 };
 
 interface CardViewProps {
@@ -48,6 +147,7 @@ interface CardViewProps {
   isSelectedTarget: boolean;
   playCost?: number | null;
   playCostResource?: string;
+  animClass?: string;
   onAction: (action: AvailableAction, targetIds?: string[]) => void;
   onSelectTarget: (id: string) => void;
   onInspect?: (objectId: string) => void;
@@ -61,6 +161,7 @@ export function CardView({
   isSelectedTarget,
   playCost,
   playCostResource,
+  animClass,
   onAction,
   onSelectTarget,
   onInspect,
@@ -114,6 +215,7 @@ export function CardView({
         isSelectableTarget ? 'selectable-target' : '',
         isSelectedTarget ? 'selected-target' : '',
         `card-type-${card.objectType}`,
+        animClass ?? '',
       ].filter(Boolean).join(' ')}
       style={{ backgroundImage: `url(${cardBg})`, backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat' }}
       onClick={() => {
@@ -133,10 +235,17 @@ export function CardView({
           style={{
             backgroundImage: `url(${CARD_ART[card.definitionId]})`,
           }}
-        />
+        >
+          {card.hasSummoningSickness && card.zoneId === 'battlefield' && (
+            <div className="status-indicator new-indicator tip" data-tip={STATUS_TIPS.new}>NEW</div>
+          )}
+        </div>
       ) : (
         <div className="card-art" style={{ background: artGradient() }}>
           <span className="card-art-icon">{card.icon || getTypeIcon()}</span>
+          {card.hasSummoningSickness && card.zoneId === 'battlefield' && (
+            <div className="status-indicator new-indicator tip" data-tip={STATUS_TIPS.new}>NEW</div>
+          )}
         </div>
       )}
 
@@ -149,9 +258,6 @@ export function CardView({
           🔨 {card.constructionProgress}/{card.constructionRequirement ?? '?'}
         </div>
       )}
-      {card.hasSummoningSickness && card.zoneId === 'battlefield' && (
-        <div className="status-indicator new-indicator tip" data-tip={STATUS_TIPS.new}>NEW</div>
-      )}
       {card.hasMovedThisTurn && !card.hasSummoningSickness && (
         <div className="status-indicator moved-indicator tip" data-tip={STATUS_TIPS.moved}>MOVED</div>
       )}
@@ -160,13 +266,13 @@ export function CardView({
         {(isCharacter || isBuilding) && maxHp > 0 && (
           <div className="hp-bar-container">
             <div className="hp-bar" style={{ width: `${hpPct}%`, backgroundColor: hpColor }} />
-            <span className="hp-text">{hp}/{maxHp} HP</span>
+            <span className="hp-text"><img src={STAT_ICONS.hp} className="stat-icon stat-icon-hp" alt="" />{hp}/{maxHp}</span>
           </div>
         )}
 
         <div className="stat-row">
-          {attack > 0 && <span className="stat atk tip" data-tip={STAT_TIPS.attack}>⚔ {attack}</span>}
-          {armor > 0 && <span className="stat arm tip" data-tip={STAT_TIPS.armor}>🛡 {armor}</span>}
+          {attack > 0 && <span className="stat atk tip" data-tip={STAT_TIPS.attack}><img src={STAT_ICONS.attack} className="stat-icon" alt="" />{attack}</span>}
+          {armor > 0 && <span className="stat arm tip" data-tip={STAT_TIPS.armor}><img src={STAT_ICONS.armor} className="stat-icon" alt="" />{armor}</span>}
           {card.lifetime != null && (
             <span className="stat lifetime tip" data-tip="Duration — expires at 0.">
               ⏳ {card.lifetime}
@@ -174,9 +280,28 @@ export function CardView({
           )}
           {card.housingProvided != null && (
             <span className="stat housing tip" data-tip={HOUSING_PROVIDED_TIP(card.housingProvided)}>
-              🏠 +{card.housingProvided}
+              <img src={STAT_ICONS.housing} className="stat-icon" alt="" />+{card.housingProvided}
             </span>
           )}
+          {card.resources['ap'] !== undefined && (
+            <span className="stat res-ap tip" data-tip={STAT_TIPS.ap}>
+              <img src={STAT_ICONS.ap} className="stat-icon" alt="" />{card.resources['ap']}
+            </span>
+          )}
+          {card.resources['mana'] !== undefined && (
+            <span className="stat res-mana tip" data-tip="Mana — spent on caster abilities and spells.">
+              <img src={STAT_ICONS.magic} className="stat-icon" alt="" />{card.resources['mana']}
+            </span>
+          )}
+          {Object.entries(card.resources)
+            .filter(([k]) => !['ap', 'mana', 'loot'].includes(k))
+            .filter(([, v]) => (v as number) > 0)
+            .map(([k, v]) => (
+              <span key={k} className="stat res-other tip" data-tip={k}>
+                {k.substring(0, 3)} {v as number}
+              </span>
+            ))
+          }
         </div>
       </div>
 

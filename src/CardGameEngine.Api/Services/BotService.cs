@@ -68,16 +68,49 @@ public class BotService
             };
         }
 
-        // 2. Useful abilities (skip heals with nothing to heal)
-        foreach (var ability in actions.Where(a => a.Type == "activateAbility"))
+        // 2. Damage abilities first (crewed towers, Rampage): strike before spending
+        //    the same untapped units on economy taps like Work
+        var abilityActions = actions.Where(a => a.Type == "activateAbility").ToList();
+        foreach (var ability in abilityActions.Where(a => AbilityDealsDamage(game, a)))
         {
             if (!AbilityIsWorthUsing(game, bot, ability, out var targets)) continue;
+            int? chosenAmount = ability.AmountMax.HasValue ? ability.AmountMax.Value : null;
             return new ActionRequest
             {
                 Type = "activateAbility",
                 SourceObjectId = ability.SourceObjectId,
                 AbilityId = ability.AbilityId,
-                TargetIds = targets
+                TargetIds = targets,
+                ChosenAmount = chosenAmount
+            };
+        }
+
+        // 2b. Put idle builders to work on construction sites before economy taps
+        var build = actions.FirstOrDefault(a => a.Type == "build" && a.ValidTargets is { Count: > 0 });
+        if (build != null)
+        {
+            return new ActionRequest
+            {
+                Type = "build",
+                SourceObjectId = build.SourceObjectId,
+                TargetIds = new List<string> { build.ValidTargets![0] }
+            };
+        }
+
+        // 2c. Remaining abilities (economy, summons, heals) — main phase only, so
+        //     workers aren't tapped out in the start phase before build/crew actions exist
+        foreach (var ability in abilityActions.Where(a =>
+            game.CurrentPhaseId == "main" && !AbilityDealsDamage(game, a)))
+        {
+            if (!AbilityIsWorthUsing(game, bot, ability, out var targets)) continue;
+            int? chosenAmount = ability.AmountMax.HasValue ? ability.AmountMax.Value : null;
+            return new ActionRequest
+            {
+                Type = "activateAbility",
+                SourceObjectId = ability.SourceObjectId,
+                AbilityId = ability.AbilityId,
+                TargetIds = targets,
+                ChosenAmount = chosenAmount
             };
         }
 
@@ -93,18 +126,6 @@ public class BotService
                 Type = "playCard",
                 SourceObjectId = play.SourceObjectId,
                 TargetIds = targets
-            };
-        }
-
-        // 3b. Put idle builders to work on construction sites
-        var build = actions.FirstOrDefault(a => a.Type == "build" && a.ValidTargets is { Count: > 0 });
-        if (build != null)
-        {
-            return new ActionRequest
-            {
-                Type = "build",
-                SourceObjectId = build.SourceObjectId,
-                TargetIds = new List<string> { build.ValidTargets![0] }
             };
         }
 
@@ -153,6 +174,14 @@ public class BotService
         return targets.OrderByDescending(DamageTo).First().Id;
     }
 
+    private bool AbilityDealsDamage(GameInstance game, AvailableAction action)
+    {
+        var source = game.Objects.FirstOrDefault(o => o.Id == action.SourceObjectId);
+        var cardDef = source != null ? game.Definition.Cards.FirstOrDefault(c => c.Id == source.DefinitionId) : null;
+        var ability = cardDef?.Abilities.FirstOrDefault(a => a.Id == action.AbilityId);
+        return ability != null && ability.Effects.Any(e => e.Type is "damage" or "direct_damage");
+    }
+
     private bool AbilityIsWorthUsing(GameInstance game, PlayerInstance bot, AvailableAction action, out List<string> targets)
     {
         targets = new List<string>();
@@ -160,6 +189,11 @@ public class BotService
         var cardDef = source != null ? game.Definition.Cards.FirstOrDefault(c => c.Id == source.DefinitionId) : null;
         var ability = cardDef?.Abilities.FirstOrDefault(a => a.Id == action.AbilityId);
         if (source == null || ability == null) return false;
+
+        // Card draw is worthless with an empty deck — don't waste taps/crew on it
+        if (ability.Effects.All(e => e.Type == "draw_cards") &&
+            game.DeckOrder.GetValueOrDefault(bot.Id) is not { Count: > 0 })
+            return false;
 
         bool heals = ability.Effects.Any(e => e.Type == "heal");
         if (heals)

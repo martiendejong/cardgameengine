@@ -57,6 +57,7 @@ public class EffectContext
     public required PlayerInstance Player { get; init; }
     public ObjectInstance? Source { get; init; }
     public ObjectInstance? Target { get; init; }
+    public int? ChosenAmount { get; init; }
 
     public ObjectInstance? ResolveScope(string? fallback = null)
     {
@@ -87,7 +88,7 @@ public class EffectProcessor
 
     /// <summary>Apply an ability's effect list: once per target, or once with no target.</summary>
     public void ApplyAbility(GameInstance game, AbilityDefinition ability, ObjectInstance? source,
-        PlayerInstance player, List<string> targetIds)
+        PlayerInstance player, List<string> targetIds, int? chosenAmount = null)
     {
         var targets = targetIds
             .Select(id => game.Objects.FirstOrDefault(o => o.Id == id))
@@ -100,11 +101,11 @@ public class EffectProcessor
             if (targets.Count > 0)
             {
                 foreach (var target in targets)
-                    Process(new EffectContext { Game = game, Effect = effect, Source = source, Target = target, Player = player });
+                    Process(new EffectContext { Game = game, Effect = effect, Source = source, Target = target, Player = player, ChosenAmount = chosenAmount });
             }
             else
             {
-                Process(new EffectContext { Game = game, Effect = effect, Source = source, Target = null, Player = player });
+                Process(new EffectContext { Game = game, Effect = effect, Source = source, Target = null, Player = player, ChosenAmount = chosenAmount });
             }
         }
     }

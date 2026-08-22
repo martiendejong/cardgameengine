@@ -8,6 +8,9 @@ public class StartMissionRequest
     public string GameId { get; set; } = "town-tcg";
     public string MissionId { get; set; } = "";
     public string Profile { get; set; } = "";
+    public Dictionary<string, int>? CustomDeck { get; set; }
+    public string? CustomHq { get; set; }
+    public string? CustomHero { get; set; }
 }
 
 public class CompleteMissionRequest
@@ -43,6 +46,7 @@ public class CampaignController : ControllerBase
             missions = missions.Select(m => new
             {
                 m.Id,
+                m.Campaign,
                 m.Name,
                 m.Description,
                 m.Rewards,
@@ -55,7 +59,7 @@ public class CampaignController : ControllerBase
     [HttpPost("start")]
     public IActionResult Start([FromBody] StartMissionRequest request)
     {
-        var (game, error) = _campaign.StartMission(request.GameId, request.MissionId, request.Profile);
+        var (game, error) = _campaign.StartMission(request.GameId, request.MissionId, request.Profile, request.CustomDeck, request.CustomHq, request.CustomHero);
         if (game == null)
             return BadRequest(error);
 
