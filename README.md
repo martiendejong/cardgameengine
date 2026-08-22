@@ -36,6 +36,22 @@ npm run dev
 
 Frontend runs on `http://localhost:5173` and proxies `/api` and `/gamehub` to the backend.
 
+## Versioning & deploy
+
+The `VERSION` file at the repo root is the single source of truth for the deploy version.
+`Directory.Build.props` reads it into every project's `<Version>`, so the published assemblies
+carry it too, and `GET /api/version` reports back exactly what is running on the live instance —
+useful for confirming a deploy actually landed, not just that the source checkout has the change.
+
+To build, bump the version, and deploy to the live instance (`C:\deployed\townwars`, NSSM service
+`TownWars`):
+
+```powershell
+./deploy.ps1                  # bump patch version, build, publish, deploy
+./deploy.ps1 -Bump minor      # bump minor version instead
+./deploy.ps1 -SkipVersionBump # redeploy the current version unchanged
+```
+
 ## How it works
 
 - Game rules (card definitions, phases, effects, costs) are fully defined in `definitions/town-tcg/game.json`
