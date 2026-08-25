@@ -35,13 +35,22 @@ public class GameMutator
     public void GainEntityResource(GameInstance game, ObjectInstance obj, string resourceId, int amount)
     {
         if (amount == 0) return;
-        var next = obj.Resources.GetValueOrDefault(resourceId) + amount;
+        var prev = obj.Resources.GetValueOrDefault(resourceId);
+        var next = prev + amount;
         var cap = GameQueries.ResourceCapacity(game, obj, resourceId);
         obj.Resources[resourceId] = Math.Max(0, Math.Min(next, cap));
         if (amount > 0)
             game.Log.Add($"{obj.Name} gains {amount} {resourceId}. (Total: {obj.Resources[resourceId]}{(cap != int.MaxValue ? $"/{cap}" : "")})");
         else
             game.Log.Add($"{obj.Name} spends {-amount} {resourceId}. (Remaining: {obj.Resources[resourceId]})");
+
+        // Resource nodes (e.g. gold mines) are destroyed when their last reserve is consumed.
+        if (amount < 0 && prev > 0 && obj.Resources[resourceId] == 0
+            && obj.Tags.Contains("resource-node") && !obj.IsDestroyed)
+        {
+            game.Log.Add($"{obj.Name} has been fully mined out and collapses!");
+            DestroyObject(game, obj);
+        }
     }
 
     /// <summary>Direct damage ignores Armor (poison, overcharge burn, acid).</summary>
