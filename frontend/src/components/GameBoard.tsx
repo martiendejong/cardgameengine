@@ -94,7 +94,7 @@ export function GameBoard({
         ids.forEach(id => delete next[id]);
         return next;
       });
-    }, 650);
+    }, 1500);
   }, [gameState]);
   const [inspectedId, setInspectedId] = useState<string | null>(null);
 
