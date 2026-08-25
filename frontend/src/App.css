@@ -606,6 +606,7 @@
   background: rgba(255,152,0,0.1);
   border-bottom: 1px solid #ff9800;
   font-size: 13px;
+  flex-shrink: 0;
 }
 
 .target-count { color: #ff9800; font-weight: 600; }
