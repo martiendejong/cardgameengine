@@ -3,6 +3,7 @@ import { GameStateDto, AvailableAction, GameState, GameDefinitionFull, CardDefin
 import { useGameHub } from '../hooks/useGameHub';
 import { GameBoard } from '../components/GameBoard';
 import { ActionPanel } from '../components/ActionPanel';
+import { TargetSelectBanner } from '../components/TargetSelectBanner';
 import { BASE } from '../config';
 
 interface GamePageProps {
@@ -17,6 +18,9 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   const [myPlayerId, setMyPlayerId] = useState(seat);
   const [copied, setCopied] = useState(false);
   const [cardDefs, setCardDefs] = useState<Record<string, CardDefinitionDto>>({});
+  const [pendingAction, setPendingAction] = useState<AvailableAction | null>(null);
+  const [selectedTargets, setSelectedTargets] = useState<string[]>([]);
+  const [chosenAmount, setChosenAmount] = useState<number>(1);
 
   const isHotseat = seat === '';
 
@@ -70,6 +74,56 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
     } catch (err: any) {
       handleError(err.message ?? 'Action failed');
     }
+  }
+
+  function handleActionClick(action: AvailableAction) {
+    if (!action.available) return;
+
+    if (action.type === 'endPhase') {
+      handleAction(action, []);
+      return;
+    }
+
+    if (action.requiresChoice && action.validTargets && action.validTargets.length > 0) {
+      // Need to select targets (and optionally an amount)
+      setPendingAction(action);
+      setSelectedTargets([]);
+      setChosenAmount(action.requiresChoice.amountMin ?? 1);
+    } else if (action.requiresChoice && (!action.validTargets || action.validTargets.length === 0)) {
+      // No valid targets, send with empty
+      handleAction(action, []);
+    } else {
+      // No choice needed
+      handleAction(action, []);
+    }
+  }
+
+  function handleSelectTarget(id: string) {
+    if (!pendingAction) return;
+
+    const max = pendingAction.requiresChoice?.max ?? 1;
+    setSelectedTargets(prev => {
+      if (prev.includes(id)) return prev.filter(x => x !== id);
+      if (prev.length >= max) return [...prev.slice(1), id];
+      return [...prev, id];
+    });
+  }
+
+  function handleConfirmTargets() {
+    if (!pendingAction) return;
+    const min = pendingAction.requiresChoice?.min ?? 1;
+    if (selectedTargets.length < min) return;
+
+    const amount = pendingAction.requiresChoice?.chooseAmount ? chosenAmount : undefined;
+    handleAction(pendingAction, selectedTargets, amount);
+    setPendingAction(null);
+    setSelectedTargets([]);
+    setChosenAmount(1);
+  }
+
+  function handleCancelTargetSelect() {
+    setPendingAction(null);
+    setSelectedTargets([]);
   }
 
   async function handleEndPhase() {
@@ -156,9 +210,24 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
         gameState={gameState}
         myPlayerId={actAs}
         cardDefs={cardDefs}
+        pendingAction={pendingAction}
+        selectedTargets={selectedTargets}
+        onActionClick={handleActionClick}
+        onSelectTarget={handleSelectTarget}
         onAction={handleAction}
         onResolveChoice={handleResolveChoice}
       />
+
+      {pendingAction && (
+        <TargetSelectBanner
+          pendingAction={pendingAction}
+          selectedTargets={selectedTargets}
+          chosenAmount={chosenAmount}
+          onAmountChange={setChosenAmount}
+          onConfirm={handleConfirmTargets}
+          onCancel={handleCancelTargetSelect}
+        />
+      )}
 
       <ActionPanel
         gameState={gameState}
