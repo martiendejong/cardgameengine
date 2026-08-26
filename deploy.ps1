@@ -97,6 +97,13 @@ $publishWwwroot = Join-Path $publishDir "wwwroot"
 New-Item -ItemType Directory -Path $publishWwwroot -Force | Out-Null
 Copy-Item -Path (Join-Path $frontendDir "dist\*") -Destination $publishWwwroot -Recurse -Force
 
+# Card/game definitions live at the repo root, outside every project folder, so
+# `dotnet publish` never picks them up — GameDefinitionService loads them from a
+# "definitions" dir beside the exe at runtime. Without this, definitions.json edits
+# (new tags, balance changes, new cards) silently never reach the live site even
+# though the compiled DLLs deploy fine.
+Copy-Item -Path (Join-Path $repoRoot "definitions") -Destination $publishDir -Recurse -Force
+
 # --- 4. Deploy -------------------------------------------------------
 Write-Host "`n[3/3] Deploying v$newVersion to $deployTarget..." -ForegroundColor Cyan
 if ($PSCmdlet.ShouldProcess($deployTarget, "Stop $serviceName, copy publish output, restart $serviceName")) {
