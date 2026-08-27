@@ -10,6 +10,10 @@ interface GameBoardProps {
   gameState: GameStateDto;
   myPlayerId: string;
   cardDefs: Record<string, CardDefinitionDto>;
+  pendingAction: AvailableAction | null;
+  selectedTargets: string[];
+  onActionClick: (action: AvailableAction) => void;
+  onSelectTarget: (id: string) => void;
   onAction: (action: AvailableAction, targetIds?: string[], chosenAmount?: number) => void;
   onResolveChoice: (choiceId: string, selectedIds: string[]) => void;
 }
@@ -18,12 +22,13 @@ export function GameBoard({
   gameState,
   myPlayerId,
   cardDefs,
+  pendingAction,
+  selectedTargets,
+  onActionClick,
+  onSelectTarget,
   onAction,
   onResolveChoice,
 }: GameBoardProps) {
-  const [pendingAction, setPendingAction] = useState<AvailableAction | null>(null);
-  const [selectedTargets, setSelectedTargets] = useState<string[]>([]);
-  const [chosenAmount, setChosenAmount] = useState<number>(1);
   const [cardAnims, setCardAnims] = useState<Record<string, string>>({});
   const prevStateRef = useRef<typeof gameState | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
@@ -89,7 +94,7 @@ export function GameBoard({
         ids.forEach(id => delete next[id]);
         return next;
       });
-    }, 650);
+    }, 1500);
   }, [gameState]);
   const [inspectedId, setInspectedId] = useState<string | null>(null);
 
@@ -101,56 +106,6 @@ export function GameBoard({
   const opponentPlayer = gameState.players.find(p => p.id !== myPlayerId);
 
   const selectableTargets = pendingAction?.validTargets ?? [];
-
-  function handleActionClick(action: AvailableAction) {
-    if (!action.available) return;
-
-    if (action.type === 'endPhase') {
-      onAction(action, []);
-      return;
-    }
-
-    if (action.requiresChoice && action.validTargets && action.validTargets.length > 0) {
-      // Need to select targets (and optionally an amount)
-      setPendingAction(action);
-      setSelectedTargets([]);
-      setChosenAmount(action.requiresChoice.amountMin ?? 1);
-    } else if (action.requiresChoice && (!action.validTargets || action.validTargets.length === 0)) {
-      // No valid targets, send with empty
-      onAction(action, []);
-    } else {
-      // No choice needed
-      onAction(action, []);
-    }
-  }
-
-  function handleSelectTarget(id: string) {
-    if (!pendingAction) return;
-
-    const max = pendingAction.requiresChoice?.max ?? 1;
-    setSelectedTargets(prev => {
-      if (prev.includes(id)) return prev.filter(x => x !== id);
-      if (prev.length >= max) return [...prev.slice(1), id];
-      return [...prev, id];
-    });
-  }
-
-  function handleConfirmTargets() {
-    if (!pendingAction) return;
-    const min = pendingAction.requiresChoice?.min ?? 1;
-    if (selectedTargets.length < min) return;
-
-    const amount = pendingAction.requiresChoice?.chooseAmount ? chosenAmount : undefined;
-    onAction(pendingAction, selectedTargets, amount);
-    setPendingAction(null);
-    setSelectedTargets([]);
-    setChosenAmount(1);
-  }
-
-  function handleCancelTargetSelect() {
-    setPendingAction(null);
-    setSelectedTargets([]);
-  }
 
   const isMyTurn = gameState.activePlayerId === myPlayerId;
   const isReactionMine = gameState.state === GameState.WaitingForReaction
@@ -226,13 +181,13 @@ export function GameBoard({
             selectableTargets={selectableTargets}
             selectedTargets={selectedTargets}
             cardAnims={cardAnims}
-            onAction={handleActionClick}
-            onSelectTarget={handleSelectTarget}
+            onAction={onActionClick}
+            onSelectTarget={onSelectTarget}
             onInspect={setInspectedId}
           />
         )}
 
-        {/* Middle zone: action panel + target selection banner */}
+        {/* Middle zone: reaction banner (target selection now renders in GamePage, above the end-turn bar) */}
         <div className="middle-zone">
           {gameState.state === GameState.WaitingForReaction && (
             <div className="reaction-banner">
@@ -254,34 +209,6 @@ export function GameBoard({
               )}
             </div>
           )}
-          {pendingAction && (
-            <div className="target-select-banner">
-              <span>Select target for: <strong>{pendingAction.label}</strong></span>
-              <span className="target-count">({selectedTargets.length}/{pendingAction.requiresChoice?.max ?? 1} selected)</span>
-              {pendingAction.requiresChoice?.chooseAmount && pendingAction.amountMax != null && (
-                <div className="amount-slider">
-                  <label>Amount: <strong>{chosenAmount}</strong></label>
-                  <input
-                    type="range"
-                    min={pendingAction.requiresChoice.amountMin ?? 1}
-                    max={pendingAction.amountMax}
-                    value={chosenAmount}
-                    onChange={e => setChosenAmount(Number(e.target.value))}
-                  />
-                </div>
-              )}
-              <button
-                className="confirm-target-btn"
-                disabled={selectedTargets.length < (pendingAction.requiresChoice?.min ?? 1)}
-                onClick={handleConfirmTargets}
-              >
-                Confirm
-              </button>
-              <button className="cancel-target-btn" onClick={handleCancelTargetSelect}>
-                Cancel
-              </button>
-            </div>
-          )}
         </div>
 
         {/* My area (bottom) */}
@@ -296,8 +223,8 @@ export function GameBoard({
             selectableTargets={selectableTargets}
             selectedTargets={selectedTargets}
             cardAnims={cardAnims}
-            onAction={handleActionClick}
-            onSelectTarget={handleSelectTarget}
+            onAction={onActionClick}
+            onSelectTarget={onSelectTarget}
             onInspect={setInspectedId}
           />
         )}
@@ -323,7 +250,7 @@ export function GameBoard({
           attachments={gameState.objects.filter(o => o.attachedToId === inspectedCard.id && !o.isDestroyed)}
           nameOf={id => cardDefs[id]?.name ?? id}
           actions={gameState.availableActions.filter(a => a.sourceObjectId === inspectedCard.id)}
-          onAction={a => { handleActionClick(a); setInspectedId(null); }}
+          onAction={a => { onActionClick(a); setInspectedId(null); }}
           onClose={() => setInspectedId(null)}
           onInspect={setInspectedId}
         />

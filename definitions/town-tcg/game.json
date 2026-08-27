@@ -338,6 +338,10 @@
     {
       "id": "knight",
       "name": "Knight"
+    },
+    {
+      "id": "resource-node",
+      "name": "Resource Node"
     }
   ],
   "zones": [
@@ -1777,6 +1781,7 @@
       "resources": {
         "reserves": 5
       },
+      "tags": ["resource-node"],
       "icon": "\u26cf\ufe0f",
       "artworkDescription": "A dark shaft braced with timber, glittering with veins of gold",
       "abilities": [

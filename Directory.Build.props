@@ -1,0 +1,16 @@
+<Project>
+
+  <!--
+    Single source of truth for the deploy version: the repo-root VERSION file.
+    Every project under this directory (Api, Core, Engine) picks up <Version> from here, so the
+    published assemblies carry the same version JengoAGI reads off VERSION when scanning the repo,
+    and GET /api/version can report it back at runtime from the running build.
+    Bump VERSION as part of each release (see deploy.ps1) — do not hardcode a version here.
+  -->
+  <PropertyGroup>
+    <VersionFilePath>$(MSBuildThisFileDirectory)VERSION</VersionFilePath>
+    <Version Condition="Exists('$(VersionFilePath)')">$([System.IO.File]::ReadAllText('$(VersionFilePath)').Trim())</Version>
+    <Version Condition="'$(Version)' == ''">0.0.0-unknown</Version>
+  </PropertyGroup>
+
+</Project>
