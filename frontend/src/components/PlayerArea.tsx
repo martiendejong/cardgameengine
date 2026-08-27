@@ -2,13 +2,14 @@ import React from 'react';
 import { PlayerStateDto, ObjectStateDto, AvailableAction, CardDefinitionDto } from '../types/game';
 import { CardView } from './CardView';
 import { LINE_TIP_FRONT, LINE_TIP_BACK, HOUSING_TIP } from '../utils/cardText';
-import bgHuman from '../assets/bg-human.png';
-import bgRaiders from '../assets/bg-raiders.png';
-import bgArcane from '../assets/bg-arcane.png';
-import bgBrood from '../assets/bg-brood.png';
-import bgShadows from '../assets/bg-shadows.png';
-import bgAx01 from '../assets/bg-ax01.png';
-import cardBack from '../assets/card-back.png';
+import bgHuman from '../assets/bg/bg-human.webp';
+import bgRaiders from '../assets/bg/bg-raiders.webp';
+import bgArcane from '../assets/bg/bg-arcane.webp';
+import bgBrood from '../assets/bg/bg-brood.webp';
+import bgShadows from '../assets/bg/bg-shadows.webp';
+import bgAx01 from '../assets/bg/bg-ax01.webp';
+import bgUndead from '../assets/bg/bg-undead.webp';
+import { cardBackSmall as cardBack } from '../assets/cardArt';
 
 const HQ_BACKGROUNDS: Record<string, string> = {
   'town-hall': bgHuman,
@@ -18,6 +19,7 @@ const HQ_BACKGROUNDS: Record<string, string> = {
   'the-hive': bgBrood,
   'thieves-guild': bgShadows,
   'landing-pad': bgAx01,
+  'graveyard': bgUndead,
 };
 
 interface PlayerAreaProps {
