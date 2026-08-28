@@ -40,3 +40,16 @@ cards/small/*.webp + card-small.webp, the inspector uses cards/large/*.webp + ca
 no console errors. Card back verified by asset dims (160x240) + build only - Mission 1's AI
 never holds hand cards, so the opponent-hand back never renders there.
 Left: nothing. Live deploy lands via the hourly TownWarsScheduledDeploy run after merge.
+
+## 2026-08-28 - task 886
+Done: Muster (spell, summons 2 Peasants) no longer gets silently blocked by the housing-capacity
+gate. Added `EffectDefinition.IgnoreHousing` (JSON: `ignoreHousing`), checked in the `summon`
+effect handler in DefaultHandlers.cs, and set it on both of Muster's summon effects in
+definitions/town-tcg/game.json. Card-inspector text now shows "(ignores Housing)" for such
+effects. Other summon sources (Town Hall's recruit-peasant ability, its onTurnStart trigger,
+Settlement/Homestead) are untouched and still gated normally.
+Verified: dotnet build clean; frontend `tsc -b` clean; throwaway RuleEngine harness (no test
+project in this repo) drove `ExecuteAction("playCard", muster)` for a player at zero housing
+capacity — both Peasants summoned — and separately confirmed an ordinary (non-ignoreHousing)
+summon effect is still blocked at zero capacity, proving the fix is scoped correctly.
+Left: nothing.

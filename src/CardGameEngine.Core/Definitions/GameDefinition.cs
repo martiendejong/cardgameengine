@@ -221,6 +221,7 @@ public class EffectDefinition
     public string? CardId { get; set; } // for summon
     public string? Tag { get; set; }
     public string? UntilEvent { get; set; }
+    public bool IgnoreHousing { get; set; } // for summon: bypass the housing-capacity check (e.g. Muster)
 }
 
 public class PlayTimingDefinition

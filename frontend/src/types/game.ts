@@ -174,6 +174,7 @@ export interface EffectDto {
   amount?: number | null;
   cardId?: string | null;
   tag?: string | null;
+  ignoreHousing?: boolean | null;
 }
 
 export interface AbilityDto {
