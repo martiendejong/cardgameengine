@@ -246,7 +246,7 @@ Total 40. Only one Hero may be active at a time.
 - **Wooden Palisade** — Building — Defense. 1 Gold, 1 Construction. 5 HP / 2 Armor. **Fortification** (see §1.3).
 - **Rebuild the Town** — Action, max 4. Choose a destroyed Building from your discard; play it under construction; **its Gold cost is reduced by 2**; still needs normal construction progress.
 - **Man the Walls** — an untapped Peasant defending a Defense Building gives it +1 Armor for that attack and becomes tapped.
-- **Marketplace** — Building, 4 Gold, 3 Construction, 5 HP / 1 Armor. **Trade — 2 Gold, Tap: draw a card.** (An earlier variant — 3 Gold; Tap: gain 1 Gold per two Workers, max 3 — was floated first; the draw version is the one settled on for late-game card supply.)
+- **Marketplace** — Building, 4 Gold, 3 Construction, 5 HP / 1 Armor. **Trade — 1 Gold, Tap: draw a card.** **Sell Wares — Tap: gain 1 Gold** (a second, free-standing ability so the building is useful even with no spare Gold to spend). (An earlier variant — 3 Gold; Tap: gain 1 Gold per two Workers, max 3 — was floated first; the draw version is the one settled on for late-game card supply.)
 - **Library** — Building, 4 Gold, 4 Construction, 4 HP / 1 Armor. **Research — 2 Gold, Tap:** look at top 3 cards of your deck; one to hand, rest to bottom in any order.
 - **Merchant** — Unit, 3 Gold, 1 ATK / 3 HP / 0 Armor, Housing 1. **Trade — Tap:** pay 1 Gold → draw a card, then discard a card.
 - Reactions: **Protect the Town** (2 Gold — when your Building is attacked: target Peasant may tap to intercept the attack), **Emergency Repairs** (2 Gold — prevent the next 3 damage to target Building this turn).
