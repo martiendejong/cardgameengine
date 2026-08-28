@@ -40,3 +40,14 @@ cards/small/*.webp + card-small.webp, the inspector uses cards/large/*.webp + ca
 no console errors. Card back verified by asset dims (160x240) + build only - Mission 1's AI
 never holds hand cards, so the opponent-hand back never renders there.
 Left: nothing. Live deploy lands via the hourly TownWarsScheduledDeploy run after merge.
+
+## 2026-08-28 — task 887
+Done: added a second Marketplace ability, "Sell Wares" (Tap: gain 1 Gold), alongside the
+existing "Trade" (1 Gold + Tap: draw a card) — matches the Town Hall "Collect Taxes" pattern
+(tap-only cost, gain_resource effect), so Marketplace is useful even with no spare Gold to
+spend. Data-only change in definitions/town-tcg/game.json, plus a design-spec.md update.
+Verified: dotnet build clean; a throwaway harness driving RuleEngine.ExecuteAction directly
+confirmed sell-wares grants 1 gold and taps the building, that both abilities share the tap
+(can't use trade right after sell-wares on the same turn), and that the original trade ability
+is unregressed (still costs 1 gold + tap, still draws a card).
+Left: nothing.
