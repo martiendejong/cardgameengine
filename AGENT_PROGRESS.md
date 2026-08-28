@@ -41,6 +41,11 @@ no console errors. Card back verified by asset dims (160x240) + build only - Mis
 never holds hand cards, so the opponent-hand back never renders there.
 Left: nothing. Live deploy lands via the hourly TownWarsScheduledDeploy run after merge.
 
+## 2026-08-28 — task 884 (WIP)
+Plan: pause user input for a moment after any state update that triggers a
+card animation (attack/hit/summon), so a click doesn't cut an animation short
+or race ahead of what's shown. Filling in Done/Verified once implemented.
+
 ## 2026-08-28 — task 887
 Done: added a second Marketplace ability, "Sell Wares" (Tap: gain 1 Gold), alongside the
 existing "Trade" (1 Gold + Tap: draw a card) — matches the Town Hall "Collect Taxes" pattern
