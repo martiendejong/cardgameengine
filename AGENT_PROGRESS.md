@@ -53,3 +53,14 @@ project in this repo) drove `ExecuteAction("playCard", muster)` for a player at 
 capacity — both Peasants summoned — and separately confirmed an ordinary (non-ignoreHousing)
 summon effect is still blocked at zero capacity, proving the fix is scoped correctly.
 Left: nothing.
+
+## 2026-08-28 — task 887
+Done: added a second Marketplace ability, "Sell Wares" (Tap: gain 1 Gold), alongside the
+existing "Trade" (1 Gold + Tap: draw a card) — matches the Town Hall "Collect Taxes" pattern
+(tap-only cost, gain_resource effect), so Marketplace is useful even with no spare Gold to
+spend. Data-only change in definitions/town-tcg/game.json, plus a design-spec.md update.
+Verified: dotnet build clean; a throwaway harness driving RuleEngine.ExecuteAction directly
+confirmed sell-wares grants 1 gold and taps the building, that both abilities share the tap
+(can't use trade right after sell-wares on the same turn), and that the original trade ability
+is unregressed (still costs 1 gold + tap, still draws a card).
+Left: nothing.
