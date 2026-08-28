@@ -158,7 +158,7 @@ public static class DefaultHandlers
         {
             var cardDef = ctx.Game.Definition.Cards.FirstOrDefault(c => c.Id == ctx.Effect.CardId);
             if (cardDef == null) return;
-            if (cardDef.HousingCost is int housing &&
+            if (!ctx.Effect.IgnoreHousing && cardDef.HousingCost is int housing &&
                 !GameQueries.HasHousingFor(ctx.Game, ctx.Player.Id, housing))
             {
                 ctx.Game.Log.Add($"{ctx.Player.Name} has no housing left for a {cardDef.Name}!");

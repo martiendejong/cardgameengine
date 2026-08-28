@@ -41,6 +41,19 @@ no console errors. Card back verified by asset dims (160x240) + build only - Mis
 never holds hand cards, so the opponent-hand back never renders there.
 Left: nothing. Live deploy lands via the hourly TownWarsScheduledDeploy run after merge.
 
+## 2026-08-28 - task 886
+Done: Muster (spell, summons 2 Peasants) no longer gets silently blocked by the housing-capacity
+gate. Added `EffectDefinition.IgnoreHousing` (JSON: `ignoreHousing`), checked in the `summon`
+effect handler in DefaultHandlers.cs, and set it on both of Muster's summon effects in
+definitions/town-tcg/game.json. Card-inspector text now shows "(ignores Housing)" for such
+effects. Other summon sources (Town Hall's recruit-peasant ability, its onTurnStart trigger,
+Settlement/Homestead) are untouched and still gated normally.
+Verified: dotnet build clean; frontend `tsc -b` clean; throwaway RuleEngine harness (no test
+project in this repo) drove `ExecuteAction("playCard", muster)` for a player at zero housing
+capacity — both Peasants summoned — and separately confirmed an ordinary (non-ignoreHousing)
+summon effect is still blocked at zero capacity, proving the fix is scoped correctly.
+Left: nothing.
+
 ## 2026-08-28 — task 887
 Done: added a second Marketplace ability, "Sell Wares" (Tap: gain 1 Gold), alongside the
 existing "Trade" (1 Gold + Tap: draw a card) — matches the Town Hall "Collect Taxes" pattern
