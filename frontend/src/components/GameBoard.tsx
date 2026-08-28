@@ -5,6 +5,7 @@ import { ChoiceDialog } from './ChoiceDialog';
 import { GameLog } from './GameLog';
 import { CardDetailModal } from './CardDetailModal';
 import { BASE } from '../config';
+import { computeCardAnimations, ANIMATION_PAUSE_MS } from '../utils/animationDiff';
 
 interface GameBoardProps {
   gameState: GameStateDto;
@@ -12,6 +13,7 @@ interface GameBoardProps {
   cardDefs: Record<string, CardDefinitionDto>;
   pendingAction: AvailableAction | null;
   selectedTargets: string[];
+  isPaused: boolean;
   onActionClick: (action: AvailableAction) => void;
   onSelectTarget: (id: string) => void;
   onAction: (action: AvailableAction, targetIds?: string[], chosenAmount?: number) => void;
@@ -24,6 +26,7 @@ export function GameBoard({
   cardDefs,
   pendingAction,
   selectedTargets,
+  isPaused,
   onActionClick,
   onSelectTarget,
   onAction,
@@ -61,29 +64,7 @@ export function GameBoard({
     prevStateRef.current = gameState;
     if (!prev) return;
 
-    const newAnims: Record<string, string> = {};
-    const prevMap = new Map(prev.objects.map(o => [o.id, o]));
-
-    for (const obj of gameState.objects) {
-      if (obj.isDestroyed || obj.zoneId !== 'battlefield') continue;
-      const p = prevMap.get(obj.id);
-
-      if (!p && !obj.hasSummoningSickness) {
-        // Newly appeared on battlefield (play from hand handled by summoningSickness flag absence)
-        newAnims[obj.id] = 'anim-summon';
-      } else if (!p) {
-        newAnims[obj.id] = 'anim-summon';
-      } else {
-        const prevHp = p.properties['currentHp'] ?? 0;
-        const currHp = obj.properties['currentHp'] ?? 0;
-        if (currHp < prevHp) {
-          newAnims[obj.id] = 'anim-hit';
-        } else if (!p.isTapped && obj.isTapped) {
-          newAnims[obj.id] = 'anim-attack';
-        }
-      }
-    }
-
+    const newAnims = computeCardAnimations(prev, gameState);
     if (Object.keys(newAnims).length === 0) return;
 
     setCardAnims(cur => ({ ...cur, ...newAnims }));
@@ -94,7 +75,7 @@ export function GameBoard({
         ids.forEach(id => delete next[id]);
         return next;
       });
-    }, 1500);
+    }, ANIMATION_PAUSE_MS);
   }, [gameState]);
   const [inspectedId, setInspectedId] = useState<string | null>(null);
 
@@ -198,7 +179,7 @@ export function GameBoard({
                       ? 'The enemy is casting a spell!'
                       : 'The enemy declared an attack!'} Play a reaction or pass.
                   </span>
-                  {passAction && (
+                  {passAction && !isPaused && (
                     <button className="pass-btn" onClick={() => onAction(passAction, [])}>
                       Pass — let it resolve
                     </button>
@@ -216,7 +197,7 @@ export function GameBoard({
           <PlayerArea
             player={myPlayer}
             objects={gameState.objects}
-            actions={isMyTurn || isReactionMine ? gameState.availableActions : []}
+            actions={(isMyTurn || isReactionMine) && !isPaused ? gameState.availableActions : []}
             cardDefs={cardDefs}
             isActivePlayer={isMyTurn}
             isBottom={true}

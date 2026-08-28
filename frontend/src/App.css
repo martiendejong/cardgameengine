@@ -684,7 +684,8 @@
   font-size: 13px;
 }
 
-.end-phase-btn:hover { background: #388bfd; }
+.end-phase-btn:hover:not(:disabled) { background: #388bfd; }
+.end-phase-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .waiting-label {
   font-size: 13px;
