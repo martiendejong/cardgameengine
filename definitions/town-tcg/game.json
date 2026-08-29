@@ -5094,12 +5094,14 @@
           {
             "type": "summon",
             "scope": "player",
-            "cardId": "peasant"
+            "cardId": "peasant",
+            "ignoreHousing": true
           },
           {
             "type": "summon",
             "scope": "player",
-            "cardId": "peasant"
+            "cardId": "peasant",
+            "ignoreHousing": true
           }
         ]
       },

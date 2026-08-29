@@ -73,7 +73,7 @@ export function explainEffect(e: EffectDto, nameOf: NameOf): string {
     }
     case 'tap': return `Tap ${target}`;
     case 'untap': return `Untap ${target}`;
-    case 'summon': return `Summon a ${nameOf(e.cardId ?? '')}`;
+    case 'summon': return `Summon a ${nameOf(e.cardId ?? '')}${e.ignoreHousing ? ' (ignores Housing)' : ''}`;
     case 'destroy': return `Destroy ${target}`;
     case 'heal': return `Heal ${target} for ${e.amount} HP (up to its maximum)`;
     case 'damage': return `Deal ${e.amount} damage to ${target} (reduced by its Armor)`;
