@@ -54,11 +54,26 @@ capacity — both Peasants summoned — and separately confirmed an ordinary (no
 summon effect is still blocked at zero capacity, proving the fix is scoped correctly.
 Left: nothing.
 
-## 2026-08-29 — task 908 (WIP)
-Plan: give each of the 8 non-Town factions 2 new headquarters + new hero(es) so every
-faction has 3 hqOptions/3 heroOptions like Town. Raiders/Undead promote their existing
-unused hero cards (bloodfang, lich) for one slot + 1 new hero; the other 6 factions get
-2 new heroes each. Data-only change in definitions/town-tcg/game.json, no code changes.
+## 2026-08-29 — task 908
+Done: every non-Town faction now has 3 hqOptions + 3 heroOptions (30 new cards total:
+16 HQs + 14 heroes across raiders/undead/machine/conclave/brood/shadow/alchemists/hunks).
+Raiders/Undead promote their existing unused hero cards (bloodfang, lich) for one slot
+each + 1 brand-new hero; the other 6 factions get 2 brand-new heroes each. Every new HQ
+gets its own onPlay starter unit(s) and at least one resource-generating ability, mirroring
+each faction's existing economy (gold/energy/mana/corpses/biomass/reagents); every new
+hero gets 2 abilities in that faction's existing cost idiom (ap/mana/corpses/tap). Data-only
+change to definitions/town-tcg/game.json (single clean diff, no incidental reformatting);
+no code changes — server already validates picks against hqOptions/heroOptions and the
+lobby picker is already data-driven. PR #10.
+Verified: dotnet build clean, 0 warnings/errors. Ran the real API server and POSTed
+/api/matches for all 24 new-HQ/new-hero combinations (every one of the 16 new HQs and 14
+new heroes exercised at least once) — all 24 created successfully with no exceptions.
+Spot-checked 3 matches' battlefield object counts via GET /api/matches/{id} against the
+expected onPlay summons (e.g. war-tent's 2 Axe-Throwers, hunk-village's 3 Hunks,
+broodbastion+swarmqueen's Broodguard+2 Larvae) — all matched exactly, confirming onPlay
+effects resolve correctly for every new card.
+Left: card art (frontend/src/assets/cards/<id>.png + npm run art) — per the task's own
+technical notes this can follow separately; missing art falls back to a placeholder.
 
 ## 2026-08-28 — task 887
 Done: added a second Marketplace ability, "Sell Wares" (Tap: gain 1 Gold), alongside the
