@@ -4,6 +4,7 @@ import { AvailableAction, GameStateDto, GameState } from '../types/game';
 interface ActionPanelProps {
   gameState: GameStateDto;
   myPlayerId: string;
+  isPaused: boolean;
   onEndPhase: () => void;
   onLeave: () => void;
 }
@@ -15,7 +16,7 @@ const PHASE_LABELS: Record<string, string> = {
   end: 'End Phase',
 };
 
-export function ActionPanel({ gameState, myPlayerId, onEndPhase, onLeave }: ActionPanelProps) {
+export function ActionPanel({ gameState, myPlayerId, isPaused, onEndPhase, onLeave }: ActionPanelProps) {
   const isMyTurn = gameState.activePlayerId === myPlayerId;
   const phase = PHASE_LABELS[gameState.currentPhaseId] || gameState.currentPhaseId;
   const activePlayer = gameState.players.find(p => p.id === gameState.activePlayerId);
@@ -35,8 +36,8 @@ export function ActionPanel({ gameState, myPlayerId, onEndPhase, onLeave }: Acti
       </div>
 
       {isMyTurn && gameState.state !== GameState.GameEnded && (
-        <button className="end-phase-btn" onClick={onEndPhase}>
-          End {phase}
+        <button className="end-phase-btn" onClick={onEndPhase} disabled={isPaused} title={isPaused ? 'Resolving the last action…' : undefined}>
+          {isPaused ? 'Resolving…' : `End ${phase}`}
         </button>
       )}
 

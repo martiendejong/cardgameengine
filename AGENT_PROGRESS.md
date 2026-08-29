@@ -54,6 +54,22 @@ capacity — both Peasants summoned — and separately confirmed an ordinary (no
 summon effect is still blocked at zero capacity, proving the fix is scoped correctly.
 Left: nothing.
 
+## 2026-08-28 — task 884
+Done: when a GameStateUpdate push causes a card animation (summon/hit/attack —
+same diff GameBoard already used to trigger the CSS animation), the UI now
+disables the End Phase button (shows "Resolving…") and hides card/ability
+action buttons for 1.5s so a quick follow-up click can't cut the animation
+short or race ahead of what the player just saw happen. Extracted the
+diff-detection into frontend/src/utils/animationDiff.ts so GameBoard (visuals)
+and GamePage (input pause) share one definition of "this state change is
+worth animating" instead of two independently-tuned copies. PR #9.
+Verified: build clean (tsc -b && vite build); live Playwright run against the
+real backend+frontend dev servers — played through Mission 1, used Collect
+Taxes (tap transition) and a real Peasant attack that destroyed a Raider
+Scout, confirmed End Phase flips to disabled "Resolving…" immediately and
+re-enables ~1.5s later in both cases, no console errors.
+Left: nothing.
+
 ## 2026-08-28 — task 887
 Done: added a second Marketplace ability, "Sell Wares" (Tap: gain 1 Gold), alongside the
 existing "Trade" (1 Gold + Tap: draw a card) — matches the Town Hall "Collect Taxes" pattern

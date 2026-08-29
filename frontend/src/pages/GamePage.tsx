@@ -1,10 +1,11 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { GameStateDto, AvailableAction, GameState, GameDefinitionFull, CardDefinitionDto } from '../types/game';
 import { useGameHub } from '../hooks/useGameHub';
 import { GameBoard } from '../components/GameBoard';
 import { ActionPanel } from '../components/ActionPanel';
 import { TargetSelectBanner } from '../components/TargetSelectBanner';
 import { BASE } from '../config';
+import { hasAnimatableChange, ANIMATION_PAUSE_MS } from '../utils/animationDiff';
 
 interface GamePageProps {
   matchId: string;
@@ -21,8 +22,18 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   const [pendingAction, setPendingAction] = useState<AvailableAction | null>(null);
   const [selectedTargets, setSelectedTargets] = useState<string[]>([]);
   const [chosenAmount, setChosenAmount] = useState<number>(1);
+  const [isPaused, setIsPaused] = useState(false);
+  const prevStateForPauseRef = useRef<GameStateDto | null>(null);
+  const pauseTimerRef = useRef<number | null>(null);
 
   const isHotseat = seat === '';
+
+  // Clear any pending pause timer on unmount so it doesn't fire after teardown.
+  useEffect(() => {
+    return () => {
+      if (pauseTimerRef.current !== null) window.clearTimeout(pauseTimerRef.current);
+    };
+  }, []);
 
   // Load the static card definitions once (for the card inspector)
   const gameId = gameState?.gameId;
@@ -39,8 +50,21 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   }, [gameId]);
 
   const handleStateUpdate = useCallback((state: GameStateDto) => {
+    const prev = prevStateForPauseRef.current;
+    prevStateForPauseRef.current = state;
     setGameState(state);
     if (isHotseat) setMyPlayerId(state.activePlayerId);
+
+    // A unit was attacked/hit/summoned — hold input for the same window the
+    // card animation plays, so a quick follow-up click can't cut it short.
+    if (hasAnimatableChange(prev, state)) {
+      setIsPaused(true);
+      if (pauseTimerRef.current !== null) window.clearTimeout(pauseTimerRef.current);
+      pauseTimerRef.current = window.setTimeout(() => {
+        setIsPaused(false);
+        pauseTimerRef.current = null;
+      }, ANIMATION_PAUSE_MS);
+    }
   }, [isHotseat]);
 
   const handleError = useCallback((msg: string) => {
@@ -59,6 +83,7 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   const actAs = isHotseat ? myPlayerId : seat;
 
   async function handleAction(action: AvailableAction, targetIds?: string[], chosenAmount?: number) {
+    if (isPaused) return; // let the current animation finish before sending the next action
     try {
       if (action.type === 'endPhase') {
         await endPhase(actAs);
@@ -127,6 +152,7 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   }
 
   async function handleEndPhase() {
+    if (isPaused) return; // let the current animation finish before sending the next action
     try {
       await endPhase(actAs);
     } catch (err: any) {
@@ -212,6 +238,7 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
         cardDefs={cardDefs}
         pendingAction={pendingAction}
         selectedTargets={selectedTargets}
+        isPaused={isPaused}
         onActionClick={handleActionClick}
         onSelectTarget={handleSelectTarget}
         onAction={handleAction}
@@ -232,6 +259,7 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
       <ActionPanel
         gameState={gameState}
         myPlayerId={actAs}
+        isPaused={isPaused}
         onEndPhase={handleEndPhase}
         onLeave={onLeave}
       />
