@@ -54,6 +54,12 @@ capacity — both Peasants summoned — and separately confirmed an ordinary (no
 summon effect is still blocked at zero capacity, proving the fix is scoped correctly.
 Left: nothing.
 
+## 2026-08-29 — task 908 (WIP)
+Plan: give each of the 8 non-Town factions 2 new headquarters + new hero(es) so every
+faction has 3 hqOptions/3 heroOptions like Town. Raiders/Undead promote their existing
+unused hero cards (bloodfang, lich) for one slot + 1 new hero; the other 6 factions get
+2 new heroes each. Data-only change in definitions/town-tcg/game.json, no code changes.
+
 ## 2026-08-28 — task 887
 Done: added a second Marketplace ability, "Sell Wares" (Tap: gain 1 Gold), alongside the
 existing "Trade" (1 Gold + Tap: draw a card) — matches the Town Hall "Collect Taxes" pattern
