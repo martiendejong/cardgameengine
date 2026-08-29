@@ -70,6 +70,27 @@ Scout, confirmed End Phase flips to disabled "Resolving…" immediately and
 re-enables ~1.5s later in both cases, no console errors.
 Left: nothing.
 
+## 2026-08-29 — task 908
+Done: every non-Town faction now has 3 hqOptions + 3 heroOptions (30 new cards total:
+16 HQs + 14 heroes across raiders/undead/machine/conclave/brood/shadow/alchemists/hunks).
+Raiders/Undead promote their existing unused hero cards (bloodfang, lich) for one slot
+each + 1 brand-new hero; the other 6 factions get 2 brand-new heroes each. Every new HQ
+gets its own onPlay starter unit(s) and at least one resource-generating ability, mirroring
+each faction's existing economy (gold/energy/mana/corpses/biomass/reagents); every new
+hero gets 2 abilities in that faction's existing cost idiom (ap/mana/corpses/tap). Data-only
+change to definitions/town-tcg/game.json (single clean diff, no incidental reformatting);
+no code changes — server already validates picks against hqOptions/heroOptions and the
+lobby picker is already data-driven. PR #10.
+Verified: dotnet build clean, 0 warnings/errors. Ran the real API server and POSTed
+/api/matches for all 24 new-HQ/new-hero combinations (every one of the 16 new HQs and 14
+new heroes exercised at least once) — all 24 created successfully with no exceptions.
+Spot-checked 3 matches' battlefield object counts via GET /api/matches/{id} against the
+expected onPlay summons (e.g. war-tent's 2 Axe-Throwers, hunk-village's 3 Hunks,
+broodbastion+swarmqueen's Broodguard+2 Larvae) — all matched exactly, confirming onPlay
+effects resolve correctly for every new card.
+Left: card art (frontend/src/assets/cards/<id>.png + npm run art) — per the task's own
+technical notes this can follow separately; missing art falls back to a placeholder.
+
 ## 2026-08-28 — task 887
 Done: added a second Marketplace ability, "Sell Wares" (Tap: gain 1 Gold), alongside the
 existing "Trade" (1 Gold + Tap: draw a card) — matches the Town Hall "Collect Taxes" pattern
@@ -79,4 +100,20 @@ Verified: dotnet build clean; a throwaway harness driving RuleEngine.ExecuteActi
 confirmed sell-wares grants 1 gold and taps the building, that both abilities share the tap
 (can't use trade right after sell-wares on the same turn), and that the original trade ability
 is unregressed (still costs 1 gold + tap, still draws a card).
+Left: nothing.
+
+## 2026-08-29 — task 908 (review fix)
+Done: fixed the 2 issues from the round-1 review (commit 745f329) on PR #10. Toxinweaver's
+"Volatile Mixture" gained the hero's own "reagents" (a resource nothing in the game ever reads —
+play costs only draw from the player's HQ bank via GameQueries.FindResourceBank, which only
+matches objectType headquarters) — replaced it with a +2 attack self-buff until end of turn,
+matching the exact templated "2 AP, no tap, self buff" pattern used by several other heroes
+(paladin, spymaster, bloodfang, iron-warden, big-hunk). Also added the missing
+resourceCapacities.corpses: 6 cap to bone-warden, matching the convention every other
+entity-scoped resource pool in the file has (including sibling necromancer-hero's own dp cap).
+Verified: dotnet build clean, 0 warnings/errors. A throwaway harness driving
+RuleEngine.ExecuteAction directly (built a real match via ExecuteSetup, no mocks) confirmed:
+Volatile Mixture spends 2 AP and buffs Toxinweaver's own attack 3→5 until end of turn; Bone
+Warden's corpses pool now clamps at 6 instead of growing unbounded, and Raise Guardian still
+correctly spends down from that cap (6→3).
 Left: nothing.

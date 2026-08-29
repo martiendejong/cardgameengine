@@ -6932,6 +6932,1911 @@
           }
         ]
       }
+    },
+    {
+      "id": "war-tent",
+      "name": "War Tent",
+      "objectType": "headquarters",
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 0
+      },
+      "icon": "\u26fa",
+      "artworkDescription": "A hide tent pitched an hour before the raid, struck an hour after",
+      "onPlay": {
+        "id": "wt-start",
+        "name": "Two Axe-Throwers scout ahead",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "axe-thrower"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "axe-thrower"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "quick-muster",
+          "name": "Quick Muster",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "axe-thrower"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blood-pit",
+      "name": "Blood Pit",
+      "objectType": "headquarters",
+      "properties": {
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 2
+      },
+      "icon": "\ud83e\ude78",
+      "artworkDescription": "A sunken ring of packed dirt, dark with old use",
+      "onPlay": {
+        "id": "bp-start",
+        "name": "A Brute steps into the ring",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "brute"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "grim-toll",
+          "name": "Grim Toll",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onKill",
+          "oncePerTurn": true,
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "plunder-queen",
+      "name": "Plunder Queen",
+      "objectType": "hero",
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "resources": {
+        "ap": 0
+      },
+      "icon": "\ud83d\udc8d",
+      "artworkDescription": "She counts the take before the blood is even dry",
+      "abilities": [
+        {
+          "id": "war-spoils",
+          "name": "War Spoils",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "drain_resource",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "rally-the-warband",
+          "name": "Rally the Warband",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "scavenger"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "crypt",
+      "name": "Crypt",
+      "objectType": "graveyard-hq",
+      "properties": {
+        "currentHp": 12,
+        "maxHp": 12,
+        "armor": 2
+      },
+      "resourceCapacities": {
+        "corpses": 12
+      },
+      "resources": {
+        "corpses": 1
+      },
+      "tags": [
+        "boneyard"
+      ],
+      "icon": "\u26b0\ufe0f",
+      "artworkDescription": "A sealed stone vault, corpses stacked neat as cordwood",
+      "onPlay": {
+        "id": "crypt-start",
+        "name": "A Skeleton rattles free",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "skeleton"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "entomb",
+          "name": "Entomb",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "oncePerTurn": true,
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "plague-pit",
+      "name": "Plague Pit",
+      "objectType": "graveyard-hq",
+      "properties": {
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 0
+      },
+      "resourceCapacities": {
+        "corpses": 6
+      },
+      "resources": {
+        "corpses": 3
+      },
+      "tags": [
+        "boneyard"
+      ],
+      "icon": "\u2620\ufe0f",
+      "artworkDescription": "A shallow, festering trench that never quite fills up",
+      "onPlay": {
+        "id": "pp-start",
+        "name": "Two Shambling Corpses claw out",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "shambling-corpse"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "shambling-corpse"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "rapid-exhume",
+          "name": "Rapid Exhume",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "corpses",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bone-warden",
+      "name": "Bone Warden",
+      "objectType": "necromancer-hero",
+      "properties": {
+        "attack": 2,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
+      },
+      "resources": {
+        "corpses": 0
+      },
+      "resourceCapacities": {
+        "corpses": 6
+      },
+      "tags": [
+        "undead"
+      ],
+      "icon": "\ud83e\uddb4",
+      "artworkDescription": "It doesn't raise the dead. It just refuses to stay down itself",
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "id": "bone-shield",
+          "name": "Bone Shield",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "corpses",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "armor",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "raise-guardian",
+          "name": "Raise Guardian",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "corpses",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "repair-depot",
+      "name": "Repair Depot",
+      "objectType": "headquarters",
+      "properties": {
+        "currentHp": 12,
+        "maxHp": 12,
+        "armor": 3
+      },
+      "icon": "\ud83d\udee0\ufe0f",
+      "artworkDescription": "Gantries and diagnostic cradles built for one very large patient",
+      "onPlay": {
+        "id": "rd-start",
+        "name": "Residual charge in the capacitors",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "energy",
+            "amount": 1
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "recharge",
+          "name": "Recharge",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "field-repairs",
+          "name": "Field Repairs",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "hero",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 4
+            }
+          ]
+        },
+        {
+          "id": "emergency-reconstruction",
+          "name": "Emergency Reconstruction",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 6
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "own_hero_destroyed"
+            }
+          ],
+          "effects": [
+            {
+              "type": "revive_hero"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "overclock-rig",
+      "name": "Overclock Rig",
+      "objectType": "headquarters",
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 1
+      },
+      "icon": "\u26a1",
+      "artworkDescription": "Every safety interlock removed for the sake of raw output",
+      "onPlay": {
+        "id": "or-start",
+        "name": "The rig screams to life",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "energy",
+            "amount": 3
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "surge",
+          "name": "Surge",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "emergency-reconstruction",
+          "name": "Emergency Reconstruction",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 6
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "own_hero_destroyed"
+            }
+          ],
+          "effects": [
+            {
+              "type": "revive_hero"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vanguard-unit-vx",
+      "name": "Vanguard Unit VX",
+      "objectType": "hero",
+      "properties": {
+        "attack": 4,
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 2
+      },
+      "resources": {
+        "ap": 0
+      },
+      "equipmentSlots": {
+        "arm": 2,
+        "core": 1,
+        "legs": 1
+      },
+      "icon": "\ud83e\uddbe",
+      "artworkDescription": "Lighter plating, twin cannon mounts, built to close distance fast",
+      "abilities": [
+        {
+          "id": "focus-fire",
+          "name": "Focus Fire",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "precision-strike",
+          "name": "Precision Strike",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sentinel-unit-hx",
+      "name": "Sentinel Unit HX",
+      "objectType": "hero",
+      "properties": {
+        "attack": 2,
+        "currentHp": 15,
+        "maxHp": 15,
+        "armor": 3
+      },
+      "resources": {
+        "ap": 0
+      },
+      "equipmentSlots": {
+        "core": 2,
+        "torso": 1,
+        "utility": 2
+      },
+      "icon": "\ud83d\udee1\ufe0f",
+      "artworkDescription": "Slow, hulking, built to stand between the enemy and everything else",
+      "abilities": [
+        {
+          "id": "bulwark-protocol",
+          "name": "Bulwark Protocol",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "armor",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "nanite-repair",
+          "name": "Nanite Repair",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ley-sanctum",
+      "name": "Ley Sanctum",
+      "objectType": "nexus",
+      "properties": {
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 3
+      },
+      "resources": {
+        "mana": 4
+      },
+      "resourceCapacities": {
+        "mana": 10
+      },
+      "tags": [
+        "nexus-core"
+      ],
+      "icon": "\ud83c\udff0",
+      "artworkDescription": "A fortified spire built directly over a leyline confluence",
+      "onPlay": {
+        "id": "ls-start",
+        "name": "The leyline answers: a Mana Seer emerges",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "mana-seer"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "attune",
+          "name": "Attune",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spellforge",
+      "name": "Spellforge",
+      "objectType": "nexus",
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "resources": {
+        "mana": 2
+      },
+      "resourceCapacities": {
+        "mana": 6
+      },
+      "tags": [
+        "nexus-core"
+      ],
+      "icon": "\ud83d\udd25",
+      "artworkDescription": "An unstable forge that trades safety margins for raw output",
+      "onPlay": {
+        "id": "sf-start",
+        "name": "Sparks catch: a Pyromancer steps through",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "pyromancer"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "overload",
+          "name": "Overload",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "battlemage-vex",
+      "name": "Battlemage Vex",
+      "objectType": "caster-hero",
+      "properties": {
+        "attack": 4,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "resources": {
+        "mana": 2
+      },
+      "resourceCapacities": {
+        "mana": 6
+      },
+      "tags": [
+        "caster"
+      ],
+      "icon": "\ud83d\udd25",
+      "artworkDescription": "Magic and a blade, applied at the same distance",
+      "abilities": [
+        {
+          "id": "arcane-strike",
+          "name": "Arcane Strike",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "blink-step",
+          "name": "Blink Step",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "frost-warden",
+      "name": "Frost Warden",
+      "objectType": "caster-hero",
+      "properties": {
+        "attack": 2,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
+      },
+      "resources": {
+        "mana": 2
+      },
+      "resourceCapacities": {
+        "mana": 6
+      },
+      "tags": [
+        "caster"
+      ],
+      "icon": "\u2744\ufe0f",
+      "artworkDescription": "Cold enough that the air itself hesitates to move",
+      "abilities": [
+        {
+          "id": "ice-barrier",
+          "name": "Ice Barrier",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "armor",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "chill-bolt",
+          "name": "Chill Bolt",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ravenous-maw",
+      "name": "Ravenous Maw",
+      "objectType": "hive-hq",
+      "properties": {
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 0
+      },
+      "resourceCapacities": {
+        "biomass": 10
+      },
+      "resources": {
+        "biomass": 1
+      },
+      "tags": [
+        "hive"
+      ],
+      "icon": "\ud83e\udda0",
+      "artworkDescription": "A lipless mouth sunk into the earth, always hungry",
+      "onPlay": {
+        "id": "rm-start",
+        "name": "A Brood Warrior claws free",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "brood-warrior"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "devour-weak",
+          "name": "Devour Weak",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "tag": "organic",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            },
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "biomass",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "broodbastion",
+      "name": "Broodbastion",
+      "objectType": "hive-hq",
+      "properties": {
+        "currentHp": 14,
+        "maxHp": 14,
+        "armor": 2
+      },
+      "resourceCapacities": {
+        "biomass": 14
+      },
+      "resources": {
+        "biomass": 3
+      },
+      "tags": [
+        "hive"
+      ],
+      "icon": "\ud83e\udea8",
+      "artworkDescription": "Thick chitin plates grown over generations of siege",
+      "onPlay": {
+        "id": "bb-start",
+        "name": "A Broodguard takes up position",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "broodguard"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "fester",
+          "name": "Fester",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "swarmqueen",
+      "name": "Swarmqueen",
+      "objectType": "hero",
+      "properties": {
+        "attack": 4,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 0
+      },
+      "icon": "\ud83e\udd9f",
+      "artworkDescription": "She doesn't lead the swarm. She is simply the first of it",
+      "onPlay": {
+        "id": "sq-start",
+        "name": "Two Larvae hatch alongside her",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "larva"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "larva"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "frenzy-feed",
+          "name": "Frenzy Feed",
+          "costs": [],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "tag": "organic",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            },
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "birth-swarm",
+          "name": "Birth Swarm",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "carapace-warden",
+      "name": "Carapace Warden",
+      "objectType": "hero",
+      "properties": {
+        "attack": 2,
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 3
+      },
+      "icon": "\ud83d\udc0c",
+      "artworkDescription": "Armor grown thick enough that it forgot how to run",
+      "abilities": [
+        {
+          "id": "harden",
+          "name": "Harden",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "armor",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "bulwark-feed",
+          "name": "Bulwark Feed",
+          "costs": [],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "tag": "organic",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            },
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 2
+            },
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "armor",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "smugglers-den",
+      "name": "Smuggler's Den",
+      "objectType": "headquarters",
+      "properties": {
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 2
+      },
+      "icon": "\ud83d\udce6",
+      "artworkDescription": "Crates stamped with a dozen different merchant guild seals, none of them honest",
+      "onPlay": {
+        "id": "sd-start",
+        "name": "An Informant arrives with a lead",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "informant"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "black-market",
+          "name": "Black Market",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hidden-enclave",
+      "name": "Hidden Enclave",
+      "objectType": "headquarters",
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 0
+      },
+      "icon": "\ud83c\udf83",
+      "artworkDescription": "No sign, no name, no door most people would notice",
+      "onPlay": {
+        "id": "he-start",
+        "name": "A Spy slips out ahead of schedule",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "spy"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "whispers",
+          "name": "Whispers",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blade-dancer",
+      "name": "Blade Dancer",
+      "objectType": "hero",
+      "properties": {
+        "attack": 4,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "resources": {
+        "ap": 0
+      },
+      "icon": "\ud83d\udde1\ufe0f",
+      "artworkDescription": "Two blades, no wasted motion, gone before the retort lands",
+      "abilities": [
+        {
+          "id": "flurry",
+          "name": "Flurry",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "attack",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "vanish",
+          "name": "Vanish",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "armor",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shadow-broker",
+      "name": "Shadow Broker",
+      "objectType": "hero",
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "resources": {
+        "ap": 0
+      },
+      "icon": "\ud83e\udd34",
+      "artworkDescription": "Owes no one loyalty. Sells information to whoever's still standing",
+      "abilities": [
+        {
+          "id": "insider-trading",
+          "name": "Insider Trading",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "steal_resource",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "call-in-favors",
+          "name": "Call in Favors",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alembic-tower",
+      "name": "Alembic Tower",
+      "objectType": "laboratory-hq",
+      "properties": {
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 3
+      },
+      "resourceCapacities": {
+        "reagents": 14
+      },
+      "resources": {
+        "reagents": 3
+      },
+      "tags": [
+        "lab"
+      ],
+      "icon": "\ud83d\uddfc",
+      "artworkDescription": "A stacked tower of alembics, condensers, and slow-dripping tubes",
+      "onPlay": {
+        "id": "at-start",
+        "name": "A Guard Golem lumbers off the assembly floor",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "guard-golem"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "refine",
+          "name": "Refine",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "reagents",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "black-market-apothecary",
+      "name": "Black Market Apothecary",
+      "objectType": "laboratory-hq",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 0
+      },
+      "resourceCapacities": {
+        "reagents": 8
+      },
+      "resources": {
+        "reagents": 4
+      },
+      "tags": [
+        "lab"
+      ],
+      "icon": "\u2697\ufe0f",
+      "artworkDescription": "Unlicensed, unlabeled, and always sold out",
+      "onPlay": {
+        "id": "bma-start",
+        "name": "A Vial Carrier hurries in with fresh stock",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "vial-carrier"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "rush-brew",
+          "name": "Rush Brew",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "reagents",
+              "amount": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "toxinweaver",
+      "name": "Toxinweaver",
+      "objectType": "hero",
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "resources": {
+        "ap": 0
+      },
+      "icon": "\ud83e\uddea",
+      "artworkDescription": "Every recipe she perfects does something worse to living tissue",
+      "abilities": [
+        {
+          "id": "caustic-touch",
+          "name": "Caustic Touch",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "volatile-mixture",
+          "name": "Volatile Mixture",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "iron-warden",
+      "name": "Iron Warden",
+      "objectType": "hero",
+      "properties": {
+        "attack": 2,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
+      },
+      "resources": {
+        "ap": 0
+      },
+      "icon": "\ud83e\udea8",
+      "artworkDescription": "Builds golems the way other people build friendships",
+      "abilities": [
+        {
+          "id": "reinforce",
+          "name": "Reinforce",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "character",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "stabilize",
+          "name": "Stabilize",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hunk-village",
+      "name": "Hunk Village",
+      "objectType": "headquarters",
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "housingProvided": 5,
+      "tags": [],
+      "icon": "\ud83c\udfd8\ufe0f",
+      "artworkDescription": "Rows of little huts around a shared cookfire",
+      "onPlay": {
+        "id": "hv-start",
+        "name": "Three Hunks turn out for work",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "hunk"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "hunk"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "hunk"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "barn-raising",
+          "name": "Barn Raising",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hunk-bastion",
+      "name": "Hunk Bastion",
+      "objectType": "headquarters",
+      "properties": {
+        "currentHp": 14,
+        "maxHp": 14,
+        "armor": 4
+      },
+      "housingProvided": 5,
+      "tags": [],
+      "icon": "\ud83e\udeb5",
+      "artworkDescription": "Timber and stacked stone, built thick enough to shrug off a ballista",
+      "onPlay": {
+        "id": "hb-start",
+        "name": "A single Hunk mans the gate",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "hunk"
+          }
+        ]
+      },
+      "abilities": [
+        {
+          "id": "fortify",
+          "name": "Fortify",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "armor",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "big-hunk",
+      "name": "Big Hunk",
+      "objectType": "hero",
+      "properties": {
+        "attack": 4,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "resources": {
+        "ap": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "hunk",
+        "worker",
+        "builder"
+      ],
+      "icon": "\ud83d\udcaa",
+      "artworkDescription": "The biggest Hunk anyone's ever seen, and somehow still smiling",
+      "abilities": [
+        {
+          "id": "muscle-up",
+          "name": "Muscle Up",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "self",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "heave",
+          "name": "Heave",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "tag": "hunk",
+            "min": 1,
+            "max": 1,
+            "excludeSelf": true
+          },
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "target",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "handy-hunk",
+      "name": "Handy Hunk",
+      "objectType": "hero",
+      "properties": {
+        "attack": 1,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "resources": {
+        "ap": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "hunk",
+        "worker",
+        "builder"
+      ],
+      "icon": "\ud83e\ude9b",
+      "artworkDescription": "Never without a toolbelt, never in a hurry, never wrong",
+      "abilities": [
+        {
+          "id": "quick-build",
+          "name": "Quick Build",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "building",
+            "min": 1,
+            "max": 1,
+            "requireUnderConstruction": true
+          },
+          "effects": [
+            {
+              "type": "add_progress",
+              "scope": "target",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "scrap-repair",
+          "name": "Scrap Repair",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ]
     }
   ],
   "decks": [
@@ -7014,10 +8919,14 @@
         "skull-totem": 3
       },
       "hqOptions": [
-        "raider-camp"
+        "raider-camp",
+        "war-tent",
+        "blood-pit"
       ],
       "heroOptions": [
-        "warchief"
+        "warchief",
+        "bloodfang",
+        "plunder-queen"
       ]
     },
     {
@@ -7044,10 +8953,14 @@
         "targeting-uplink": 4
       },
       "hqOptions": [
-        "landing-pad"
+        "landing-pad",
+        "repair-depot",
+        "overclock-rig"
       ],
       "heroOptions": [
-        "ax-01"
+        "ax-01",
+        "vanguard-unit-vx",
+        "sentinel-unit-hx"
       ]
     },
     {
@@ -7078,10 +8991,14 @@
         "blink-ward": 3
       },
       "hqOptions": [
-        "arcane-nexus"
+        "arcane-nexus",
+        "ley-sanctum",
+        "spellforge"
       ],
       "heroOptions": [
-        "archmage"
+        "archmage",
+        "battlemage-vex",
+        "frost-warden"
       ]
     },
     {
@@ -7111,10 +9028,14 @@
         "bone-colossus": 2
       },
       "hqOptions": [
-        "graveyard"
+        "graveyard",
+        "crypt",
+        "plague-pit"
       ],
       "heroOptions": [
-        "necromancer"
+        "necromancer",
+        "lich",
+        "bone-warden"
       ]
     },
     {
@@ -7144,10 +9065,14 @@
         "regenerative-flesh": 3
       },
       "hqOptions": [
-        "the-hive"
+        "the-hive",
+        "ravenous-maw",
+        "broodbastion"
       ],
       "heroOptions": [
-        "broodmother"
+        "broodmother",
+        "swarmqueen",
+        "carapace-warden"
       ]
     },
     {
@@ -7176,10 +9101,14 @@
         "master-thief": 3
       },
       "hqOptions": [
-        "thieves-guild"
+        "thieves-guild",
+        "smugglers-den",
+        "hidden-enclave"
       ],
       "heroOptions": [
-        "spymaster"
+        "spymaster",
+        "blade-dancer",
+        "shadow-broker"
       ]
     },
     {
@@ -7208,10 +9137,14 @@
         "shrink-ray": 3
       },
       "hqOptions": [
-        "laboratory"
+        "laboratory",
+        "alembic-tower",
+        "black-market-apothecary"
       ],
       "heroOptions": [
-        "master-alchemist"
+        "master-alchemist",
+        "toxinweaver",
+        "iron-warden"
       ]
     },
     {
@@ -7234,10 +9167,14 @@
         "bag-of-gold": 2
       },
       "hqOptions": [
-        "hunk-stronghold"
+        "hunk-stronghold",
+        "hunk-village",
+        "hunk-bastion"
       ],
       "heroOptions": [
-        "hunk-coordinator"
+        "hunk-coordinator",
+        "big-hunk",
+        "handy-hunk"
       ]
     }
   ],
