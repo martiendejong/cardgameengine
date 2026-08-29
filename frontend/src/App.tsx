@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { LobbyPage } from './pages/LobbyPage';
 import { GamePage } from './pages/GamePage';
 import { CampaignPage } from './pages/CampaignPage';
+import { DecksPage } from './pages/DecksPage';
 import { BASE } from './config';
 import './App.css';
 
@@ -14,7 +15,7 @@ const GAME_ID = 'town-tcg';
 
 function App() {
   const [session, setSession] = useState<Session | null>(null);
-  const [view, setView] = useState<'loading' | 'lobby' | 'campaign'>('loading');
+  const [view, setView] = useState<'loading' | 'lobby' | 'campaign' | 'decks'>('loading');
 
   // New players start in the campaign; the lobby is for unlocked profiles.
   // A second browser window can still join any match via ?match=...&player=...
@@ -28,6 +29,10 @@ function App() {
     }
     if (params.get('campaign')) {
       setView('campaign');
+      return;
+    }
+    if (params.get('decks')) {
+      setView('decks');
       return;
     }
     const profile = localStorage.getItem('campaignProfile');
@@ -76,6 +81,11 @@ function App() {
     setView('campaign');
   }
 
+  function openDecks() {
+    window.history.replaceState(null, '', window.location.pathname + '?decks=1');
+    setView('decks');
+  }
+
   function openLobby() {
     window.history.replaceState(null, '', window.location.pathname);
     setView('lobby');
@@ -99,7 +109,11 @@ function App() {
     return <CampaignPage onMissionStarted={handleMissionStarted} onOpenLobby={openLobby} />;
   }
 
-  return <LobbyPage onMatchCreated={handleMatchCreated} onOpenCampaign={openCampaign} />;
+  if (view === 'decks') {
+    return <DecksPage onOpenLobby={openLobby} />;
+  }
+
+  return <LobbyPage onMatchCreated={handleMatchCreated} onOpenCampaign={openCampaign} onOpenDecks={openDecks} />;
 }
 
 export default App;
