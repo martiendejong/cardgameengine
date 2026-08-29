@@ -117,3 +117,10 @@ Volatile Mixture spends 2 AP and buffs Toxinweaver's own attack 3→5 until end 
 Warden's corpses pool now clamps at 6 instead of growing unbounded, and Raise Guardian still
 correctly spends down from that cap (6→3).
 Left: nothing.
+
+## 2026-08-29 — task 907 (WIP)
+Plan: add a per-profile "My Decks" store (DeckService.cs, JSON files under a new decks/
+folder next to profiles/, mirroring CampaignService's pattern) with CRUD endpoints
+(DecksController.cs), a shared GameQueries.ValidateDeck used by both match creation and
+the new store, and a DecksPage.tsx (list/build/edit/delete) wired into App.tsx + a
+"load saved deck" picker in LobbyPage.

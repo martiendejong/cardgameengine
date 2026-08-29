@@ -71,34 +71,11 @@ public class MatchService
                 ?? definition.DeckRules?.DefaultDeck
                 ?? new Dictionary<string, int>();
 
-            // Validate deck contents
-            foreach (var (cardId, count) in deck)
-            {
-                if (count < 0)
-                    return (null, $"{setup.Name}: negative count for card '{cardId}'");
-                var cardDef = definition.Cards.FirstOrDefault(c => c.Id == cardId);
-                if (cardDef == null)
-                    return (null, $"{setup.Name}: unknown card '{cardId}'");
-                if (!setup.IsAdmin && !CardGameEngine.Engine.GameQueries.IsDeckEligible(cardDef))
-                    return (null, $"{setup.Name}: card '{cardDef.Name}' is not deck-eligible");
-            }
-
-            // Enforce deck rules for non-admins
-            if (!setup.IsAdmin && definition.DeckRules != null)
-            {
-                var rules = definition.DeckRules;
-                var total = deck.Values.Sum();
-                if (total > rules.MaxDeckSize)
-                    return (null, $"{setup.Name}: deck has {total} cards, maximum is {rules.MaxDeckSize}");
-                foreach (var (cardId, count) in deck)
-                {
-                    var cardDef = definition.Cards.First(c => c.Id == cardId);
-                    if (cardDef.DeckLimit == "unlimited") continue;
-                    var limit = int.TryParse(cardDef.DeckLimit, out var perCard) ? perCard : rules.MaxCopies;
-                    if (count > limit)
-                        return (null, $"{setup.Name}: at most {limit} copies of '{cardId}' allowed");
-                }
-            }
+            // Validate deck contents and (for non-admins) deck rules — shared with the
+            // saved-deck store so Lobby/Campaign/My Decks all enforce the same limits.
+            var deckError = CardGameEngine.Engine.GameQueries.ValidateDeck(definition, deck, setup.IsAdmin);
+            if (deckError != null)
+                return (null, $"{setup.Name}: {deckError}");
 
             var deckList = new List<string>();
             foreach (var (cardId, count) in deck)

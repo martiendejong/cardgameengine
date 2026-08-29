@@ -95,6 +95,48 @@ public static class GameQueries
     public static bool IsDeckEligible(CardDefinition cardDef) =>
         cardDef.PlayCost != null || cardDef.PlayCosts != null;
 
+    /// <summary>
+    /// Validates a deck's card ids/counts against a game definition's card pool and, for
+    /// non-admins, its deck rules (max size, max copies, deck-eligibility). Returns null when
+    /// valid, otherwise a human-readable error. Shared by match creation and the saved-deck
+    /// store so every deck builder (Lobby, Campaign, My Decks) enforces the same limits.
+    /// enforceMinSize additionally requires the deck to meet DeckRules.MinDeckSize — off by
+    /// default so match creation keeps its existing (no minimum) behavior; a deck saved for
+    /// reuse must be a legally playable size, so the deck store turns it on.
+    /// </summary>
+    public static string? ValidateDeck(GameDefinition definition, Dictionary<string, int> deck, bool isAdmin,
+        bool enforceMinSize = false)
+    {
+        foreach (var (cardId, count) in deck)
+        {
+            if (count < 0)
+                return $"negative count for card '{cardId}'";
+            var cardDef = definition.Cards.FirstOrDefault(c => c.Id == cardId);
+            if (cardDef == null)
+                return $"unknown card '{cardId}'";
+            if (!isAdmin && !IsDeckEligible(cardDef))
+                return $"card '{cardDef.Name}' is not deck-eligible";
+        }
+
+        if (isAdmin || definition.DeckRules == null) return null;
+
+        var rules = definition.DeckRules;
+        var total = deck.Values.Sum();
+        if (total > rules.MaxDeckSize)
+            return $"deck has {total} cards, maximum is {rules.MaxDeckSize}";
+        if (enforceMinSize && total < rules.MinDeckSize)
+            return $"deck has {total} cards, minimum is {rules.MinDeckSize}";
+        foreach (var (cardId, count) in deck)
+        {
+            var cardDef = definition.Cards.First(c => c.Id == cardId);
+            if (cardDef.DeckLimit == "unlimited") continue;
+            var limit = int.TryParse(cardDef.DeckLimit, out var perCard) ? perCard : rules.MaxCopies;
+            if (count > limit)
+                return $"at most {limit} copies of '{cardId}' allowed";
+        }
+        return null;
+    }
+
     /// <summary>Play cost after active cost discounts (e.g. Archery Range). Never below 0.</summary>
     public static Dictionary<string, int> EffectivePlayCosts(GameInstance game, string playerId, CardDefinition cardDef)
     {
