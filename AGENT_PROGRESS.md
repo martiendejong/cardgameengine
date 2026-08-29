@@ -118,9 +118,27 @@ Warden's corpses pool now clamps at 6 instead of growing unbounded, and Raise Gu
 correctly spends down from that cap (6→3).
 Left: nothing.
 
-## 2026-08-29 — task 907 (WIP)
-Plan: add a per-profile "My Decks" store (DeckService.cs, JSON files under a new decks/
-folder next to profiles/, mirroring CampaignService's pattern) with CRUD endpoints
-(DecksController.cs), a shared GameQueries.ValidateDeck used by both match creation and
-the new store, and a DecksPage.tsx (list/build/edit/delete) wired into App.tsx + a
-"load saved deck" picker in LobbyPage.
+## 2026-08-29 — task 907
+Done: My Decks page — DeckService.cs persists named decks per profile as JSON under a new
+decks/ folder next to profiles/ (mirrors CampaignService's ProfilePath/GetProfile/SaveProfile
+pattern, so it survives redeploys the same way — deploy.ps1 only overwrites definitions/).
+DecksController.cs exposes list/create/edit/delete. Extracted the deck-size/max-copies/
+eligibility checks MatchService.CreateMatch already had into GameQueries.ValidateDeck (with
+an enforceMinSize flag, off for matches to keep existing behavior, on for saved decks) so
+match creation and deck saving enforce identical rules. DecksPage.tsx (new) lists/builds/
+edits/deletes decks reusing the existing deck-builder CSS from Campaign/Lobby; LobbyPage.tsx
+gained a "My Decks" nav button and a per-player "load a saved deck" picker. PR #11.
+Verified: dotnet build clean (0 errors); npm run build clean; curl round-trip against a live
+instance — create/list/edit (rename+recard)/delete, rejects >maxCopies (400) and <minDeckSize
+(400) and unknown card ids (400), deck file confirmed on disk and still present after killing
+and restarting the server (real persistence, not in-memory); MatchService regression-checked
+after the refactor (small non-min-enforced deck still starts a match, admin bypass still
+works, the exact same "at most 4 copies of 'x' allowed" error string still returned). Real
+Playwright run (python playwright, chromium): built and saved a 40-card deck with HQ/hero,
+reloaded the page and confirmed it persisted, edited its name and saved, picked it from the
+Lobby's saved-deck dropdown (deck size populated to 40), then deleted it and confirmed the
+list went back to empty — zero console errors throughout.
+Left: nothing. (Noted but out of scope: LobbyPage/CampaignPage's existing non-admin card-pool
+filter only checks `playCost`, missing the ~84 cards that use `playCosts` instead — e.g.
+Soldier — so they're invisible in those two builders' pools. DecksPage's own pool filter
+checks both, matching GameQueries.IsDeckEligible. Pre-existing, unrelated to this task.)
