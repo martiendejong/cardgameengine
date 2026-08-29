@@ -3289,6 +3289,12 @@
           "name": "Mass Resurrection",
           "costs": [
             {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 5
+            },
+            {
               "type": "tap"
             }
           ],
