@@ -7242,6 +7242,9 @@
       "resources": {
         "corpses": 0
       },
+      "resourceCapacities": {
+        "corpses": 6
+      },
       "tags": [
         "undead"
       ],
@@ -8492,9 +8495,9 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "buff_target_until_end_of_turn",
               "scope": "self",
-              "resourceId": "reagents",
+              "propertyId": "attack",
               "amount": 2
             }
           ]

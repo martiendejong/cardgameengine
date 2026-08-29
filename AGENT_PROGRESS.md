@@ -101,3 +101,19 @@ confirmed sell-wares grants 1 gold and taps the building, that both abilities sh
 (can't use trade right after sell-wares on the same turn), and that the original trade ability
 is unregressed (still costs 1 gold + tap, still draws a card).
 Left: nothing.
+
+## 2026-08-29 — task 908 (review fix)
+Done: fixed the 2 issues from the round-1 review (commit 745f329) on PR #10. Toxinweaver's
+"Volatile Mixture" gained the hero's own "reagents" (a resource nothing in the game ever reads —
+play costs only draw from the player's HQ bank via GameQueries.FindResourceBank, which only
+matches objectType headquarters) — replaced it with a +2 attack self-buff until end of turn,
+matching the exact templated "2 AP, no tap, self buff" pattern used by several other heroes
+(paladin, spymaster, bloodfang, iron-warden, big-hunk). Also added the missing
+resourceCapacities.corpses: 6 cap to bone-warden, matching the convention every other
+entity-scoped resource pool in the file has (including sibling necromancer-hero's own dp cap).
+Verified: dotnet build clean, 0 warnings/errors. A throwaway harness driving
+RuleEngine.ExecuteAction directly (built a real match via ExecuteSetup, no mocks) confirmed:
+Volatile Mixture spends 2 AP and buffs Toxinweaver's own attack 3→5 until end of turn; Bone
+Warden's corpses pool now clamps at 6 instead of growing unbounded, and Raise Guardian still
+correctly spends down from that cap (6→3).
+Left: nothing.
