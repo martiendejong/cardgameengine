@@ -41,6 +41,9 @@ public static class DefaultHandlers
             GameQueries.IsObjectTypeOrSubtype(ctx.Game, o.ObjectType, "hero")));
         c.Register("controls_no_tagged", ctx => !GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
             .Any(o => o.Tags.Contains(ctx.Condition.Tag ?? "")));
+        // Infiltration state: gates a spy's abilities to inside/outside a building
+        c.Register("is_attached", ctx => ctx.Object.AttachedToId != null);
+        c.Register("not_attached", ctx => ctx.Object.AttachedToId == null);
 
         static int GetResource(ConditionContext ctx) =>
             ctx.Condition.Scope == "player"
@@ -454,6 +457,89 @@ public static class DefaultHandlers
 
             ctx.Game.Log.Add($"{deadHero.Name} is reconstructed and returns to the battlefield!");
             s.Bus.Publish(ctx.Game, new GameEvent { Type = GameEventTypes.HeroRevived, Target = deadHero, Player = ctx.Player });
+        });
+
+        // Counter-intelligence: flip one face-down card face-up
+        e.Register("reveal", ctx =>
+        {
+            var obj = ctx.ResolveScope("target");
+            if (obj == null || !obj.FaceDown) return;
+            obj.FaceDown = false;
+            ctx.Game.Log.Add($"{obj.Name} is revealed!");
+        });
+
+        // Inspect a building: everything hiding inside is flipped face-up
+        e.Register("reveal_attachments", ctx =>
+        {
+            var host = ctx.ResolveScope("target");
+            if (host == null) return;
+            var hidden = ctx.Game.Objects
+                .Where(o => o.AttachedToId == host.Id && !o.IsDestroyed && o.FaceDown)
+                .ToList();
+            if (hidden.Count == 0)
+            {
+                ctx.Game.Log.Add($"{host.Name} is searched — nothing hides inside.");
+                return;
+            }
+            foreach (var obj in hidden)
+            {
+                obj.FaceDown = false;
+                ctx.Game.Log.Add($"{obj.Name} is discovered inside {host.Name}!");
+            }
+        });
+
+        // Purge a building: every enemy card attached to it (hidden or not) is destroyed
+        e.Register("destroy_infiltrators", ctx =>
+        {
+            var host = ctx.ResolveScope("target");
+            if (host == null) return;
+            var intruders = ctx.Game.Objects
+                .Where(o => o.AttachedToId == host.Id && !o.IsDestroyed && o.ControllerId != ctx.Player.Id)
+                .ToList();
+            if (intruders.Count == 0)
+            {
+                ctx.Game.Log.Add($"No intruders found in {host.Name}.");
+                return;
+            }
+            foreach (var obj in intruders)
+            {
+                obj.FaceDown = false;
+                ctx.Game.Log.Add($"{obj.Name} is flushed out of {host.Name}!");
+                m.DestroyObject(ctx.Game, obj, ctx.Source);
+            }
+        });
+
+        // Sweep a building: enemy cards attached to it are revealed and take direct damage
+        e.Register("damage_infiltrators", ctx =>
+        {
+            var host = ctx.ResolveScope("target");
+            if (host == null) return;
+            var intruders = ctx.Game.Objects
+                .Where(o => o.AttachedToId == host.Id && !o.IsDestroyed && o.ControllerId != ctx.Player.Id)
+                .ToList();
+            if (intruders.Count == 0)
+            {
+                ctx.Game.Log.Add($"No intruders found in {host.Name}.");
+                return;
+            }
+            foreach (var obj in intruders)
+            {
+                obj.FaceDown = false;
+                ctx.Game.Log.Add($"{obj.Name} is caught in the sweep of {host.Name}!");
+                m.ApplyDirectDamage(ctx.Game, obj, ctx.Effect.Amount ?? 0, ctx.Source);
+            }
+        });
+
+        // Deposit an entity-scoped resource into your HQ stockpile (corpses, biomass, ...)
+        e.Register("gain_bank_resource", ctx =>
+        {
+            var bank = GameQueries.FindResourceBank(ctx.Game, ctx.Player.Id);
+            if (bank == null)
+            {
+                ctx.Game.Log.Add($"{ctx.Player.Name} has no stockpile to store {ctx.Effect.ResourceId} in.");
+                return;
+            }
+            m.GainEntityResource(ctx.Game, bank, ctx.Effect.ResourceId!, ctx.Effect.Amount ?? 0);
         });
 
         // Consume a module installed on your hero and convert it to energy

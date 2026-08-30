@@ -204,6 +204,9 @@ public class ChoiceDefinition
     public int RequireResourceAmount { get; set; }
     public bool ExcludeSelf { get; set; } // target may not be the ability's source (sacrifice another unit)
     public bool AttachmentsOnly { get; set; } // target equipment/modules installed on cards (Dissolve)
+    public bool IncludeFaceDown { get; set; } // with AttachmentsOnly: hidden infiltrators are also valid targets
+    public string? HostController { get; set; } // attachment's host must be controlled by "self" or "opponent"
+    public string? HostObjectType { get; set; } // attachment's host must be this object type (e.g. "building")
     public bool ChooseAmount { get; set; } = false;
     public int AmountMin { get; set; } = 1;
     public string? AmountMaxResource { get; set; } // resource on source object that caps the choosable amount

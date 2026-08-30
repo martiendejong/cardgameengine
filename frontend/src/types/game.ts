@@ -55,6 +55,10 @@ export interface ChoiceDefinition {
   tag?: string;
   min: number;
   max: number;
+  attachmentsOnly?: boolean;
+  includeFaceDown?: boolean;
+  hostController?: string;
+  hostObjectType?: string;
   chooseAmount?: boolean;
   amountMin?: number;
   amountMaxResource?: string;
