@@ -34,9 +34,6 @@ function loadHero(): string {
 }
 
 export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProps) {
-  const [profileName, setProfileName] = useState(
-    () => localStorage.getItem('campaignProfile') ?? '',
-  );
   const [overview, setOverview] = useState<CampaignOverview | null>(null);
   const [gameDef, setGameDef] = useState<GameDefinitionFull | null>(null);
   const [error, setError] = useState('');
@@ -55,16 +52,11 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
   }, []);
 
   useEffect(() => {
-    if (!profileName.trim()) { setOverview(null); return; }
-    localStorage.setItem('campaignProfile', profileName);
-    const t = setTimeout(() => {
-      fetch(`${BASE}api/campaign?gameId=${GAME_ID}&profile=${encodeURIComponent(profileName)}`)
-        .then(r => r.json())
-        .then(setOverview)
-        .catch(() => setError('Failed to load the campaign. Is the backend running?'));
-    }, 300);
-    return () => clearTimeout(t);
-  }, [profileName]);
+    fetch(`${BASE}api/campaign?gameId=${GAME_ID}`, { credentials: 'include' })
+      .then(r => r.json())
+      .then(setOverview)
+      .catch(() => setError('Failed to load the campaign. Is the backend running?'));
+  }, []);
 
   const cardNames = useMemo(() => {
     const names: Record<string, string> = {};
@@ -122,12 +114,13 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
     setStarting(missionId);
     setError('');
     try {
-      const body: Record<string, unknown> = { gameId: GAME_ID, missionId, profile: profileName };
+      const body: Record<string, unknown> = { gameId: GAME_ID, missionId };
       if (deckTotal > 0) body.customDeck = customDeck;
       if (customHq) body.customHq = customHq;
       if (customHero) body.customHero = customHero;
       const res = await fetch(`${BASE}api/campaign/start`, {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
@@ -324,22 +317,10 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
       <div className="lobby-card lobby-wide campaign-card">
         <h1 className="lobby-title">Town Wars</h1>
         <p className="lobby-subtitle">
-          {overview ? 'Campaign — fight your way through six factions, earn your collection, unlock multiplayer'
-            : 'Welcome, commander. Enter your name to begin.'}
+          Campaign — fight your way through six factions, earn your collection, unlock multiplayer
         </p>
 
         {error && <div className="error-box">{error}</div>}
-
-        <div className="form-group">
-          <label>Commander name</label>
-          <input
-            type="text"
-            className="player-name-input campaign-profile-input"
-            value={profileName}
-            onChange={e => setProfileName(e.target.value)}
-            placeholder="Enter your name to load your progress"
-          />
-        </div>
 
         {overview && (
           <div className={`unlock-progress ${unlocked ? 'unlock-done' : ''}`}>

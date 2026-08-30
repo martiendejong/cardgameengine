@@ -153,6 +153,13 @@ public class MatchConnectionRegistry
         lock (_lock) _connections.Remove(connectionId);
     }
 
+    /// <summary>The (matchId, playerId) a connection joined as, or null if it never joined.</summary>
+    public (string matchId, string playerId)? Get(string connectionId)
+    {
+        lock (_lock)
+            return _connections.TryGetValue(connectionId, out var value) ? value : null;
+    }
+
     public List<(string connectionId, string playerId)> GetForMatch(string matchId)
     {
         lock (_lock)

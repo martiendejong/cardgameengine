@@ -29,7 +29,6 @@ function deckSize(deck: Record<string, number>): number {
 }
 
 export function DecksPage({ onOpenLobby }: DecksPageProps) {
-  const [profileName, setProfileName] = useState(() => localStorage.getItem('campaignProfile') ?? '');
   const [gameDef, setGameDef] = useState<GameDefinitionFull | null>(null);
   const [decks, setDecks] = useState<SavedDeck[]>([]);
   const [loading, setLoading] = useState(false);
@@ -52,20 +51,15 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
   }, []);
 
   const loadDecks = useCallback(() => {
-    if (!profileName.trim()) { setDecks([]); return; }
-    localStorage.setItem('campaignProfile', profileName);
     setLoading(true);
-    fetch(`${BASE}api/decks?gameId=${GAME_ID}&profile=${encodeURIComponent(profileName)}`)
+    fetch(`${BASE}api/decks?gameId=${GAME_ID}`, { credentials: 'include' })
       .then(r => r.json())
       .then(data => setDecks(data.decks ?? []))
       .catch(() => setError('Failed to load your decks. Is the backend running?'))
       .finally(() => setLoading(false));
-  }, [profileName]);
+  }, []);
 
-  useEffect(() => {
-    const t = setTimeout(loadDecks, 300);
-    return () => clearTimeout(t);
-  }, [loadDecks]);
+  useEffect(() => { loadDecks(); }, [loadDecks]);
 
   const deckRules = gameDef?.deckRules;
   const objectTypes = gameDef?.objectTypes ?? [];
@@ -148,7 +142,7 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
 
   const nameValid = editName.trim().length > 0;
   const sizeValid = editTotal >= minDeckSize && editTotal <= maxDeckSize;
-  const canSave = profileName.trim().length > 0 && nameValid && sizeValid && !saving;
+  const canSave = nameValid && sizeValid && !saving;
 
   async function saveEditing() {
     if (!canSave || editingId === null) return;
@@ -158,10 +152,10 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
       const isNew = editingId === '';
       const res = await fetch(`${BASE}api/decks${isNew ? '' : `/${editingId}`}`, {
         method: isNew ? 'POST' : 'PUT',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           gameId: GAME_ID,
-          profile: profileName,
           name: editName.trim(),
           hqId: editHq || null,
           heroId: editHero || null,
@@ -182,8 +176,9 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
     if (!window.confirm(`Delete "${deck.name}"? This cannot be undone.`)) return;
     setError('');
     try {
-      const res = await fetch(`${BASE}api/decks/${deck.id}?profile=${encodeURIComponent(profileName)}`, {
+      const res = await fetch(`${BASE}api/decks/${deck.id}`, {
         method: 'DELETE',
+        credentials: 'include',
       });
       if (!res.ok && res.status !== 204) throw new Error((await res.text()) || 'Failed to delete the deck');
       if (editingId === deck.id) setEditingId(null);
@@ -212,47 +207,27 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
 
         {error && <div className="error-box">{error}</div>}
 
-        <div className="form-group">
-          <label>Profile name</label>
-          <input
-            type="text"
-            className="player-name-input campaign-profile-input"
-            value={profileName}
-            onChange={e => setProfileName(e.target.value)}
-            placeholder="Enter your profile name to load your decks"
-            disabled={editingId !== null}
-          />
-        </div>
-
         {editingId === null && (
           <>
-            {!profileName.trim() && (
-              <div className="deck-hint">Enter your profile name above to see your saved decks.</div>
+            <button className="campaign-btn" onClick={startNew}>🃏 New Deck</button>
+
+            {loading && <div className="deck-hint">Loading your decks...</div>}
+
+            {!loading && decks.length === 0 && (
+              <div className="deck-empty">No saved decks yet — build one to get started.</div>
             )}
 
-            {profileName.trim() && (
-              <>
-                <button className="campaign-btn" onClick={startNew}>🃏 New Deck</button>
-
-                {loading && <div className="deck-hint">Loading your decks...</div>}
-
-                {!loading && decks.length === 0 && (
-                  <div className="deck-empty">No saved decks yet — build one to get started.</div>
-                )}
-
-                <div className="deck-list">
-                  {decks.map(d => (
-                    <div key={d.id} className="deck-list-item" style={{ cursor: 'default' }}>
-                      <span className="deck-card-icon">{d.hqId ? cardIcon(d.hqId) : '🃏'}</span>
-                      <span className="deck-card-name">{d.name}</span>
-                      <span className="deck-list-count">{deckSize(d.cards)} cards</span>
-                      <button className="back-btn" onClick={() => startEdit(d)}>Edit</button>
-                      <button className="back-btn" onClick={() => deleteDeck(d)}>Delete</button>
-                    </div>
-                  ))}
+            <div className="deck-list">
+              {decks.map(d => (
+                <div key={d.id} className="deck-list-item" style={{ cursor: 'default' }}>
+                  <span className="deck-card-icon">{d.hqId ? cardIcon(d.hqId) : '🃏'}</span>
+                  <span className="deck-card-name">{d.name}</span>
+                  <span className="deck-list-count">{deckSize(d.cards)} cards</span>
+                  <button className="back-btn" onClick={() => startEdit(d)}>Edit</button>
+                  <button className="back-btn" onClick={() => deleteDeck(d)}>Delete</button>
                 </div>
-              </>
-            )}
+              ))}
+            </div>
           </>
         )}
 

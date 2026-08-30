@@ -1,6 +1,17 @@
 /* ============================================================
    Lobby
    ============================================================ */
+.app-shell {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-shell .lobby-page {
+  flex: 1;
+  min-height: 0;
+}
+
 .lobby-page {
   height: 100vh;
   display: flex;
@@ -144,8 +155,21 @@
 .connecting-screen {
   height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.account-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 10px 24px;
+  background: #16213e;
+  border-bottom: 1px solid #0f3460;
+  color: #ccc;
+  font-size: 13px;
 }
 
 .connecting-message {

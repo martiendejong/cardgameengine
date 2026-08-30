@@ -78,27 +78,30 @@ public class CampaignService
         return _missions;
     }
 
-    // ---- profiles ----
+    // ---- profiles (keyed by account id — never a client-typed name) ----
 
-    private string ProfilePath(string name)
+    private string ProfilePath(string userId)
     {
-        var safe = string.Concat(name.Where(char.IsLetterOrDigit)).ToLowerInvariant();
+        var safe = string.Concat(userId.Where(char.IsLetterOrDigit)).ToLowerInvariant();
         if (safe.Length == 0) safe = "player";
         return Path.Combine(_profilesDir, safe + ".json");
     }
 
-    public PlayerProfile GetProfile(string name)
+    public PlayerProfile GetProfile(string userId, string displayName = "")
     {
-        var path = ProfilePath(name);
-        if (File.Exists(path))
-            return JsonSerializer.Deserialize<PlayerProfile>(File.ReadAllText(path),
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new PlayerProfile { Name = name };
-        return new PlayerProfile { Name = name };
+        var path = ProfilePath(userId);
+        var profile = File.Exists(path)
+            ? JsonSerializer.Deserialize<PlayerProfile>(File.ReadAllText(path),
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new PlayerProfile()
+            : new PlayerProfile();
+        if (!string.IsNullOrEmpty(displayName))
+            profile.Name = displayName; // always reflect the account's current display name
+        return profile;
     }
 
-    public void SaveProfile(PlayerProfile profile)
+    public void SaveProfile(string userId, PlayerProfile profile)
     {
-        File.WriteAllText(ProfilePath(profile.Name),
+        File.WriteAllText(ProfilePath(userId),
             JsonSerializer.Serialize(profile, new JsonSerializerOptions { WriteIndented = true }));
     }
 
@@ -123,13 +126,13 @@ public class CampaignService
 
     // ---- encounter match construction ----
 
-    public (GameInstance? game, string? error) StartMission(string gameId, string missionId, string profileName,
+    public (GameInstance? game, string? error) StartMission(string gameId, string missionId, string userId, string displayName,
         Dictionary<string, int>? customDeck = null, string? customHq = null, string? customHero = null)
     {
         var mission = GetMissions(gameId).FirstOrDefault(m => m.Id == missionId);
         if (mission == null) return (null, $"Unknown mission '{missionId}'");
 
-        var profile = GetProfile(profileName);
+        var profile = GetProfile(userId, displayName);
         if (!IsUnlocked(profile, mission))
             return (null, "Complete the previous mission first");
 
@@ -155,7 +158,7 @@ public class CampaignService
             },
         };
 
-        var (game, error) = _matchService.CreateMatch(gameId, players, setupOverride: g =>
+        var (game, error) = _matchService.CreateMatch(gameId, players, userId, setupOverride: g =>
         {
             g.Players[0].HqCardId = !string.IsNullOrEmpty(customHq) ? customHq : mission.Player.Hq;
             g.Players[0].HeroCardId = !string.IsNullOrEmpty(customHero) ? customHero : mission.Player.Hero;
@@ -164,7 +167,7 @@ public class CampaignService
             g.Encounter = new EncounterState
             {
                 MissionId = mission.Id,
-                ProfileName = profile.Name,
+                ProfileUserId = userId,
                 PlayerId = "p1",
                 EnemyPlayerId = "p2",
                 VictoryOnCleared = mission.Victory == "cleared",
@@ -178,18 +181,21 @@ public class CampaignService
         return (game, error);
     }
 
-    /// <summary>Called when the player reports a finished encounter; verifies and grants rewards.</summary>
-    public (bool granted, string message, PlayerProfile? profile) CompleteMission(GameInstance game)
+    /// <summary>Called when the player reports a finished encounter; verifies and grants rewards.
+    /// callerUserId must match the account that started the mission — otherwise anyone who learns
+    /// a matchId could claim another player's campaign rewards.</summary>
+    public (bool granted, string message, PlayerProfile? profile) CompleteMission(GameInstance game, string callerUserId)
     {
         var enc = game.Encounter;
         if (enc == null) return (false, "Not a campaign match", null);
+        if (enc.ProfileUserId != callerUserId) return (false, "Not authorized to complete this mission", null);
         if (game.State != GameState.GameEnded) return (false, "The battle is not over", null);
-        if (enc.RewardsGranted) return (false, "Rewards already collected", GetProfile(enc.ProfileName));
+        if (enc.RewardsGranted) return (false, "Rewards already collected", GetProfile(enc.ProfileUserId));
 
         var player = game.Players.First(p => p.Id == enc.PlayerId);
         if (!player.IsWinner) return (false, "The town has fallen — try again", null);
 
-        var profile = GetProfile(enc.ProfileName);
+        var profile = GetProfile(enc.ProfileUserId);
         if (!profile.CompletedMissions.Contains(enc.MissionId))
             profile.CompletedMissions.Add(enc.MissionId);
         // Rewards come as a full playset, capped so replays cannot farm past it —
@@ -198,7 +204,7 @@ public class CampaignService
         foreach (var cardId in enc.RewardCards)
             profile.Collection[cardId] =
                 Math.Min(profile.Collection.GetValueOrDefault(cardId) + playset, playset);
-        SaveProfile(profile);
+        SaveProfile(enc.ProfileUserId, profile);
         enc.RewardsGranted = true;
 
         _logger.LogInformation("Profile {Name} completed {Mission}, rewards: {Rewards}",

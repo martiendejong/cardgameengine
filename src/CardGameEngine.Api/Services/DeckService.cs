@@ -17,19 +17,20 @@ public class SavedDeck
     public string UpdatedAt { get; set; } = "";
 }
 
-/// <summary>All decks saved under one player's profile name, persisted as JSON.</summary>
+/// <summary>All decks saved under one account, persisted as JSON.</summary>
 public class PlayerDecks
 {
-    public string Name { get; set; } = "";
     public List<SavedDeck> Decks { get; set; } = new();
 }
 
 /// <summary>
-/// Per-profile saved-deck store. No DB — mirrors CampaignService's
+/// Per-account saved-deck store. No DB — mirrors CampaignService's
 /// ProfilePath/GetProfile/SaveProfile JSON-file pattern in its own "decks" folder next to
 /// "profiles", so saved decks stay independent of campaign progress/collection but persist
 /// the same way (survives reloads, sessions, and redeploys — see deploy.ps1, which only
-/// overwrites the definitions/ folder and never touches sibling runtime data folders).
+/// overwrites the definitions/ folder and never touches sibling runtime data folders). Keyed
+/// by account id (never a client-typed name) so a deck can only ever be listed/edited/deleted
+/// by the account that saved it.
 /// </summary>
 public class DeckService
 {
@@ -46,37 +47,35 @@ public class DeckService
         Directory.CreateDirectory(_decksDir);
     }
 
-    private string DecksPath(string profileName)
+    private string DecksPath(string userId)
     {
-        var safe = string.Concat(profileName.Where(char.IsLetterOrDigit)).ToLowerInvariant();
+        var safe = string.Concat(userId.Where(char.IsLetterOrDigit)).ToLowerInvariant();
         if (safe.Length == 0) safe = "player";
         return Path.Combine(_decksDir, safe + ".json");
     }
 
-    public PlayerDecks GetPlayerDecks(string profileName)
+    public PlayerDecks GetPlayerDecks(string userId)
     {
-        var path = DecksPath(profileName);
+        var path = DecksPath(userId);
         if (File.Exists(path))
             return JsonSerializer.Deserialize<PlayerDecks>(File.ReadAllText(path),
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new PlayerDecks { Name = profileName };
-        return new PlayerDecks { Name = profileName };
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new PlayerDecks();
+        return new PlayerDecks();
     }
 
-    private void SavePlayerDecks(PlayerDecks decks)
+    private void SavePlayerDecks(string userId, PlayerDecks decks)
     {
-        File.WriteAllText(DecksPath(decks.Name),
+        File.WriteAllText(DecksPath(userId),
             JsonSerializer.Serialize(decks, new JsonSerializerOptions { WriteIndented = true }));
     }
 
-    public List<SavedDeck> ListDecks(string profileName, string gameId) =>
-        GetPlayerDecks(profileName).Decks.Where(d => d.GameId == gameId).ToList();
+    public List<SavedDeck> ListDecks(string userId, string gameId) =>
+        GetPlayerDecks(userId).Decks.Where(d => d.GameId == gameId).ToList();
 
     /// <summary>Creates a new deck (id == null) or updates an existing one (id given).</summary>
-    public (SavedDeck? deck, string? error) SaveDeck(string profileName, string gameId, string? id, string name,
+    public (SavedDeck? deck, string? error) SaveDeck(string userId, string gameId, string? id, string name,
         string? hqId, string? heroId, Dictionary<string, int> cards)
     {
-        if (string.IsNullOrWhiteSpace(profileName))
-            return (null, "Profile name is required");
         name = name.Trim();
         if (name.Length == 0)
             return (null, "Deck name is required");
@@ -95,8 +94,7 @@ public class DeckService
         var error = GameQueries.ValidateDeck(definition, cleanCards, isAdmin: false, enforceMinSize: true);
         if (error != null) return (null, error);
 
-        var store = GetPlayerDecks(profileName);
-        store.Name = profileName;
+        var store = GetPlayerDecks(userId);
         var now = DateTime.UtcNow.ToString("o");
 
         SavedDeck? deck = id == null ? null : store.Decks.FirstOrDefault(d => d.Id == id);
@@ -115,16 +113,16 @@ public class DeckService
         deck.Cards = cleanCards;
         deck.UpdatedAt = now;
 
-        SavePlayerDecks(store);
-        _logger.LogInformation("Profile {Name} saved deck {DeckId} ({DeckName})", profileName, deck.Id, deck.Name);
+        SavePlayerDecks(userId, store);
+        _logger.LogInformation("Account {UserId} saved deck {DeckId} ({DeckName})", userId, deck.Id, deck.Name);
         return (deck, null);
     }
 
-    public bool DeleteDeck(string profileName, string deckId)
+    public bool DeleteDeck(string userId, string deckId)
     {
-        var store = GetPlayerDecks(profileName);
+        var store = GetPlayerDecks(userId);
         if (store.Decks.RemoveAll(d => d.Id == deckId) == 0) return false;
-        SavePlayerDecks(store);
+        SavePlayerDecks(userId, store);
         return true;
     }
 }

@@ -19,9 +19,6 @@ public class CreateMatchRequest
 {
     public string GameId { get; set; } = "";
     public List<PlayerSetup> Players { get; set; } = new();
-    // Campaign profile of the person creating the match; multiplayer requires
-    // a collection that can field a minimum-size deck (admins bypass)
-    public string? Profile { get; set; }
 }
 
 public class MatchService
@@ -40,7 +37,7 @@ public class MatchService
     }
 
     public (GameInstance? game, string? error) CreateMatch(string gameId, List<PlayerSetup> players,
-        Action<GameInstance>? setupOverride = null)
+        string creatorUserId, Action<GameInstance>? setupOverride = null)
     {
         var definition = _definitionService.GetById(gameId);
         if (definition == null)
@@ -55,7 +52,8 @@ public class MatchService
         var game = new GameInstance
         {
             Id = matchId,
-            Definition = definition
+            Definition = definition,
+            CreatorUserId = creatorUserId,
         };
 
         foreach (var setup in players)

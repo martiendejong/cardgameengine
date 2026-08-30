@@ -27,12 +27,15 @@ public class GameInstance
     // Reaction window: who may respond while State == WaitingForReaction
     public string? ReactionPlayerId { get; set; }
     public string? ReactionWindowEvent { get; set; } // "attackDeclared" or "spellCast"
+    // Account id of whoever created this match — the only account allowed to join with
+    // playerId="" (the omniscient hotseat connection that can act as any non-bot seat).
+    public string CreatorUserId { get; set; } = "";
 }
 
 public class EncounterState
 {
     public string MissionId { get; set; } = "";
-    public string ProfileName { get; set; } = "";
+    public string ProfileUserId { get; set; } = ""; // account that owns the campaign profile
     public string PlayerId { get; set; } = "";      // the human seat
     public string EnemyPlayerId { get; set; } = "";
     public bool VictoryOnCleared { get; set; }       // win when all spawns are dealt with
@@ -78,6 +81,9 @@ public class PlayerInstance
     public string? HqCardId { get; set; }   // headquarters placed at setup
     public string? HeroCardId { get; set; } // hero placed at setup
     public List<string> RelevantResources { get; set; } = new(); // player resources this deck actually uses
+    // Account id bound to this seat. Null until the first authenticated JoinMatch claims it
+    // (invite-link flow); once claimed, only that same account may join/act as this seat.
+    public string? OwnerUserId { get; set; }
 }
 
 public class ObjectInstance
