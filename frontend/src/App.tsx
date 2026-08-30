@@ -187,7 +187,12 @@ function App() {
   return (
     <div className="app-shell">
       {accountBar}
-      <LobbyPage onMatchCreated={handleMatchCreated} onOpenCampaign={openCampaign} onOpenDecks={openDecks} />
+      <LobbyPage
+        onMatchCreated={handleMatchCreated}
+        onOpenCampaign={openCampaign}
+        onOpenDecks={openDecks}
+        canUseAdminMode={auth.user.isAdmin === true}
+      />
     </div>
   );
 }

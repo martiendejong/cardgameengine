@@ -27,6 +27,16 @@ public class MatchesController : ControllerBase
     {
         var userId = this.UserId();
 
+        // Admin lobby seats (no deck limits, full card pool) are an account privilege,
+        // not a checkbox anyone may tick: the caller must hold the Admin role.
+        if (request.Players.Any(p => p.IsAdmin))
+        {
+            var caller = await _userManager.GetUserAsync(User);
+            bool callerIsAdmin = caller != null && await _userManager.IsInRoleAsync(caller, "Admin");
+            if (!callerIsAdmin)
+                return StatusCode(403, "Admin mode requires an admin account — log in as an admin or disable the Admin toggle.");
+        }
+
         // Multiplayer gate: non-admin human seats require a campaign profile
         // whose collection can field a minimum-size deck. Admin mode bypasses.
         var needsUnlock = request.Players.Any(p => !p.IsAdmin && !p.IsBot);

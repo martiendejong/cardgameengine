@@ -12,6 +12,9 @@ interface LobbyPageProps {
   onMatchCreated: (matchId: string, seat: string) => void;
   onOpenCampaign: () => void;
   onOpenDecks: () => void;
+  // Account-level privilege: only admin accounts see the per-player Admin toggle
+  // (the server refuses admin seats from non-admin accounts regardless).
+  canUseAdminMode: boolean;
 }
 
 interface PlayerDeckState {
@@ -45,7 +48,7 @@ function typeLabel(objectType: string): string {
   }
 }
 
-export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks }: LobbyPageProps) {
+export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseAdminMode }: LobbyPageProps) {
   const [definitions, setDefinitions] = useState<GameDefinitionSummary[]>([]);
   const [selectedGame, setSelectedGame] = useState('');
   const [fullDef, setFullDef] = useState<GameDefinitionFull | null>(null);
@@ -273,14 +276,16 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks }: Lobby
                     onChange={e => setName(idx, e.target.value)}
                     placeholder={`Player ${idx + 1}`}
                   />
-                  <label className="admin-toggle">
-                    <input
-                      type="checkbox"
-                      checked={player.isAdmin}
-                      onChange={() => toggleAdmin(idx)}
-                    />
-                    Admin
-                  </label>
+                  {canUseAdminMode && (
+                    <label className="admin-toggle">
+                      <input
+                        type="checkbox"
+                        checked={player.isAdmin}
+                        onChange={() => toggleAdmin(idx)}
+                      />
+                      Admin
+                    </label>
+                  )}
                 </div>
 
                 {fullDef && fullDef.decks.length > 0 && (

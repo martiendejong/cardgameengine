@@ -6,6 +6,7 @@ export interface AuthUser {
   userId?: string;
   email?: string;
   displayName?: string;
+  isAdmin?: boolean;
 }
 
 export interface AuthProviders {

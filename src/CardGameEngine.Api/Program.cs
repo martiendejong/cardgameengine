@@ -118,6 +118,24 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     db.Database.Migrate();
+
+    // Account-level Admin role, seeded from config (Admin:Emails). Admin accounts may use
+    // the lobby's admin mode (full card pool, no deck limits); everyone else is refused
+    // server-side. Config-driven so admin status survives a fresh database.
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    if (!await roleManager.RoleExistsAsync("Admin"))
+        await roleManager.CreateAsync(new IdentityRole("Admin"));
+
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    foreach (var adminEmail in app.Configuration.GetSection("Admin:Emails").Get<string[]>() ?? [])
+    {
+        var adminUser = await userManager.FindByEmailAsync(adminEmail);
+        if (adminUser != null && !await userManager.IsInRoleAsync(adminUser, "Admin"))
+        {
+            await userManager.AddToRoleAsync(adminUser, "Admin");
+            app.Logger.LogInformation("Granted Admin role to {Email}", adminEmail);
+        }
+    }
 }
 
 // Support running at a subpath (e.g. /townwars) behind a reverse proxy.

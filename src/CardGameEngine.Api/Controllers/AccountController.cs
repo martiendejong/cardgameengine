@@ -175,6 +175,9 @@ public class AccountController : ControllerBase
         userId = user.Id,
         email = user.Email,
         displayName = user.DisplayName,
+        // Checked against the database, not cookie claims, so a role granted after
+        // login (e.g. the startup Admin:Emails seed) is visible without re-login.
+        isAdmin = await _userManager.IsInRoleAsync(user, "Admin"),
     };
 
     /// <summary>Which OAuth providers are actually configured, so the frontend can hide buttons
