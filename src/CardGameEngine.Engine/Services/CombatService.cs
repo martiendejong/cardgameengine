@@ -110,6 +110,7 @@ public class CombatService
         }
 
         int damageToDefender = Math.Max(0, attackerAttack - defenderArmor);
+        int defenderHpBefore = defender.Properties.GetValueOrDefault("currentHp");
 
         // Siege chipping: buildings cannot dodge — any real attack deals at least 1.
         // Keeps armor meaningful in unit combat while guaranteeing sieges eventually end.
@@ -133,6 +134,56 @@ public class CombatService
         if (attacker.IsDestroyed)
             _s.Bus.Publish(game, new GameEvent { Type = GameEventTypes.UnitKilled, Source = defender, Target = attacker });
 
+        bool defenderIsUnit = GameQueries.IsObjectTypeOrSubtype(game, defender.ObjectType, "unit");
+
+        // Splash: the swing also clips every other enemy unit on the defender's line for 1
+        if (defenderIsUnit && attacker.Tags.Contains("splash") && !attacker.IsDestroyed)
+        {
+            foreach (var bystander in EnemyUnitsOnLine(game, defender).Where(o => o.Id != defender.Id).ToList())
+            {
+                int splashDamage = Math.Max(0, 1 - GameQueries.GetEffectiveProperty(game, bystander, "armor"));
+                if (splashDamage <= 0)
+                {
+                    game.Log.Add($"{bystander.Name}'s armor shrugs off the splash from {attacker.Name}.");
+                    continue;
+                }
+                game.Log.Add($"{attacker.Name}'s sweep also hits {bystander.Name}!");
+                _s.Mutator.ApplyDamage(game, bystander, splashDamage, attacker);
+                if (bystander.IsDestroyed)
+                    _s.Bus.Publish(game, new GameEvent { Type = GameEventTypes.UnitKilled, Source = attacker, Target = bystander });
+            }
+        }
+
+        // Cleave: a killing blow's excess damage carries into the next enemy unit on that line
+        if (defenderIsUnit && defender.IsDestroyed && attacker.Tags.Contains("cleave") && !attacker.IsDestroyed)
+        {
+            int excess = damageToDefender - defenderHpBefore;
+            var next = EnemyUnitsOnLine(game, defender)
+                .OrderBy(o => o.Properties.GetValueOrDefault("currentHp"))
+                .FirstOrDefault();
+            if (excess > 0 && next != null)
+            {
+                int cleaveDamage = Math.Max(0, excess - GameQueries.GetEffectiveProperty(game, next, "armor"));
+                if (cleaveDamage > 0)
+                {
+                    game.Log.Add($"{attacker.Name} cleaves through into {next.Name} for {cleaveDamage}!");
+                    _s.Mutator.ApplyDamage(game, next, cleaveDamage, attacker);
+                    if (next.IsDestroyed)
+                        _s.Bus.Publish(game, new GameEvent { Type = GameEventTypes.UnitKilled, Source = attacker, Target = next });
+                }
+            }
+        }
+
         _s.Bus.Publish(game, new GameEvent { Type = GameEventTypes.AttackResolved, Source = attacker, Target = defender });
     }
+
+    /// <summary>Living enemy units standing on the same battlefield line as the given object.</summary>
+    private static IEnumerable<ObjectInstance> EnemyUnitsOnLine(GameInstance game, ObjectInstance reference) =>
+        game.Objects.Where(o =>
+            o.ControllerId == reference.ControllerId
+            && !o.IsDestroyed
+            && o.ZoneId == "battlefield"
+            && o.AttachedToId == null
+            && o.Line == reference.Line
+            && GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, "unit"));
 }

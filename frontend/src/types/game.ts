@@ -59,6 +59,8 @@ export interface ChoiceDefinition {
   includeFaceDown?: boolean;
   hostController?: string;
   hostObjectType?: string;
+  maxPropertyId?: string;
+  maxPropertyValue?: number;
   chooseAmount?: boolean;
   amountMin?: number;
   amountMaxResource?: string;
@@ -179,6 +181,8 @@ export interface EffectDto {
   cardId?: string | null;
   tag?: string | null;
   ignoreHousing?: boolean | null;
+  line?: string | null;
+  maxHp?: number | null;
 }
 
 export interface AbilityDto {
