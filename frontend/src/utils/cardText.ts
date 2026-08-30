@@ -47,19 +47,28 @@ export function explainCondition(c: ConditionDto): string {
     case 'has_tag': return `Only if this card is a ${c.tag}`;
     case 'is_phase': return `Only during the ${c.phase} phase`;
     case 'own_hero_destroyed': return 'Only while your hero is destroyed';
+    case 'is_attached': return 'Only while infiltrated / attached';
+    case 'not_attached': return 'Only while free on the battlefield';
     default: return c.type;
   }
 }
 
 export function explainChoice(ch: ChoiceDefinition): string {
   const who = ch.controller === 'self' ? 'friendly' : ch.controller === 'opponent' ? 'enemy' : 'any';
-  const what = ch.tag ?? ch.objectType ?? 'card';
+  const what = ch.attachmentsOnly ? 'attached card' : ch.tag ?? ch.objectType ?? 'card';
   const count = ch.min === ch.max ? `${ch.min}` : `${ch.min}–${ch.max}`;
-  return `Target: ${count} ${who} ${what}${ch.max > 1 ? 's' : ''}`;
+  const where = ch.hostController === 'self'
+    ? ` on a ${ch.hostObjectType ?? 'card'} you control`
+    : ch.hostController === 'opponent' ? ` on an enemy ${ch.hostObjectType ?? 'card'}` : '';
+  const hidden = ch.includeFaceDown ? ' (even face-down)' : '';
+  return `Target: ${count} ${who} ${what}${ch.max > 1 ? 's' : ''}${where}${hidden}`;
 }
 
 export function explainEffect(e: EffectDto, nameOf: NameOf): string {
-  const target = e.scope === 'target' ? 'the target' : e.scope === 'player' ? 'you' : 'this card';
+  const target = e.scope === 'target' ? 'the target'
+    : e.scope === 'player' ? 'you'
+    : e.scope === 'host' ? 'the card this is attached to'
+    : 'this card';
   switch (e.type) {
     case 'gain_resource':
       return e.scope === 'player'
@@ -85,6 +94,13 @@ export function explainEffect(e: EffectDto, nameOf: NameOf): string {
     case 'steal_resource': return `Steal up to ${e.amount} ${resName(e.resourceId)} from the opponent (nothing if they have none)`;
     case 'plunder_resource': return `Remove up to ${e.amount} ${resName(e.resourceId)} from the opponent and store that many tokens on this card`;
     case 'revive_hero': return 'Return your destroyed hero to the battlefield with full HP (it cannot act this turn)';
+    case 'infiltrate': return 'Slip face-down into the target enemy building. While inside: cannot attack, block or be attacked — only its infiltration abilities work';
+    case 'direct_damage': return `Deal ${e.amount} direct damage to ${target} (ignores Armor)`;
+    case 'reveal': return 'Reveal the target face-down card';
+    case 'reveal_attachments': return 'Search the target building: everything hiding inside is revealed';
+    case 'destroy_infiltrators': return 'Flush out the target building: every enemy card attached to it (even hidden) is destroyed';
+    case 'damage_infiltrators': return `Enemy cards hiding in the target building are revealed and take ${e.amount} direct damage each`;
+    case 'gain_bank_resource': return `Add ${e.amount} ${resName(e.resourceId)} to your HQ stockpile`;
     default: return e.type;
   }
 }

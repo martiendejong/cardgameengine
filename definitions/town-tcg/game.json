@@ -147,7 +147,8 @@
       "name": "Spy",
       "parentType": "unit",
       "resources": [
-        "intel"
+        "intel",
+        "sabotage"
       ]
     },
     {
@@ -292,6 +293,13 @@
       "name": "Growth",
       "scope": "entity",
       "defaultValue": 0
+    },
+    {
+      "id": "sabotage",
+      "name": "Sabotage Charge",
+      "scope": "entity",
+      "defaultValue": 0,
+      "maxValue": 3
     }
   ],
   "tags": [
@@ -487,6 +495,38 @@
               "type": "summon",
               "scope": "player",
               "cardId": "peasant"
+            }
+          ]
+        },
+        {
+          "id": "search-the-premises",
+          "name": "Search the Premises",
+          "costs": [
+            {
+              "type": "crew",
+              "amount": 2,
+              "tag": "worker"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1,
+            "attachmentsOnly": true,
+            "hostController": "self",
+            "hostObjectType": "building",
+            "includeFaceDown": true
+          },
+          "effects": [
+            {
+              "type": "reveal",
+              "scope": "target"
+            },
+            {
+              "type": "destroy",
+              "scope": "target"
             }
           ]
         }
@@ -1781,7 +1821,9 @@
       "resources": {
         "reserves": 5
       },
-      "tags": ["resource-node"],
+      "tags": [
+        "resource-node"
+      ],
       "icon": "\u26cf\ufe0f",
       "artworkDescription": "A dark shaft braced with timber, glittering with veins of gold",
       "abilities": [
@@ -4031,7 +4073,7 @@
       "id": "spy",
       "name": "Spy",
       "objectType": "spy-unit",
-      "playCost": 2,
+      "playCost": 3,
       "properties": {
         "attack": 1,
         "currentHp": 2,
@@ -4062,7 +4104,11 @@
               "type": "tap"
             }
           ],
-          "conditions": [],
+          "conditions": [
+            {
+              "type": "not_attached"
+            }
+          ],
           "choice": {
             "type": "entity",
             "controller": "opponent",
@@ -4090,7 +4136,11 @@
               "type": "tap"
             }
           ],
-          "conditions": [],
+          "conditions": [
+            {
+              "type": "not_attached"
+            }
+          ],
           "effects": [
             {
               "type": "steal_resource",
@@ -4101,28 +4151,53 @@
         },
         {
           "id": "sabotage",
-          "name": "Sabotage",
+          "name": "Plant Charges",
+          "costs": [],
+          "conditions": [
+            {
+              "type": "is_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "sabotage",
+              "amount": 1
+            }
+          ],
+          "usesPerTurn": 1
+        },
+        {
+          "id": "detonate",
+          "name": "Detonate",
           "costs": [
             {
-              "type": "resource",
-              "scope": "self",
-              "resourceId": "intel",
+              "type": "sacrifice"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "is_attached"
+            },
+            {
+              "type": "resource_gte",
+              "resourceId": "sabotage",
               "amount": 3
             }
           ],
-          "conditions": [],
           "effects": [
             {
-              "type": "destroy",
-              "scope": "host"
-            },
-            {
-              "type": "destroy",
-              "scope": "self"
+              "type": "direct_damage",
+              "scope": "host",
+              "amount": 6
             }
           ]
         }
-      ]
+      ],
+      "resourceCapacities": {
+        "sabotage": 3
+      }
     },
     {
       "id": "ambush",
@@ -5909,7 +5984,39 @@
         "retaliate"
       ],
       "icon": "\ud83d\udee1\ufe0f",
-      "artworkDescription": "The Hive\u2019s immune system, weaponized"
+      "artworkDescription": "The Hive\u2019s immune system, weaponized",
+      "abilities": [
+        {
+          "id": "devour-intruder",
+          "name": "Devour Intruder",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1,
+            "attachmentsOnly": true,
+            "hostController": "self",
+            "hostObjectType": "building",
+            "includeFaceDown": true
+          },
+          "effects": [
+            {
+              "type": "reveal",
+              "scope": "target"
+            },
+            {
+              "type": "destroy",
+              "scope": "target"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "devouring-maw",
@@ -6380,6 +6487,38 @@
               "amount": 1
             }
           ]
+        },
+        {
+          "id": "search-the-premises",
+          "name": "Search the Premises",
+          "costs": [
+            {
+              "type": "crew",
+              "amount": 2,
+              "tag": "worker"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1,
+            "attachmentsOnly": true,
+            "hostController": "self",
+            "hostObjectType": "building",
+            "includeFaceDown": true
+          },
+          "effects": [
+            {
+              "type": "reveal",
+              "scope": "target"
+            },
+            {
+              "type": "destroy",
+              "scope": "target"
+            }
+          ]
         }
       ],
       "triggers": [
@@ -6440,6 +6579,38 @@
               "scope": "player",
               "resourceId": "gold",
               "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "search-the-premises",
+          "name": "Search the Premises",
+          "costs": [
+            {
+              "type": "crew",
+              "amount": 2,
+              "tag": "worker"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1,
+            "attachmentsOnly": true,
+            "hostController": "self",
+            "hostObjectType": "building",
+            "includeFaceDown": true
+          },
+          "effects": [
+            {
+              "type": "reveal",
+              "scope": "target"
+            },
+            {
+              "type": "destroy",
+              "scope": "target"
             }
           ]
         }
@@ -6577,6 +6748,38 @@
               "type": "summon",
               "scope": "player",
               "cardId": "hunk"
+            }
+          ]
+        },
+        {
+          "id": "sweep-the-grounds",
+          "name": "Sweep the Grounds",
+          "costs": [
+            {
+              "type": "crew",
+              "amount": 2,
+              "tag": "hunk"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1,
+            "attachmentsOnly": true,
+            "hostController": "self",
+            "hostObjectType": "building",
+            "includeFaceDown": true
+          },
+          "effects": [
+            {
+              "type": "reveal",
+              "scope": "target"
+            },
+            {
+              "type": "destroy",
+              "scope": "target"
             }
           ]
         }
@@ -8637,6 +8840,38 @@
               "amount": 1
             }
           ]
+        },
+        {
+          "id": "sweep-the-grounds",
+          "name": "Sweep the Grounds",
+          "costs": [
+            {
+              "type": "crew",
+              "amount": 2,
+              "tag": "hunk"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1,
+            "attachmentsOnly": true,
+            "hostController": "self",
+            "hostObjectType": "building",
+            "includeFaceDown": true
+          },
+          "effects": [
+            {
+              "type": "reveal",
+              "scope": "target"
+            },
+            {
+              "type": "destroy",
+              "scope": "target"
+            }
+          ]
         }
       ]
     },
@@ -8680,6 +8915,38 @@
               "scope": "self",
               "propertyId": "armor",
               "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "sweep-the-grounds",
+          "name": "Sweep the Grounds",
+          "costs": [
+            {
+              "type": "crew",
+              "amount": 2,
+              "tag": "hunk"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1,
+            "attachmentsOnly": true,
+            "hostController": "self",
+            "hostObjectType": "building",
+            "includeFaceDown": true
+          },
+          "effects": [
+            {
+              "type": "reveal",
+              "scope": "target"
+            },
+            {
+              "type": "destroy",
+              "scope": "target"
             }
           ]
         }
@@ -8843,6 +9110,544 @@
           ]
         }
       ]
+    },
+    {
+      "id": "town-watch",
+      "name": "Town Watch",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "\ud83d\udd26",
+      "artworkDescription": "Nothing moves after curfew without being seen",
+      "abilities": [
+        {
+          "id": "inspect",
+          "name": "Inspect",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "reveal_attachments",
+              "scope": "target"
+            }
+          ]
+        },
+        {
+          "id": "apprehend",
+          "name": "Apprehend",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1,
+            "attachmentsOnly": true,
+            "hostController": "self",
+            "hostObjectType": "building"
+          },
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "smoke-them-out",
+      "name": "Smoke Them Out",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "\ud83d\udd25",
+      "artworkDescription": "If it hides in your walls, burn the walls",
+      "onPlay": {
+        "id": "sto",
+        "name": "Damage your building; every enemy card inside burns",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "building",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 2
+          },
+          {
+            "type": "destroy_infiltrators",
+            "scope": "target"
+          }
+        ]
+      }
+    },
+    {
+      "id": "detect-magic",
+      "name": "Detect Magic",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 1
+      },
+      "icon": "\ud83d\udd2e",
+      "artworkDescription": "The walls remember every secret",
+      "onPlay": {
+        "id": "dm",
+        "name": "Reveal everything hiding in a building you control",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "building",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "reveal_attachments",
+            "scope": "target"
+          }
+        ]
+      }
+    },
+    {
+      "id": "banish",
+      "name": "Banish",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 2
+      },
+      "icon": "\u2728",
+      "artworkDescription": "Return to sender",
+      "onPlay": {
+        "id": "bn",
+        "name": "Destroy a revealed enemy attached card",
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1,
+          "attachmentsOnly": true
+        },
+        "effects": [
+          {
+            "type": "destroy",
+            "scope": "target"
+          }
+        ]
+      }
+    },
+    {
+      "id": "crypt-rats",
+      "name": "Crypt Rats",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 1,
+        "currentHp": 1,
+        "maxHp": 1,
+        "armor": 0
+      },
+      "icon": "\ud83d\udc00",
+      "artworkDescription": "A thousand teeth inside the walls",
+      "abilities": [
+        {
+          "id": "gnaw-them-out",
+          "name": "Gnaw Them Out",
+          "costs": [
+            {
+              "type": "sacrifice"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1,
+            "attachmentsOnly": true,
+            "hostController": "self",
+            "hostObjectType": "building",
+            "includeFaceDown": true
+          },
+          "effects": [
+            {
+              "type": "reveal",
+              "scope": "target"
+            },
+            {
+              "type": "destroy",
+              "scope": "target"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "security-sweep",
+      "name": "Security Sweep",
+      "objectType": "spell",
+      "playCosts": {
+        "energy": 2
+      },
+      "icon": "\ud83d\udce1",
+      "artworkDescription": "Scanning... intruder detected",
+      "onPlay": {
+        "id": "ssw",
+        "name": "Reveal intruders in your building and shock them",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "building",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "reveal_attachments",
+            "scope": "target"
+          },
+          {
+            "type": "damage_infiltrators",
+            "scope": "target",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "counter-spy",
+      "name": "Counter-Spy",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "icon": "\ud83d\udd76\ufe0f",
+      "artworkDescription": "It takes one to know one",
+      "abilities": [
+        {
+          "id": "root-out",
+          "name": "Root Out",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1,
+            "attachmentsOnly": true,
+            "hostController": "self",
+            "hostObjectType": "building",
+            "includeFaceDown": true
+          },
+          "effects": [
+            {
+              "type": "reveal",
+              "scope": "target"
+            },
+            {
+              "type": "destroy",
+              "scope": "target"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fumigate",
+      "name": "Fumigate",
+      "objectType": "spell",
+      "playCosts": {
+        "reagents": 2
+      },
+      "icon": "\u2697\ufe0f",
+      "artworkDescription": "The vapors reach every crack",
+      "onPlay": {
+        "id": "fum",
+        "name": "Reveal intruders in your building and gas them",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "building",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "reveal_attachments",
+            "scope": "target"
+          },
+          {
+            "type": "damage_infiltrators",
+            "scope": "target",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "builders-toolkit",
+      "name": "Builder's Toolkit",
+      "objectType": "equipment",
+      "playCost": 2,
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachTags": [
+        "builder"
+      ],
+      "icon": "\ud83e\uddf0",
+      "artworkDescription": "Hammer, nails, and the will to use them"
+    },
+    {
+      "id": "scrap-armor",
+      "name": "Scrap Armor",
+      "objectType": "equipment",
+      "playCost": 1,
+      "slots": [
+        "body"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "icon": "\u2699\ufe0f",
+      "artworkDescription": "It rattles, but it holds"
+    },
+    {
+      "id": "war-trophy",
+      "name": "War Trophy",
+      "objectType": "equipment",
+      "playCost": 2,
+      "slots": [
+        "head"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onKill",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "host",
+              "resourceId": "glory",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "icon": "\ud83c\udfc6",
+      "artworkDescription": "Proof, worn where everyone can see it"
+    },
+    {
+      "id": "mana-crystal",
+      "name": "Mana Crystal",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 1
+      },
+      "slots": [
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "icon": "\ud83d\udc8e",
+      "artworkDescription": "Light with a pulse",
+      "abilities": [
+        {
+          "id": "channel",
+          "name": "Channel",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "host",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bone-blade",
+      "name": "Bone Blade",
+      "objectType": "equipment",
+      "playCost": 1,
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "icon": "\ud83e\uddb4",
+      "artworkDescription": "Sharpened on its previous owner"
+    },
+    {
+      "id": "graveplate",
+      "name": "Graveplate",
+      "objectType": "equipment",
+      "playCost": 2,
+      "slots": [
+        "body"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "icon": "\u26b0\ufe0f",
+      "artworkDescription": "Armor that has already been buried once"
+    },
+    {
+      "id": "soul-amulet",
+      "name": "Soul Amulet",
+      "objectType": "equipment",
+      "playCost": 2,
+      "slots": [
+        "head"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "maxHp",
+          "amount": 1
+        }
+      ],
+      "icon": "\ud83e\uddff",
+      "artworkDescription": "The soul stays close, for a while",
+      "abilities": [
+        {
+          "id": "soul-harvest",
+          "name": "Soul Harvest",
+          "costs": [
+            {
+              "type": "sacrifice"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "corpses",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "venom-glands",
+      "name": "Venom Glands",
+      "objectType": "equipment",
+      "playCosts": {
+        "biomass": 2
+      },
+      "slots": [
+        "mutation"
+      ],
+      "attachTo": "chooseCharacter",
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "target",
+              "resourceId": "poison",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "icon": "\ud83d\udd77\ufe0f",
+      "artworkDescription": "Grown, not forged"
+    },
+    {
+      "id": "thieves-tools",
+      "name": "Thieves' Tools",
+      "objectType": "equipment",
+      "playCost": 2,
+      "slots": [
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "icon": "\ud83d\udddd\ufe0f",
+      "artworkDescription": "Every lock is a suggestion",
+      "abilities": [
+        {
+          "id": "case-the-locks",
+          "name": "Case the Locks",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "host",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ]
+        }
+      ]
     }
   ],
   "decks": [
@@ -8854,8 +9659,8 @@
       "hero": "town-chief",
       "cards": {
         "gold-mine": 4,
-        "bag-of-gold": 3,
-        "peasant": 5,
+        "bag-of-gold": 2,
+        "peasant": 4,
         "barracks": 3,
         "archery-range": 2,
         "tavern": 2,
@@ -8876,14 +9681,16 @@
         "wooden-shield": 1,
         "leather-armor": 1,
         "longbow": 1,
-        "militia": 3,
+        "militia": 2,
         "siege-ram": 2,
         "field-medic": 2,
         "library": 2,
         "plate-armor": 2,
         "muster": 2,
         "stone-mason": 3,
-        "watchtower": 2
+        "watchtower": 2,
+        "town-watch": 2,
+        "builders-toolkit": 1
       },
       "hqOptions": [
         "town-hall",
@@ -8903,17 +9710,17 @@
       "hq": "raider-camp",
       "hero": "warchief",
       "cards": {
-        "scavenger": 4,
+        "scavenger": 3,
         "pillager": 4,
         "axe-thrower": 4,
         "brute": 3,
         "fighting-pit": 3,
-        "stolen-treasure": 4,
-        "loot": 4,
-        "bag-of-gold": 3,
+        "stolen-treasure": 3,
+        "loot": 3,
+        "bag-of-gold": 2,
         "battle-axe": 2,
         "wooden-shield": 2,
-        "mercenary": 2,
+        "mercenary": 1,
         "fireball": 1,
         "dirty-trick": 3,
         "bloodfang": 1,
@@ -8922,7 +9729,10 @@
         "torch-thrower": 4,
         "plunder-cart": 3,
         "reinforcements": 3,
-        "skull-totem": 3
+        "skull-totem": 3,
+        "smoke-them-out": 2,
+        "scrap-armor": 2,
+        "war-trophy": 1
       },
       "hqOptions": [
         "raider-camp",
@@ -8949,14 +9759,15 @@
         "fusion-reactor": 4,
         "jump-jets": 4,
         "repair-nanobots": 4,
-        "energy-cell": 4,
-        "emergency-repair": 4,
+        "energy-cell": 3,
+        "emergency-repair": 3,
         "shield-generator": 4,
         "overdrive-core": 4,
         "emp-burst": 4,
-        "salvage": 4,
+        "salvage": 3,
         "ablative-armor": 4,
-        "targeting-uplink": 4
+        "targeting-uplink": 4,
+        "security-sweep": 3
       },
       "hqOptions": [
         "landing-pad",
@@ -8980,13 +9791,13 @@
         "mana-seer": 4,
         "pyromancer": 3,
         "conjurer": 3,
-        "mana-burst": 4,
-        "arcane-rain": 3,
+        "mana-burst": 3,
+        "arcane-rain": 2,
         "overcharge": 3,
-        "mana-potion": 2,
-        "arcane-fireball": 4,
+        "mana-potion": 1,
+        "arcane-fireball": 3,
         "counterspell": 3,
-        "arcane-shield": 3,
+        "arcane-shield": 2,
         "mage-armor": 2,
         "arcane-blade": 2,
         "arcane-sentinel": 4,
@@ -8994,7 +9805,10 @@
         "leyline-conduit": 3,
         "frost-nova": 3,
         "arcane-barrage": 3,
-        "blink-ward": 3
+        "blink-ward": 3,
+        "detect-magic": 2,
+        "banish": 2,
+        "mana-crystal": 1
       },
       "hqOptions": [
         "arcane-nexus",
@@ -9014,24 +9828,28 @@
       "hq": "graveyard",
       "hero": "necromancer",
       "cards": {
-        "skeleton": 4,
-        "shambling-corpse": 4,
+        "skeleton": 3,
+        "shambling-corpse": 3,
         "plague-zombie": 4,
         "tomb-spider": 4,
         "grave-ghoul": 4,
         "bone-collector": 4,
         "restless-dead": 3,
         "flesh-golem": 2,
-        "corpse-explosion": 4,
-        "deathly-wail": 4,
+        "corpse-explosion": 3,
+        "deathly-wail": 3,
         "ossuary": 2,
         "lich": 1,
         "dark-ritual": 3,
-        "curse-of-rust": 4,
+        "curse-of-rust": 3,
         "venomous-wight": 4,
-        "wraith": 4,
+        "wraith": 3,
         "plague-cloud": 3,
-        "bone-colossus": 2
+        "bone-colossus": 2,
+        "crypt-rats": 3,
+        "bone-blade": 1,
+        "graveplate": 1,
+        "soul-amulet": 1
       },
       "hqOptions": [
         "graveyard",
@@ -9055,7 +9873,7 @@
         "evolve-carapace": 3,
         "evolve-spitter": 4,
         "metamorphosis": 3,
-        "egg-cluster": 4,
+        "egg-cluster": 3,
         "brood-warrior": 4,
         "ravenous-swarm": 3,
         "broodguard": 2,
@@ -9063,12 +9881,13 @@
         "corpse-harvester": 3,
         "hardened-carapace": 3,
         "additional-limbs": 3,
-        "swarmling-burst": 4,
+        "swarmling-burst": 3,
         "toxic-mist": 4,
         "hive-warden": 4,
         "devouring-maw": 2,
         "winged-drone": 3,
-        "regenerative-flesh": 3
+        "regenerative-flesh": 3,
+        "venom-glands": 2
       },
       "hqOptions": [
         "the-hive",
@@ -9095,16 +9914,18 @@
         "shadow-blade": 2,
         "footpad": 4,
         "informant": 4,
-        "loot": 4,
-        "bag-of-gold": 3,
+        "loot": 3,
+        "bag-of-gold": 2,
         "mercenary": 4,
-        "dagger-throw": 4,
+        "dagger-throw": 3,
         "venom-blade": 4,
         "knife-thrower": 4,
         "extortion-racket": 3,
         "decoy": 3,
         "assassinate": 3,
-        "master-thief": 3
+        "master-thief": 3,
+        "counter-spy": 2,
+        "thieves-tools": 1
       },
       "hqOptions": [
         "thieves-guild",
@@ -9124,9 +9945,9 @@
       "hq": "laboratory",
       "hero": "master-alchemist",
       "cards": {
-        "freeze": 4,
+        "freeze": 3,
         "corrosive-acid": 4,
-        "weaken": 4,
+        "weaken": 3,
         "acid-flask": 4,
         "alchemists-fire": 3,
         "transmutation": 2,
@@ -9140,7 +9961,8 @@
         "plague-bomb": 3,
         "adaptive-golem": 3,
         "reagent-condenser": 3,
-        "shrink-ray": 3
+        "shrink-ray": 3,
+        "fumigate": 2
       },
       "hqOptions": [
         "laboratory",

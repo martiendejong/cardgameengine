@@ -31,9 +31,9 @@ public class TriggerService
                 // Source = killer, Target = victim
                 if (evt.Source != null && !evt.Source.IsDestroyed)
                 {
-                    Fire(game, evt.Source, "onKill", evt.Target);
+                    FireWithAttachments(game, evt.Source, "onKill", evt.Target);
                     if (evt.Target != null && GameQueries.IsObjectTypeOrSubtype(game, evt.Target.ObjectType, "building"))
-                        Fire(game, evt.Source, "onDestroyBuilding", evt.Target);
+                        FireWithAttachments(game, evt.Source, "onDestroyBuilding", evt.Target);
                 }
                 // Dying units get their last word (Plague Zombie, Bloated Spawn)
                 if (evt.Target != null)
@@ -56,7 +56,7 @@ public class TriggerService
                 if (evt.Source.ControllerId == evt.Target.ControllerId) break;
 
                 // Venom-style: attacker's own on-damage triggers, victim passed as target
-                Fire(game, evt.Source, "onDealCombatDamage", evt.Target);
+                FireWithAttachments(game, evt.Source, "onDealCombatDamage", evt.Target);
 
                 bool hqOrHero = GameQueries.IsObjectTypeOrSubtype(game, evt.Target.ObjectType, "headquarters")
                     || GameQueries.IsObjectTypeOrSubtype(game, evt.Target.ObjectType, "hero");
@@ -88,6 +88,18 @@ public class TriggerService
                 }
                 break;
         }
+    }
+
+    /// <summary>
+    /// Combat triggers also fire for the actor's equipment/mutations: a Venom Gland or
+    /// War Trophy carries the trigger while its bearer does the fighting.
+    /// </summary>
+    private void FireWithAttachments(GameInstance game, ObjectInstance obj, string eventName, ObjectInstance? eventTarget = null)
+    {
+        Fire(game, obj, eventName, eventTarget);
+        foreach (var attachment in game.Objects
+                     .Where(o => o.AttachedToId == obj.Id && !o.IsDestroyed).ToList())
+            Fire(game, attachment, eventName, eventTarget);
     }
 
     private void Fire(GameInstance game, ObjectInstance obj, string eventName, ObjectInstance? eventTarget = null)

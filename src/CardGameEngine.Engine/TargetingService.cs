@@ -13,7 +13,17 @@ public class TargetingService
             {
                 if (o.IsDestroyed || o.ZoneId != "battlefield") return false;
                 if (choice.AttachmentsOnly ? o.AttachedToId == null : o.AttachedToId != null) return false;
-                if (choice.AttachmentsOnly && o.FaceDown) return false; // hidden spies stay hidden
+                // Hidden spies stay hidden — unless the ability explicitly searches face-down cards
+                if (choice.AttachmentsOnly && o.FaceDown && !choice.IncludeFaceDown) return false;
+                if (choice.HostController != null || choice.HostObjectType != null)
+                {
+                    var host = game.Objects.FirstOrDefault(h => h.Id == o.AttachedToId);
+                    if (host == null) return false;
+                    if (choice.HostController == "self" && host.ControllerId != playerId) return false;
+                    if (choice.HostController == "opponent" && host.ControllerId == playerId) return false;
+                    if (choice.HostObjectType != null &&
+                        !GameQueries.IsObjectTypeOrSubtype(game, host.ObjectType, choice.HostObjectType)) return false;
+                }
                 if (choice.ExcludeSelf && o.Id == sourceObjectId) return false;
                 if (choice.Controller == "self" && o.ControllerId != playerId) return false;
                 if (choice.Controller == "opponent" && o.ControllerId == playerId) return false;
