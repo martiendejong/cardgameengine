@@ -555,5 +555,54 @@ public static class DefaultHandlers
             m.GainResource(ctx.Game, ctx.Player, "energy", energyGained);
             ctx.Game.Log.Add($"{ctx.Player.Name} salvages {obj.Name} for {energyGained} energy!");
         });
+
+        // Anti-swarm AoE: every enemy UNIT (never heroes/buildings) matching the
+        // optional Line/MaxHp filters takes Amount damage, reduced by its Armor.
+        e.Register("damage_enemy_units", ctx =>
+        {
+            var victims = EnemyUnits(ctx);
+            if (victims.Count == 0)
+            {
+                ctx.Game.Log.Add("...but there is nothing there to hit.");
+                return;
+            }
+            foreach (var victim in victims)
+            {
+                var dmg = Math.Max(0, (ctx.Effect.Amount ?? 0) - GameQueries.GetEffectiveProperty(ctx.Game, victim, "armor"));
+                if (dmg <= 0)
+                {
+                    ctx.Game.Log.Add($"{victim.Name}'s armor holds against the barrage.");
+                    continue;
+                }
+                m.ApplyDamage(ctx.Game, victim, dmg, ctx.Source);
+                if (victim.IsDestroyed)
+                    s.Bus.Publish(ctx.Game, new GameEvent { Type = GameEventTypes.UnitKilled, Source = ctx.Source, Target = victim });
+            }
+        });
+
+        // Anti-swarm affliction: every matching enemy unit gains a resource (e.g. poison)
+        e.Register("afflict_enemy_units", ctx =>
+        {
+            var victims = EnemyUnits(ctx);
+            if (victims.Count == 0)
+            {
+                ctx.Game.Log.Add("...but there is no one to afflict.");
+                return;
+            }
+            foreach (var victim in victims)
+                m.GainEntityResource(ctx.Game, victim, ctx.Effect.ResourceId ?? "poison", ctx.Effect.Amount ?? 1);
+        });
+
+        static List<ObjectInstance> EnemyUnits(EffectContext ctx) =>
+            ctx.Game.Objects.Where(o =>
+                o.ControllerId != ctx.Player.Id
+                && !o.IsDestroyed
+                && o.ZoneId == "battlefield"
+                && o.AttachedToId == null
+                && GameQueries.IsObjectTypeOrSubtype(ctx.Game, o.ObjectType, "unit")
+                && (ctx.Effect.Line == null || o.Line == ctx.Effect.Line)
+                && (ctx.Effect.MaxHp == null ||
+                    GameQueries.GetEffectiveProperty(ctx.Game, o, "maxHp") <= ctx.Effect.MaxHp))
+            .ToList();
     }
 }

@@ -350,6 +350,14 @@
     {
       "id": "resource-node",
       "name": "Resource Node"
+    },
+    {
+      "id": "cleave",
+      "name": "Cleave"
+    },
+    {
+      "id": "splash",
+      "name": "Splash"
     }
   ],
   "zones": [
@@ -9648,6 +9656,320 @@
           ]
         }
       ]
+    },
+    {
+      "id": "volley-captain",
+      "name": "Volley Captain",
+      "objectType": "unit",
+      "playCosts": {
+        "gold": 3,
+        "training": 1
+      },
+      "housingCost": 1,
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "\ud83c\udff9",
+      "artworkDescription": "One order, thirty arrows",
+      "abilities": [
+        {
+          "id": "volley",
+          "name": "Volley",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 3
+          },
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "halberdier-sergeant",
+      "name": "Halberdier Sergeant",
+      "objectType": "unit",
+      "playCosts": {
+        "gold": 3,
+        "training": 1
+      },
+      "housingCost": 1,
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "splash"
+      ],
+      "icon": "\u2694\ufe0f",
+      "artworkDescription": "One sweep clears the alley"
+    },
+    {
+      "id": "whirlwind-berserker",
+      "name": "Whirlwind Berserker",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "raider",
+        "cleave"
+      ],
+      "icon": "\ud83c\udf2a\ufe0f",
+      "artworkDescription": "He does not stop at the first one"
+    },
+    {
+      "id": "point-defense-array",
+      "name": "Point-Defense Array",
+      "objectType": "module",
+      "playCosts": {
+        "energy": 3
+      },
+      "slot": "utility",
+      "icon": "\ud83d\udef0\ufe0f",
+      "artworkDescription": "Nothing small gets close",
+      "abilities": [
+        {
+          "id": "strafe",
+          "name": "Strafe",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage_enemy_units",
+              "amount": 1,
+              "line": "front"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chain-lightning",
+      "name": "Chain Lightning",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 4
+      },
+      "icon": "\u26a1",
+      "artworkDescription": "It always finds a second victim",
+      "onPlay": {
+        "id": "cl",
+        "name": "2 direct damage to up to 3 units",
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 3
+        },
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "reaper-wight",
+      "name": "Reaper Wight",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "icon": "\ud83e\udea6",
+      "artworkDescription": "The small ones go first",
+      "abilities": [
+        {
+          "id": "reap-the-frail",
+          "name": "Reap the Frail",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1,
+            "maxPropertyId": "maxHp",
+            "maxPropertyValue": 2
+          },
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            },
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "corrosive-spitter",
+      "name": "Corrosive Spitter",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 2
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "organic",
+        "ranged"
+      ],
+      "icon": "\ud83e\udd8e",
+      "artworkDescription": "It melts what it cannot chew",
+      "abilities": [
+        {
+          "id": "acid-spray",
+          "name": "Acid Spray",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage_enemy_units",
+              "amount": 1,
+              "maxHp": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cull-the-weak",
+      "name": "Cull the Weak",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "\ud83d\udde1\ufe0f",
+      "artworkDescription": "No witnesses among the servants",
+      "onPlay": {
+        "id": "ctw",
+        "name": "Destroy an enemy unit with 1 or less Attack",
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1,
+          "maxPropertyId": "attack",
+          "maxPropertyValue": 1
+        },
+        "effects": [
+          {
+            "type": "destroy",
+            "scope": "target"
+          }
+        ]
+      }
+    },
+    {
+      "id": "caustic-cloud",
+      "name": "Caustic Cloud",
+      "objectType": "spell",
+      "playCosts": {
+        "reagents": 3
+      },
+      "icon": "\ud83c\udf2b\ufe0f",
+      "artworkDescription": "Breathe deep",
+      "onPlay": {
+        "id": "cc",
+        "name": "Every enemy unit gains 1 Poison",
+        "effects": [
+          {
+            "type": "afflict_enemy_units",
+            "resourceId": "poison",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "scatter-ballista",
+      "name": "Scatter Ballista",
+      "objectType": "building",
+      "playCost": 3,
+      "constructionRequirement": 1,
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "icon": "\ud83c\udfaf",
+      "artworkDescription": "It fires everything at everything",
+      "abilities": [
+        {
+          "id": "grapeshot",
+          "name": "Grapeshot",
+          "costs": [
+            {
+              "type": "crew",
+              "tag": "hunk",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage_enemy_units",
+              "amount": 1,
+              "line": "front"
+            }
+          ]
+        }
+      ]
     }
   ],
   "decks": [
@@ -9658,8 +9980,8 @@
       "hq": "town-hall",
       "hero": "town-chief",
       "cards": {
-        "gold-mine": 4,
-        "bag-of-gold": 2,
+        "gold-mine": 3,
+        "bag-of-gold": 1,
         "peasant": 4,
         "barracks": 3,
         "archery-range": 2,
@@ -9681,7 +10003,7 @@
         "wooden-shield": 1,
         "leather-armor": 1,
         "longbow": 1,
-        "militia": 2,
+        "militia": 1,
         "siege-ram": 2,
         "field-medic": 2,
         "library": 2,
@@ -9690,7 +10012,9 @@
         "stone-mason": 3,
         "watchtower": 2,
         "town-watch": 2,
-        "builders-toolkit": 1
+        "builders-toolkit": 1,
+        "volley-captain": 2,
+        "halberdier-sergeant": 1
       },
       "hqOptions": [
         "town-hall",
@@ -9722,17 +10046,18 @@
         "wooden-shield": 2,
         "mercenary": 1,
         "fireball": 1,
-        "dirty-trick": 3,
+        "dirty-trick": 2,
         "bloodfang": 1,
         "raid-leader": 3,
         "berserker": 4,
         "torch-thrower": 4,
         "plunder-cart": 3,
-        "reinforcements": 3,
+        "reinforcements": 2,
         "skull-totem": 3,
         "smoke-them-out": 2,
         "scrap-armor": 2,
-        "war-trophy": 1
+        "war-trophy": 1,
+        "whirlwind-berserker": 2
       },
       "hqOptions": [
         "raider-camp",
@@ -9757,8 +10082,8 @@
         "reinforced-plating": 4,
         "targeting-computer": 4,
         "fusion-reactor": 4,
-        "jump-jets": 4,
-        "repair-nanobots": 4,
+        "jump-jets": 3,
+        "repair-nanobots": 3,
         "energy-cell": 3,
         "emergency-repair": 3,
         "shield-generator": 4,
@@ -9767,7 +10092,8 @@
         "salvage": 3,
         "ablative-armor": 4,
         "targeting-uplink": 4,
-        "security-sweep": 3
+        "security-sweep": 3,
+        "point-defense-array": 2
       },
       "hqOptions": [
         "landing-pad",
@@ -9796,7 +10122,7 @@
         "overcharge": 3,
         "mana-potion": 1,
         "arcane-fireball": 3,
-        "counterspell": 3,
+        "counterspell": 2,
         "arcane-shield": 2,
         "mage-armor": 2,
         "arcane-blade": 2,
@@ -9805,10 +10131,11 @@
         "leyline-conduit": 3,
         "frost-nova": 3,
         "arcane-barrage": 3,
-        "blink-ward": 3,
+        "blink-ward": 2,
         "detect-magic": 2,
         "banish": 2,
-        "mana-crystal": 1
+        "mana-crystal": 1,
+        "chain-lightning": 2
       },
       "hqOptions": [
         "arcane-nexus",
@@ -9831,8 +10158,8 @@
         "skeleton": 3,
         "shambling-corpse": 3,
         "plague-zombie": 4,
-        "tomb-spider": 4,
-        "grave-ghoul": 4,
+        "tomb-spider": 3,
+        "grave-ghoul": 3,
         "bone-collector": 4,
         "restless-dead": 3,
         "flesh-golem": 2,
@@ -9849,7 +10176,8 @@
         "crypt-rats": 3,
         "bone-blade": 1,
         "graveplate": 1,
-        "soul-amulet": 1
+        "soul-amulet": 1,
+        "reaper-wight": 2
       },
       "hqOptions": [
         "graveyard",
@@ -9871,13 +10199,13 @@
       "cards": {
         "evolve-ravager": 4,
         "evolve-carapace": 3,
-        "evolve-spitter": 4,
+        "evolve-spitter": 3,
         "metamorphosis": 3,
         "egg-cluster": 3,
         "brood-warrior": 4,
         "ravenous-swarm": 3,
         "broodguard": 2,
-        "bloated-spawn": 4,
+        "bloated-spawn": 3,
         "corpse-harvester": 3,
         "hardened-carapace": 3,
         "additional-limbs": 3,
@@ -9887,7 +10215,8 @@
         "devouring-maw": 2,
         "winged-drone": 3,
         "regenerative-flesh": 3,
-        "venom-glands": 2
+        "venom-glands": 2,
+        "corrosive-spitter": 2
       },
       "hqOptions": [
         "the-hive",
@@ -9910,7 +10239,7 @@
         "spy": 4,
         "ambush": 4,
         "cutthroat": 4,
-        "smoke-bomb": 3,
+        "smoke-bomb": 2,
         "shadow-blade": 2,
         "footpad": 4,
         "informant": 4,
@@ -9921,11 +10250,12 @@
         "venom-blade": 4,
         "knife-thrower": 4,
         "extortion-racket": 3,
-        "decoy": 3,
+        "decoy": 2,
         "assassinate": 3,
         "master-thief": 3,
         "counter-spy": 2,
-        "thieves-tools": 1
+        "thieves-tools": 1,
+        "cull-the-weak": 2
       },
       "hqOptions": [
         "thieves-guild",
@@ -9948,7 +10278,7 @@
         "freeze": 3,
         "corrosive-acid": 4,
         "weaken": 3,
-        "acid-flask": 4,
+        "acid-flask": 3,
         "alchemists-fire": 3,
         "transmutation": 2,
         "reagent-infusion": 4,
@@ -9957,12 +10287,13 @@
         "guard-golem": 4,
         "iron-golem": 3,
         "dissolve": 4,
-        "stone-skin": 4,
+        "stone-skin": 3,
         "plague-bomb": 3,
         "adaptive-golem": 3,
         "reagent-condenser": 3,
         "shrink-ray": 3,
-        "fumigate": 2
+        "fumigate": 2,
+        "caustic-cloud": 2
       },
       "hqOptions": [
         "laboratory",
@@ -9992,7 +10323,8 @@
         "wooden-shield": 4,
         "reinforced-walls": 4,
         "house": 4,
-        "bag-of-gold": 2
+        "bag-of-gold": 2,
+        "scatter-ballista": 2
       },
       "hqOptions": [
         "hunk-stronghold",

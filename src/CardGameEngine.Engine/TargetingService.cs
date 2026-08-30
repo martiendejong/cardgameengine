@@ -33,6 +33,8 @@ public class TargetingService
                 if (choice.RequireUnderConstruction && !o.UnderConstruction) return false;
                 if (choice.RequireResourceId != null &&
                     o.Resources.GetValueOrDefault(choice.RequireResourceId) < choice.RequireResourceAmount) return false;
+                if (choice.MaxPropertyId != null &&
+                    GameQueries.GetEffectiveProperty(game, o, choice.MaxPropertyId) > choice.MaxPropertyValue) return false;
                 return true;
             })
             .Select(o => o.Id)

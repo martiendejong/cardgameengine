@@ -61,7 +61,8 @@ export function explainChoice(ch: ChoiceDefinition): string {
     ? ` on a ${ch.hostObjectType ?? 'card'} you control`
     : ch.hostController === 'opponent' ? ` on an enemy ${ch.hostObjectType ?? 'card'}` : '';
   const hidden = ch.includeFaceDown ? ' (even face-down)' : '';
-  return `Target: ${count} ${who} ${what}${ch.max > 1 ? 's' : ''}${where}${hidden}`;
+  const cap = ch.maxPropertyId ? ` with ${propName(ch.maxPropertyId)} ${ch.maxPropertyValue ?? 0} or less` : '';
+  return `Target: ${count} ${who} ${what}${ch.max > 1 ? 's' : ''}${cap}${where}${hidden}`;
 }
 
 export function explainEffect(e: EffectDto, nameOf: NameOf): string {
@@ -101,6 +102,16 @@ export function explainEffect(e: EffectDto, nameOf: NameOf): string {
     case 'destroy_infiltrators': return 'Flush out the target building: every enemy card attached to it (even hidden) is destroyed';
     case 'damage_infiltrators': return `Enemy cards hiding in the target building are revealed and take ${e.amount} direct damage each`;
     case 'gain_bank_resource': return `Add ${e.amount} ${resName(e.resourceId)} to your HQ stockpile`;
+    case 'damage_enemy_units': {
+      const scopeTxt = e.line ? ` on the ${e.line} line` : '';
+      const frail = e.maxHp ? ` with ${e.maxHp} or less max HP` : '';
+      return `Deal ${e.amount} damage to every enemy unit${scopeTxt}${frail} (reduced by Armor)`;
+    }
+    case 'afflict_enemy_units': {
+      const scopeTxt = e.line ? ` on the ${e.line} line` : '';
+      const frail = e.maxHp ? ` with ${e.maxHp} or less max HP` : '';
+      return `Every enemy unit${scopeTxt}${frail} gains ${e.amount} ${resName(e.resourceId)}`;
+    }
     default: return e.type;
   }
 }
@@ -148,6 +159,8 @@ export const TAG_TIPS: Record<string, string> = {
   soldier: 'Soldier — professional Town infantry.',
   mercenary: 'Mercenary — an outsider hired at the Tavern for gold, no Peasant required.',
   raider: 'Raider — boosted by the Warchief’s Bloodlust and the Fighting Pit’s Rally.',
+  cleave: 'Cleave — when this unit’s attack kills a unit, the excess damage carries into the next enemy unit on that line (reduced by its Armor).',
+  splash: 'Splash — when this unit attacks a unit, every other enemy unit on that line also takes 1 damage (reduced by its Armor).',
 };
 
 export const TYPE_TIPS: Record<string, string> = {

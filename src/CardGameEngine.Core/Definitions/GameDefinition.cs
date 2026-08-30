@@ -207,6 +207,8 @@ public class ChoiceDefinition
     public bool IncludeFaceDown { get; set; } // with AttachmentsOnly: hidden infiltrators are also valid targets
     public string? HostController { get; set; } // attachment's host must be controlled by "self" or "opponent"
     public string? HostObjectType { get; set; } // attachment's host must be this object type (e.g. "building")
+    public string? MaxPropertyId { get; set; } // execute-style: target's effective property may not exceed...
+    public int MaxPropertyValue { get; set; }  // ...this value (e.g. maxHp <= 2: only frail units)
     public bool ChooseAmount { get; set; } = false;
     public int AmountMin { get; set; } = 1;
     public string? AmountMaxResource { get; set; } // resource on source object that caps the choosable amount
@@ -225,6 +227,8 @@ public class EffectDefinition
     public string? Tag { get; set; }
     public string? UntilEvent { get; set; }
     public bool IgnoreHousing { get; set; } // for summon: bypass the housing-capacity check (e.g. Muster)
+    public string? Line { get; set; } // AoE effects: only units on this battlefield line ("front"/"back")
+    public int? MaxHp { get; set; }   // AoE effects: only units with effective maxHp at or below this
 }
 
 public class PlayTimingDefinition
