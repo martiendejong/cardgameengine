@@ -200,3 +200,11 @@ add them to vault; once added, no further code changes needed, the feature light
 config. OAuth `state` CSRF validation is framework-provided (OAuthHandler's correlation
 cookie) — verified by reading the ASP.NET Core Authentication.OAuth source, not exercisable
 end-to-end without a real provider.
+
+## 2026-08-30 — task 906 (WIP)
+Plan: Hero/HQ dropdowns in LobbyPage.tsx will list hero-/headquarters-type cards
+present in the player's own `deck` state (plus the faction's default hq/hero as
+a baseline), instead of precon.hqOptions/heroOptions. Headquarters cards get a
+`playCost` in game.json so they're deck-eligible like Reserve Heroes. Backend
+MatchService.CreateMatch validates HqId/HeroId against the submitted deck (via
+GameQueries.IsObjectTypeOrSubtype) for admin and non-admin alike.
