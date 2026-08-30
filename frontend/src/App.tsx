@@ -3,6 +3,9 @@ import { LobbyPage } from './pages/LobbyPage';
 import { GamePage } from './pages/GamePage';
 import { CampaignPage } from './pages/CampaignPage';
 import { DecksPage } from './pages/DecksPage';
+import { AuthPage } from './pages/AuthPage';
+import { ConfirmEmailPage } from './pages/ConfirmEmailPage';
+import { useAuth } from './hooks/useAuth';
 import { BASE } from './config';
 import './App.css';
 
@@ -14,12 +17,32 @@ interface Session {
 const GAME_ID = 'town-tcg';
 
 function App() {
+  const auth = useAuth();
   const [session, setSession] = useState<Session | null>(null);
   const [view, setView] = useState<'loading' | 'lobby' | 'campaign' | 'decks'>('loading');
+  const [confirmParams, setConfirmParams] = useState<{ userId: string; token: string } | null>(null);
+  const [authError, setAuthError] = useState('');
 
-  // New players start in the campaign; the lobby is for unlocked profiles.
-  // A second browser window can still join any match via ?match=...&player=...
+  // Email-confirmation links and OAuth error redirects land here as query params —
+  // handled before the login gate below, since a just-registered user isn't logged in yet.
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const userId = params.get('userId');
+    const token = params.get('token');
+    if (userId && token) {
+      setConfirmParams({ userId, token });
+      return;
+    }
+    const err = params.get('authError');
+    if (err) {
+      setAuthError('Sign-in failed. Please try again.');
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (auth.loading || !auth.user?.authenticated || confirmParams) return;
+
     const params = new URLSearchParams(window.location.search);
     const match = params.get('match');
     const player = params.get('player');
@@ -31,20 +54,11 @@ function App() {
       setView('campaign');
       return;
     }
-    if (params.get('decks')) {
-      setView('decks');
-      return;
-    }
-    const profile = localStorage.getItem('campaignProfile');
-    if (!profile) {
-      setView('campaign');
-      return;
-    }
-    fetch(`${BASE}api/campaign?gameId=${GAME_ID}&profile=${encodeURIComponent(profile)}`)
+    fetch(`${BASE}api/campaign?gameId=${GAME_ID}`, { credentials: 'include' })
       .then(r => r.json())
       .then(data => setView(data.multiplayerUnlocked ? 'lobby' : 'campaign'))
       .catch(() => setView('campaign'));
-  }, []);
+  }, [auth.loading, auth.user?.authenticated, confirmParams]);
 
   function handleMatchCreated(matchId: string, seat: string) {
     if (seat) {
@@ -82,13 +96,53 @@ function App() {
   }
 
   function openDecks() {
-    window.history.replaceState(null, '', window.location.pathname + '?decks=1');
+    window.history.replaceState(null, '', window.location.pathname);
     setView('decks');
   }
 
   function openLobby() {
     window.history.replaceState(null, '', window.location.pathname);
     setView('lobby');
+  }
+
+  async function handleLogout() {
+    await auth.logout();
+    setSession(null);
+    setView('loading');
+    window.history.replaceState(null, '', window.location.pathname);
+  }
+
+  if (confirmParams) {
+    return (
+      <ConfirmEmailPage
+        userId={confirmParams.userId}
+        token={confirmParams.token}
+        onConfirm={auth.confirmEmail}
+        onDone={() => {
+          setConfirmParams(null);
+          window.history.replaceState(null, '', window.location.pathname);
+        }}
+      />
+    );
+  }
+
+  if (auth.loading) {
+    return <div className="lobby-page"><div className="lobby-card"><p>Loading...</p></div></div>;
+  }
+
+  if (!auth.user?.authenticated) {
+    return (
+      <>
+        {authError && <div className="error-toast">{authError}</div>}
+        <AuthPage
+          providers={auth.providers}
+          onRegister={auth.register}
+          onLogin={auth.login}
+          onLoginWithGoogle={auth.loginWithGoogle}
+          onLoginWithFacebook={auth.loginWithFacebook}
+        />
+      </>
+    );
   }
 
   if (session) {
@@ -101,19 +155,41 @@ function App() {
     );
   }
 
+  const accountBar = (
+    <div className="account-bar">
+      <span>Logged in as {auth.user.displayName ?? auth.user.email}</span>
+      <button className="back-btn" onClick={handleLogout}>Log out</button>
+    </div>
+  );
+
   if (view === 'loading') {
     return <div className="lobby-page"><div className="lobby-card"><p>Loading...</p></div></div>;
   }
 
   if (view === 'campaign') {
-    return <CampaignPage onMissionStarted={handleMissionStarted} onOpenLobby={openLobby} />;
+    return (
+      <div className="app-shell">
+        {accountBar}
+        <CampaignPage onMissionStarted={handleMissionStarted} onOpenLobby={openLobby} />
+      </div>
+    );
   }
 
   if (view === 'decks') {
-    return <DecksPage onOpenLobby={openLobby} />;
+    return (
+      <div className="app-shell">
+        {accountBar}
+        <DecksPage onOpenLobby={openLobby} />
+      </div>
+    );
   }
 
-  return <LobbyPage onMatchCreated={handleMatchCreated} onOpenCampaign={openCampaign} onOpenDecks={openDecks} />;
+  return (
+    <div className="app-shell">
+      {accountBar}
+      <LobbyPage onMatchCreated={handleMatchCreated} onOpenCampaign={openCampaign} onOpenDecks={openDecks} />
+    </div>
+  );
 }
 
 export default App;

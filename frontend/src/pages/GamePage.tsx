@@ -50,6 +50,7 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   }, [gameId]);
 
   const handleStateUpdate = useCallback((state: GameStateDto) => {
+    hasGameStateRef.current = true;
     const prev = prevStateForPauseRef.current;
     prevStateForPauseRef.current = state;
     setGameState(state);
@@ -67,9 +68,16 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
     }
   }, [isHotseat]);
 
+  const [joinDenied, setJoinDenied] = useState<string | null>(null);
+  const hasGameStateRef = useRef(false);
+
   const handleError = useCallback((msg: string) => {
     setError(msg);
     setTimeout(() => setError(''), 4000);
+    // No game state yet means this error is the response to our own JoinMatch call
+    // (the server rejected it — wrong account for this seat) rather than a transient
+    // action failure mid-game; show a dedicated screen instead of spinning forever.
+    if (!hasGameStateRef.current) setJoinDenied(msg);
   }, []);
 
   const { connected, sendAction, resolveChoice, endPhase } = useGameHub({
@@ -188,6 +196,17 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
     } catch {
       // clipboard unavailable; the input below is selectable
     }
+  }
+
+  if (joinDenied) {
+    return (
+      <div className="connecting-screen">
+        <div className="connecting-message">{joinDenied}</div>
+        <button className="back-btn" onClick={onLeave} style={{ marginTop: 16 }}>
+          ⚔️ Back to Lobby
+        </button>
+      </div>
+    );
   }
 
   if (!connected) {

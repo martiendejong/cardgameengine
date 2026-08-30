@@ -18,7 +18,7 @@ export function useGameHub({ matchId, playerId, onStateUpdate, onError }: UseGam
     let cancelled = false;
 
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl(`${BASE}gamehub`)
+      .withUrl(`${BASE}gamehub`, { withCredentials: true }) // send the auth cookie — the hub is [Authorize]-gated
       .withAutomaticReconnect()
       .build();
 

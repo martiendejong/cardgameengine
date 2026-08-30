@@ -1,4 +1,7 @@
+using CardGameEngine.Api.Data;
 using CardGameEngine.Api.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CardGameEngine.Api.Controllers;
@@ -7,7 +10,6 @@ public class StartMissionRequest
 {
     public string GameId { get; set; } = "town-tcg";
     public string MissionId { get; set; } = "";
-    public string Profile { get; set; } = "";
     public Dictionary<string, int>? CustomDeck { get; set; }
     public string? CustomHq { get; set; }
     public string? CustomHero { get; set; }
@@ -20,23 +22,27 @@ public class CompleteMissionRequest
 
 [ApiController]
 [Route("api/campaign")]
+[Authorize]
 public class CampaignController : ControllerBase
 {
     private readonly CampaignService _campaign;
     private readonly MatchService _matches;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public CampaignController(CampaignService campaign, MatchService matches)
+    public CampaignController(CampaignService campaign, MatchService matches, UserManager<ApplicationUser> userManager)
     {
         _campaign = campaign;
         _matches = matches;
+        _userManager = userManager;
     }
 
-    /// <summary>Mission list with unlock/completion status for a profile.</summary>
+    /// <summary>Mission list with unlock/completion status for the logged-in account's profile.</summary>
     [HttpGet]
-    public IActionResult GetCampaign([FromQuery] string gameId = "town-tcg", [FromQuery] string profile = "")
+    public async Task<IActionResult> GetCampaign([FromQuery] string gameId = "town-tcg")
     {
         var missions = _campaign.GetMissions(gameId);
-        var prof = _campaign.GetProfile(profile);
+        var user = await _userManager.GetUserAsync(User);
+        var prof = _campaign.GetProfile(this.UserId(), user?.DisplayName ?? "");
         return Ok(new
         {
             profile = new { prof.Name, prof.CompletedMissions, prof.Collection },
@@ -57,9 +63,11 @@ public class CampaignController : ControllerBase
     }
 
     [HttpPost("start")]
-    public IActionResult Start([FromBody] StartMissionRequest request)
+    public async Task<IActionResult> Start([FromBody] StartMissionRequest request)
     {
-        var (game, error) = _campaign.StartMission(request.GameId, request.MissionId, request.Profile, request.CustomDeck, request.CustomHq, request.CustomHero);
+        var user = await _userManager.GetUserAsync(User);
+        var (game, error) = _campaign.StartMission(request.GameId, request.MissionId, this.UserId(),
+            user?.DisplayName ?? "", request.CustomDeck, request.CustomHq, request.CustomHero);
         if (game == null)
             return BadRequest(error);
 
@@ -78,7 +86,7 @@ public class CampaignController : ControllerBase
         if (game == null)
             return NotFound($"Match '{request.MatchId}' not found");
 
-        var (granted, message, profile) = _campaign.CompleteMission(game);
+        var (granted, message, profile) = _campaign.CompleteMission(game, this.UserId());
         return Ok(new
         {
             granted,

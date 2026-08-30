@@ -47,7 +47,8 @@ public class SimulationController : ControllerBase
                 new() { Id = "p2", Name = aFirst ? "B" : "A", DeckId = aFirst ? request.DeckB : request.DeckA, IsBot = true },
             };
 
-            var (game, error) = _matchService.CreateMatch(request.GameId, players);
+            // Bot-vs-bot only — no account ever joins these matches, so there's no real owner.
+            var (game, error) = _matchService.CreateMatch(request.GameId, players, creatorUserId: "simulation");
             if (game == null) return BadRequest(error);
 
             // Both seats are bots: bounded by a hard 60-turn cap (unfinished = draw)

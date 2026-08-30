@@ -1,30 +1,39 @@
+using CardGameEngine.Api.Data;
 using CardGameEngine.Api.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CardGameEngine.Api.Controllers;
 
 [ApiController]
 [Route("api/matches")]
+[Authorize]
 public class MatchesController : ControllerBase
 {
     private readonly MatchService _matchService;
     private readonly CampaignService _campaign;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public MatchesController(MatchService matchService, CampaignService campaign)
+    public MatchesController(MatchService matchService, CampaignService campaign, UserManager<ApplicationUser> userManager)
     {
         _matchService = matchService;
         _campaign = campaign;
+        _userManager = userManager;
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] CreateMatchRequest request)
+    public async Task<IActionResult> Create([FromBody] CreateMatchRequest request)
     {
+        var userId = this.UserId();
+
         // Multiplayer gate: non-admin human seats require a campaign profile
         // whose collection can field a minimum-size deck. Admin mode bypasses.
         var needsUnlock = request.Players.Any(p => !p.IsAdmin && !p.IsBot);
         if (needsUnlock)
         {
-            var profile = _campaign.GetProfile(request.Profile ?? "");
+            var user = await _userManager.GetUserAsync(User);
+            var profile = _campaign.GetProfile(userId, user?.DisplayName ?? "");
             if (!_campaign.IsMultiplayerUnlocked(request.GameId, profile))
             {
                 var needed = _campaign.RequiredCards(request.GameId);
@@ -35,7 +44,7 @@ public class MatchesController : ControllerBase
             }
         }
 
-        var (game, error) = _matchService.CreateMatch(request.GameId, request.Players);
+        var (game, error) = _matchService.CreateMatch(request.GameId, request.Players, userId);
         if (game == null)
             return BadRequest(error);
 

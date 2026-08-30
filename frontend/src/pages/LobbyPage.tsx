@@ -68,13 +68,11 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks }: Lobby
       .catch(() => setError('Failed to load game definitions. Is the backend running?'));
   }, []);
 
-  // Saved decks are scoped to this browser's campaign profile (same identity as the
-  // Campaign builder and My Decks page) so a deck built there can be picked here.
+  // Saved decks are scoped to the logged-in account (same identity as the Campaign
+  // builder and My Decks page) so a deck built there can be picked here.
   useEffect(() => {
     if (!selectedGame) return;
-    const profile = localStorage.getItem('campaignProfile') ?? '';
-    if (!profile.trim()) { setSavedDecks([]); return; }
-    fetch(`${BASE}api/decks?gameId=${selectedGame}&profile=${encodeURIComponent(profile)}`)
+    fetch(`${BASE}api/decks?gameId=${selectedGame}`, { credentials: 'include' })
       .then(r => r.json())
       .then(data => setSavedDecks(data.decks ?? []))
       .catch(() => setSavedDecks([]));
@@ -192,10 +190,10 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks }: Lobby
     try {
       const res = await fetch(`${BASE}api/matches`, {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           gameId: selectedGame,
-          profile: localStorage.getItem('campaignProfile') ?? '',
           players: players.map((p, i) => ({
             id: `p${i + 1}`,
             name: mode === 'bot' && i === 1 ? 'Computer' : p.name,

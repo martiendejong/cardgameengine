@@ -160,3 +160,43 @@ Left: nothing. (Noted but out of scope: LobbyPage/CampaignPage's existing non-ad
 filter only checks `playCost`, missing the ~84 cards that use `playCosts` instead — e.g.
 Soldier — so they're invisible in those two builders' pools. DecksPage's own pool filter
 checks both, matching GameQueries.IsDeckEligible. Pre-existing, unrelated to this task.)
+
+## 2026-08-30 — task 967
+Done: real player accounts — EF Core + SQLite + ASP.NET Core Identity (AspNetUsers etc.,
+cookie auth). Register sends a real confirmation email (MailKit SMTP, falls back to logging
+the link when Email:Host isn't configured so `dotnet run` needs zero setup); login is blocked
+(403) until confirmed. Google/Facebook OAuth wiring is code-complete (AddGoogle/AddFacebook,
+external-login callback that creates-or-links an account) but only registers the scheme when
+real Client Id/Secret are configured — registering with an empty ClientId breaks every request
+(RemoteAuthenticationHandler validates options on every request, not just on challenge; caught
+this the hard way, see PR). GET /api/account/providers reports which are live so the frontend
+hides missing buttons. GameInstance gained CreatorUserId, PlayerInstance gained OwnerUserId;
+GameHub.JoinMatch binds a seat to whichever account first joins it (invite-link flow) and
+rejects a different account claiming an already-owned seat or the empty-string hotseat join
+unless it's the match creator; SendAction/ResolveChoice/EndPhase now check the connection's
+own registered seat (from MatchConnectionRegistry) instead of trusting the client-supplied
+playerId. CampaignService/DeckService profile/deck storage re-keyed from a client-typed name to
+the account id (fixes the exact "two people using the same name share a save" bug, and closes
+the same gap in My Decks — task 907's DeckService mirrored the same typed-name pattern).
+Removed the "Commander name"/"Profile name" inputs from Campaign/Decks pages; added
+AuthPage/ConfirmEmailPage + useAuth hook; App.tsx gates the whole app behind login.
+Verified: dotnet build clean (0 warnings/errors) on the full solution; npm run build clean
+(tsc -b + vite build). Real end-to-end curl+SignalR round trip against a live `dotnet run`
+instance: registered with a real mailbox (info@martiendejong.nl), fetched the real confirmation
+email via IMAP, confirmed, logged in, confirmed login is 403 before confirming and 401 for
+every account/campaign/decks/match endpoint when unauthenticated. Real @microsoft/signalr
+client (two separate confirmed accounts) proved: anonymous GameHub connection rejected (401 at
+negotiate), account A claims seat p1, account B is rejected joining the same seat, B claims the
+unclaimed seat p2, A is then rejected joining B's seat, B is rejected joining the hotseat ""
+seat (not the match creator), A (the creator) succeeds; SendAction spoofing (join as p2, send
+an action as p1) is rejected. Logout confirmed to end the session (subsequent /me returns
+unauthenticated, subsequent match-create 401s). Verified password hashes in the SQLite DB are
+PBKDF2 (Identity's default), never plaintext, and grepped the server log for the test password
+— zero matches. Also verified the zero-config dev path: `dotnet run` with no Email/OAuth env
+vars starts clean, logs the confirmation link instead of sending it, and login/google 404s
+cleanly ("not configured yet") instead of crashing.
+Left: Google/Facebook app registrations (Client Id/Secret) — Martien needs to create these and
+add them to vault; once added, no further code changes needed, the feature lights up via
+config. OAuth `state` CSRF validation is framework-provided (OAuthHandler's correlation
+cookie) — verified by reading the ASP.NET Core Authentication.OAuth source, not exercisable
+end-to-end without a real provider.
