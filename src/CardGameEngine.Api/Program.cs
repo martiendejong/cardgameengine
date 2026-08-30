@@ -105,6 +105,14 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Behind the IIS/ARR reverse proxy: trust X-Forwarded-Proto/Host so request-derived
+// URLs (e.g. emailed confirmation links) carry the public https origin, not localhost.
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
+                     | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedHost
+});
+
 // Greenfield DB — Migrate() only ever creates tables here, never alters/drops existing data.
 using (var scope = app.Services.CreateScope())
 {

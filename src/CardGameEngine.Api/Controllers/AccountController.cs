@@ -48,8 +48,20 @@ public class AccountController : ControllerBase
         _logger = logger;
     }
 
-    private string FrontendBaseUrl =>
-        (_config["Frontend:BaseUrl"] ?? "http://localhost:5173/").TrimEnd('/') + "/";
+    // Base URL used in emailed links. Explicit config wins (Frontend:BaseUrl — required when the
+    // SPA runs on a different origin, e.g. the Vite dev server). Without config, the SPA is served
+    // by this same app, so the link derives from the incoming request — never a hardcoded host,
+    // which is how confirmation mails once pointed at localhost from the deployed server.
+    private string FrontendBaseUrl
+    {
+        get
+        {
+            var configured = _config["Frontend:BaseUrl"];
+            if (!string.IsNullOrWhiteSpace(configured))
+                return configured.TrimEnd('/') + "/";
+            return $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+        }
+    }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
