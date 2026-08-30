@@ -200,3 +200,10 @@ add them to vault; once added, no further code changes needed, the feature light
 config. OAuth `state` CSRF validation is framework-provided (OAuthHandler's correlation
 cookie) — verified by reading the ASP.NET Core Authentication.OAuth source, not exercisable
 end-to-end without a real provider.
+
+## 2026-08-30 — task 973 (WIP plan)
+Plan: gate AbilityService.CanUseAbility on HasSummoningSickness for tap-cost abilities (Infiltrate
+can't fire turn one), add a reaction window for activateAbility mirroring CombatService's
+attackDeclared/CardPlayService's spellCast pattern (Kind="ability" stack item, ResolveActivatedAbility
+on the resolve side, cancel_ability effect mirroring counter_spell), and add the unbuilt "Inside Man"
+card (design-spec.md §3.8) as a reaction spell answering "abilityActivated".
