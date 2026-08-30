@@ -5,6 +5,7 @@ import { BASE } from '../config';
 interface CampaignPageProps {
   onMissionStarted: (matchId: string, seat: string) => void;
   onOpenLobby: () => void;
+  onOpenVsComputer: () => void;
 }
 
 const GAME_ID = 'town-tcg';
@@ -33,7 +34,7 @@ function loadHero(): string {
   return localStorage.getItem('campaignHero') ?? '';
 }
 
-export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProps) {
+export function CampaignPage({ onMissionStarted, onOpenLobby, onOpenVsComputer }: CampaignPageProps) {
   const [overview, setOverview] = useState<CampaignOverview | null>(null);
   const [gameDef, setGameDef] = useState<GameDefinitionFull | null>(null);
   const [error, setError] = useState('');
@@ -319,6 +320,10 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
         <p className="lobby-subtitle">
           Campaign — fight your way through six factions, earn your collection, unlock multiplayer
         </p>
+
+        <button className="campaign-btn" onClick={onOpenVsComputer}>
+          🤖 Play vs Computer — no unlock required, win to earn a random card
+        </button>
 
         {error && <div className="error-box">{error}</div>}
 

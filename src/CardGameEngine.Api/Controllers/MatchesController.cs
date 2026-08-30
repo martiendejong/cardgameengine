@@ -37,9 +37,12 @@ public class MatchesController : ControllerBase
                 return StatusCode(403, "Admin mode requires an admin account — log in as an admin or disable the Admin toggle.");
         }
 
-        // Multiplayer gate: non-admin human seats require a campaign profile
-        // whose collection can field a minimum-size deck. Admin mode bypasses.
-        var needsUnlock = request.Players.Any(p => !p.IsAdmin && !p.IsBot);
+        // Multiplayer gate: real (non-bot) non-admin human seats require a campaign profile
+        // whose collection can field a minimum-size deck. Admin mode bypasses. A "vs Computer"
+        // match never touches a player's collection state, so it's exempt regardless of the
+        // human seat's admin flag — only a genuine human-vs-human match needs the unlock.
+        var hasBot = request.Players.Any(p => p.IsBot);
+        var needsUnlock = !hasBot && request.Players.Any(p => !p.IsAdmin && !p.IsBot);
         if (needsUnlock)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -57,6 +60,17 @@ public class MatchesController : ControllerBase
         var (game, error) = _matchService.CreateMatch(request.GameId, request.Players, userId);
         if (game == null)
             return BadRequest(error);
+
+        // Winning a vs-Computer quick match grants a random card reward, same as a campaign
+        // mission — wire up a lightweight encounter so the existing victory-screen reward
+        // display and /api/campaign/complete flow can be reused as-is.
+        if (hasBot)
+        {
+            var botPlayer = game.Players.FirstOrDefault(p => p.IsBot);
+            var humanPlayer = game.Players.FirstOrDefault(p => !p.IsBot);
+            if (botPlayer != null && humanPlayer != null)
+                _campaign.AttachQuickMatchReward(game, userId, humanPlayer.Id, botPlayer.Id);
+        }
 
         return Ok(new
         {

@@ -98,10 +98,27 @@ export function GameBoard({
       {gameState.state === GameState.GameEnded && gameState.winner && (
         <div className="winner-overlay">
           <div className="winner-box">
-            {gameState.encounter ? (() => {
+            {(() => {
               const enc = gameState.encounter;
-              const me = gameState.players.find(p => p.id === enc.playerId);
-              const won = me?.isWinner ?? false;
+              const encPlayer = enc ? gameState.players.find(p => p.id === enc.playerId) : undefined;
+              const encWon = encPlayer?.isWinner ?? false;
+              // A quick "vs Computer" match only reuses the mission-style overlay on a win
+              // (to show the reward) — losing it falls back to the plain Game Over screen
+              // below, same as a real multiplayer match, per Done-when: "Losing ... stays
+              // unchanged". A scripted campaign mission always uses this overlay either way.
+              const useEncounterOverlay = enc != null && (!enc.isQuickMatch || encWon);
+
+              if (!useEncounterOverlay || !enc) {
+                return (
+                  <>
+                    <h2>Game Over!</h2>
+                    <p className="winner-text">{gameState.winner} wins!</p>
+                    <button onClick={() => window.location.href = '/'}>Back to Lobby</button>
+                  </>
+                );
+              }
+
+              const won = encWon;
               const rewardLabel = (id: string) => {
                 const def = cardDefs[id];
                 return def ? `${def.icon ? def.icon + ' ' : ''}${def.name}` : id;
@@ -137,13 +154,7 @@ export function GameBoard({
                   <button onClick={finish}>{won ? 'Continue' : 'Try Again'}</button>
                 </>
               );
-            })() : (
-              <>
-                <h2>Game Over!</h2>
-                <p className="winner-text">{gameState.winner} wins!</p>
-                <button onClick={() => window.location.href = '/'}>Back to Lobby</button>
-              </>
-            )}
+            })()}
           </div>
         </div>
       )}
