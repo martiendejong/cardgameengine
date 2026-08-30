@@ -4,12 +4,14 @@ import {
   GameDefinitionFull,
   CardDefinitionDto,
   CreateMatchResponse,
+  SavedDeck,
 } from '../types/game';
 import { BASE } from '../config';
 
 interface LobbyPageProps {
   onMatchCreated: (matchId: string, seat: string) => void;
   onOpenCampaign: () => void;
+  onOpenDecks: () => void;
 }
 
 interface PlayerDeckState {
@@ -43,7 +45,7 @@ function typeLabel(objectType: string): string {
   }
 }
 
-export function LobbyPage({ onMatchCreated, onOpenCampaign }: LobbyPageProps) {
+export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks }: LobbyPageProps) {
   const [definitions, setDefinitions] = useState<GameDefinitionSummary[]>([]);
   const [selectedGame, setSelectedGame] = useState('');
   const [fullDef, setFullDef] = useState<GameDefinitionFull | null>(null);
@@ -54,6 +56,7 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign }: LobbyPageProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [mode, setMode] = useState<'hotseat' | 'seats' | 'bot'>('hotseat');
+  const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
 
   useEffect(() => {
     fetch(`${BASE}api/definitions`)
@@ -64,6 +67,18 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign }: LobbyPageProps) {
       })
       .catch(() => setError('Failed to load game definitions. Is the backend running?'));
   }, []);
+
+  // Saved decks are scoped to this browser's campaign profile (same identity as the
+  // Campaign builder and My Decks page) so a deck built there can be picked here.
+  useEffect(() => {
+    if (!selectedGame) return;
+    const profile = localStorage.getItem('campaignProfile') ?? '';
+    if (!profile.trim()) { setSavedDecks([]); return; }
+    fetch(`${BASE}api/decks?gameId=${selectedGame}&profile=${encodeURIComponent(profile)}`)
+      .then(r => r.json())
+      .then(data => setSavedDecks(data.decks ?? []))
+      .catch(() => setSavedDecks([]));
+  }, [selectedGame]);
 
   useEffect(() => {
     if (!selectedGame) return;
@@ -124,6 +139,21 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign }: LobbyPageProps) {
         hqId: precon?.hq ?? p.hqId,
         heroId: precon?.hero ?? p.heroId,
         deck: precon ? { ...precon.cards } : p.deck,
+      };
+    }));
+  }
+
+  function selectSavedDeck(playerIdx: number, deckId: string) {
+    const saved = savedDecks.find(d => d.id === deckId);
+    if (!saved) return;
+    setPlayers(prev => prev.map((p, i) => {
+      if (i !== playerIdx) return p;
+      return {
+        ...p,
+        deckId: '', // this is a custom saved deck, not one of the precons
+        hqId: saved.hqId ?? '',
+        heroId: saved.heroId ?? '',
+        deck: { ...saved.cards },
       };
     }));
   }
@@ -203,6 +233,9 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign }: LobbyPageProps) {
 
         <button className="campaign-btn" onClick={onOpenCampaign}>
           🏰 Campaign — learn the game mission by mission
+        </button>
+        <button className="campaign-btn" onClick={onOpenDecks}>
+          🃏 My Decks — build and manage saved decks
         </button>
 
         {error && <div className="error-box">{error}</div>}
@@ -296,6 +329,21 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign }: LobbyPageProps) {
                         </div>
                       );
                     })()}
+                  </div>
+                )}
+
+                {savedDecks.length > 0 && (
+                  <div className="deck-select-row">
+                    <select
+                      className="deck-select"
+                      value=""
+                      onChange={e => { if (e.target.value) selectSavedDeck(idx, e.target.value); }}
+                    >
+                      <option value="">🃏 Load a saved deck...</option>
+                      {savedDecks.map(d => (
+                        <option key={d.id} value={d.id}>{d.name} ({deckSize(d.cards)})</option>
+                      ))}
+                    </select>
                   </div>
                 )}
 

@@ -18,6 +18,7 @@ builder.Services.AddSingleton<StateProjector>();
 builder.Services.AddSingleton<MatchConnectionRegistry>();
 builder.Services.AddSingleton<BotService>();
 builder.Services.AddSingleton<CampaignService>();
+builder.Services.AddSingleton<DeckService>();
 
 // CORS - allow frontend dev server
 builder.Services.AddCors(options =>

@@ -226,6 +226,7 @@ export interface CardDefinitionDto {
 export interface DeckRulesDto {
   maxCopies: number;
   maxDeckSize: number;
+  minDeckSize: number;
   startingHandSize: number;
   drawPerTurn: number;
   defaultDeck: Record<string, number>;
@@ -242,6 +243,12 @@ export interface PreconDeckDto {
   cards: Record<string, number>;
 }
 
+export interface ObjectTypeDto {
+  id: string;
+  name: string;
+  parentType?: string | null;
+}
+
 export interface GameDefinitionFull {
   id: string;
   name: string;
@@ -249,6 +256,19 @@ export interface GameDefinitionFull {
   cards: CardDefinitionDto[];
   deckRules?: DeckRulesDto | null;
   decks: PreconDeckDto[];
+  objectTypes?: ObjectTypeDto[];
+}
+
+// A player-built, named deck saved server-side under a profile name (My Decks page).
+export interface SavedDeck {
+  id: string;
+  gameId: string;
+  name: string;
+  hqId?: string | null;
+  heroId?: string | null;
+  cards: Record<string, number>;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreateMatchRequest {
