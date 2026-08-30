@@ -28,6 +28,14 @@ public class AbilityService
             return false;
         }
 
+        // Same summoning-sickness rule as attacking/moving/building: a Tap-cost ability
+        // can't fire the turn its source entered the battlefield (design-spec.md 1.5).
+        if (obj.HasSummoningSickness && ability.Costs.Any(c => c.Type == "tap"))
+        {
+            reason = "Cannot activate the turn it was summoned";
+            return false;
+        }
+
         if (ability.UsesPerTurn is int cap &&
             game.AbilityUsesThisTurn.GetValueOrDefault($"{obj.Id}:{ability.Id}") >= cap)
         {
@@ -111,11 +119,7 @@ public class AbilityService
 
         game.Log.Add($"{player.Name}: {obj.Name} uses '{ability.Name}'.");
 
-        if (ability.Choice != null && action.TargetIds.Count > 0)
-        {
-            _s.Effects.ApplyAbility(game, ability, obj, player, action.TargetIds, action.ChosenAmount);
-        }
-        else if (ability.Choice != null)
+        if (ability.Choice != null && action.TargetIds.Count == 0)
         {
             // Costs paid, targets still needed: park on the stack and ask the player
             _choiceCounter++;
@@ -139,13 +143,54 @@ public class AbilityService
                 ValidOptions = _s.Targeting.GetValidTargets(game, ability.Choice, playerId)
             });
             game.State = GameState.WaitingForChoice;
-        }
-        else
-        {
-            _s.Effects.ApplyAbility(game, ability, obj, player, new List<string>());
+            return (true, null);
         }
 
+        var targetIds = ability.Choice != null ? action.TargetIds : new List<string>();
+
+        // Ability activation is reactable, same as an attack declaration or a spell cast:
+        // open a window when the opponent holds a card built to answer it (design-spec.md 3.7).
+        var opponent = GameQueries.GetOpponent(game, player);
+        if (opponent != null && CombatService.HasPlayableReaction(game, opponent.Id, "abilityActivated"))
+        {
+            game.Stack.Push(new StackItem
+            {
+                Id = $"stk_{game.Stack.Items.Count + 1}_{game.TurnNumber}",
+                Kind = "ability",
+                ControllerId = playerId,
+                SourceObjectId = obj.Id,
+                AbilityId = ability.Id,
+                TargetIds = targetIds,
+                ChosenAmount = action.ChosenAmount
+            });
+            game.State = GameState.WaitingForReaction;
+            game.ReactionPlayerId = opponent.Id;
+            game.ReactionWindowEvent = "abilityActivated";
+            game.Log.Add($"{opponent.Name} may respond...");
+            return (true, null);
+        }
+
+        _s.Effects.ApplyAbility(game, ability, obj, player, targetIds, action.ChosenAmount);
         return (true, null);
+    }
+
+    /// <summary>Resolve an ability that sat on the stack awaiting a reaction (unless it was cancelled).</summary>
+    public void ResolveActivatedAbility(GameInstance game, StackItem item)
+    {
+        var source = game.Objects.FirstOrDefault(o => o.Id == item.SourceObjectId);
+
+        if (item.Cancelled)
+        {
+            game.Log.Add($"{source?.Name ?? "The ability"} fizzles.");
+            return;
+        }
+
+        if (source == null) return;
+        var player = game.Players.First(p => p.Id == item.ControllerId);
+        var cardDef = GameQueries.GetCardDefinition(game, source);
+        var ability = cardDef?.Abilities.FirstOrDefault(a => a.Id == item.AbilityId);
+        if (ability != null)
+            _s.Effects.ApplyAbility(game, ability, source, player, item.TargetIds, item.ChosenAmount);
     }
 
     public (bool, string?) ResolveChoice(GameInstance game, string playerId, string choiceId, List<string> selectedIds)

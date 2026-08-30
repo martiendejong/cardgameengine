@@ -201,9 +201,29 @@ config. OAuth `state` CSRF validation is framework-provided (OAuthHandler's corr
 cookie) — verified by reading the ASP.NET Core Authentication.OAuth source, not exercisable
 end-to-end without a real provider.
 
-## 2026-08-30 — task 973 (WIP plan)
-Plan: gate AbilityService.CanUseAbility on HasSummoningSickness for tap-cost abilities (Infiltrate
-can't fire turn one), add a reaction window for activateAbility mirroring CombatService's
-attackDeclared/CardPlayService's spellCast pattern (Kind="ability" stack item, ResolveActivatedAbility
-on the resolve side, cancel_ability effect mirroring counter_spell), and add the unbuilt "Inside Man"
-card (design-spec.md §3.8) as a reaction spell answering "abilityActivated".
+## 2026-08-30 — task 973
+Done: AbilityService.CanUseAbility now gates any Tap-cost ability on HasSummoningSickness (same
+rule attack/move/build already enforce) — a Spy played this turn can no longer activate
+Infiltrate the same turn. ActivateAbility opens a reaction window before applying a tap ability's
+effect, mirroring CombatService's attackDeclared / CardPlayService's spellCast pattern exactly
+(Stack.Push with Kind="ability", WaitingForReaction, ReactionPlayerId/ReactionWindowEvent =
+"abilityActivated"); RuleEngine.ResolveStack gained an "ability" branch calling the new
+AbilityService.ResolveActivatedAbility. Added the unbuilt "Inside Man" card from design-spec.md
+§3.8 (reaction spell, reactionTo: [abilityActivated], onPlay: cancel_ability + gain_bank_resource
+intel 1) — cancel_ability is a new DefaultHandlers effect mirroring the existing counter_spell
+handler (marks the "ability" stack item Cancelled instead of applying it). Note: PR #14 (merged
+same day, hours earlier) reworked Spy/Infiltrate's economy (cost, Detonate) but never touched
+AbilityService or the reaction system, so this task's gap was still fully present on develop.
+Verified: dotnet build clean (0 warnings/errors) on the full solution; npm run build clean
+(tsc -b + vite build, after `npm install` — node_modules was entirely absent in this environment,
+unrelated to this change, package-lock.json left untouched). A throwaway harness driving
+RuleEngine directly (real ExecuteSetup match, no mocks, 26 assertions) confirmed: a freshly-played
+Spy's Infiltrate is rejected turn one with zero side effects (not tapped, not attached); on the
+Spy's controller's next turn Infiltrate opens a reaction window when the defender holds Inside Man
+(Spy taps but does not attach, ability activation parked as a Kind="ability" stack item); playing
+Inside Man cancels it and deposits 1 Intel on the defender's HQ bank; passing then resolves the
+stack with the ability fizzled (Spy never infiltrates); a same-turn regression check with no
+reaction card in hand confirms Infiltrate still resolves immediately as before (Spy attaches to
+the target HQ) — no behavior change for every other ability in the game, since Inside Man is the
+only card with reactionTo: [abilityActivated].
+Left: nothing.
