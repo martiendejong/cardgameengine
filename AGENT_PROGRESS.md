@@ -118,6 +118,24 @@ Warden's corpses pool now clamps at 6 instead of growing unbounded, and Raise Gu
 correctly spends down from that cap (6→3).
 Left: nothing.
 
+## 2026-08-29 — task 974
+Done: Lich's Mass Resurrection ability cost only a Tap (no resource cost at all), so it summoned
+2 free Skeletons (1 Corpse each in the shop) every single turn — the reported "way too strong"
+bug. design-spec.md's own original spec called for 5 Death Power, but Lich's objectType is plain
+`hero`, which only carries an `ap` pool (Death Power is `necromancer-hero`-only, and Lich never
+inherited that type) — a `dp` cost would have been permanently unpayable. Fixed by costing the
+ability 5 AP + Tap instead, reusing the `ap` pool every hero already accrues at +1/turn via the
+existing `gain_hero_ap` phase step — no engine change, no objectType change. Left the effect at a
+flat 2 Skeletons (the spec's scaling "exile up to 3 Corpses → summon one each" isn't implementable
+today: no cost/effect mechanic exists anywhere in this file for "spend a variable player-chosen
+amount to summon that many units"); noted as a documented simplification in design-spec.md. PR #12.
+Verified: dotnet build clean (0 warnings/errors); throwaway RuleEngine harness (real ExecuteSetup
+match, no mocks) confirmed 4 AP correctly rejects activation with zero side effects, 5 AP pays the
+cost/taps Lich/summons exactly 2 Skeletons and can't be reactivated the same turn, and 9 AP only
+ever spends 5 (leaves 4) and still summons exactly 2 — no accidental scaling with excess AP.
+Left: nothing (the richer corpse-exile scaling effect is a possible future engine feature, not a
+regression from this fix).
+
 ## 2026-08-29 — task 907
 Done: My Decks page — DeckService.cs persists named decks per profile as JSON under a new
 decks/ folder next to profiles/ (mirrors CampaignService's ProfilePath/GetProfile/SaveProfile
