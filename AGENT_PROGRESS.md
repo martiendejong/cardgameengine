@@ -200,3 +200,30 @@ add them to vault; once added, no further code changes needed, the feature light
 config. OAuth `state` CSRF validation is framework-provided (OAuthHandler's correlation
 cookie) — verified by reading the ASP.NET Core Authentication.OAuth source, not exercisable
 end-to-end without a real provider.
+
+## 2026-08-30 — task 906
+Done: Hero/HQ dropdowns in LobbyPage.tsx now list hero-/headquarters-type cards
+present in the player's own deck (plus the faction default), for admin and
+regular players alike — replacing the fixed precon.hqOptions/heroOptions list
+task 908 (PR #10) had added per faction. Gave every headquarters-type card
+across all 9 factions (27 cards: 6 already-"headquarters"-typed + 21 subtype
+alternates like nexus/graveyard-hq/hive-hq/etc.) a single `playCost`, so
+they're deck-eligible like Reserve Heroes (paladin/master-builder) already
+were — a deck can hold more than one HQ, extras are a reserve base.
+MatchService.CreateMatch now validates HqId/HeroId (via
+GameQueries.IsObjectTypeOrSubtype) against the submitted deck for every
+player, not just non-admins. PR #18.
+Verified: `dotnet build` clean; `npm run build` (tsc -b + vite build) clean;
+`npm run lint` is pre-existing broken repo-wide (no eslint devDependency —
+reproduced on an unmodified sibling worktree too, not a regression here).
+Real Playwright run against live dev servers (custom ports via new
+VITE_API_PORT/VITE_DEV_PORT vite.config.ts env vars, since 5001/5173 were
+already in use by a concurrent session): as a non-admin, added 2x Settlement
++ already-present Master Builder to the default deck, confirmed both appear
+in the HQ/Hero dropdowns live, picked them, started the match, confirmed
+Settlement+Master Builder are on the battlefield and Town Hall/Town
+Chief/Paladin stayed in hand/deck. Repeated as Admin with a cross-faction
+Raider Camp HQ, same result. Direct API checks: non-admin and admin alike
+are rejected with the new error when hqId isn't the default or in their
+deck, and succeed once it's added.
+Left: nothing.

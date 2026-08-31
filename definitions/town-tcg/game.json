@@ -458,6 +458,7 @@
       "id": "town-hall",
       "name": "Town Hall",
       "objectType": "headquarters",
+      "playCost": 5,
       "properties": {
         "currentHp": 8,
         "maxHp": 8,
@@ -998,6 +999,7 @@
       "id": "raider-camp",
       "name": "Raider Camp",
       "objectType": "headquarters",
+      "playCost": 5,
       "properties": {
         "currentHp": 9,
         "maxHp": 9,
@@ -1381,6 +1383,7 @@
       "id": "landing-pad",
       "name": "Landing Pad",
       "objectType": "headquarters",
+      "playCost": 6,
       "properties": {
         "currentHp": 10,
         "maxHp": 10,
@@ -2267,6 +2270,7 @@
       "id": "arcane-nexus",
       "name": "Arcane Nexus",
       "objectType": "nexus",
+      "playCost": 6,
       "properties": {
         "currentHp": 8,
         "maxHp": 8,
@@ -2898,6 +2902,7 @@
       "id": "graveyard",
       "name": "Graveyard",
       "objectType": "graveyard-hq",
+      "playCost": 5,
       "properties": {
         "currentHp": 10,
         "maxHp": 10,
@@ -3368,6 +3373,7 @@
       "id": "the-hive",
       "name": "The Hive",
       "objectType": "hive-hq",
+      "playCost": 7,
       "properties": {
         "currentHp": 12,
         "maxHp": 12,
@@ -3976,6 +3982,7 @@
       "id": "thieves-guild",
       "name": "Thieves' Guild",
       "objectType": "headquarters",
+      "playCost": 6,
       "properties": {
         "currentHp": 8,
         "maxHp": 8,
@@ -4381,6 +4388,7 @@
       "id": "laboratory",
       "name": "Laboratory",
       "objectType": "laboratory-hq",
+      "playCost": 5,
       "properties": {
         "currentHp": 8,
         "maxHp": 8,
@@ -6445,6 +6453,7 @@
       "id": "settlement",
       "name": "Settlement",
       "objectType": "headquarters",
+      "playCost": 7,
       "properties": {
         "currentHp": 8,
         "maxHp": 8,
@@ -6553,6 +6562,7 @@
       "id": "homestead",
       "name": "Homestead",
       "objectType": "homestead-hq",
+      "playCost": 7,
       "properties": {
         "currentHp": 8,
         "maxHp": 8,
@@ -6716,6 +6726,7 @@
       "id": "hunk-stronghold",
       "name": "Hunk Stronghold",
       "objectType": "headquarters",
+      "playCost": 8,
       "properties": {
         "currentHp": 10,
         "maxHp": 10,
@@ -7154,6 +7165,7 @@
       "id": "war-tent",
       "name": "War Tent",
       "objectType": "headquarters",
+      "playCost": 5,
       "properties": {
         "currentHp": 7,
         "maxHp": 7,
@@ -7207,6 +7219,7 @@
       "id": "blood-pit",
       "name": "Blood Pit",
       "objectType": "headquarters",
+      "playCost": 6,
       "properties": {
         "currentHp": 10,
         "maxHp": 10,
@@ -7327,6 +7340,7 @@
       "id": "crypt",
       "name": "Crypt",
       "objectType": "graveyard-hq",
+      "playCost": 7,
       "properties": {
         "currentHp": 12,
         "maxHp": 12,
@@ -7393,6 +7407,7 @@
       "id": "plague-pit",
       "name": "Plague Pit",
       "objectType": "graveyard-hq",
+      "playCost": 6,
       "properties": {
         "currentHp": 9,
         "maxHp": 9,
@@ -7534,6 +7549,7 @@
       "id": "repair-depot",
       "name": "Repair Depot",
       "objectType": "headquarters",
+      "playCost": 7,
       "properties": {
         "currentHp": 12,
         "maxHp": 12,
@@ -7633,6 +7649,7 @@
       "id": "overclock-rig",
       "name": "Overclock Rig",
       "objectType": "headquarters",
+      "playCost": 5,
       "properties": {
         "currentHp": 8,
         "maxHp": 8,
@@ -7842,6 +7859,7 @@
       "id": "ley-sanctum",
       "name": "Ley Sanctum",
       "objectType": "nexus",
+      "playCost": 7,
       "properties": {
         "currentHp": 10,
         "maxHp": 10,
@@ -7894,6 +7912,7 @@
       "id": "spellforge",
       "name": "Spellforge",
       "objectType": "nexus",
+      "playCost": 5,
       "properties": {
         "currentHp": 7,
         "maxHp": 7,
@@ -8093,6 +8112,7 @@
       "id": "ravenous-maw",
       "name": "Ravenous Maw",
       "objectType": "hive-hq",
+      "playCost": 5,
       "properties": {
         "currentHp": 10,
         "maxHp": 10,
@@ -8156,6 +8176,7 @@
       "id": "broodbastion",
       "name": "Broodbastion",
       "objectType": "hive-hq",
+      "playCost": 8,
       "properties": {
         "currentHp": 14,
         "maxHp": 14,
@@ -8343,6 +8364,7 @@
       "id": "smugglers-den",
       "name": "Smuggler's Den",
       "objectType": "headquarters",
+      "playCost": 6,
       "properties": {
         "currentHp": 9,
         "maxHp": 9,
@@ -8386,6 +8408,7 @@
       "id": "hidden-enclave",
       "name": "Hidden Enclave",
       "objectType": "headquarters",
+      "playCost": 5,
       "properties": {
         "currentHp": 7,
         "maxHp": 7,
@@ -8553,6 +8576,7 @@
       "id": "alembic-tower",
       "name": "Alembic Tower",
       "objectType": "laboratory-hq",
+      "playCost": 7,
       "properties": {
         "currentHp": 10,
         "maxHp": 10,
@@ -8605,6 +8629,7 @@
       "id": "black-market-apothecary",
       "name": "Black Market Apothecary",
       "objectType": "laboratory-hq",
+      "playCost": 4,
       "properties": {
         "currentHp": 6,
         "maxHp": 6,
@@ -8800,6 +8825,7 @@
       "id": "hunk-village",
       "name": "Hunk Village",
       "objectType": "headquarters",
+      "playCost": 8,
       "properties": {
         "currentHp": 8,
         "maxHp": 8,
@@ -8887,6 +8913,7 @@
       "id": "hunk-bastion",
       "name": "Hunk Bastion",
       "objectType": "headquarters",
+      "playCost": 9,
       "properties": {
         "currentHp": 14,
         "maxHp": 14,

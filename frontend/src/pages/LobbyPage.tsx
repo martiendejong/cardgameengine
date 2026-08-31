@@ -5,6 +5,7 @@ import {
   CardDefinitionDto,
   CreateMatchResponse,
   SavedDeck,
+  ObjectTypeDto,
 } from '../types/game';
 import { BASE } from '../config';
 
@@ -46,6 +47,28 @@ function typeLabel(objectType: string): string {
     case 'spell': return 'Spell';
     default: return objectType;
   }
+}
+
+function isOrExtends(objectType: string, root: string, types: ObjectTypeDto[]): boolean {
+  const byId: Record<string, ObjectTypeDto> = {};
+  for (const t of types) byId[t.id] = t;
+  let cur: string | undefined = objectType;
+  while (cur) {
+    if (cur === root) return true;
+    cur = byId[cur]?.parentType ?? undefined;
+  }
+  return false;
+}
+
+// Hero-/headquarters-type cards the player has actually put copies of in their own
+// deck — these are the "reserve" picks a Hero/HQ dropdown may offer beyond the
+// faction's default.
+function reserveOptions(deck: Record<string, number>, fullDef: GameDefinitionFull, root: string): CardDefinitionDto[] {
+  const types = fullDef.objectTypes ?? [];
+  return Object.entries(deck)
+    .filter(([, count]) => count > 0)
+    .map(([id]) => fullDef.cards.find(c => c.id === id))
+    .filter((c): c is CardDefinitionDto => !!c && isOrExtends(c.objectType, root, types));
 }
 
 export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseAdminMode }: LobbyPageProps) {
@@ -123,7 +146,16 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
       const deck = { ...p.deck };
       if (next === 0) delete deck[cardId];
       else deck[cardId] = next;
-      return { ...p, deck };
+
+      // If the deck copy backing the currently-picked Hero/HQ just ran out, fall back
+      // to this faction's default so the picks never point at an emptied-out card.
+      const precon = fullDef?.decks.find(d => d.id === p.deckId);
+      let hqId = p.hqId;
+      let heroId = p.heroId;
+      if (next === 0 && cardId === hqId && cardId !== precon?.hq) hqId = precon?.hq ?? '';
+      if (next === 0 && cardId === heroId && cardId !== precon?.hero) heroId = precon?.hero ?? '';
+
+      return { ...p, deck, hqId, heroId };
     }));
   }
 
@@ -181,7 +213,16 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
           total += clamped;
         }
       }
-      return { ...p, isAdmin, deck };
+
+      // Clamping may have dropped the reserve copy backing the current Hero/HQ pick —
+      // fall back to this faction's default so the picks stay valid.
+      const precon = fullDef?.decks.find(d => d.id === p.deckId);
+      let hqId = p.hqId;
+      let heroId = p.heroId;
+      if (hqId && hqId !== precon?.hq && !(deck[hqId] > 0)) hqId = precon?.hq ?? '';
+      if (heroId && heroId !== precon?.hero && !(deck[heroId] > 0)) heroId = precon?.hero ?? '';
+
+      return { ...p, isAdmin, deck, hqId, heroId };
     }));
   }
 
@@ -300,35 +341,34 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
                       ))}
                     </select>
                     {(() => {
-                      const precon = fullDef.decks.find(d => d.id === player.deckId);
-                      if (!precon) return null;
                       const cardName = (id: string) => fullDef.cards.find(c => c.id === id)?.name ?? id;
-                      const hqOptions = precon.hqOptions?.length ? precon.hqOptions : [precon.hq];
-                      const heroOptions = precon.heroOptions?.length ? precon.heroOptions : [precon.hero];
+                      // Hero/HQ options: this faction's default, plus any hero-/headquarters-
+                      // type card the player has actually added to their own deck (a reserve
+                      // copy with a play cost) — not the old fixed precon.hqOptions/heroOptions.
+                      const hqOptionIds = Array.from(new Set(
+                        [player.hqId, ...reserveOptions(player.deck, fullDef, 'headquarters').map(c => c.id)]
+                          .filter((id): id is string => !!id)
+                      ));
+                      const heroOptionIds = Array.from(new Set(
+                        [player.heroId, ...reserveOptions(player.deck, fullDef, 'hero').map(c => c.id)]
+                          .filter((id): id is string => !!id)
+                      ));
                       return (
                         <div className="deck-precon-info">
-                          {hqOptions.length > 1 ? (
-                            <select
-                              className="hq-select"
-                              value={player.hqId}
-                              onChange={e => setPlayerField(idx, 'hqId', e.target.value)}
-                            >
-                              {hqOptions.map(id => <option key={id} value={id}>🏛 {cardName(id)}</option>)}
-                            </select>
-                          ) : (
-                            <span className="precon-hq">🏛 {cardName(precon.hq)}</span>
-                          )}
-                          {heroOptions.length > 1 ? (
-                            <select
-                              className="hq-select"
-                              value={player.heroId}
-                              onChange={e => setPlayerField(idx, 'heroId', e.target.value)}
-                            >
-                              {heroOptions.map(id => <option key={id} value={id}>★ {cardName(id)}</option>)}
-                            </select>
-                          ) : (
-                            <span className="precon-hero">★ {cardName(precon.hero)}</span>
-                          )}
+                          <select
+                            className="hq-select"
+                            value={player.hqId}
+                            onChange={e => setPlayerField(idx, 'hqId', e.target.value)}
+                          >
+                            {hqOptionIds.map(id => <option key={id} value={id}>🏛 {cardName(id)}</option>)}
+                          </select>
+                          <select
+                            className="hq-select"
+                            value={player.heroId}
+                            onChange={e => setPlayerField(idx, 'heroId', e.target.value)}
+                          >
+                            {heroOptionIds.map(id => <option key={id} value={id}>★ {cardName(id)}</option>)}
+                          </select>
                         </div>
                       );
                     })()}

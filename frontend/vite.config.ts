@@ -5,14 +5,14 @@ export default defineConfig({
   plugins: [react()],
   base: process.env.VITE_BASE_PATH ?? '/',
   server: {
-    port: 5173,
+    port: Number(process.env.VITE_DEV_PORT ?? 5173),
     proxy: {
       '/api': {
-        target: 'http://localhost:5001',
+        target: `http://localhost:${process.env.VITE_API_PORT ?? 5001}`,
         changeOrigin: true,
       },
       '/gamehub': {
-        target: 'http://localhost:5001',
+        target: `http://localhost:${process.env.VITE_API_PORT ?? 5001}`,
         changeOrigin: true,
         ws: true,
       },
