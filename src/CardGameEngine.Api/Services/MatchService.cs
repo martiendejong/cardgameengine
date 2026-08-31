@@ -80,30 +80,36 @@ public class MatchService
                 for (int i = 0; i < count; i++)
                     deckList.Add(cardId);
 
-            // HQ / hero choice: either the faction's default (always available), or a
-            // headquarters-/hero-type card the player actually put in their own deck
-            // (a "reserve" copy with a play cost) — applies to admins too, not just
-            // regular players.
+            // HQ / hero choice. With a faction (precon) selected: its default, one of its
+            // alternates (hqOptions/heroOptions, task 908), or a headquarters-/hero-type card
+            // the player put in their own deck (a "reserve" copy, task 906). Custom saved
+            // decks carry no faction — their builder (My Decks) offers every HQ/hero card as
+            // the kickoff pick, so any card of the right type is accepted there.
+            bool hasPrecon = setup.DeckId != null && precon != null && precon.Id == setup.DeckId;
             var hqId = precon?.Hq;
             var heroId = precon?.Hero;
             if (setup.HqId != null)
             {
-                bool isDefault = precon != null && setup.HqId == precon.Hq;
-                bool inDeck = deck.TryGetValue(setup.HqId, out var hqCount) && hqCount > 0
-                    && definition.Cards.FirstOrDefault(c => c.Id == setup.HqId) is { } hqCard
+                bool rightType = definition.Cards.FirstOrDefault(c => c.Id == setup.HqId) is { } hqCard
                     && CardGameEngine.Engine.GameQueries.IsObjectTypeOrSubtype(game, hqCard.ObjectType, "headquarters");
-                if (!isDefault && !inDeck)
-                    return (null, $"{setup.Name}: HQ '{setup.HqId}' is not available (must be your faction's HQ or a headquarters card in your deck)");
+                bool allowed = rightType && (!hasPrecon
+                    || setup.HqId == precon!.Hq
+                    || precon.HqOptions.Contains(setup.HqId)
+                    || (deck.TryGetValue(setup.HqId, out var hqCount) && hqCount > 0));
+                if (!allowed)
+                    return (null, $"{setup.Name}: HQ '{setup.HqId}' is not available (pick your faction's HQ, one of its alternates, or a headquarters card in your deck)");
                 hqId = setup.HqId;
             }
             if (setup.HeroId != null)
             {
-                bool isDefault = precon != null && setup.HeroId == precon.Hero;
-                bool inDeck = deck.TryGetValue(setup.HeroId, out var heroCount) && heroCount > 0
-                    && definition.Cards.FirstOrDefault(c => c.Id == setup.HeroId) is { } heroCard
+                bool rightType = definition.Cards.FirstOrDefault(c => c.Id == setup.HeroId) is { } heroCard
                     && CardGameEngine.Engine.GameQueries.IsObjectTypeOrSubtype(game, heroCard.ObjectType, "hero");
-                if (!isDefault && !inDeck)
-                    return (null, $"{setup.Name}: hero '{setup.HeroId}' is not available (must be your faction's hero or a hero card in your deck)");
+                bool allowed = rightType && (!hasPrecon
+                    || setup.HeroId == precon!.Hero
+                    || precon.HeroOptions.Contains(setup.HeroId)
+                    || (deck.TryGetValue(setup.HeroId, out var heroCount) && heroCount > 0));
+                if (!allowed)
+                    return (null, $"{setup.Name}: hero '{setup.HeroId}' is not available (pick your faction's hero, one of its alternates, or a hero card in your deck)");
                 heroId = setup.HeroId;
             }
 
