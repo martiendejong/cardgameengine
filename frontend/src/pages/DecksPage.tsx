@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { GameDefinitionFull, CardDefinitionDto, ObjectTypeDto, SavedDeck } from '../types/game';
 import { BASE } from '../config';
+import { isDeckEligible } from '../utils/deckEligibility';
 
 interface DecksPageProps {
   onOpenLobby: () => void;
@@ -17,11 +18,6 @@ function isOrExtends(objectType: string, root: string, types: ObjectTypeDto[]): 
     cur = byId[cur]?.parentType ?? undefined;
   }
   return false;
-}
-
-function isDeckEligible(card: CardDefinitionDto): boolean {
-  return (card.playCost !== null && card.playCost !== undefined)
-    || !!(card.playCosts && Object.keys(card.playCosts).length > 0);
 }
 
 function deckSize(deck: Record<string, number>): number {

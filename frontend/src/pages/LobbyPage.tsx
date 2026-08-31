@@ -8,6 +8,7 @@ import {
   ObjectTypeDto,
 } from '../types/game';
 import { BASE } from '../config';
+import { isDeckEligible } from '../utils/deckEligibility';
 
 interface LobbyPageProps {
   onMatchCreated: (matchId: string, seat: string) => void;
@@ -126,7 +127,7 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
     if (!fullDef) return [];
     return isAdmin
       ? fullDef.cards
-      : fullDef.cards.filter(c => c.playCost !== null && c.playCost !== undefined);
+      : fullDef.cards.filter(isDeckEligible);
   }
 
   function deckSize(deck: Record<string, number>): number {
