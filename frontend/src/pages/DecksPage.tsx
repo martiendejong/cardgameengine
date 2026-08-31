@@ -3,6 +3,7 @@ import { GameDefinitionFull, CardDefinitionDto, ObjectStateDto, ObjectTypeDto, S
 import { BASE } from '../config';
 import { CardView } from '../components/CardView';
 import { CardDetailModal } from '../components/CardDetailModal';
+import { isDeckEligible } from '../utils/deckEligibility';
 
 interface DecksPageProps {
   onOpenLobby: () => void;
@@ -19,11 +20,6 @@ function isOrExtends(objectType: string, root: string, types: ObjectTypeDto[]): 
     cur = byId[cur]?.parentType ?? undefined;
   }
   return false;
-}
-
-function isDeckEligible(card: CardDefinitionDto): boolean {
-  return (card.playCost !== null && card.playCost !== undefined)
-    || !!(card.playCosts && Object.keys(card.playCosts).length > 0);
 }
 
 function deckSize(deck: Record<string, number>): number {
