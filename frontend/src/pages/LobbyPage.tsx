@@ -149,12 +149,15 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
       else deck[cardId] = next;
 
       // If the deck copy backing the currently-picked Hero/HQ just ran out, fall back
-      // to this faction's default so the picks never point at an emptied-out card.
+      // to this faction's default — unless the pick is also a faction alternate
+      // (hqOptions/heroOptions), which stays valid without a deck copy.
       const precon = fullDef?.decks.find(d => d.id === p.deckId);
       let hqId = p.hqId;
       let heroId = p.heroId;
-      if (next === 0 && cardId === hqId && cardId !== precon?.hq) hqId = precon?.hq ?? '';
-      if (next === 0 && cardId === heroId && cardId !== precon?.hero) heroId = precon?.hero ?? '';
+      if (next === 0 && cardId === hqId && cardId !== precon?.hq && !precon?.hqOptions?.includes(cardId))
+        hqId = precon?.hq ?? '';
+      if (next === 0 && cardId === heroId && cardId !== precon?.hero && !precon?.heroOptions?.includes(cardId))
+        heroId = precon?.hero ?? '';
 
       return { ...p, deck, hqId, heroId };
     }));
@@ -216,12 +219,15 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
       }
 
       // Clamping may have dropped the reserve copy backing the current Hero/HQ pick —
-      // fall back to this faction's default so the picks stay valid.
+      // fall back to this faction's default, unless the pick is a faction alternate
+      // (hqOptions/heroOptions) or no faction is selected (custom saved deck).
       const precon = fullDef?.decks.find(d => d.id === p.deckId);
       let hqId = p.hqId;
       let heroId = p.heroId;
-      if (hqId && hqId !== precon?.hq && !(deck[hqId] > 0)) hqId = precon?.hq ?? '';
-      if (heroId && heroId !== precon?.hero && !(deck[heroId] > 0)) heroId = precon?.hero ?? '';
+      if (precon && hqId && hqId !== precon.hq && !precon.hqOptions?.includes(hqId) && !(deck[hqId] > 0))
+        hqId = precon.hq ?? '';
+      if (precon && heroId && heroId !== precon.hero && !precon.heroOptions?.includes(heroId) && !(deck[heroId] > 0))
+        heroId = precon.hero ?? '';
 
       return { ...p, isAdmin, deck, hqId, heroId };
     }));
@@ -343,15 +349,22 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
                     </select>
                     {(() => {
                       const cardName = (id: string) => fullDef.cards.find(c => c.id === id)?.name ?? id;
-                      // Hero/HQ options: this faction's default, plus any hero-/headquarters-
-                      // type card the player has actually added to their own deck (a reserve
-                      // copy with a play cost) — not the old fixed precon.hqOptions/heroOptions.
+                      // Hero/HQ options: the faction's default and alternates (hqOptions/
+                      // heroOptions), plus any hero-/headquarters-type card the player has
+                      // actually added to their own deck (a reserve copy with a play cost).
+                      const precon = fullDef.decks.find(d => d.id === player.deckId);
+                      const factionHqs = precon
+                        ? (precon.hqOptions?.length ? precon.hqOptions : [precon.hq])
+                        : [];
+                      const factionHeroes = precon
+                        ? (precon.heroOptions?.length ? precon.heroOptions : [precon.hero])
+                        : [];
                       const hqOptionIds = Array.from(new Set(
-                        [player.hqId, ...reserveOptions(player.deck, fullDef, 'headquarters').map(c => c.id)]
+                        [player.hqId, ...factionHqs, ...reserveOptions(player.deck, fullDef, 'headquarters').map(c => c.id)]
                           .filter((id): id is string => !!id)
                       ));
                       const heroOptionIds = Array.from(new Set(
-                        [player.heroId, ...reserveOptions(player.deck, fullDef, 'hero').map(c => c.id)]
+                        [player.heroId, ...factionHeroes, ...reserveOptions(player.deck, fullDef, 'hero').map(c => c.id)]
                           .filter((id): id is string => !!id)
                       ));
                       return (
