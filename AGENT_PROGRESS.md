@@ -200,3 +200,45 @@ add them to vault; once added, no further code changes needed, the feature light
 config. OAuth `state` CSRF validation is framework-provided (OAuthHandler's correlation
 cookie) — verified by reading the ASP.NET Core Authentication.OAuth source, not exercisable
 end-to-end without a real provider.
+
+## 2026-08-31 — tasks 1071, 1073 (1072 refined, not implemented)
+Done: My Decks' card pool and current-deck list (DecksPage.tsx) now render with the same
+CardView/CardDetailModal components the live match view uses, instead of plain icon+name
+tiles — added a `toObjectState()` adapter (CardDefinitionDto -> a static ObjectStateDto
+stand-in, since there's no live game object in a deck builder) so the existing components
+work unmodified. Clicking a card's art opens CardDetailModal (the "big card version").
+Both CardView and CardDetailModal gained an optional `deckControl` prop: a small green "+"
+icon (always shown, disabled once maxCopies/deck-size is hit) plus a small red "−" icon and
+a ×N count badge that appear once the card has at least one copy in the deck — present on
+both the small card and the big detail-modal version (task 1071). Separately, CampaignPage's
+deck tab gained a "My Decks" `<select>` (mirrors the picker LobbyPage already has via
+`/api/decks?gameId=`) so a deck saved in My Decks can be loaded straight into a campaign
+mission's hq/hero/deck instead of only building one ad hoc from the campaign collection
+(task 1073). PR #23.
+Verified: `dotnet build` clean, `npx tsc -b` clean, `npm run build` clean. Real Playwright
+run against live `dotnet run` + `vite` dev servers: registered+confirmed+logged in a fresh
+account (frontend/src/hooks/useAuth.ts flow, confirmation link read from the dev log per
+task 967's zero-config path), unlocked multiplayer by writing a throwaway local
+`profiles/<id>.json` (gitignored, dev-only — avoids grinding 40 collection cards through
+real missions just to reach the Lobby/My Decks nav). Confirmed: pool cards render with real
+art via CardView; clicking one opens CardDetailModal; the add icon is present on both;
+after adding, a remove icon + count badge appear on both small and big versions; clicking
+"−" in the "This deck" column removes the card; built a real 40-card deck up to `maxCopies`
+per card via the icons alone, saved it, and confirmed it appears in CampaignPage's new "My
+Decks" dropdown and correctly populates the campaign deck to 40 cards on selection. Zero
+console errors throughout.
+Left (task 1072 — filter the deck builder by card type/faction/cost/unit type): NOT
+implemented, refined into a spec instead (TaskManager task 1072, status `refined`). Card
+type (`CardDefinitionDto.objectType`) and cost (`playCost`/`playCosts`) filters are cheap —
+the data already exists — but "faction" has no per-card field anywhere: `game.json`'s 251
+cards carry no faction id, and the only explicit faction grouping is at the precon-deck
+level (`decks[].hqOptions`/`heroOptions`, 9 factions × 3 HQs × 3 heroes = 54 of 251 cards);
+the other ~197 cards (most units/spells/buildings) aren't tied to a faction anywhere, and
+card-id naming isn't a reliable stand-in (design-spec.md explicitly calls equipment
+cross-faction by default). "Unit type" isn't a modeled concept either — the closest fit is
+the existing per-card `tags` array, but it mixes archetype tags (soldier/archer/knight/
+ranged/guard/mercenary/raider) with mechanical keyword tags (retaliate/cleave/splash/
+resource-node) with no flag distinguishing the two. Assigning a faction to 251 cards (many
+intentionally cross-faction) and deciding what counts as a "unit type" tag are real design
+calls, not something to invent card-by-card — left as open questions in the refined task
+for Martien/a follow-up session.
