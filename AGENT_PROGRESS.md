@@ -269,3 +269,10 @@ resource-node) with no flag distinguishing the two. Assigning a faction to 251 c
 intentionally cross-faction) and deciding what counts as a "unit type" tag are real design
 calls, not something to invent card-by-card — left as open questions in the refined task
 for Martien/a follow-up session.
+
+## 2026-08-31 — task 1072 (WIP)
+Plan: implement the two filters the refined spec marked ready-to-build — card type
+(`objectType`, via a dropdown of the distinct types present in the pool) and cost
+(`playCost`/summed `playCosts`, via min/max number inputs) — in DecksPage.tsx's card-pool
+search row. Faction and unit-type stay deferred (no per-card data yet); will file a
+follow-up TaskManager task for those once type+cost ship.
