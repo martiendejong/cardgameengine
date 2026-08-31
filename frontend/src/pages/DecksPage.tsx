@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
-import { GameDefinitionFull, CardDefinitionDto, ObjectTypeDto, SavedDeck } from '../types/game';
+import { GameDefinitionFull, CardDefinitionDto, ObjectStateDto, ObjectTypeDto, SavedDeck } from '../types/game';
 import { BASE } from '../config';
+import { CardView } from '../components/CardView';
+import { CardDetailModal } from '../components/CardDetailModal';
 
 interface DecksPageProps {
   onOpenLobby: () => void;
@@ -28,6 +30,34 @@ function deckSize(deck: Record<string, number>): number {
   return Object.values(deck).reduce((a, b) => a + b, 0);
 }
 
+// The deck builder shows cards using the same CardView/CardDetailModal components the live
+// game uses, so it needs an ObjectStateDto-shaped stand-in for a static CardDefinitionDto
+// (there is no live game object here — nothing is on a battlefield/in a hand).
+function toObjectState(card: CardDefinitionDto): ObjectStateDto {
+  return {
+    id: card.id,
+    definitionId: card.id,
+    name: card.name,
+    objectType: card.objectType,
+    ownerId: '',
+    controllerId: '',
+    zoneId: 'pool',
+    properties: card.properties,
+    resources: {},
+    tags: card.tags,
+    isTapped: false,
+    isDestroyed: false,
+    line: '',
+    hasMovedThisTurn: false,
+    hasSummoningSickness: false,
+    icon: card.icon,
+    housingCost: card.housingCost,
+    housingProvided: card.housingProvided,
+    underConstruction: false,
+    constructionProgress: 0,
+  };
+}
+
 export function DecksPage({ onOpenLobby }: DecksPageProps) {
   const [gameDef, setGameDef] = useState<GameDefinitionFull | null>(null);
   const [decks, setDecks] = useState<SavedDeck[]>([]);
@@ -42,6 +72,7 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
   const [editHero, setEditHero] = useState('');
   const [editCards, setEditCards] = useState<Record<string, number>>({});
   const [cardFilter, setCardFilter] = useState('');
+  const [inspectId, setInspectId] = useState<string | null>(null);
 
   useEffect(() => {
     fetch(`${BASE}api/definitions/${GAME_ID}`)
@@ -114,6 +145,7 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
 
   function cancelEdit() {
     setEditingId(null);
+    setInspectId(null);
     setError('');
   }
 
@@ -291,7 +323,7 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
 
             <div className="deck-builder-columns">
               <div className="deck-collection">
-                <div className="deck-section-title">Card pool — click to add</div>
+                <div className="deck-section-title">Card pool — click a card to inspect it, click ➕ to add</div>
                 <input
                   className="player-name-input deck-filter"
                   placeholder="Search cards..."
@@ -303,40 +335,88 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
                     const inDeck = editCards[card.id] ?? 0;
                     const canAdd = inDeck < maxCopies && editTotal < maxDeckSize;
                     return (
-                      <div
+                      <CardView
                         key={card.id}
-                        className={`deck-card-item ${canAdd ? 'deck-card-addable' : 'deck-card-full'}`}
-                        onClick={() => addCard(card.id)}
-                        title={canAdd ? 'Click to add' : `Maximum reached (${inDeck}/${maxCopies})`}
-                      >
-                        <span className="deck-card-icon">{card.icon ?? '🃏'}</span>
-                        <span className="deck-card-name">{card.name}</span>
-                        <span className="deck-card-type">{card.objectType}</span>
-                        <span className="deck-card-count">{inDeck}/{maxCopies}</span>
-                      </div>
+                        card={toObjectState(card)}
+                        actions={[]}
+                        isSelectableTarget={false}
+                        isSelectedTarget={false}
+                        playCost={card.playCost}
+                        playCostResource={card.playCostResource}
+                        onAction={() => {}}
+                        onSelectTarget={() => {}}
+                        onInspect={() => setInspectId(card.id)}
+                        deckControl={{
+                          count: inDeck,
+                          canAdd,
+                          onAdd: () => addCard(card.id),
+                          onRemove: () => removeCard(card.id),
+                        }}
+                      />
                     );
                   })}
                 </div>
               </div>
 
               <div className="deck-current">
-                <div className="deck-section-title">This deck — click to remove</div>
+                <div className="deck-section-title">This deck — click a card to inspect it, click ➖ to remove</div>
                 {editEntries.length === 0 && (
                   <div className="deck-empty">Empty — add cards from the pool on the left.</div>
                 )}
-                <div className="deck-list">
+                <div className="deck-card-grid">
                   {editEntries
                     .sort(([a], [b]) => cardName(a).localeCompare(cardName(b)))
-                    .map(([id, count]) => (
-                      <div key={id} className="deck-list-item" onClick={() => removeCard(id)} title="Click to remove">
-                        <span className="deck-card-icon">{cardIcon(id)}</span>
-                        <span className="deck-card-name">{cardName(id)}</span>
-                        <span className="deck-list-count">×{count}</span>
-                      </div>
-                    ))}
+                    .map(([id, count]) => {
+                      const def = cardDefs[id];
+                      if (!def) return null;
+                      return (
+                        <CardView
+                          key={id}
+                          card={toObjectState(def)}
+                          actions={[]}
+                          isSelectableTarget={false}
+                          isSelectedTarget={false}
+                          playCost={def.playCost}
+                          playCostResource={def.playCostResource}
+                          onAction={() => {}}
+                          onSelectTarget={() => {}}
+                          onInspect={() => setInspectId(id)}
+                          deckControl={{
+                            count,
+                            canAdd: count < maxCopies && editTotal < maxDeckSize,
+                            onAdd: () => addCard(id),
+                            onRemove: () => removeCard(id),
+                          }}
+                        />
+                      );
+                    })}
                 </div>
               </div>
             </div>
+
+            {inspectId && cardDefs[inspectId] && (() => {
+              const def = cardDefs[inspectId];
+              const inDeck = editCards[inspectId] ?? 0;
+              const canAdd = inDeck < maxCopies && editTotal < maxDeckSize;
+              return (
+                <CardDetailModal
+                  card={toObjectState(def)}
+                  def={def}
+                  attachments={[]}
+                  nameOf={cardName}
+                  actions={[]}
+                  onAction={() => {}}
+                  onClose={() => setInspectId(null)}
+                  onInspect={() => {}}
+                  deckControl={{
+                    count: inDeck,
+                    canAdd,
+                    onAdd: () => addCard(inspectId),
+                    onRemove: () => removeCard(inspectId),
+                  }}
+                />
+              );
+            })()}
 
             <div className="mode-select">
               <button className="start-btn" disabled={!canSave} onClick={saveEditing}>
