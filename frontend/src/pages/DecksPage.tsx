@@ -26,6 +26,17 @@ function deckSize(deck: Record<string, number>): number {
   return Object.values(deck).reduce((a, b) => a + b, 0);
 }
 
+// A single numeric cost for filtering: playCost as-is, or the sum of playCosts'
+// resource amounts for multi-resource cards (e.g. Soldier's gold+training).
+function costOf(card: CardDefinitionDto): number | null {
+  if (card.playCost !== null && card.playCost !== undefined) return card.playCost;
+  if (card.playCosts) {
+    const values = Object.values(card.playCosts);
+    if (values.length > 0) return values.reduce((a, b) => a + b, 0);
+  }
+  return null;
+}
+
 // The deck builder shows cards using the same CardView/CardDetailModal components the live
 // game uses, so it needs an ObjectStateDto-shaped stand-in for a static CardDefinitionDto
 // (there is no live game object here — nothing is on a battlefield/in a hand).
@@ -68,6 +79,9 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
   const [editHero, setEditHero] = useState('');
   const [editCards, setEditCards] = useState<Record<string, number>>({});
   const [cardFilter, setCardFilter] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
+  const [minCostFilter, setMinCostFilter] = useState('');
+  const [maxCostFilter, setMaxCostFilter] = useState('');
   const [inspectId, setInspectId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -105,13 +119,43 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
     [gameDef, objectTypes],
   );
 
+  const eligibleCards = useMemo(() => (gameDef?.cards ?? []).filter(isDeckEligible), [gameDef]);
+
+  const typeOptions = useMemo(() => {
+    const typeNames: Record<string, string> = {};
+    for (const t of objectTypes) typeNames[t.id] = t.name;
+    const ids = Array.from(new Set(eligibleCards.map(c => c.objectType)));
+    return ids
+      .map(id => ({ id, name: typeNames[id] ?? id }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [eligibleCards, objectTypes]);
+
   const pool = useMemo(() => {
     const filter = cardFilter.trim().toLowerCase();
-    return (gameDef?.cards ?? [])
-      .filter(isDeckEligible)
+    const minCost = minCostFilter.trim() === '' ? null : Number(minCostFilter);
+    const maxCost = maxCostFilter.trim() === '' ? null : Number(maxCostFilter);
+    return eligibleCards
       .filter(c => !filter || c.name.toLowerCase().includes(filter))
+      .filter(c => !typeFilter || c.objectType === typeFilter)
+      .filter(c => {
+        if (minCost === null && maxCost === null) return true;
+        const cost = costOf(c);
+        if (cost === null) return false;
+        if (minCost !== null && cost < minCost) return false;
+        if (maxCost !== null && cost > maxCost) return false;
+        return true;
+      })
       .sort((a, b) => a.objectType.localeCompare(b.objectType) || a.name.localeCompare(b.name));
-  }, [gameDef, cardFilter]);
+  }, [eligibleCards, cardFilter, typeFilter, minCostFilter, maxCostFilter]);
+
+  const filtersActive = !!cardFilter || !!typeFilter || !!minCostFilter || !!maxCostFilter;
+
+  function clearFilters() {
+    setCardFilter('');
+    setTypeFilter('');
+    setMinCostFilter('');
+    setMaxCostFilter('');
+  }
 
   const maxCopies = deckRules?.maxCopies ?? 4;
   const maxDeckSize = deckRules?.maxDeckSize ?? 60;
@@ -125,7 +169,7 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
     setEditHq('');
     setEditHero('');
     setEditCards({});
-    setCardFilter('');
+    clearFilters();
     setError('');
   }
 
@@ -135,7 +179,7 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
     setEditHq(deck.hqId ?? '');
     setEditHero(deck.heroId ?? '');
     setEditCards({ ...deck.cards });
-    setCardFilter('');
+    clearFilters();
     setError('');
   }
 
@@ -326,6 +370,37 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
                   value={cardFilter}
                   onChange={e => setCardFilter(e.target.value)}
                 />
+                <div className="deck-filter-row">
+                  <select
+                    className="deck-select"
+                    value={typeFilter}
+                    onChange={e => setTypeFilter(e.target.value)}
+                  >
+                    <option value="">All types</option>
+                    {typeOptions.map(t => (
+                      <option key={t.id} value={t.id}>{t.name}</option>
+                    ))}
+                  </select>
+                  <input
+                    className="player-name-input deck-filter-cost"
+                    type="number"
+                    min={0}
+                    placeholder="Min cost"
+                    value={minCostFilter}
+                    onChange={e => setMinCostFilter(e.target.value)}
+                  />
+                  <input
+                    className="player-name-input deck-filter-cost"
+                    type="number"
+                    min={0}
+                    placeholder="Max cost"
+                    value={maxCostFilter}
+                    onChange={e => setMaxCostFilter(e.target.value)}
+                  />
+                  {filtersActive && (
+                    <button className="back-btn deck-clear-btn" onClick={clearFilters}>Clear filters</button>
+                  )}
+                </div>
                 <div className="deck-card-grid">
                   {pool.map(card => {
                     const inDeck = editCards[card.id] ?? 0;
