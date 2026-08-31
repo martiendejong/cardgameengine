@@ -2070,6 +2070,27 @@
   margin-bottom: 10px;
 }
 
+.deck-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.deck-filter-row .deck-select {
+  flex: 1 1 140px;
+}
+
+.deck-filter-cost {
+  width: 90px;
+  flex: 0 0 90px;
+  box-sizing: border-box;
+  font-size: 13px;
+  padding: 7px 10px;
+  margin-bottom: 0;
+}
+
 .deck-builder-columns {
   display: grid;
   grid-template-columns: 1fr 220px;

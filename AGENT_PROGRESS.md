@@ -269,3 +269,25 @@ resource-node) with no flag distinguishing the two. Assigning a faction to 251 c
 intentionally cross-faction) and deciding what counts as a "unit type" tag are real design
 calls, not something to invent card-by-card — left as open questions in the refined task
 for Martien/a follow-up session.
+
+## 2026-08-31 — task 1072
+Done: My Decks' card pool (DecksPage.tsx) can now be filtered by card type and by cost,
+the two filters the refined spec marked ready-to-build. A "Type" dropdown lists every
+distinct `objectType` present in the eligible pool (labeled via `gameDef.objectTypes` names);
+"Min cost"/"Max cost" number inputs filter on `playCost`, or the summed resource amounts of
+`playCosts` for multi-resource cards (Soldier's gold+training etc.) — mirrors the existing
+`isDeckEligible` both-fields convention. All filters (type, cost, text search) combine with
+AND semantics; a "Clear filters" button appears once any is active. Faction and unit-type
+filters stay deferred — no per-card data model exists for either yet (see the task's own
+"Why this isn't a drop-in implementation" section) — filed as follow-up task 1101. PR #25.
+Verified: `dotnet build` clean (no backend changes, confirms no regression); `npm run build`
+(tsc -b + vite build) clean. Real Playwright run against live dev servers (custom ports,
+5001/5173/5174 already in use by concurrent sessions): registered+confirmed+logged in a
+fresh account, unlocked multiplayer via a throwaway `profiles/<id>.json` (gitignored,
+dev-only, same technique as task 1071/1073). Confirmed: unfiltered pool is 214 cards; Type=
+Unit narrows to 57; Clear restores 214; Max cost=2 narrows to 110; Type=Unit AND cost<=2
+narrows to 27; adding text search "peasant" on top narrows to exactly 1 (Peasant, cost 1,
+Unit); Clear restores 214 again. Zero console errors throughout.
+Left: faction and unit-type filters — tracked as follow-up task 1101, needs a human data
+decision (which faction each of ~197 currently-unassigned cards belongs to, and which `tags`
+count as a unit-type archetype vs. a mechanical keyword) before they can be built.
