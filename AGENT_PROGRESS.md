@@ -303,3 +303,22 @@ Verified: `dotnet build` + `npm run build` clean. Real Playwright run: builder r
 1600px wide, "This deck" sits above "Card pool", add/remove via both the small card and the
 big detail-modal still work, zero console errors.
 Left: nothing.
+
+## 2026-09-02 — task 1101
+Done: added Faction and Unit type filters to `DecksPage.tsx`'s card pool, next to the
+existing type/cost filters from task 1072. Faction is derived from `gameDef.decks[]`
+(cards/hqOptions/heroOptions membership, no new field) plus an "Unaffiliated" bucket.
+Unit type reads `CardDefinitionDto.tags` restricted to an 11-tag allow-list (peasant,
+worker, builder, soldier, ranged, mercenary, raider, guard, archer, knight,
+resource-node) so the 3 keyword tags (retaliate/cleave/splash) never appear as options.
+Both combine with all existing filters via AND, and are wired into `filtersActive`/
+`clearFilters`. PR #27.
+Verified: `npm run build` (tsc -b + vite build) clean. Real Playwright run against a
+confirmed test account (multiplayer gate bypassed via the `/api/campaign` route
+intercept from task 1071's notes): unfiltered pool 214 cards; Faction=Blackrock Raiders
+narrows to 27 (matches a direct game.json cross-check); Unit type=Worker narrows to
+exactly the 3 worker-tagged cards (Peasant, Stone Mason, Hunk); combining both narrows
+to 0 (Raiders has no worker-tagged cards, confirmed against the data); all 11 unit-type
+options present, no keyword tags leaked; Clear filters button appears/works. Zero
+console errors.
+Left: nothing.

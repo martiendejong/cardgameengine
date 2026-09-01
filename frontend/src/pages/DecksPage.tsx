@@ -26,6 +26,25 @@ function deckSize(deck: Record<string, number>): number {
   return Object.values(deck).reduce((a, b) => a + b, 0);
 }
 
+// Sentinel faction id for cards that belong to no preconstructed deck.
+const UNAFFILIATED_FACTION = '__unaffiliated__';
+
+// The 11 role/archetype tags the unit-type filter exposes, distinct from the mechanical
+// keyword tags (retaliate, cleave, splash) that must never appear as filter options.
+const UNIT_TYPE_TAG_LABELS: Record<string, string> = {
+  peasant: 'Peasant',
+  worker: 'Worker',
+  builder: 'Builder',
+  soldier: 'Soldier',
+  ranged: 'Ranged',
+  mercenary: 'Mercenary',
+  raider: 'Raider',
+  guard: 'Guard',
+  archer: 'Archer',
+  knight: 'Knight',
+  'resource-node': 'Resource Node',
+};
+
 // A single numeric cost for filtering: playCost as-is, or the sum of playCosts'
 // resource amounts for multi-resource cards (e.g. Soldier's gold+training).
 function costOf(card: CardDefinitionDto): number | null {
@@ -80,6 +99,8 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
   const [editCards, setEditCards] = useState<Record<string, number>>({});
   const [cardFilter, setCardFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
+  const [factionFilter, setFactionFilter] = useState('');
+  const [unitTypeFilter, setUnitTypeFilter] = useState('');
   const [minCostFilter, setMinCostFilter] = useState('');
   const [maxCostFilter, setMaxCostFilter] = useState('');
   const [inspectId, setInspectId] = useState<string | null>(null);
@@ -130,6 +151,43 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [eligibleCards, objectTypes]);
 
+  // A card's faction = every preconstructed deck whose cards/hqOptions/heroOptions list
+  // includes its id. A card can belong to zero decks (unaffiliated) or several.
+  const cardFactions = useMemo(() => {
+    const map: Record<string, string[]> = {};
+    for (const deck of gameDef?.decks ?? []) {
+      const memberIds = new Set<string>([
+        ...Object.keys(deck.cards ?? {}),
+        ...(deck.hqOptions ?? []),
+        ...(deck.heroOptions ?? []),
+      ]);
+      for (const id of memberIds) {
+        (map[id] ??= []).push(deck.id);
+      }
+    }
+    return map;
+  }, [gameDef]);
+
+  const factionOptions = useMemo(
+    () => [
+      ...(gameDef?.decks ?? []).map(d => ({ id: d.id, name: d.name })),
+      { id: UNAFFILIATED_FACTION, name: 'Unaffiliated' },
+    ],
+    [gameDef],
+  );
+
+  const unitTypeOptions = useMemo(() => {
+    const present = new Set<string>();
+    for (const c of eligibleCards) {
+      for (const t of c.tags) {
+        if (UNIT_TYPE_TAG_LABELS[t]) present.add(t);
+      }
+    }
+    return Array.from(present)
+      .map(tag => ({ tag, name: UNIT_TYPE_TAG_LABELS[tag] }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [eligibleCards]);
+
   const pool = useMemo(() => {
     const filter = cardFilter.trim().toLowerCase();
     const minCost = minCostFilter.trim() === '' ? null : Number(minCostFilter);
@@ -137,6 +195,13 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
     return eligibleCards
       .filter(c => !filter || c.name.toLowerCase().includes(filter))
       .filter(c => !typeFilter || c.objectType === typeFilter)
+      .filter(c => {
+        if (!factionFilter) return true;
+        const factions = cardFactions[c.id] ?? [];
+        if (factionFilter === UNAFFILIATED_FACTION) return factions.length === 0;
+        return factions.includes(factionFilter);
+      })
+      .filter(c => !unitTypeFilter || c.tags.includes(unitTypeFilter))
       .filter(c => {
         if (minCost === null && maxCost === null) return true;
         const cost = costOf(c);
@@ -146,13 +211,16 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
         return true;
       })
       .sort((a, b) => a.objectType.localeCompare(b.objectType) || a.name.localeCompare(b.name));
-  }, [eligibleCards, cardFilter, typeFilter, minCostFilter, maxCostFilter]);
+  }, [eligibleCards, cardFilter, typeFilter, factionFilter, unitTypeFilter, cardFactions, minCostFilter, maxCostFilter]);
 
-  const filtersActive = !!cardFilter || !!typeFilter || !!minCostFilter || !!maxCostFilter;
+  const filtersActive =
+    !!cardFilter || !!typeFilter || !!factionFilter || !!unitTypeFilter || !!minCostFilter || !!maxCostFilter;
 
   function clearFilters() {
     setCardFilter('');
     setTypeFilter('');
+    setFactionFilter('');
+    setUnitTypeFilter('');
     setMinCostFilter('');
     setMaxCostFilter('');
   }
@@ -414,6 +482,26 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
                     <option value="">All types</option>
                     {typeOptions.map(t => (
                       <option key={t.id} value={t.id}>{t.name}</option>
+                    ))}
+                  </select>
+                  <select
+                    className="deck-select"
+                    value={factionFilter}
+                    onChange={e => setFactionFilter(e.target.value)}
+                  >
+                    <option value="">All factions</option>
+                    {factionOptions.map(f => (
+                      <option key={f.id} value={f.id}>{f.name}</option>
+                    ))}
+                  </select>
+                  <select
+                    className="deck-select"
+                    value={unitTypeFilter}
+                    onChange={e => setUnitTypeFilter(e.target.value)}
+                  >
+                    <option value="">All unit types</option>
+                    {unitTypeOptions.map(u => (
+                      <option key={u.tag} value={u.tag}>{u.name}</option>
                     ))}
                   </select>
                   <input
