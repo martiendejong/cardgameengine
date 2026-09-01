@@ -303,3 +303,24 @@ Verified: `dotnet build` + `npm run build` clean. Real Playwright run: builder r
 1600px wide, "This deck" sits above "Card pool", add/remove via both the small card and the
 big detail-modal still work, zero console errors.
 Left: nothing.
+
+## 2026-09-01 — task 1050
+Done: Campaign deck builder's HQ/hero pickers (`CampaignPage.tsx`) were listing every
+headquarters-/hero-type card in the whole game via an exact `objectType === 'headquarters'`/
+`'hero'` match, ignoring ownership and faction subtypes. Added the same local `isOrExtends()`
+type-hierarchy walk `DecksPage.tsx`/`LobbyPage.tsx` already use, and scoped both lists to
+cards the player owns (`overview.profile.collection[c.id] > 0`) — mirrors this same file's
+existing "Jouw collectie" pool, which is the page's only other ownership-scoped list (no
+faction-precon-deck concept exists on this page like Lobby's, so collection ownership, not
+`customDeck` membership, is the natural fit here). No branch/PR ever existed for this task
+before now — it had looped todo↔review 10× with nothing implemented, was auto-blocked, then
+Martien overrode with "review it and now do it properly."
+Verified: `dotnet build` + `npm run build`/`tsc -b` clean. Real Playwright run against live
+`dotnet run` + `vite` dev servers (custom ports 5001/5175): registered+confirmed+logged in a
+fresh account, seeded a throwaway `profiles/<id>.json` (gitignored, dev-only) owning 6 HQ
+cards (one plain `headquarters` + all 5 subtypes: nexus, graveyard-hq, hive-hq, laboratory-hq,
+homestead-hq) and 3 hero cards (plain `hero` + `caster-hero` + `necromancer-hero`), while
+leaving several other HQ/hero cards unowned. Campaign → Mijn Deck showed exactly those 6 HQ
+and 3 hero options (all subtypes present, zero unowned cards leaked in); clicking a subtype
+HQ and a subtype hero both selected correctly. Zero console errors. PR #27.
+Left: nothing.

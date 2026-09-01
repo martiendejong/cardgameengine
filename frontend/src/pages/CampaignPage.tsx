@@ -1,6 +1,17 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
-import { CampaignOverview, CampaignMission, GameDefinitionFull, CardDefinitionDto, SavedDeck } from '../types/game';
+import { CampaignOverview, CampaignMission, GameDefinitionFull, CardDefinitionDto, SavedDeck, ObjectTypeDto } from '../types/game';
 import { BASE } from '../config';
+
+function isOrExtends(objectType: string, root: string, types: ObjectTypeDto[]): boolean {
+  const byId: Record<string, ObjectTypeDto> = {};
+  for (const t of types) byId[t.id] = t;
+  let cur: string | undefined = objectType;
+  while (cur) {
+    if (cur === root) return true;
+    cur = byId[cur]?.parentType ?? undefined;
+  }
+  return false;
+}
 
 interface CampaignPageProps {
   onMissionStarted: (matchId: string, seat: string) => void;
@@ -184,13 +195,21 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
     return missionsByCampaign[campaign]?.some(m => m.unlocked) ?? false;
   }
 
+  const objectTypes = gameDef?.objectTypes ?? [];
+
+  // HQ/hero options are scoped to the player's own collection (same ownership gate as
+  // the "Jouw collectie" pool below), and use the type-hierarchy walk so faction subtypes
+  // (nexus, graveyard-hq, hive-hq, laboratory-hq, homestead-hq, caster-hero, necromancer-hero)
+  // are offered too, not just the literal 'headquarters'/'hero' objectType.
   const hqCards = useMemo(() =>
-    (gameDef?.cards ?? []).filter(c => c.objectType === 'headquarters'),
-    [gameDef]);
+    (gameDef?.cards ?? []).filter(c =>
+      isOrExtends(c.objectType, 'headquarters', objectTypes) && (overview?.profile.collection[c.id] ?? 0) > 0),
+    [gameDef, objectTypes, overview]);
 
   const heroCards = useMemo(() =>
-    (gameDef?.cards ?? []).filter(c => c.objectType === 'hero'),
-    [gameDef]);
+    (gameDef?.cards ?? []).filter(c =>
+      isOrExtends(c.objectType, 'hero', objectTypes) && (overview?.profile.collection[c.id] ?? 0) > 0),
+    [gameDef, objectTypes, overview]);
 
   // Cards available to put in deck = cards in collection
   const collectionCards = useMemo(() => {
