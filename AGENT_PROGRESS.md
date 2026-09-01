@@ -322,5 +322,5 @@ cards (one plain `headquarters` + all 5 subtypes: nexus, graveyard-hq, hive-hq, 
 homestead-hq) and 3 hero cards (plain `hero` + `caster-hero` + `necromancer-hero`), while
 leaving several other HQ/hero cards unowned. Campaign → Mijn Deck showed exactly those 6 HQ
 and 3 hero options (all subtypes present, zero unowned cards leaked in); clicking a subtype
-HQ and a subtype hero both selected correctly. Zero console errors. PR #27.
+HQ and a subtype hero both selected correctly. Zero console errors. PR #28.
 Left: nothing.
