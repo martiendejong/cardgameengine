@@ -269,7 +269,7 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
 
   return (
     <div className="lobby-page">
-      <div className="lobby-card lobby-wide campaign-card">
+      <div className={`lobby-card lobby-wide ${editingId !== null ? 'deck-page-wide' : 'campaign-card'}`}>
         <h1 className="lobby-title">Town Wars</h1>
         <p className="lobby-subtitle">
           {editingId !== null
@@ -361,7 +361,42 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
               </div>
             </div>
 
-            <div className="deck-builder-columns">
+            <div className="deck-editor-layout">
+              <div className="deck-editor-current">
+                <div className="deck-section-title">This deck — click a card to inspect it, click ➖ to remove</div>
+                {editEntries.length === 0 && (
+                  <div className="deck-empty">Empty — add cards from the pool below.</div>
+                )}
+                <div className="deck-card-grid">
+                  {editEntries
+                    .sort(([a], [b]) => cardName(a).localeCompare(cardName(b)))
+                    .map(([id, count]) => {
+                      const def = cardDefs[id];
+                      if (!def) return null;
+                      return (
+                        <CardView
+                          key={id}
+                          card={toObjectState(def)}
+                          actions={[]}
+                          isSelectableTarget={false}
+                          isSelectedTarget={false}
+                          playCost={def.playCost}
+                          playCostResource={def.playCostResource}
+                          onAction={() => {}}
+                          onSelectTarget={() => {}}
+                          onInspect={() => setInspectId(id)}
+                          deckControl={{
+                            count,
+                            canAdd: count < maxCopies && editTotal < maxDeckSize,
+                            onAdd: () => addCard(id),
+                            onRemove: () => removeCard(id),
+                          }}
+                        />
+                      );
+                    })}
+                </div>
+              </div>
+
               <div className="deck-collection">
                 <div className="deck-section-title">Card pool — click a card to inspect it, click ➕ to add</div>
                 <input
@@ -426,41 +461,6 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
                       />
                     );
                   })}
-                </div>
-              </div>
-
-              <div className="deck-current">
-                <div className="deck-section-title">This deck — click a card to inspect it, click ➖ to remove</div>
-                {editEntries.length === 0 && (
-                  <div className="deck-empty">Empty — add cards from the pool on the left.</div>
-                )}
-                <div className="deck-card-grid">
-                  {editEntries
-                    .sort(([a], [b]) => cardName(a).localeCompare(cardName(b)))
-                    .map(([id, count]) => {
-                      const def = cardDefs[id];
-                      if (!def) return null;
-                      return (
-                        <CardView
-                          key={id}
-                          card={toObjectState(def)}
-                          actions={[]}
-                          isSelectableTarget={false}
-                          isSelectedTarget={false}
-                          playCost={def.playCost}
-                          playCostResource={def.playCostResource}
-                          onAction={() => {}}
-                          onSelectTarget={() => {}}
-                          onInspect={() => setInspectId(id)}
-                          deckControl={{
-                            count,
-                            canAdd: count < maxCopies && editTotal < maxDeckSize,
-                            onAdd: () => addCard(id),
-                            onRemove: () => removeCard(id),
-                          }}
-                        />
-                      );
-                    })}
                 </div>
               </div>
             </div>

@@ -928,6 +928,12 @@
   width: 95%;
 }
 
+/* Screen-wide variant for the My Decks card builder (overrides campaign-card's 720px cap) */
+.deck-page-wide {
+  max-width: 1600px;
+  width: 96%;
+}
+
 .deck-builders {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1907,6 +1913,7 @@
   .lobby-page { padding: 12px 0; }
   .lobby-card { padding: 20px 16px; width: 94%; }
   .lobby-wide { width: 94%; }
+  .deck-page-wide { width: 94%; }
   .lobby-title { font-size: 24px; }
   .deck-builder { padding: 10px; }
   .deck-builder-header { flex-wrap: wrap; }
@@ -2100,6 +2107,20 @@
 
 @media (max-width: 700px) {
   .deck-builder-columns { grid-template-columns: 1fr; }
+}
+
+/* My Decks editor: full-width stack, current deck on top, pool below (see .deck-page-wide) */
+.deck-editor-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.deck-editor-current {
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
 .deck-section-title {
