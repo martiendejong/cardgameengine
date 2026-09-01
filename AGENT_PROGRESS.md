@@ -291,3 +291,15 @@ Unit); Clear restores 214 again. Zero console errors throughout.
 Left: faction and unit-type filters — tracked as follow-up task 1101, needs a human data
 decision (which faction each of ~197 currently-unassigned cards belongs to, and which `tags`
 count as a unit-type archetype vs. a mechanical keyword) before they can be built.
+
+## 2026-09-01 — task 1071 (round 2, layout)
+Done: testing on PR #23 asked for the My Decks builder to show "This deck" on top of
+"Card pool" (was pool-left/deck-right in a 220px column) and to be screen-wide. Swapped
+section order in `DecksPage.tsx`, replaced the 2-column grid with a vertical stack, and
+added a `deck-page-wide` (1600px) container used only while editing — new CSS classes are
+scoped to DecksPage so CampaignPage's own deck builder (shares `deck-builder-columns`/
+`deck-current`) is untouched. PR #26.
+Verified: `dotnet build` + `npm run build` clean. Real Playwright run: builder renders at
+1600px wide, "This deck" sits above "Card pool", add/remove via both the small card and the
+big detail-modal still work, zero console errors.
+Left: nothing.
