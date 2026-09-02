@@ -19,7 +19,7 @@ const GAME_ID = 'town-tcg';
 function App() {
   const auth = useAuth();
   const [session, setSession] = useState<Session | null>(null);
-  const [view, setView] = useState<'loading' | 'lobby' | 'campaign' | 'decks'>('loading');
+  const [view, setView] = useState<'loading' | 'lobby' | 'campaign' | 'decks' | 'vsComputer'>('loading');
   const [confirmParams, setConfirmParams] = useState<{ userId: string; token: string } | null>(null);
   const [authError, setAuthError] = useState('');
 
@@ -52,6 +52,10 @@ function App() {
     }
     if (params.get('campaign')) {
       setView('campaign');
+      return;
+    }
+    if (params.get('vsComputer')) {
+      setView('vsComputer');
       return;
     }
     fetch(`${BASE}api/campaign?gameId=${GAME_ID}`, { credentials: 'include' })
@@ -93,6 +97,11 @@ function App() {
   function openCampaign() {
     window.history.replaceState(null, '', window.location.pathname + '?campaign=1');
     setView('campaign');
+  }
+
+  function openVsComputer() {
+    window.history.replaceState(null, '', window.location.pathname + '?vsComputer=1');
+    setView('vsComputer');
   }
 
   function openDecks() {
@@ -170,7 +179,11 @@ function App() {
     return (
       <div className="app-shell">
         {accountBar}
-        <CampaignPage onMissionStarted={handleMissionStarted} onOpenLobby={openLobby} />
+        <CampaignPage
+          onMissionStarted={handleMissionStarted}
+          onOpenLobby={openLobby}
+          onOpenVsComputer={openVsComputer}
+        />
       </div>
     );
   }
@@ -192,6 +205,7 @@ function App() {
         onOpenCampaign={openCampaign}
         onOpenDecks={openDecks}
         canUseAdminMode={auth.user.isAdmin === true}
+        initialMode={view === 'vsComputer' ? 'bot' : undefined}
       />
     </div>
   );

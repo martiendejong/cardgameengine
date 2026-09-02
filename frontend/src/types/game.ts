@@ -110,6 +110,7 @@ export interface EncounterDto {
   rewardCards: string[];
   rewardCopies: number; // playset size granted per reward card
   pendingSpawnCount: number;
+  isQuickMatch: boolean; // Lobby "vs Computer" quick match, not a scripted campaign mission
 }
 
 export interface CampaignMission {

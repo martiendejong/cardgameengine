@@ -201,6 +201,33 @@ config. OAuth `state` CSRF validation is framework-provided (OAuthHandler's corr
 cookie) — verified by reading the ASP.NET Core Authentication.OAuth source, not exercisable
 end-to-end without a real provider.
 
+## 2026-08-30 — task 966
+Done: "Play vs Computer" is now reachable straight from the Campaign landing screen (new
+always-enabled button, no 40-card unlock needed), routing into LobbyPage with "vs Computer"
+pre-selected via a new `initialMode` prop. MatchesController's `needsUnlock` now only fires
+when no seat is a bot, so a real 2-human match still needs the unlock but a bot match never
+does. Winning a bot quick match now grants 1 random deck-eligible card (capped at the playset
+limit, via new `CampaignService.AttachQuickMatchReward` + a quick-match branch in
+`CompleteMission` that adds +1 instead of a full playset and never touches CompletedMissions).
+`EncounterState`/`EncounterDto` gained `IsQuickMatch` so GameBoard.tsx's winner overlay reuses
+the mission reward UI on a win but falls back to the plain Game Over screen on a loss (real
+campaign missions and real multiplayer are unaffected either way). PR #19.
+Verified: dotnet build + npm run build both clean. A throwaway `MapPost` harness in Program.cs
+(removed before commit) drove `CampaignService.AttachQuickMatchReward`/`CompleteMission`
+directly against real `GameInstance`s (no mocks): win grants exactly 1 copy of the pre-chosen
+reward card, a second win with the card already at the playset cap doesn't exceed it, a loss
+grants nothing, and CompletedMissions never gains a bogus entry. Live curl: a fresh 0-card
+profile gets a 400 from POST /api/matches for a real 2-human match and 200 for a bot match.
+Real Playwright run (python playwright, chromium) against `dotnet run` + `npm run dev`:
+registered, confirmed via the logged email link, logged in with a fresh 0-card profile, the
+Multiplayer Lobby button stayed locked (0/40), the new Play vs Computer button was visible and
+enabled, clicking it opened the Lobby with "vs Computer" pre-checked, and Start Game reached
+the live GamePage with zero console errors (no unlock error).
+Left: the win-a-real-match visual reward display (mission-style overlay showing the won card)
+wasn't played out end-to-end in Playwright — scripting a full TCG match's turns was out of
+scope given the reward math itself is already verified directly; the task's own "How to test"
+section marks this as a manual check, noted as such in the ClickUp comment.
+
 ## 2026-08-30 — task 906
 Done: Hero/HQ dropdowns in LobbyPage.tsx now list hero-/headquarters-type cards
 present in the player's own deck (plus the faction default), for admin and
@@ -304,6 +331,27 @@ Verified: `dotnet build` + `npm run build` clean. Real Playwright run: builder r
 big detail-modal still work, zero console errors.
 Left: nothing.
 
+## 2026-09-01 — task 1050
+Done: Campaign deck builder's HQ/hero pickers (`CampaignPage.tsx`) were listing every
+headquarters-/hero-type card in the whole game via an exact `objectType === 'headquarters'`/
+`'hero'` match, ignoring ownership and faction subtypes. Added the same local `isOrExtends()`
+type-hierarchy walk `DecksPage.tsx`/`LobbyPage.tsx` already use, and scoped both lists to
+cards the player owns (`overview.profile.collection[c.id] > 0`) — mirrors this same file's
+existing "Jouw collectie" pool, which is the page's only other ownership-scoped list (no
+faction-precon-deck concept exists on this page like Lobby's, so collection ownership, not
+`customDeck` membership, is the natural fit here). No branch/PR ever existed for this task
+before now — it had looped todo↔review 10× with nothing implemented, was auto-blocked, then
+Martien overrode with "review it and now do it properly."
+Verified: `dotnet build` + `npm run build`/`tsc -b` clean. Real Playwright run against live
+`dotnet run` + `vite` dev servers (custom ports 5001/5175): registered+confirmed+logged in a
+fresh account, seeded a throwaway `profiles/<id>.json` (gitignored, dev-only) owning 6 HQ
+cards (one plain `headquarters` + all 5 subtypes: nexus, graveyard-hq, hive-hq, laboratory-hq,
+homestead-hq) and 3 hero cards (plain `hero` + `caster-hero` + `necromancer-hero`), while
+leaving several other HQ/hero cards unowned. Campaign → Mijn Deck showed exactly those 6 HQ
+and 3 hero options (all subtypes present, zero unowned cards leaked in); clicking a subtype
+HQ and a subtype hero both selected correctly. Zero console errors. PR #28.
+Left: nothing.
+
 ## 2026-09-02 — task 1101
 Done: added Faction and Unit type filters to `DecksPage.tsx`'s card pool, next to the
 existing type/cost filters from task 1072. Faction is derived from `gameDef.decks[]`
@@ -318,7 +366,10 @@ confirmed test account (multiplayer gate bypassed via the `/api/campaign` route
 intercept from task 1071's notes): unfiltered pool 214 cards; Faction=Blackrock Raiders
 narrows to 27 (matches a direct game.json cross-check); Unit type=Worker narrows to
 exactly the 3 worker-tagged cards (Peasant, Stone Mason, Hunk); combining both narrows
-to 0 (Raiders has no worker-tagged cards, confirmed against the data); all 11 unit-type
-options present, no keyword tags leaked; Clear filters button appears/works. Zero
-console errors.
+to 0 (Raiders has no worker-tagged cards, confirmed against the data); Faction=Unaffiliated
+narrows to 2 (also matches a direct game.json cross-check); all 11 unit-type options
+present, no keyword tags leaked; Clear filters button appears/works and resets both new
+selects. Zero console errors. Independently re-verified during review (round 2, reviewer
+session): re-ran the same live Playwright flow after merging `master` in, all counts
+reproduced exactly.
 Left: nothing.

@@ -56,8 +56,9 @@ public class StateProjector
                 MissionId = game.Encounter.MissionId,
                 PlayerId = game.Encounter.PlayerId,
                 RewardCards = game.Encounter.RewardCards,
-                RewardCopies = game.Definition.DeckRules?.MaxCopies ?? 1,
-                PendingSpawnCount = game.Encounter.PendingSpawns.Count
+                RewardCopies = game.Encounter.IsQuickMatch ? 1 : (game.Definition.DeckRules?.MaxCopies ?? 1),
+                PendingSpawnCount = game.Encounter.PendingSpawns.Count,
+                IsQuickMatch = game.Encounter.IsQuickMatch
             }
         };
     }
