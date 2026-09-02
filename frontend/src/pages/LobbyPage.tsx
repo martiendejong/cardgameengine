@@ -17,6 +17,9 @@ interface LobbyPageProps {
   // Account-level privilege: only admin accounts see the per-player Admin toggle
   // (the server refuses admin seats from non-admin accounts regardless).
   canUseAdminMode: boolean;
+  // Pre-selects the match mode — used by the "Play vs Computer" landing-screen entry point
+  // so it drops straight into bot mode instead of defaulting to hotseat.
+  initialMode?: 'hotseat' | 'seats' | 'bot';
 }
 
 interface PlayerDeckState {
@@ -72,7 +75,7 @@ function reserveOptions(deck: Record<string, number>, fullDef: GameDefinitionFul
     .filter((c): c is CardDefinitionDto => !!c && isOrExtends(c.objectType, root, types));
 }
 
-export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseAdminMode }: LobbyPageProps) {
+export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseAdminMode, initialMode }: LobbyPageProps) {
   const [definitions, setDefinitions] = useState<GameDefinitionSummary[]>([]);
   const [selectedGame, setSelectedGame] = useState('');
   const [fullDef, setFullDef] = useState<GameDefinitionFull | null>(null);
@@ -82,7 +85,7 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
   ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [mode, setMode] = useState<'hotseat' | 'seats' | 'bot'>('hotseat');
+  const [mode, setMode] = useState<'hotseat' | 'seats' | 'bot'>(initialMode ?? 'hotseat');
   const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
 
   useEffect(() => {

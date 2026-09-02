@@ -181,6 +181,29 @@ public class CampaignService
         return (game, error);
     }
 
+    /// <summary>
+    /// Wires a lightweight, non-campaign encounter onto a Lobby "vs Computer" quick match so a
+    /// win grants exactly one random card (never the full playset a scripted mission gives),
+    /// while still reusing the existing mission victory-screen reward display and completion
+    /// endpoint. Picks the reward up front (like a mission's fixed rewards) so it's already
+    /// known by the time the game ends.
+    /// </summary>
+    public void AttachQuickMatchReward(GameInstance game, string humanUserId, string humanPlayerId, string botPlayerId)
+    {
+        var pool = game.Definition.Cards.Where(GameQueries.IsDeckEligible).ToList();
+        if (pool.Count == 0) return;
+
+        var rewardCard = pool[Random.Shared.Next(pool.Count)].Id;
+        game.Encounter = new EncounterState
+        {
+            ProfileUserId = humanUserId,
+            PlayerId = humanPlayerId,
+            EnemyPlayerId = botPlayerId,
+            IsQuickMatch = true,
+            RewardCards = new List<string> { rewardCard },
+        };
+    }
+
     /// <summary>Called when the player reports a finished encounter; verifies and grants rewards.
     /// callerUserId must match the account that started the mission — otherwise anyone who learns
     /// a matchId could claim another player's campaign rewards.</summary>
@@ -196,14 +219,28 @@ public class CampaignService
         if (!player.IsWinner) return (false, "The town has fallen — try again", null);
 
         var profile = GetProfile(enc.ProfileUserId);
-        if (!profile.CompletedMissions.Contains(enc.MissionId))
-            profile.CompletedMissions.Add(enc.MissionId);
-        // Rewards come as a full playset, capped so replays cannot farm past it —
-        // finishing all missions yields exactly a minimum multiplayer deck
         var playset = game.Definition.DeckRules?.MaxCopies ?? 4;
-        foreach (var cardId in enc.RewardCards)
-            profile.Collection[cardId] =
-                Math.Min(profile.Collection.GetValueOrDefault(cardId) + playset, playset);
+
+        if (enc.IsQuickMatch)
+        {
+            // A quick vs-computer win adds one copy of the (already-chosen) random reward
+            // card, capped at the playset limit — not the full-playset grant a scripted
+            // campaign mission gives, and it never touches CompletedMissions.
+            foreach (var cardId in enc.RewardCards)
+                profile.Collection[cardId] =
+                    Math.Min(profile.Collection.GetValueOrDefault(cardId) + 1, playset);
+        }
+        else
+        {
+            if (!profile.CompletedMissions.Contains(enc.MissionId))
+                profile.CompletedMissions.Add(enc.MissionId);
+            // Rewards come as a full playset, capped so replays cannot farm past it —
+            // finishing all missions yields exactly a minimum multiplayer deck
+            foreach (var cardId in enc.RewardCards)
+                profile.Collection[cardId] =
+                    Math.Min(profile.Collection.GetValueOrDefault(cardId) + playset, playset);
+        }
+
         SaveProfile(enc.ProfileUserId, profile);
         enc.RewardsGranted = true;
 

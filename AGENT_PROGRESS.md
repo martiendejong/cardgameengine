@@ -201,6 +201,33 @@ config. OAuth `state` CSRF validation is framework-provided (OAuthHandler's corr
 cookie) — verified by reading the ASP.NET Core Authentication.OAuth source, not exercisable
 end-to-end without a real provider.
 
+## 2026-08-30 — task 966
+Done: "Play vs Computer" is now reachable straight from the Campaign landing screen (new
+always-enabled button, no 40-card unlock needed), routing into LobbyPage with "vs Computer"
+pre-selected via a new `initialMode` prop. MatchesController's `needsUnlock` now only fires
+when no seat is a bot, so a real 2-human match still needs the unlock but a bot match never
+does. Winning a bot quick match now grants 1 random deck-eligible card (capped at the playset
+limit, via new `CampaignService.AttachQuickMatchReward` + a quick-match branch in
+`CompleteMission` that adds +1 instead of a full playset and never touches CompletedMissions).
+`EncounterState`/`EncounterDto` gained `IsQuickMatch` so GameBoard.tsx's winner overlay reuses
+the mission reward UI on a win but falls back to the plain Game Over screen on a loss (real
+campaign missions and real multiplayer are unaffected either way). PR #19.
+Verified: dotnet build + npm run build both clean. A throwaway `MapPost` harness in Program.cs
+(removed before commit) drove `CampaignService.AttachQuickMatchReward`/`CompleteMission`
+directly against real `GameInstance`s (no mocks): win grants exactly 1 copy of the pre-chosen
+reward card, a second win with the card already at the playset cap doesn't exceed it, a loss
+grants nothing, and CompletedMissions never gains a bogus entry. Live curl: a fresh 0-card
+profile gets a 400 from POST /api/matches for a real 2-human match and 200 for a bot match.
+Real Playwright run (python playwright, chromium) against `dotnet run` + `npm run dev`:
+registered, confirmed via the logged email link, logged in with a fresh 0-card profile, the
+Multiplayer Lobby button stayed locked (0/40), the new Play vs Computer button was visible and
+enabled, clicking it opened the Lobby with "vs Computer" pre-checked, and Start Game reached
+the live GamePage with zero console errors (no unlock error).
+Left: the win-a-real-match visual reward display (mission-style overlay showing the won card)
+wasn't played out end-to-end in Playwright — scripting a full TCG match's turns was out of
+scope given the reward math itself is already verified directly; the task's own "How to test"
+section marks this as a manual check, noted as such in the ClickUp comment.
+
 ## 2026-08-30 — task 906
 Done: Hero/HQ dropdowns in LobbyPage.tsx now list hero-/headquarters-type cards
 present in the player's own deck (plus the faction default), for admin and

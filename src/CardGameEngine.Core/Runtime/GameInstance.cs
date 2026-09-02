@@ -42,6 +42,10 @@ public class EncounterState
     public List<SpawnEntry> PendingSpawns { get; set; } = new();
     public List<string> RewardCards { get; set; } = new();
     public bool RewardsGranted { get; set; }
+    // A Lobby "vs Computer" quick match, not a scripted campaign mission: a win grants
+    // exactly one copy of RewardCards[0] (capped at the playset limit), never a full playset,
+    // and losing must not show the mission-style "town has fallen" screen.
+    public bool IsQuickMatch { get; set; }
 }
 
 public class SpawnEntry
