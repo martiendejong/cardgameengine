@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
-import { GameDefinitionFull, CardDefinitionDto, ObjectTypeDto, SavedDeck } from '../types/game';
+import { GameDefinitionFull, CardDefinitionDto, ObjectStateDto, ObjectTypeDto, SavedDeck } from '../types/game';
 import { BASE } from '../config';
+import { CardView } from '../components/CardView';
+import { CardDetailModal } from '../components/CardDetailModal';
+import { isDeckEligible } from '../utils/deckEligibility';
 
 interface DecksPageProps {
   onOpenLobby: () => void;
@@ -19,13 +22,47 @@ function isOrExtends(objectType: string, root: string, types: ObjectTypeDto[]): 
   return false;
 }
 
-function isDeckEligible(card: CardDefinitionDto): boolean {
-  return (card.playCost !== null && card.playCost !== undefined)
-    || !!(card.playCosts && Object.keys(card.playCosts).length > 0);
-}
-
 function deckSize(deck: Record<string, number>): number {
   return Object.values(deck).reduce((a, b) => a + b, 0);
+}
+
+// A single numeric cost for filtering: playCost as-is, or the sum of playCosts'
+// resource amounts for multi-resource cards (e.g. Soldier's gold+training).
+function costOf(card: CardDefinitionDto): number | null {
+  if (card.playCost !== null && card.playCost !== undefined) return card.playCost;
+  if (card.playCosts) {
+    const values = Object.values(card.playCosts);
+    if (values.length > 0) return values.reduce((a, b) => a + b, 0);
+  }
+  return null;
+}
+
+// The deck builder shows cards using the same CardView/CardDetailModal components the live
+// game uses, so it needs an ObjectStateDto-shaped stand-in for a static CardDefinitionDto
+// (there is no live game object here — nothing is on a battlefield/in a hand).
+function toObjectState(card: CardDefinitionDto): ObjectStateDto {
+  return {
+    id: card.id,
+    definitionId: card.id,
+    name: card.name,
+    objectType: card.objectType,
+    ownerId: '',
+    controllerId: '',
+    zoneId: 'pool',
+    properties: card.properties,
+    resources: {},
+    tags: card.tags,
+    isTapped: false,
+    isDestroyed: false,
+    line: '',
+    hasMovedThisTurn: false,
+    hasSummoningSickness: false,
+    icon: card.icon,
+    housingCost: card.housingCost,
+    housingProvided: card.housingProvided,
+    underConstruction: false,
+    constructionProgress: 0,
+  };
 }
 
 export function DecksPage({ onOpenLobby }: DecksPageProps) {
@@ -42,6 +79,10 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
   const [editHero, setEditHero] = useState('');
   const [editCards, setEditCards] = useState<Record<string, number>>({});
   const [cardFilter, setCardFilter] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
+  const [minCostFilter, setMinCostFilter] = useState('');
+  const [maxCostFilter, setMaxCostFilter] = useState('');
+  const [inspectId, setInspectId] = useState<string | null>(null);
 
   useEffect(() => {
     fetch(`${BASE}api/definitions/${GAME_ID}`)
@@ -78,13 +119,43 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
     [gameDef, objectTypes],
   );
 
+  const eligibleCards = useMemo(() => (gameDef?.cards ?? []).filter(isDeckEligible), [gameDef]);
+
+  const typeOptions = useMemo(() => {
+    const typeNames: Record<string, string> = {};
+    for (const t of objectTypes) typeNames[t.id] = t.name;
+    const ids = Array.from(new Set(eligibleCards.map(c => c.objectType)));
+    return ids
+      .map(id => ({ id, name: typeNames[id] ?? id }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [eligibleCards, objectTypes]);
+
   const pool = useMemo(() => {
     const filter = cardFilter.trim().toLowerCase();
-    return (gameDef?.cards ?? [])
-      .filter(isDeckEligible)
+    const minCost = minCostFilter.trim() === '' ? null : Number(minCostFilter);
+    const maxCost = maxCostFilter.trim() === '' ? null : Number(maxCostFilter);
+    return eligibleCards
       .filter(c => !filter || c.name.toLowerCase().includes(filter))
+      .filter(c => !typeFilter || c.objectType === typeFilter)
+      .filter(c => {
+        if (minCost === null && maxCost === null) return true;
+        const cost = costOf(c);
+        if (cost === null) return false;
+        if (minCost !== null && cost < minCost) return false;
+        if (maxCost !== null && cost > maxCost) return false;
+        return true;
+      })
       .sort((a, b) => a.objectType.localeCompare(b.objectType) || a.name.localeCompare(b.name));
-  }, [gameDef, cardFilter]);
+  }, [eligibleCards, cardFilter, typeFilter, minCostFilter, maxCostFilter]);
+
+  const filtersActive = !!cardFilter || !!typeFilter || !!minCostFilter || !!maxCostFilter;
+
+  function clearFilters() {
+    setCardFilter('');
+    setTypeFilter('');
+    setMinCostFilter('');
+    setMaxCostFilter('');
+  }
 
   const maxCopies = deckRules?.maxCopies ?? 4;
   const maxDeckSize = deckRules?.maxDeckSize ?? 60;
@@ -98,7 +169,7 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
     setEditHq('');
     setEditHero('');
     setEditCards({});
-    setCardFilter('');
+    clearFilters();
     setError('');
   }
 
@@ -108,12 +179,13 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
     setEditHq(deck.hqId ?? '');
     setEditHero(deck.heroId ?? '');
     setEditCards({ ...deck.cards });
-    setCardFilter('');
+    clearFilters();
     setError('');
   }
 
   function cancelEdit() {
     setEditingId(null);
+    setInspectId(null);
     setError('');
   }
 
@@ -197,7 +269,7 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
 
   return (
     <div className="lobby-page">
-      <div className="lobby-card lobby-wide campaign-card">
+      <div className={`lobby-card lobby-wide ${editingId !== null ? 'deck-page-wide' : 'campaign-card'}`}>
         <h1 className="lobby-title">Town Wars</h1>
         <p className="lobby-subtitle">
           {editingId !== null
@@ -289,54 +361,133 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
               </div>
             </div>
 
-            <div className="deck-builder-columns">
+            <div className="deck-editor-layout">
+              <div className="deck-editor-current">
+                <div className="deck-section-title">This deck — click a card to inspect it, click ➖ to remove</div>
+                {editEntries.length === 0 && (
+                  <div className="deck-empty">Empty — add cards from the pool below.</div>
+                )}
+                <div className="deck-card-grid">
+                  {editEntries
+                    .sort(([a], [b]) => cardName(a).localeCompare(cardName(b)))
+                    .map(([id, count]) => {
+                      const def = cardDefs[id];
+                      if (!def) return null;
+                      return (
+                        <CardView
+                          key={id}
+                          card={toObjectState(def)}
+                          actions={[]}
+                          isSelectableTarget={false}
+                          isSelectedTarget={false}
+                          playCost={def.playCost}
+                          playCostResource={def.playCostResource}
+                          onAction={() => {}}
+                          onSelectTarget={() => {}}
+                          onInspect={() => setInspectId(id)}
+                          deckControl={{
+                            count,
+                            canAdd: count < maxCopies && editTotal < maxDeckSize,
+                            onAdd: () => addCard(id),
+                            onRemove: () => removeCard(id),
+                          }}
+                        />
+                      );
+                    })}
+                </div>
+              </div>
+
               <div className="deck-collection">
-                <div className="deck-section-title">Card pool — click to add</div>
+                <div className="deck-section-title">Card pool — click a card to inspect it, click ➕ to add</div>
                 <input
                   className="player-name-input deck-filter"
                   placeholder="Search cards..."
                   value={cardFilter}
                   onChange={e => setCardFilter(e.target.value)}
                 />
+                <div className="deck-filter-row">
+                  <select
+                    className="deck-select"
+                    value={typeFilter}
+                    onChange={e => setTypeFilter(e.target.value)}
+                  >
+                    <option value="">All types</option>
+                    {typeOptions.map(t => (
+                      <option key={t.id} value={t.id}>{t.name}</option>
+                    ))}
+                  </select>
+                  <input
+                    className="player-name-input deck-filter-cost"
+                    type="number"
+                    min={0}
+                    placeholder="Min cost"
+                    value={minCostFilter}
+                    onChange={e => setMinCostFilter(e.target.value)}
+                  />
+                  <input
+                    className="player-name-input deck-filter-cost"
+                    type="number"
+                    min={0}
+                    placeholder="Max cost"
+                    value={maxCostFilter}
+                    onChange={e => setMaxCostFilter(e.target.value)}
+                  />
+                  {filtersActive && (
+                    <button className="back-btn deck-clear-btn" onClick={clearFilters}>Clear filters</button>
+                  )}
+                </div>
                 <div className="deck-card-grid">
                   {pool.map(card => {
                     const inDeck = editCards[card.id] ?? 0;
                     const canAdd = inDeck < maxCopies && editTotal < maxDeckSize;
                     return (
-                      <div
+                      <CardView
                         key={card.id}
-                        className={`deck-card-item ${canAdd ? 'deck-card-addable' : 'deck-card-full'}`}
-                        onClick={() => addCard(card.id)}
-                        title={canAdd ? 'Click to add' : `Maximum reached (${inDeck}/${maxCopies})`}
-                      >
-                        <span className="deck-card-icon">{card.icon ?? '🃏'}</span>
-                        <span className="deck-card-name">{card.name}</span>
-                        <span className="deck-card-type">{card.objectType}</span>
-                        <span className="deck-card-count">{inDeck}/{maxCopies}</span>
-                      </div>
+                        card={toObjectState(card)}
+                        actions={[]}
+                        isSelectableTarget={false}
+                        isSelectedTarget={false}
+                        playCost={card.playCost}
+                        playCostResource={card.playCostResource}
+                        onAction={() => {}}
+                        onSelectTarget={() => {}}
+                        onInspect={() => setInspectId(card.id)}
+                        deckControl={{
+                          count: inDeck,
+                          canAdd,
+                          onAdd: () => addCard(card.id),
+                          onRemove: () => removeCard(card.id),
+                        }}
+                      />
                     );
                   })}
                 </div>
               </div>
-
-              <div className="deck-current">
-                <div className="deck-section-title">This deck — click to remove</div>
-                {editEntries.length === 0 && (
-                  <div className="deck-empty">Empty — add cards from the pool on the left.</div>
-                )}
-                <div className="deck-list">
-                  {editEntries
-                    .sort(([a], [b]) => cardName(a).localeCompare(cardName(b)))
-                    .map(([id, count]) => (
-                      <div key={id} className="deck-list-item" onClick={() => removeCard(id)} title="Click to remove">
-                        <span className="deck-card-icon">{cardIcon(id)}</span>
-                        <span className="deck-card-name">{cardName(id)}</span>
-                        <span className="deck-list-count">×{count}</span>
-                      </div>
-                    ))}
-                </div>
-              </div>
             </div>
+
+            {inspectId && cardDefs[inspectId] && (() => {
+              const def = cardDefs[inspectId];
+              const inDeck = editCards[inspectId] ?? 0;
+              const canAdd = inDeck < maxCopies && editTotal < maxDeckSize;
+              return (
+                <CardDetailModal
+                  card={toObjectState(def)}
+                  def={def}
+                  attachments={[]}
+                  nameOf={cardName}
+                  actions={[]}
+                  onAction={() => {}}
+                  onClose={() => setInspectId(null)}
+                  onInspect={() => {}}
+                  deckControl={{
+                    count: inDeck,
+                    canAdd,
+                    onAdd: () => addCard(inspectId),
+                    onRemove: () => removeCard(inspectId),
+                  }}
+                />
+              );
+            })()}
 
             <div className="mode-select">
               <button className="start-btn" disabled={!canSave} onClick={saveEditing}>

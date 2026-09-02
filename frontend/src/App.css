@@ -928,6 +928,12 @@
   width: 95%;
 }
 
+/* Screen-wide variant for the My Decks card builder (overrides campaign-card's 720px cap) */
+.deck-page-wide {
+  max-width: 1600px;
+  width: 96%;
+}
+
 .deck-builders {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1365,6 +1371,80 @@
   font-size: 26px;
   line-height: 1;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+}
+
+/* Deck-builder add/remove icon shown on cards rendered via CardView/CardDetailModal
+   (small version on .card, big version inside .card-detail via .detail-deck-toggle) */
+.deck-toggle-icon {
+  position: absolute;
+  top: 5px;
+  left: 6px;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  line-height: 18px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.35);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.12s, background 0.15s;
+}
+
+.deck-toggle-icon:hover:not(:disabled) {
+  transform: scale(1.15);
+}
+
+.deck-toggle-icon:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+.deck-toggle-add {
+  background: rgba(76,175,80,0.85);
+  color: #fff;
+}
+
+.deck-toggle-remove {
+  background: rgba(244,67,54,0.85);
+  color: #fff;
+  /* sits to the right of the add icon */
+  left: 28px;
+}
+
+.deck-toggle-count {
+  position: absolute;
+  top: 5px;
+  left: 50px;
+  z-index: 2;
+  font-size: 11px;
+  font-weight: 700;
+  color: #7ec8e3;
+  background: rgba(0,0,0,0.55);
+  border-radius: 4px;
+  padding: 1px 4px;
+  line-height: 1.3;
+  pointer-events: none;
+}
+
+.detail-deck-toggle {
+  top: 8px;
+  left: 10px;
+  width: 26px;
+  height: 26px;
+  line-height: 24px;
+  font-size: 17px;
+}
+
+.detail-deck-toggle-remove {
+  left: 40px;
+}
+
+.detail-deck-toggle-count {
+  top: 12px;
+  left: 74px;
 }
 
 /* ============================================================
@@ -1833,6 +1913,7 @@
   .lobby-page { padding: 12px 0; }
   .lobby-card { padding: 20px 16px; width: 94%; }
   .lobby-wide { width: 94%; }
+  .deck-page-wide { width: 94%; }
   .lobby-title { font-size: 24px; }
   .deck-builder { padding: 10px; }
   .deck-builder-header { flex-wrap: wrap; }
@@ -1996,6 +2077,27 @@
   margin-bottom: 10px;
 }
 
+.deck-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.deck-filter-row .deck-select {
+  flex: 1 1 140px;
+}
+
+.deck-filter-cost {
+  width: 90px;
+  flex: 0 0 90px;
+  box-sizing: border-box;
+  font-size: 13px;
+  padding: 7px 10px;
+  margin-bottom: 0;
+}
+
 .deck-builder-columns {
   display: grid;
   grid-template-columns: 1fr 220px;
@@ -2005,6 +2107,20 @@
 
 @media (max-width: 700px) {
   .deck-builder-columns { grid-template-columns: 1fr; }
+}
+
+/* My Decks editor: full-width stack, current deck on top, pool below (see .deck-page-wide) */
+.deck-editor-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.deck-editor-current {
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
 .deck-section-title {
