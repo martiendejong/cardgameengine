@@ -428,6 +428,20 @@ public static class DefaultHandlers
             ctx.Game.Log.Add($"{spellObj?.Name ?? "The spell"} is countered!");
         });
 
+        // Inside Man: cancel the ability activation currently on the stack
+        e.Register("cancel_ability", ctx =>
+        {
+            var item = ctx.Game.Stack.Items.LastOrDefault(i => i.Kind == "ability" && !i.Cancelled);
+            if (item == null)
+            {
+                ctx.Game.Log.Add("...but there is no ability activation to cancel.");
+                return;
+            }
+            item.Cancelled = true;
+            var sourceObj = ctx.Game.Objects.FirstOrDefault(o => o.Id == item.SourceObjectId);
+            ctx.Game.Log.Add($"{sourceObj?.Name ?? "The ability"}'s activation is cancelled!");
+        });
+
         // Freeze: tap and skip the next untap step
         e.Register("freeze", ctx =>
         {

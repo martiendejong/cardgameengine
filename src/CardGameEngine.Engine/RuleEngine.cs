@@ -123,6 +123,10 @@ public class RuleEngine
             {
                 _cardPlay.ResolveSpellItem(game, item);
             }
+            else if (item.Kind == "ability")
+            {
+                _abilities.ResolveActivatedAbility(game, item);
+            }
         }
 
         game.ReactionPlayerId = null;

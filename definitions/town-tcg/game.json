@@ -4215,6 +4215,32 @@
       }
     },
     {
+      "id": "inside-man",
+      "name": "Inside Man",
+      "objectType": "spell",
+      "playCost": 1,
+      "timing": "reaction",
+      "reactionTo": [
+        "abilityActivated"
+      ],
+      "icon": "🔑",
+      "artworkDescription": "Already had the keys",
+      "onPlay": {
+        "id": "im",
+        "name": "Cancel target ability activation, gain 1 Intel",
+        "effects": [
+          {
+            "type": "cancel_ability"
+          },
+          {
+            "type": "gain_bank_resource",
+            "resourceId": "intel",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
       "id": "ambush",
       "name": "Ambush",
       "objectType": "spell",

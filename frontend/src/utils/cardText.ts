@@ -102,6 +102,7 @@ export function explainEffect(e: EffectDto, nameOf: NameOf): string {
     case 'destroy_infiltrators': return 'Flush out the target building: every enemy card attached to it (even hidden) is destroyed';
     case 'damage_infiltrators': return `Enemy cards hiding in the target building are revealed and take ${e.amount} direct damage each`;
     case 'gain_bank_resource': return `Add ${e.amount} ${resName(e.resourceId)} to your HQ stockpile`;
+    case 'cancel_ability': return 'Cancel the ability activation currently being responded to';
     case 'damage_enemy_units': {
       const scopeTxt = e.line ? ` on the ${e.line} line` : '';
       const frail = e.maxHp ? ` with ${e.maxHp} or less max HP` : '';
