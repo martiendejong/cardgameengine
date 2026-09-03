@@ -119,6 +119,14 @@
       ]
     },
     {
+      "id": "raider-hq",
+      "name": "Raider Headquarters",
+      "parentType": "headquarters",
+      "resources": [
+        "glory"
+      ]
+    },
+    {
       "id": "graveyard-hq",
       "name": "Graveyard",
       "parentType": "headquarters",
@@ -459,6 +467,7 @@
       "name": "Town Hall",
       "objectType": "headquarters",
       "playCost": 5,
+      "constructionRequirement": 3,
       "properties": {
         "currentHp": 8,
         "maxHp": 8,
@@ -998,15 +1007,42 @@
     {
       "id": "raider-camp",
       "name": "Raider Camp",
-      "objectType": "headquarters",
-      "playCost": 5,
+      "objectType": "raider-hq",
+      "playCosts": {
+        "gold": 5,
+        "glory": 2
+      },
       "properties": {
         "currentHp": 9,
         "maxHp": 9,
         "armor": 1
       },
+      "resources": {
+        "glory": 0
+      },
+      "resourceCapacities": {
+        "glory": 6
+      },
       "artworkDescription": "A palisade of sharpened stakes around smoking campfires",
       "abilities": [
+        {
+          "id": "trophy-tally",
+          "name": "Trophy Tally",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "glory",
+              "amount": 2
+            }
+          ]
+        },
         {
           "id": "raid-party",
           "name": "Raid Party",
@@ -2270,7 +2306,9 @@
       "id": "arcane-nexus",
       "name": "Arcane Nexus",
       "objectType": "nexus",
-      "playCost": 6,
+      "playCosts": {
+        "mana": 10
+      },
       "properties": {
         "currentHp": 8,
         "maxHp": 8,
@@ -2280,7 +2318,7 @@
         "mana": 5
       },
       "resourceCapacities": {
-        "mana": 8
+        "mana": 12
       },
       "icon": "\ud83d\udd2e",
       "artworkDescription": "A crystalline spire humming with raw magic",
@@ -2902,7 +2940,15 @@
       "id": "graveyard",
       "name": "Graveyard",
       "objectType": "graveyard-hq",
-      "playCost": 5,
+      "playCosts": {
+        "corpses": 6
+      },
+      "playCostsExtra": [
+        {
+          "type": "sacrifice_units",
+          "amount": 2
+        }
+      ],
       "properties": {
         "currentHp": 10,
         "maxHp": 10,
@@ -3373,7 +3419,13 @@
       "id": "the-hive",
       "name": "The Hive",
       "objectType": "hive-hq",
-      "playCost": 7,
+      "playCosts": {},
+      "playCostsExtra": [
+        {
+          "type": "sacrifice_units",
+          "amount": 5
+        }
+      ],
       "properties": {
         "currentHp": 12,
         "maxHp": 12,

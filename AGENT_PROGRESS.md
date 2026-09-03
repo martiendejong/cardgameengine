@@ -14,17 +14,33 @@ DOM/visual order, stays fully visible after scrolling the board, wraps
 correctly at a 390px mobile width, and Confirm/Cancel still work.
 Left: nothing.
 
-## 2026-09-03 — task 1327 (WIP)
-Plan: give each HQ a faction-flavored multi-resource play cost (reusing the
-existing PlayCosts dict pattern), add a generic "sacrifice N units you
-control" play-cost type (new CostDefinition.Type registered in
-DefaultHandlers, processed in CardPlayService the same way AbilityService
-already processes ability costs), and give Town Hall a second cost via the
-existing constructionRequirement/builder mechanic (same as Marketplace) per
-Martien's clarification in the ClickUp thread. Raider Camp needs a new
-glory-banking ability (mirrors Exhume/Channel) since glory currently only
-lives on individual units, not the HQ bank — without it the glory cost would
-be permanently unpayable.
+## 2026-09-03 — task 1327
+Done: Raider Camp = gold 5 + glory 2 (new raider-hq objectType banking
+glory, new "Trophy Tally" tap ability to bank it, mirrors Exhume/Channel).
+Arcane Nexus = mana 10 only, no gold (mana cap raised 8->12 so the cost is
+payable). Graveyard = corpses 6 + sacrifice 2 units, no gold. The Hive =
+sacrifice 5 units only, no resource cost. Town Hall = gold 5 (unchanged) +
+constructionRequirement 3, reusing the exact existing builder/add_progress
+mechanic already used by Marketplace — this is what "builder taps" turned
+out to mean per Martien's clarification (a Builder unit spends build
+actions on it, not a new currency). Added a generic "sacrifice_units"
+CostDefinition.Type (DefaultHandlers.cs, CostContext/CostProcessor — same
+registry AbilityService already uses) and a new CardDefinition.PlayCostsExtra
+list so any card can carry non-resource play costs; CardPlayService checks
+and pays it exactly like the existing resource-cost loop. PR #30.
+Note: HQ cards are placed at game setup via SetupService.PlaceCard, which
+bypasses CardPlayService/PlayCosts entirely (pre-existing, not something
+this task changes) — these costs apply when a reserve/alternate HQ copy is
+drawn and played from hand later (the mechanic task 906/908 already added).
+Verified: dotnet build 0 errors; a throwaway console harness (not committed)
+drove CardPlayService/AbilityService directly for all 5 HQs — 27/27 checks
+pass, covering: old flat-gold-only amounts now correctly rejected, each new
+multi-resource/sacrifice cost enforced and drained/consumed correctly, the
+new Trophy Tally ability actually banks glory, and Master Builder's
+pre-existing Rapid Construction ability completes Town Hall's construction.
+Left: nothing agent-doable. FYI for review: Graveyard's own pre-existing
+onUnitDied trigger fires when sacrificed units die, refunding 1 corpse
+(oncePerTurn) — confirmed as an intended emergent interaction, not a bug.
 
 ## 2026-08-26 — task 664 (round 2)
 Done: PR #4's gold-mine destroy fix (GainEntityResource destroys resource-node

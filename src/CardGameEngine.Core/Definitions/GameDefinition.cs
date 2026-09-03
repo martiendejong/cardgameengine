@@ -121,6 +121,7 @@ public class CardDefinition
     public int? PlayCost { get; set; } // cost to play from hand; null = not deck-eligible
     public string PlayCostResource { get; set; } = "gold"; // which player resource pays the play cost
     public Dictionary<string, int>? PlayCosts { get; set; } // multi-resource play cost (e.g. gold + training); overrides PlayCost
+    public List<CostDefinition>? PlayCostsExtra { get; set; } // additional non-resource play costs (e.g. sacrifice units you control); paid via the same cost-type registry ability costs use
     public string? DeckLimit { get; set; } // "unlimited" or a number as string; null = deck rule default
     public int? ConstructionRequirement { get; set; } // buildings enter play under construction until this much progress
     public List<string>? Slots { get; set; } // multi-slot equipment (e.g. two-handed: mainHand+offHand); overrides Slot
