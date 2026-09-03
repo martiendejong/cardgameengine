@@ -399,3 +399,11 @@ selects. Zero console errors. Independently re-verified during review (round 2, 
 session): re-ran the same live Playwright flow after merging `master` in, all counts
 reproduced exactly.
 Left: nothing.
+
+## 2026-09-03 — task 1050 (round 2, testing feedback)
+Plan: PR #28 scoped CampaignPage.tsx's HQ/hero pickers to the player's owned collection,
+but Martien's testing feedback says that's the wrong scope — he expects the picker to
+show only HQ/hero cards actually present in the deck being built (customDeck), e.g. "if
+i have 2 headquarters in my deck im expecting to see those two cards there". Rescoping
+hqCards/heroCards to read from customDeck entries (count > 0) instead of
+overview.profile.collection, mirroring LobbyPage.tsx's reserveOptions() convention.
