@@ -48,6 +48,12 @@ public class CardPlayService
             if (GameQueries.AvailableForPlayCost(game, player, resId) < amount)
                 return (false, $"Requires {GameQueries.FormatCosts(costs)}");
 
+        // Additional non-resource costs (e.g. sacrifice units you control)
+        var extraCosts = cardDef.PlayCostsExtra ?? new List<CostDefinition>();
+        foreach (var cost in extraCosts)
+            if (!_s.Costs.CanPay(new CostContext { Game = game, Cost = cost, Object = obj, Player = player }))
+                return (false, $"Cannot pay cost: {cost.Type}");
+
         if (cardDef.HousingCost is int housing &&
             !GameQueries.HasHousingFor(game, playerId, housing))
             return (false, $"Not enough housing ({GameQueries.HousingUsed(game, playerId)}/{GameQueries.HousingCapacity(game, playerId)})");
@@ -109,6 +115,8 @@ public class CardPlayService
                 _s.Mutator.SpendResource(game, player, resId, amount);
             }
         }
+        foreach (var cost in extraCosts)
+            _s.Costs.Pay(new CostContext { Game = game, Cost = cost, Object = obj, Player = player });
         ConsumeCostModifiers(game, playerId, cardDef);
 
         // Resolve

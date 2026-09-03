@@ -94,6 +94,26 @@ public static class DefaultHandlers
                 }
             });
 
+        // Sacrifice N of your own battlefield units (never the card being paid for, which
+        // isn't on the battlefield yet). Generic building block for any card's cost, e.g. a
+        // headquarters that costs blood rather than gold (the Hive, the Graveyard).
+        s.Costs.Register("sacrifice_units",
+            canPay: ctx => GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
+                .Count(o => o.Id != ctx.Object.Id && GameQueries.IsObjectTypeOrSubtype(ctx.Game, o.ObjectType, "unit"))
+                >= (ctx.Cost.Amount ?? 1),
+            pay: ctx =>
+            {
+                var victims = GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
+                    .Where(o => o.Id != ctx.Object.Id && GameQueries.IsObjectTypeOrSubtype(ctx.Game, o.ObjectType, "unit"))
+                    .Take(ctx.Cost.Amount ?? 1)
+                    .ToList();
+                foreach (var victim in victims)
+                {
+                    ctx.Game.Log.Add($"{victim.Name} is sacrificed to pay for {ctx.Object.Name}.");
+                    s.Mutator.DestroyObject(ctx.Game, victim);
+                }
+            });
+
         static int GetResource(CostContext ctx) =>
             ctx.Cost.Scope == "player"
                 ? ctx.Player.Resources.GetValueOrDefault(ctx.Cost.ResourceId ?? "")
