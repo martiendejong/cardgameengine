@@ -22,6 +22,15 @@ const STAT_ICONS: Record<string, string> = {
   trigger: icoTrigger,
 };
 
+export interface DeckControl {
+  /** How many copies of this card are currently in the deck being edited. */
+  count: number;
+  /** Whether another copy can be added right now (max copies / deck size not yet reached). */
+  canAdd: boolean;
+  onAdd: () => void;
+  onRemove: () => void;
+}
+
 interface CardViewProps {
   card: ObjectStateDto;
   actions: AvailableAction[];
@@ -34,6 +43,8 @@ interface CardViewProps {
   onAction: (action: AvailableAction, targetIds?: string[]) => void;
   onSelectTarget: (id: string) => void;
   onInspect?: (objectId: string) => void;
+  /** When set, renders a small add/remove icon for use in deck-builder card pools/lists. */
+  deckControl?: DeckControl;
 }
 
 export function CardView({
@@ -48,6 +59,7 @@ export function CardView({
   onAction,
   onSelectTarget,
   onInspect,
+  deckControl,
 }: CardViewProps) {
   const hp = card.properties['currentHp'] ?? 0;
   const maxHp = card.properties['maxHp'] ?? 0;
@@ -107,6 +119,31 @@ export function CardView({
       }}
     >
       {costLabel && <span className="card-cost">{costLabel}</span>}
+
+      {deckControl && (
+        <button
+          type="button"
+          className="deck-toggle-icon deck-toggle-add"
+          disabled={!deckControl.canAdd}
+          title={deckControl.canAdd ? 'Add to deck' : 'Maximum copies reached'}
+          onClick={e => { e.stopPropagation(); deckControl.onAdd(); }}
+        >
+          +
+        </button>
+      )}
+      {deckControl && deckControl.count > 0 && (
+        <button
+          type="button"
+          className="deck-toggle-icon deck-toggle-remove"
+          title={`In deck (${deckControl.count}) — click to remove one`}
+          onClick={e => { e.stopPropagation(); deckControl.onRemove(); }}
+        >
+          −
+        </button>
+      )}
+      {deckControl && deckControl.count > 0 && (
+        <span className="deck-toggle-count">×{deckControl.count}</span>
+      )}
 
       <div className="card-header">
         <span className="card-name">{card.name}</span>

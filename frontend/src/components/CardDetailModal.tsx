@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { ObjectStateDto, CardDefinitionDto, AvailableAction } from '../types/game';
+import { DeckControl } from './CardView';
 import {
   explainCost, explainCondition, explainChoice, explainEffect, explainTrigger,
   STAT_TIPS, TAG_TIPS, TYPE_TIPS, STATUS_TIPS, playCostTip, slotTip,
@@ -35,6 +36,8 @@ interface CardDetailModalProps {
   onAction?: (action: AvailableAction) => void;
   onClose: () => void;
   onInspect: (objectId: string) => void;
+  /** When set, renders a small add/remove icon for use in deck-builder card pools/lists. */
+  deckControl?: DeckControl;
 }
 
 function typeLabel(objectType: string): string {
@@ -55,7 +58,7 @@ function artGradient(definitionId: string): string {
   return `linear-gradient(135deg, hsl(${hue1}, 45%, 24%), hsl(${hue2}, 55%, 14%))`;
 }
 
-export function CardDetailModal({ card, def, attachments, nameOf, actions, onAction, onClose, onInspect }: CardDetailModalProps) {
+export function CardDetailModal({ card, def, attachments, nameOf, actions, onAction, onClose, onInspect, deckControl }: CardDetailModalProps) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
@@ -85,6 +88,31 @@ export function CardDetailModal({ card, def, attachments, nameOf, actions, onAct
         onClick={e => e.stopPropagation()}
       >
         <button className="modal-close" onClick={onClose}>✕</button>
+
+        {deckControl && (
+          <button
+            type="button"
+            className="deck-toggle-icon detail-deck-toggle deck-toggle-add"
+            disabled={!deckControl.canAdd}
+            title={deckControl.canAdd ? 'Add to deck' : 'Maximum copies reached'}
+            onClick={e => { e.stopPropagation(); deckControl.onAdd(); }}
+          >
+            +
+          </button>
+        )}
+        {deckControl && deckControl.count > 0 && (
+          <button
+            type="button"
+            className="deck-toggle-icon detail-deck-toggle detail-deck-toggle-remove deck-toggle-remove"
+            title={`In deck (${deckControl.count}) — click to remove one`}
+            onClick={e => { e.stopPropagation(); deckControl.onRemove(); }}
+          >
+            −
+          </button>
+        )}
+        {deckControl && deckControl.count > 0 && (
+          <span className="deck-toggle-count detail-deck-toggle-count">×{deckControl.count}</span>
+        )}
 
         {/* Title */}
         <div className="detail-header">

@@ -29,6 +29,10 @@ public class EncounterDto
     public List<string> RewardCards { get; set; } = new();
     public int RewardCopies { get; set; } = 1; // playset size granted per reward card
     public int PendingSpawnCount { get; set; }
+    // A Lobby "vs Computer" quick match rather than a scripted campaign mission —
+    // the victory screen reuses the same reward display, but a loss falls back to
+    // the plain "Game Over" screen instead of the mission "town has fallen" one.
+    public bool IsQuickMatch { get; set; }
 }
 
 public class PlayerStateDto

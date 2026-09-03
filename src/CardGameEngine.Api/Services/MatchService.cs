@@ -8,8 +8,8 @@ public class PlayerSetup
     public string Name { get; set; } = "";
     public string? Id { get; set; }
     public string? DeckId { get; set; }                // preconstructed deck (brings HQ + hero)
-    public string? HqId { get; set; }                  // chosen HQ (must be in the deck's hqOptions)
-    public string? HeroId { get; set; }                // chosen starting hero (must be in heroOptions)
+    public string? HqId { get; set; }                  // chosen HQ (must be the faction default or a headquarters-type card in the submitted deck)
+    public string? HeroId { get; set; }                // chosen starting hero (must be the faction default or a hero-type card in the submitted deck)
     public Dictionary<string, int>? Deck { get; set; } // cardId -> copies (overrides precon card list)
     public bool IsAdmin { get; set; }
     public bool IsBot { get; set; }                    // seat is played by the server-side bot
@@ -80,21 +80,36 @@ public class MatchService
                 for (int i = 0; i < count; i++)
                     deckList.Add(cardId);
 
-            // HQ / hero choice within the faction's options
+            // HQ / hero choice. With a faction (precon) selected: its default, one of its
+            // alternates (hqOptions/heroOptions, task 908), or a headquarters-/hero-type card
+            // the player put in their own deck (a "reserve" copy, task 906). Custom saved
+            // decks carry no faction — their builder (My Decks) offers every HQ/hero card as
+            // the kickoff pick, so any card of the right type is accepted there.
+            bool hasPrecon = setup.DeckId != null && precon != null && precon.Id == setup.DeckId;
             var hqId = precon?.Hq;
             var heroId = precon?.Hero;
-            if (setup.HqId != null && precon != null)
+            if (setup.HqId != null)
             {
-                var hqOptions = precon.HqOptions.Count > 0 ? precon.HqOptions : new List<string> { precon.Hq };
-                if (!setup.IsAdmin && !hqOptions.Contains(setup.HqId))
-                    return (null, $"{setup.Name}: HQ '{setup.HqId}' is not available for this faction");
+                bool rightType = definition.Cards.FirstOrDefault(c => c.Id == setup.HqId) is { } hqCard
+                    && CardGameEngine.Engine.GameQueries.IsObjectTypeOrSubtype(game, hqCard.ObjectType, "headquarters");
+                bool allowed = rightType && (!hasPrecon
+                    || setup.HqId == precon!.Hq
+                    || precon.HqOptions.Contains(setup.HqId)
+                    || (deck.TryGetValue(setup.HqId, out var hqCount) && hqCount > 0));
+                if (!allowed)
+                    return (null, $"{setup.Name}: HQ '{setup.HqId}' is not available (pick your faction's HQ, one of its alternates, or a headquarters card in your deck)");
                 hqId = setup.HqId;
             }
-            if (setup.HeroId != null && precon != null)
+            if (setup.HeroId != null)
             {
-                var heroOptions = precon.HeroOptions.Count > 0 ? precon.HeroOptions : new List<string> { precon.Hero };
-                if (!setup.IsAdmin && !heroOptions.Contains(setup.HeroId))
-                    return (null, $"{setup.Name}: hero '{setup.HeroId}' is not available for this faction");
+                bool rightType = definition.Cards.FirstOrDefault(c => c.Id == setup.HeroId) is { } heroCard
+                    && CardGameEngine.Engine.GameQueries.IsObjectTypeOrSubtype(game, heroCard.ObjectType, "hero");
+                bool allowed = rightType && (!hasPrecon
+                    || setup.HeroId == precon!.Hero
+                    || precon.HeroOptions.Contains(setup.HeroId)
+                    || (deck.TryGetValue(setup.HeroId, out var heroCount) && heroCount > 0));
+                if (!allowed)
+                    return (null, $"{setup.Name}: hero '{setup.HeroId}' is not available (pick your faction's hero, one of its alternates, or a hero card in your deck)");
                 heroId = setup.HeroId;
             }
 

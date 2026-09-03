@@ -1,10 +1,22 @@
-import { useEffect, useState, useMemo } from 'react';
-import { CampaignOverview, CampaignMission, GameDefinitionFull, CardDefinitionDto } from '../types/game';
+import { useEffect, useState, useMemo, useCallback } from 'react';
+import { CampaignOverview, CampaignMission, GameDefinitionFull, CardDefinitionDto, SavedDeck, ObjectTypeDto } from '../types/game';
 import { BASE } from '../config';
+
+function isOrExtends(objectType: string, root: string, types: ObjectTypeDto[]): boolean {
+  const byId: Record<string, ObjectTypeDto> = {};
+  for (const t of types) byId[t.id] = t;
+  let cur: string | undefined = objectType;
+  while (cur) {
+    if (cur === root) return true;
+    cur = byId[cur]?.parentType ?? undefined;
+  }
+  return false;
+}
 
 interface CampaignPageProps {
   onMissionStarted: (matchId: string, seat: string) => void;
   onOpenLobby: () => void;
+  onOpenVsComputer: () => void;
 }
 
 const GAME_ID = 'town-tcg';
@@ -33,7 +45,7 @@ function loadHero(): string {
   return localStorage.getItem('campaignHero') ?? '';
 }
 
-export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProps) {
+export function CampaignPage({ onMissionStarted, onOpenLobby, onOpenVsComputer }: CampaignPageProps) {
   const [overview, setOverview] = useState<CampaignOverview | null>(null);
   const [gameDef, setGameDef] = useState<GameDefinitionFull | null>(null);
   const [error, setError] = useState('');
@@ -43,6 +55,8 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
   const [customHq, setCustomHq] = useState<string>(loadHq);
   const [customHero, setCustomHero] = useState<string>(loadHero);
   const [deckFilter, setDeckFilter] = useState('');
+  const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
+  const [savedDeckId, setSavedDeckId] = useState('');
 
   useEffect(() => {
     fetch(`${BASE}api/definitions/${GAME_ID}`)
@@ -50,6 +64,17 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
       .then((def: GameDefinitionFull) => setGameDef(def))
       .catch(() => {});
   }, []);
+
+  // Saved decks are scoped to the logged-in account — the same "My Decks" deck builder
+  // used by the Lobby, so a deck built/saved there can be used to fight campaign missions.
+  const loadSavedDecks = useCallback(() => {
+    fetch(`${BASE}api/decks?gameId=${GAME_ID}`, { credentials: 'include' })
+      .then(r => r.json())
+      .then(data => setSavedDecks(data.decks ?? []))
+      .catch(() => setSavedDecks([]));
+  }, []);
+
+  useEffect(() => { loadSavedDecks(); }, [loadSavedDecks]);
 
   useEffect(() => {
     fetch(`${BASE}api/campaign?gameId=${GAME_ID}`, { credentials: 'include' })
@@ -81,6 +106,7 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
     const next = { ...customDeck, [cardId]: inDeck + 1 };
     setCustomDeck(next);
     saveDeck(next);
+    setSavedDeckId(''); // manual edit diverges from whichever saved deck was loaded
   }
 
   function removeCard(cardId: string) {
@@ -91,23 +117,42 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
     else next[cardId] = inDeck - 1;
     setCustomDeck(next);
     saveDeck(next);
+    setSavedDeckId('');
   }
 
   function clearDeck() {
     setCustomDeck({});
     saveDeck({});
+    setSavedDeckId('');
+  }
+
+  function useSavedDeck(deckId: string) {
+    setSavedDeckId(deckId);
+    if (!deckId) return;
+    const saved = savedDecks.find(d => d.id === deckId);
+    if (!saved) return;
+    setCustomDeck(saved.cards);
+    saveDeck(saved.cards);
+    const hq = saved.hqId ?? '';
+    const hero = saved.heroId ?? '';
+    setCustomHq(hq);
+    localStorage.setItem('campaignHq', hq);
+    setCustomHero(hero);
+    localStorage.setItem('campaignHero', hero);
   }
 
   function selectHq(id: string) {
     const next = customHq === id ? '' : id;
     setCustomHq(next);
     localStorage.setItem('campaignHq', next);
+    setSavedDeckId('');
   }
 
   function selectHero(id: string) {
     const next = customHero === id ? '' : id;
     setCustomHero(next);
     localStorage.setItem('campaignHero', next);
+    setSavedDeckId('');
   }
 
   async function startMission(missionId: string) {
@@ -151,13 +196,21 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
     return missionsByCampaign[campaign]?.some(m => m.unlocked) ?? false;
   }
 
+  const objectTypes = gameDef?.objectTypes ?? [];
+
+  // HQ/hero options are scoped to the player's own collection (same ownership gate as
+  // the "Jouw collectie" pool below), and use the type-hierarchy walk so faction subtypes
+  // (nexus, graveyard-hq, hive-hq, laboratory-hq, homestead-hq, caster-hero, necromancer-hero)
+  // are offered too, not just the literal 'headquarters'/'hero' objectType.
   const hqCards = useMemo(() =>
-    (gameDef?.cards ?? []).filter(c => c.objectType === 'headquarters'),
-    [gameDef]);
+    (gameDef?.cards ?? []).filter(c =>
+      isOrExtends(c.objectType, 'headquarters', objectTypes) && (overview?.profile.collection[c.id] ?? 0) > 0),
+    [gameDef, objectTypes, overview]);
 
   const heroCards = useMemo(() =>
-    (gameDef?.cards ?? []).filter(c => c.objectType === 'hero'),
-    [gameDef]);
+    (gameDef?.cards ?? []).filter(c =>
+      isOrExtends(c.objectType, 'hero', objectTypes) && (overview?.profile.collection[c.id] ?? 0) > 0),
+    [gameDef, objectTypes, overview]);
 
   // Cards available to put in deck = cards in collection
   const collectionCards = useMemo(() => {
@@ -214,6 +267,24 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
             <button className="back-btn deck-clear-btn" onClick={clearDeck}>Leeg deck</button>
           )}
         </div>
+
+        {savedDecks.length > 0 && (
+          <div className="deck-picker-section">
+            <div className="deck-picker-label">📚 My Decks</div>
+            <select
+              className="player-name-input"
+              value={savedDeckId}
+              onChange={e => useSavedDeck(e.target.value)}
+            >
+              <option value="">🃏 Load a saved deck...</option>
+              {savedDecks.map(d => (
+                <option key={d.id} value={d.id}>
+                  {d.name} ({Object.values(d.cards).reduce((a, b) => a + b, 0)} cards)
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         {/* HQ picker */}
         <div className="deck-picker-section">
@@ -319,6 +390,10 @@ export function CampaignPage({ onMissionStarted, onOpenLobby }: CampaignPageProp
         <p className="lobby-subtitle">
           Campaign — fight your way through six factions, earn your collection, unlock multiplayer
         </p>
+
+        <button className="campaign-btn" onClick={onOpenVsComputer}>
+          🤖 Play vs Computer — no unlock required, win to earn a random card
+        </button>
 
         {error && <div className="error-box">{error}</div>}
 
