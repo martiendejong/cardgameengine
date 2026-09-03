@@ -14,6 +14,18 @@ DOM/visual order, stays fully visible after scrolling the board, wraps
 correctly at a 390px mobile width, and Confirm/Cancel still work.
 Left: nothing.
 
+## 2026-09-03 — task 1327 (WIP)
+Plan: give each HQ a faction-flavored multi-resource play cost (reusing the
+existing PlayCosts dict pattern), add a generic "sacrifice N units you
+control" play-cost type (new CostDefinition.Type registered in
+DefaultHandlers, processed in CardPlayService the same way AbilityService
+already processes ability costs), and give Town Hall a second cost via the
+existing constructionRequirement/builder mechanic (same as Marketplace) per
+Martien's clarification in the ClickUp thread. Raider Camp needs a new
+glory-banking ability (mirrors Exhume/Channel) since glory currently only
+lives on individual units, not the HQ bank — without it the glory cost would
+be permanently unpayable.
+
 ## 2026-08-26 — task 664 (round 2)
 Done: PR #4's gold-mine destroy fix (GainEntityResource destroys resource-node
 objects at 0 reserves) was already correct — testing-failed was a stale-deploy
