@@ -401,9 +401,28 @@ reproduced exactly.
 Left: nothing.
 
 ## 2026-09-03 — task 1050 (round 2, testing feedback)
-Plan: PR #28 scoped CampaignPage.tsx's HQ/hero pickers to the player's owned collection,
-but Martien's testing feedback says that's the wrong scope — he expects the picker to
-show only HQ/hero cards actually present in the deck being built (customDeck), e.g. "if
-i have 2 headquarters in my deck im expecting to see those two cards there". Rescoping
-hqCards/heroCards to read from customDeck entries (count > 0) instead of
-overview.profile.collection, mirroring LobbyPage.tsx's reserveOptions() convention.
+Done: PR #28 scoped CampaignPage.tsx's HQ/hero pickers to the player's owned collection,
+but Martien's testing feedback said that's the wrong scope — he expects the picker to
+show only HQ/hero cards actually present in the deck being built, e.g. "if i have 2
+headquarters in my deck im expecting to see those two cards there and i can select one".
+Rescoped hqCards/heroCards to read from customDeck entries (count > 0) instead of
+overview.profile.collection, mirroring LobbyPage.tsx's reserveOptions() convention —
+still uses the same isOrExtends() walk so subtype HQs/heroes stay included. Also added
+two small cleanup effects: if the currently-picked HQ/hero is removed from the deck (or
+a different saved deck is loaded that doesn't include it), the stale selection now
+clears instead of silently remaining picked while no longer shown as an option — a gap
+made directly reachable by this rescoping (customDeck shrinks live via the same page's
+"remove" clicks, unlike the collection which only grows). PR #29.
+Verified: `dotnet build` clean; `npm run build` (tsc -b + vite) clean. Real Playwright run
+against live `dotnet run` (port 5011) + `vite` (port 5183) dev servers (custom ports —
+5001/5173/5174 in use by concurrent sessions): registered+confirmed+logged in a fresh
+account, seeded a throwaway dev-only `profiles/<id>.json` (gitignored) owning 1 plain
+`headquarters` card (Town Hall) + 1 `nexus` subtype (Arcane Nexus) + 1 plain `hero`
+(Town Chief) + 1 `caster-hero` subtype (Archmage), owning nothing else. With an empty
+deck, both pickers showed 0 options (fixes the "every card in the game" bug). Added all
+4 cards to the deck via the collection pool — both pickers then showed exactly those 2
+options each, subtypes included. Selected Arcane Nexus, removed it from the deck via the
+"Huidig deck" list — it disappeared from the HQ picker AND the selection cleared (the
+"niet gekozen" hint reappeared, confirming no phantom pick survives). Zero console
+errors throughout.
+Left: nothing.

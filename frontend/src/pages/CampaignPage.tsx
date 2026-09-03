@@ -198,19 +198,46 @@ export function CampaignPage({ onMissionStarted, onOpenLobby, onOpenVsComputer }
 
   const objectTypes = gameDef?.objectTypes ?? [];
 
-  // HQ/hero options are scoped to the player's own collection (same ownership gate as
-  // the "Jouw collectie" pool below), and use the type-hierarchy walk so faction subtypes
-  // (nexus, graveyard-hq, hive-hq, laboratory-hq, homestead-hq, caster-hero, necromancer-hero)
-  // are offered too, not just the literal 'headquarters'/'hero' objectType.
+  // HQ/hero options are scoped to the cards actually in the deck being built
+  // (customDeck), not the whole collection — mirrors LobbyPage.tsx's reserveOptions()
+  // convention (this page has no faction-precon-deck to combine with), and uses the
+  // same type-hierarchy walk so faction subtypes (nexus, graveyard-hq, hive-hq,
+  // laboratory-hq, homestead-hq, caster-hero, necromancer-hero) are offered too, not
+  // just the literal 'headquarters'/'hero' objectType.
   const hqCards = useMemo(() =>
-    (gameDef?.cards ?? []).filter(c =>
-      isOrExtends(c.objectType, 'headquarters', objectTypes) && (overview?.profile.collection[c.id] ?? 0) > 0),
-    [gameDef, objectTypes, overview]);
+    Object.entries(customDeck)
+      .filter(([, count]) => count > 0)
+      .map(([id]) => cardDefs[id])
+      .filter((c): c is CardDefinitionDto => !!c && isOrExtends(c.objectType, 'headquarters', objectTypes)),
+    [customDeck, cardDefs, objectTypes]);
 
   const heroCards = useMemo(() =>
-    (gameDef?.cards ?? []).filter(c =>
-      isOrExtends(c.objectType, 'hero', objectTypes) && (overview?.profile.collection[c.id] ?? 0) > 0),
-    [gameDef, objectTypes, overview]);
+    Object.entries(customDeck)
+      .filter(([, count]) => count > 0)
+      .map(([id]) => cardDefs[id])
+      .filter((c): c is CardDefinitionDto => !!c && isOrExtends(c.objectType, 'hero', objectTypes)),
+    [customDeck, cardDefs, objectTypes]);
+
+  // A previously-picked HQ/hero that got removed from the deck (or was never a match,
+  // e.g. after loading a different saved deck) can no longer be selected — clear it so
+  // the mission doesn't start with a phantom pick that isn't in the deck being used.
+  // Gated on gameDef being loaded so this doesn't wipe the localStorage-persisted pick
+  // during the initial async load, before hqCards/heroCards can be computed.
+  useEffect(() => {
+    if (!gameDef || !customHq) return;
+    if (!hqCards.some(c => c.id === customHq)) {
+      setCustomHq('');
+      localStorage.setItem('campaignHq', '');
+    }
+  }, [gameDef, hqCards, customHq]);
+
+  useEffect(() => {
+    if (!gameDef || !customHero) return;
+    if (!heroCards.some(c => c.id === customHero)) {
+      setCustomHero('');
+      localStorage.setItem('campaignHero', '');
+    }
+  }, [gameDef, heroCards, customHero]);
 
   // Cards available to put in deck = cards in collection
   const collectionCards = useMemo(() => {
