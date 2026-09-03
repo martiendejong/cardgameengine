@@ -10075,6 +10075,276 @@
           ]
         }
       ]
+    },
+    {
+      "id": "trade-embargo",
+      "name": "Trade Embargo",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "📜",
+      "artworkDescription": "The gates close; the letters stop",
+      "onPlay": {
+        "id": "tra-fx",
+        "name": "Opponent discards a card",
+        "effects": [
+          {
+            "type": "discard_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "raid-plans",
+      "name": "Raid Plans",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "🗺️",
+      "artworkDescription": "Every good raid starts with a bad map",
+      "onPlay": {
+        "id": "rai-fx",
+        "name": "Draw a card",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "ransack",
+      "name": "Ransack",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "💥",
+      "artworkDescription": "If it is not nailed down it is ours; if it is, it burns",
+      "onPlay": {
+        "id": "ran-fx",
+        "name": "Opponent discards a card",
+        "effects": [
+          {
+            "type": "discard_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "tactical-analysis",
+      "name": "Tactical Analysis",
+      "objectType": "spell",
+      "playCosts": {
+        "energy": 2
+      },
+      "icon": "📊",
+      "artworkDescription": "Probability of victory: recalculating",
+      "onPlay": {
+        "id": "tac-fx",
+        "name": "Draw a card",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "jamming-signal",
+      "name": "Jamming Signal",
+      "objectType": "spell",
+      "playCosts": {
+        "energy": 2
+      },
+      "icon": "📡",
+      "artworkDescription": "Enemy orders, lost in static",
+      "onPlay": {
+        "id": "jam-fx",
+        "name": "Opponent discards a card",
+        "effects": [
+          {
+            "type": "discard_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "arcane-insight",
+      "name": "Arcane Insight",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 2
+      },
+      "icon": "📖",
+      "artworkDescription": "The pages turn themselves",
+      "onPlay": {
+        "id": "arc-fx",
+        "name": "Draw a card",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "mind-wipe",
+      "name": "Mind Wipe",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 2
+      },
+      "icon": "💫",
+      "artworkDescription": "What plan? There was never a plan",
+      "onPlay": {
+        "id": "min-fx",
+        "name": "Opponent discards a card",
+        "effects": [
+          {
+            "type": "discard_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "whispers-from-the-crypt",
+      "name": "Whispers from the Crypt",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 1
+      },
+      "icon": "👻",
+      "artworkDescription": "The dead remember everything",
+      "onPlay": {
+        "id": "whi-fx",
+        "name": "Draw a card",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "creeping-dread",
+      "name": "Creeping Dread",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 1
+      },
+      "icon": "🕸️",
+      "artworkDescription": "Fear takes what courage forgets",
+      "onPlay": {
+        "id": "cre-fx",
+        "name": "Opponent discards a card",
+        "effects": [
+          {
+            "type": "discard_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "hive-mind",
+      "name": "Hive Mind",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 2
+      },
+      "icon": "🧠",
+      "artworkDescription": "A thousand eyes, one thought",
+      "onPlay": {
+        "id": "hiv-fx",
+        "name": "Draw a card",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "devour-supplies",
+      "name": "Devour Supplies",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 2
+      },
+      "icon": "🐛",
+      "artworkDescription": "The wagons were full this morning",
+      "onPlay": {
+        "id": "dev-fx",
+        "name": "Opponent discards a card",
+        "effects": [
+          {
+            "type": "discard_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "blackmail",
+      "name": "Blackmail",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "✉️",
+      "artworkDescription": "It would be a shame if this letter got out",
+      "onPlay": {
+        "id": "bla-fx",
+        "name": "Opponent discards a card",
+        "effects": [
+          {
+            "type": "discard_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "confusion-draught",
+      "name": "Confusion Draught",
+      "objectType": "spell",
+      "playCosts": {
+        "reagents": 2
+      },
+      "icon": "🌀",
+      "artworkDescription": "Side effects include forgetting your strategy",
+      "onPlay": {
+        "id": "con-fx",
+        "name": "Opponent discards a card",
+        "effects": [
+          {
+            "type": "discard_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "distracting-flex",
+      "name": "Distracting Flex",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "💪",
+      "artworkDescription": "They simply lost their train of thought",
+      "onPlay": {
+        "id": "dis-fx",
+        "name": "Opponent discards a card",
+        "effects": [
+          {
+            "type": "discard_cards",
+            "amount": 1
+          }
+        ]
+      }
     }
   ],
   "decks": [
@@ -10085,6 +10355,7 @@
       "hq": "town-hall",
       "hero": "town-chief",
       "cards": {
+        "trade-embargo": 2,
         "gold-mine": 3,
         "bag-of-gold": 1,
         "peasant": 4,
@@ -10096,10 +10367,10 @@
         "marketplace": 1,
         "merchant": 1,
         "emergency-repairs": 2,
-        "soldier": 2,
+        "soldier": 1,
         "archer": 2,
         "town-guard": 2,
-        "mercenary": 2,
+        "mercenary": 1,
         "knight": 1,
         "paladin": 1,
         "master-builder": 1,
@@ -10139,9 +10410,11 @@
       "hq": "raider-camp",
       "hero": "warchief",
       "cards": {
+        "raid-plans": 2,
+        "ransack": 2,
         "scavenger": 3,
-        "pillager": 4,
-        "axe-thrower": 4,
+        "pillager": 3,
+        "axe-thrower": 3,
         "brute": 3,
         "fighting-pit": 3,
         "stolen-treasure": 3,
@@ -10154,8 +10427,8 @@
         "dirty-trick": 2,
         "bloodfang": 1,
         "raid-leader": 3,
-        "berserker": 4,
-        "torch-thrower": 4,
+        "berserker": 3,
+        "torch-thrower": 3,
         "plunder-cart": 3,
         "reinforcements": 2,
         "skull-totem": 3,
@@ -10182,6 +10455,8 @@
       "hq": "landing-pad",
       "hero": "ax-01",
       "cards": {
+        "tactical-analysis": 2,
+        "jamming-signal": 2,
         "plasma-cannon": 4,
         "missile-launcher": 4,
         "reinforced-plating": 4,
@@ -10191,12 +10466,12 @@
         "repair-nanobots": 3,
         "energy-cell": 3,
         "emergency-repair": 3,
-        "shield-generator": 4,
+        "shield-generator": 3,
         "overdrive-core": 4,
-        "emp-burst": 4,
+        "emp-burst": 3,
         "salvage": 3,
-        "ablative-armor": 4,
-        "targeting-uplink": 4,
+        "ablative-armor": 3,
+        "targeting-uplink": 3,
         "security-sweep": 3,
         "point-defense-array": 2
       },
@@ -10218,8 +10493,10 @@
       "hq": "arcane-nexus",
       "hero": "archmage",
       "cards": {
-        "apprentice-mage": 4,
-        "mana-seer": 4,
+        "arcane-insight": 2,
+        "mind-wipe": 2,
+        "apprentice-mage": 3,
+        "mana-seer": 3,
         "pyromancer": 3,
         "conjurer": 3,
         "mana-burst": 3,
@@ -10231,8 +10508,8 @@
         "arcane-shield": 2,
         "mage-armor": 2,
         "arcane-blade": 2,
-        "arcane-sentinel": 4,
-        "battle-mage": 4,
+        "arcane-sentinel": 3,
+        "battle-mage": 3,
         "leyline-conduit": 3,
         "frost-nova": 3,
         "arcane-barrage": 3,
@@ -10260,12 +10537,14 @@
       "hq": "graveyard",
       "hero": "necromancer",
       "cards": {
+        "whispers-from-the-crypt": 2,
+        "creeping-dread": 2,
         "skeleton": 3,
         "shambling-corpse": 3,
-        "plague-zombie": 4,
+        "plague-zombie": 3,
         "tomb-spider": 3,
         "grave-ghoul": 3,
-        "bone-collector": 4,
+        "bone-collector": 3,
         "restless-dead": 3,
         "flesh-golem": 2,
         "corpse-explosion": 3,
@@ -10274,11 +10553,11 @@
         "lich": 1,
         "dark-ritual": 3,
         "curse-of-rust": 3,
-        "venomous-wight": 4,
+        "venomous-wight": 3,
         "wraith": 3,
         "plague-cloud": 3,
         "bone-colossus": 2,
-        "crypt-rats": 3,
+        "crypt-rats": 2,
         "bone-blade": 1,
         "graveplate": 1,
         "soul-amulet": 1,
@@ -10302,12 +10581,14 @@
       "hq": "the-hive",
       "hero": "broodmother",
       "cards": {
-        "evolve-ravager": 4,
+        "hive-mind": 2,
+        "devour-supplies": 2,
+        "evolve-ravager": 3,
         "evolve-carapace": 3,
         "evolve-spitter": 3,
         "metamorphosis": 3,
         "egg-cluster": 3,
-        "brood-warrior": 4,
+        "brood-warrior": 3,
         "ravenous-swarm": 3,
         "broodguard": 2,
         "bloated-spawn": 3,
@@ -10315,8 +10596,8 @@
         "hardened-carapace": 3,
         "additional-limbs": 3,
         "swarmling-burst": 3,
-        "toxic-mist": 4,
-        "hive-warden": 4,
+        "toxic-mist": 3,
+        "hive-warden": 3,
         "devouring-maw": 2,
         "winged-drone": 3,
         "regenerative-flesh": 3,
@@ -10341,13 +10622,14 @@
       "hq": "thieves-guild",
       "hero": "spymaster",
       "cards": {
+        "blackmail": 2,
         "spy": 4,
         "ambush": 4,
         "cutthroat": 4,
         "smoke-bomb": 2,
         "shadow-blade": 2,
-        "footpad": 4,
-        "informant": 4,
+        "footpad": 3,
+        "informant": 3,
         "loot": 3,
         "bag-of-gold": 2,
         "mercenary": 4,
@@ -10380,6 +10662,7 @@
       "hq": "laboratory",
       "hero": "master-alchemist",
       "cards": {
+        "confusion-draught": 2,
         "freeze": 3,
         "corrosive-acid": 4,
         "weaken": 3,
@@ -10388,8 +10671,8 @@
         "transmutation": 2,
         "reagent-infusion": 4,
         "philosophers-stone": 4,
-        "vial-carrier": 4,
-        "guard-golem": 4,
+        "vial-carrier": 3,
+        "guard-golem": 3,
         "iron-golem": 3,
         "dissolve": 4,
         "stone-skin": 3,
@@ -10418,6 +10701,7 @@
       "hq": "hunk-stronghold",
       "hero": "hunk-coordinator",
       "cards": {
+        "distracting-flex": 2,
         "hunk": 4,
         "big-friend": 4,
         "bolt-tower": 4,
