@@ -20540,112 +20540,896 @@
     {
       "id": "storm-aether-spire",
       "name": "Aether Spire",
-      "objectType": "nexus"
+      "objectType": "nexus",
+      "properties": {
+        "currentHp": 30,
+        "maxHp": 30,
+        "armor": 2
+      },
+      "housingProvided": 8,
+      "tags": [
+        "resource-node"
+      ],
+      "icon": "⚡",
+      "artworkDescription": "A crystalline tower crackling with arcane lightning",
+      "abilities": [
+        {
+          "id": "aether-spire-channel",
+          "name": "Channel Aether",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resource": "mana",
+              "scope": "self",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "aether-spire-vision",
+          "name": "Arcane Vision",
+          "costs": [
+            {
+              "type": "resource",
+              "resource": "mana",
+              "scope": "self",
+              "amount": 4
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resource": "mana",
+              "scope": "self",
+              "amount": 1
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "storm-stormcaller",
       "name": "Stormcaller",
-      "objectType": "caster-hero"
+      "objectType": "caster-hero",
+      "properties": {
+        "attack": 3,
+        "currentHp": 22,
+        "maxHp": 22,
+        "armor": 1,
+        "ap": 5
+      },
+      "playCost": 6,
+      "housingCost": 2,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "🌩️",
+      "artworkDescription": "A robed mage wreathed in crackling blue lightning",
+      "abilities": [
+        {
+          "id": "stormcaller-mindstrike",
+          "name": "Mind Strike",
+          "costs": [
+            {
+              "type": "resource",
+              "resource": "ap",
+              "scope": "self",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "discard_cards",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "stormcaller-surge",
+          "name": "Storm Surge",
+          "costs": [
+            {
+              "type": "resource",
+              "resource": "ap",
+              "scope": "self",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "amount": 4
+            },
+            {
+              "type": "draw_cards",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": []
     },
     {
       "id": "storm-channeler",
       "name": "Channeler",
-      "objectType": "caster"
+      "objectType": "caster",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingCost": 1,
+      "tags": [
+        "worker"
+      ],
+      "icon": "🔮",
+      "artworkDescription": "A robed acolyte focusing energy through crystal wands",
+      "abilities": [
+        {
+          "id": "channeler-tap",
+          "name": "Channel",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 1
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": []
     },
     {
       "id": "storm-voidbinder",
       "name": "Voidbinder",
-      "objectType": "caster"
+      "objectType": "caster",
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "playCost": 4,
+      "housingCost": 1,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "🌀",
+      "artworkDescription": "A dark-robed sorcerer reaching into a swirling void portal",
+      "abilities": [
+        {
+          "id": "voidbinder-mindbreak",
+          "name": "Mind Break",
+          "costs": [
+            {
+              "type": "resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "discard_cards",
+              "amount": 1
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": []
     },
     {
       "id": "storm-storm-acolyte",
       "name": "Storm Acolyte",
-      "objectType": "caster"
+      "objectType": "caster",
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCost": 2,
+      "housingCost": 1,
+      "tags": [
+        "worker"
+      ],
+      "icon": "⚡",
+      "artworkDescription": "A young apprentice crackling with uncontrolled lightning",
+      "abilities": [],
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "storm-arcane-sentinel",
       "name": "Arcane Sentinel",
-      "objectType": "caster"
+      "objectType": "caster",
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "playCost": 4,
+      "housingCost": 2,
+      "tags": [
+        "guard",
+        "soldier"
+      ],
+      "icon": "🛡️",
+      "artworkDescription": "A crystal golem standing guard before a mage tower",
+      "abilities": [
+        {
+          "id": "arcane-sentinel-ward",
+          "name": "Arcane Ward",
+          "costs": [
+            {
+              "type": "resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "counter_spell"
+            }
+          ]
+        }
+      ],
+      "triggers": []
     },
     {
       "id": "storm-leyline-weaver",
       "name": "Leyline Weaver",
-      "objectType": "caster"
+      "objectType": "caster",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingCost": 1,
+      "tags": [
+        "worker"
+      ],
+      "icon": "🧵",
+      "artworkDescription": "A sorcerer weaving glowing leylines between standing stones",
+      "abilities": [
+        {
+          "id": "leyline-weaver-tap",
+          "name": "Weave Leyline",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": []
     },
     {
       "id": "storm-tempest-sage",
       "name": "Tempest Sage",
-      "objectType": "caster"
+      "objectType": "caster",
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 0
+      },
+      "playCost": 5,
+      "housingCost": 2,
+      "tags": [
+        "ranged",
+        "soldier"
+      ],
+      "icon": "🧙",
+      "artworkDescription": "An ancient sage whose staff crackles with continuous storm energy",
+      "abilities": [
+        {
+          "id": "tempest-sage-storm",
+          "name": "Tempest Bolt",
+          "costs": [
+            {
+              "type": "resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "amount": 2
+            },
+            {
+              "type": "discard_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 2
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "storm-mana-tower",
       "name": "Mana Tower",
-      "objectType": "building"
+      "objectType": "building",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingProvided": 2,
+      "tags": [
+        "resource-node"
+      ],
+      "icon": "🏯",
+      "artworkDescription": "A glowing blue obelisk radiating arcane energy",
+      "abilities": [
+        {
+          "id": "mana-tower-tap",
+          "name": "Mana Draw",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resource": "mana",
+              "scope": "player",
+              "amount": 2
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "storm-conduit-node",
       "name": "Conduit Node",
-      "objectType": "building"
+      "objectType": "building",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "playCost": 2,
+      "housingProvided": 0,
+      "tags": [
+        "resource-node"
+      ],
+      "icon": "💡",
+      "artworkDescription": "A humming crystal node that channels leyline energy",
+      "abilities": [
+        {
+          "id": "conduit-node-tap",
+          "name": "Tap Conduit",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 1
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": []
     },
     {
       "id": "storm-storm-nexus",
       "name": "Storm Nexus",
-      "objectType": "building"
+      "objectType": "building",
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 1
+      },
+      "playCost": 5,
+      "housingProvided": 3,
+      "tags": [
+        "resource-node"
+      ],
+      "icon": "🌀",
+      "artworkDescription": "A nexus of storm energy where lightning strikes constantly",
+      "abilities": [
+        {
+          "id": "storm-nexus-discharge",
+          "name": "Discharge",
+          "costs": [
+            {
+              "type": "resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "amount": 3
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 2
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "storm-leyline-vault",
       "name": "Leyline Vault",
-      "objectType": "building"
+      "objectType": "building",
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "playCost": 4,
+      "housingProvided": 0,
+      "tags": [],
+      "icon": "🗼",
+      "artworkDescription": "A sealed vault where leyline energy is stored in crystal batteries",
+      "abilities": [
+        {
+          "id": "leyline-vault-burst",
+          "name": "Vault Burst",
+          "costs": [
+            {
+              "type": "resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 1
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "storm-counterspell",
       "name": "Counterspell",
-      "objectType": "spell"
+      "objectType": "spell",
+      "playCost": 2,
+      "tags": [],
+      "icon": "❌",
+      "artworkDescription": "A clenched fist shattering a magical sigil mid-cast",
+      "abilities": [],
+      "triggers": [],
+      "effects": [
+        {
+          "type": "counter_spell"
+        }
+      ]
     },
     {
       "id": "storm-mind-rend",
       "name": "Mind Rend",
-      "objectType": "spell"
+      "objectType": "spell",
+      "playCost": 3,
+      "tags": [],
+      "icon": "🧠",
+      "artworkDescription": "A crackling mental bolt tearing through an enemy's thoughts",
+      "abilities": [],
+      "triggers": [],
+      "effects": [
+        {
+          "type": "discard_cards",
+          "amount": 2
+        }
+      ]
     },
     {
       "id": "storm-mana-drain",
       "name": "Mana Drain",
-      "objectType": "spell"
+      "objectType": "spell",
+      "playCost": 3,
+      "tags": [],
+      "icon": "💧",
+      "artworkDescription": "A siphon of blue light draining energy from a foe's nexus",
+      "abilities": [],
+      "triggers": [],
+      "effects": [
+        {
+          "type": "drain_resource",
+          "resource": "mana",
+          "amount": 5
+        }
+      ]
     },
     {
       "id": "storm-aetherstorm",
       "name": "Aetherstorm",
-      "objectType": "spell"
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 5
+      },
+      "tags": [],
+      "icon": "⚡",
+      "artworkDescription": "A roiling tempest of pure arcane force flooding the battlefield",
+      "abilities": [],
+      "triggers": [],
+      "effects": [
+        {
+          "type": "direct_damage",
+          "amount": 5
+        },
+        {
+          "type": "discard_cards",
+          "amount": 2
+        }
+      ]
     },
     {
       "id": "storm-void-surge",
       "name": "Void Surge",
-      "objectType": "spell"
+      "objectType": "spell",
+      "playCost": 2,
+      "tags": [],
+      "icon": "🌀",
+      "artworkDescription": "A burst of void energy from a crackling tear in space",
+      "abilities": [],
+      "triggers": [],
+      "effects": [
+        {
+          "type": "direct_damage",
+          "amount": 2
+        },
+        {
+          "type": "draw_cards",
+          "amount": 1
+        }
+      ]
     },
     {
       "id": "storm-echo-blast",
       "name": "Echo Blast",
-      "objectType": "spell"
+      "objectType": "spell",
+      "playCost": 4,
+      "tags": [],
+      "icon": "💥",
+      "artworkDescription": "A spell that copies itself, striking twice in rapid succession",
+      "abilities": [],
+      "triggers": [],
+      "effects": [
+        {
+          "type": "damage",
+          "amount": 3
+        },
+        {
+          "type": "damage",
+          "amount": 3
+        }
+      ]
     },
     {
       "id": "storm-focus-lens",
       "name": "Focus Lens",
-      "objectType": "equipment"
+      "objectType": "equipment",
+      "playCost": 2,
+      "tags": [],
+      "icon": "🔭",
+      "artworkDescription": "A crystal lens that concentrates magical energy to a fine point",
+      "abilities": [
+        {
+          "id": "focus-lens-tap",
+          "name": "Focus",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "is_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 1
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": []
     },
     {
       "id": "storm-stormweave-robe",
       "name": "Stormweave Robe",
-      "objectType": "equipment"
+      "objectType": "equipment",
+      "playCost": 3,
+      "tags": [],
+      "icon": "🧥",
+      "artworkDescription": "A flowing robe woven from crystallized storm energy",
+      "abilities": [],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [
+            {
+              "type": "is_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 1
+            },
+            {
+              "type": "buff_target_until_end_of_turn",
+              "property": "armor",
+              "amount": 1
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "storm-channeler-adept",
       "name": "Channeler Adept",
-      "objectType": "caster"
+      "objectType": "caster",
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCost": 2,
+      "housingCost": 1,
+      "tags": [
+        "worker"
+      ],
+      "icon": "✨",
+      "artworkDescription": "A practiced apprentice who has mastered basic channeling",
+      "abilities": [
+        {
+          "id": "channeler-adept-tap",
+          "name": "Siphon",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 1
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "storm-void-walker",
       "name": "Void Walker",
-      "objectType": "caster"
+      "objectType": "caster",
+      "properties": {
+        "attack": 4,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "playCost": 5,
+      "housingCost": 2,
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "👻",
+      "artworkDescription": "A mage who has merged partially with the void between worlds",
+      "abilities": [
+        {
+          "id": "void-walker-drain",
+          "name": "Void Drain",
+          "costs": [
+            {
+              "type": "resource",
+              "resource": "gold",
+              "scope": "player",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "drain_resource",
+              "resource": "gold",
+              "amount": 2
+            },
+            {
+              "type": "direct_damage",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "triggers": []
     },
     {
       "id": "plague-cathedral",
