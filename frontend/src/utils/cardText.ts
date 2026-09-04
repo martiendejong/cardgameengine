@@ -21,6 +21,11 @@ function propName(id?: string | null): string {
   return id ?? 'stat';
 }
 
+function tagLabel(tag?: string | null): string {
+  if (!tag) return 'tagged card';
+  return tag.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+}
+
 export function explainCost(c: CostDto): string {
   switch (c.type) {
     case 'tap': return 'Tap this card';
@@ -45,6 +50,7 @@ export function explainCondition(c: ConditionDto): string {
     case 'resource_gte': return `Requires at least ${c.amount} ${resName(c.resourceId)}`;
     case 'resource_lte': return `Requires at most ${c.amount} ${resName(c.resourceId)}`;
     case 'has_tag': return `Only if this card is a ${c.tag}`;
+    case 'controls_tagged': return `Requires you control a ${tagLabel(c.tag)}`;
     case 'is_phase': return `Only during the ${c.phase} phase`;
     case 'own_hero_destroyed': return 'Only while your hero is destroyed';
     case 'is_attached': return 'Only while infiltrated / attached';

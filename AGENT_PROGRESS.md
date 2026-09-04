@@ -467,3 +467,35 @@ Mass Resurrection; exactly 3 AP pays it, taps Lich, and summons 2 more (4 total)
 activation the same turn is blocked by the tap; AP correctly accrues +1/turn and a later
 4-AP activation spends exactly 3, leaving 1 AP unspent (6 Skeletons total, no over-spend).
 Left: nothing — awaiting live playtest.
+
+## 2026-09-04 — task 1411
+Done: Hunk's "Work" ability (Tap → gain 1 Gold) was condition-free, letting a lone Hunk
+print Gold every turn with no mine at all — bypassing the mine-gated economy Gold Mine's
+own `harvest` ability already implements (design-spec.md §2.5). Added a new engine
+condition `controls_tagged` (positive counterpart of the existing `controls_no_tagged`)
+and put it on Work requiring the player control a `resource-node`-tagged entity (Gold
+Mine today, any future mine automatically). `frontend/src/utils/cardText.ts` renders it
+as "Requires you control a Resource Node" so the card text/tooltip stays consistent with
+the rule (Done-when item). The Hunks faction's default deck had **0** Gold Mine copies
+(its whole "put every Hunk to work" identity ran on the now-gated free gold) — added 3x
+Gold Mine (matching Town's existing count) so the faction keeps a working economy.
+design-spec.md §2.5 updated with a short note. Repair and every other Hunk ability,
+and all 8 other factions, untouched (none of them run Hunk cards).
+Verified: `dotnet build` clean (0 warnings/errors); `npm run build` (tsc -b + vite)
+clean. No test project exists in this repo — matched the established verification
+convention (see task 974/887 entries above): a throwaway RuleEngine harness (real
+`AbilityService`/`ObjectFactory`, no mocks) confirmed Work is rejected with reason
+"Condition not met: controls_tagged" and 0 gold gained while no mine is controlled,
+succeeds and grants exactly 1 gold + taps the Hunk once a Gold Mine is controlled,
+an opponent's mine does NOT satisfy the condition, Repair keeps 0 conditions
+unchanged, the updated Hunks deck (47 cards) passes `GameQueries.ValidateDeck`, and
+Gold Mine's own Harvest ability is unregressed (5→4 reserves, +1 gold, taps the
+Worker). Also ran real bot-vs-bot `/api/simulate` matches (dotnet run, live server)
+before/after the change: Hunks' win rate vs Town/Raiders was already 0% on
+unmodified master (a pre-existing bot-AI weakness, not something this change caused
+or worsened — game logs confirm bots on both branches place Gold Mine and use
+Harvest/Work correctly to generate gold once the mine exists, so the deck is not a
+dead combo, just weak in this bot's hands against these two matchups specifically).
+Left: the Hunks faction's 0% simulated win rate vs Town/Raiders is a separate,
+pre-existing bot-AI/deck-power issue outside this task's scope — filed as JengoWork
+task 1499 rather than folded into this PR.
