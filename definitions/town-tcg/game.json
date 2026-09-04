@@ -4777,6 +4777,37 @@
       }
     },
     {
+      "id": "alchemists-opus-magnus",
+      "name": "Opus Magnus",
+      "objectType": "spell",
+      "playCosts": {
+        "reagents": 3
+      },
+      "icon": "🌟",
+      "artworkDescription": "The Great Work made flesh — pour every reagent into one unstoppable vessel",
+      "onPlay": {
+        "id": "om",
+        "name": "Permanently +2 Attack to a Golem you control (stacks)",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "tag": "golem",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "modify_property",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": 2
+          }
+        ]
+      },
+      "_faction": "alchemists"
+    },
+    {
       "id": "philosophers-stone",
       "name": "Philosopher's Stone",
       "objectType": "spell",
@@ -4833,7 +4864,8 @@
       },
       "tags": [
         "guard",
-        "retaliate"
+        "retaliate",
+        "golem"
       ],
       "icon": "\ud83d\uddff",
       "artworkDescription": "Alchemy given a jawline"
@@ -4852,7 +4884,8 @@
         "armor": 3
       },
       "tags": [
-        "retaliate"
+        "retaliate",
+        "golem"
       ],
       "icon": "\ud83e\udd16",
       "artworkDescription": "Slow, patient, unstoppable"
@@ -6481,7 +6514,8 @@
         "armor": 2
       },
       "tags": [
-        "retaliate"
+        "retaliate",
+        "golem"
       ],
       "icon": "\ud83e\udea8",
       "artworkDescription": "It learns from every dent"
@@ -16183,7 +16217,8 @@
       "housingCost": 3,
       "tags": [
         "guard",
-        "soldier"
+        "soldier",
+        "golem"
       ],
       "icon": "\ud83d\uddff",
       "artworkDescription": "A massive animate stone figure carved with alchemical runes",
@@ -18027,7 +18062,8 @@
         "acid-flask": 2,
         "alchemists-fire": 2,
         "transmutation": 1,
-        "reagent-infusion": 3,
+        "reagent-infusion": 1,
+        "alchemists-opus-magnus": 2,
         "philosophers-stone": 3,
         "vial-carrier": 2,
         "guard-golem": 2,

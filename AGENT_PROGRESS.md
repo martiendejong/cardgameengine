@@ -588,13 +588,42 @@ Verified: `dotnet build` clean, 0 errors. Full write-up:
 `jengo-knowledge-private/knowledge/powershell-convertto-json-mojibake-corrupts-entire-file-1426.md`.
 Left: nothing agent-doable — same human visual-pass caveat as above.
 
-## 2026-09-04 — task 1510 (WIP)
-Plan: task's own description/comments were empty — only the title "New Alchemists deck:
-Opus Magnus — reagent buff stack on unstoppable golem" to go on. Investigated: no
-"Opus Magnus"/"unstoppable golem" card exists yet; Iron Golem's own flavor text already
-reads "Slow, patient, unstoppable" (the "unstoppable golem" the title means). Adding a new
-Alchemist spell "Opus Magnus" (3 reagents) that permanently (stacks on recast) buffs a
-target Golem's Attack, restricted via a new "golem" tag on the 4 Alchemist golem units
-(guard-golem, iron-golem, adaptive-golem, alchemists-stone-golem). Pure data change
-(`modify_property` + tag-scoped `choice` already exist in the engine; `cardText.ts` already
-renders both generically) — trimming reagent-infusion's precon count to keep the 60-card cap.
+## 2026-09-04 — task 1510
+Done: task's own description/comments were empty — only the title "New Alchemists deck:
+Opus Magnus — reagent buff stack on unstoppable golem" to go on. No "Opus Magnus"/
+"unstoppable golem" card existed; Iron Golem's own flavor text already reads "Slow,
+patient, unstoppable" (the "unstoppable golem" the title means). Added a new Alchemist
+spell `alchemists-opus-magnus` "Opus Magnus" (3 reagents): permanently +2 Attack to a
+target Golem via the engine's existing `modify_property` effect — casting it again stacks,
+since it's a base-property change, not an until-end-of-turn modifier (unlike the deck's
+existing Reagent Infusion, which is a temporary buff on any character). Gated targeting to
+a new `golem` tag added to the 4 Alchemist golem units (guard-golem, iron-golem,
+adaptive-golem, alchemists-stone-golem, the last from task 1426's same-day card batch —
+checked for overlap first, none of its new cards implement this). Pure data change
+(`modify_property` + tag-scoped `choice` + the `_faction` convention already exist; both
+`cardText.ts` and `CardView.tsx`'s art-fallback already render/handle it generically, no
+frontend edit needed). Alchemist precon deck's `reagent-infusion` trimmed 3→1 (2 copies of
+Opus Magnus added) to hold the 60-card maxDeckSize cap — `MatchService.CreateMatch`
+enforces that cap unconditionally, not just on save, so this isn't optional.
+Verified: `dotnet build` clean, 0 warnings/errors. No test project exists in this repo
+(matches task 974/887/1411 precedent) — a throwaway RuleEngine harness (real
+`ExecuteSetup`/`ExecuteAction`, no mocks, removed before commit) confirmed 19/19 checks:
+Opus Magnus's definition (cost/tag-gate/effect), the precon deck still totals exactly 60
+and includes 2 copies; casting it on Iron Golem twice stacks 4→6→8 attack while draining
+reagents 10→7→4; casting on a non-Golem unit is rejected ("Invalid target"); casting with
+2 reagents (below the 3 cost) is rejected with no side effects; Reagent Infusion (existing
+card) is unregressed, still granting a temporary +2 via `GetEffectiveProperty` on a Golem.
+Also ran the real API server's `/api/simulate` bot-vs-bot endpoint: 110 games total across
+alchemists-vs-town/raiders/undead/hunks/mirror, zero server errors/exceptions (deck parses
+and plays under real bot AI). Alchemists' win rate vs Town stayed 0% — before treating this
+as a regression, re-ran the identical matchup against the pre-change (git-stashed) deck as
+a controlled baseline: also 0%, confirming the pre-existing bot-AI weakness task 1411/1426
+already documented, unchanged by this PR (this task's version even survived longer on
+average — 9 draws/39.7 avg turns vs baseline's 3 draws/22.3 avg turns — and won 20-25% of
+games against Hunks and its own mirror, so the deck is not dead, just weak in this bot's
+hands against these two specific matchups, same as before).
+Left: nothing agent-doable. A human visual/eyeball pass of the new card in the live deck
+builder and a real match (per this repo's own "live playthrough... confirms no regression
+in turn order or animation pacing" DoD) is the remaining step — no engine/UI code changed,
+so turn order and animation pacing are structurally untouched by this PR, but a human check
+is still the right final gate for a new balance-sensitive card per the project's own DoD.

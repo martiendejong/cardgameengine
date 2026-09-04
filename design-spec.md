@@ -427,6 +427,7 @@ Identity: death is inventory; the Graveyard is a second hand; long bloody games 
 - Hero: **Master Alchemist** — 2 ATK | 5 HP | 1 Armor; weak body, strong control.
 - Core purpose: counter concentrated single-unit power ("don't overpower the Robot; make it temporarily useless"); weak vs swarms. Strategic triangle: Robot → beaten by Control → beaten by Swarm → beaten by Robot/AoE.
 - Card toolkit (see §3.11), notably: **Transmutation — 5 Reagents:** target non-Hero Unit becomes a Sheep (1/2/0, abilities disabled) until the beginning of your next turn; scaling debuffs (Crippling Curse, Armor Fracture) that get better against bigger targets; **Disable** reaction (cancel ability, costs stay paid, stays tapped).
+- **Opus Magnus — 3 Reagents:** permanent +2 Attack to a **Golem** you control (a new `golem` tag on Guard/Iron/Adaptive/Stone Golem); recasting it stacks, since the bonus is a permanent property change, not a until-end-of-turn buff. Gives the otherwise pure-control Alchemist deck its own build-around win condition — pour the whole game's reagent income into one Golem (most fittingly Iron Golem, whose own flavor text already calls it "unstoppable") instead of only using reagents defensively.
 
 ### 4.9 Deck construction rules
 - Deck size: **40 cards**; HQ + starting Hero are **outside the deck** (chosen starting cards).
