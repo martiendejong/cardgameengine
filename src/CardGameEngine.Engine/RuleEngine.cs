@@ -170,11 +170,19 @@ public class RuleEngine
                 // A type the player never had counts as gone, but at least one listed
                 // type must have existed — supports heroless campaign starts while an
                 // HQ-less scripted enemy can't lose this way at all.
+                //
+                // Only objects that have actually entered play count here — an un-destroyed
+                // reserve HQ/hero card still sitting in the deck or hand (task 906/908: many
+                // factions' precon decks carry a spare hero as a comeback piece) is not "still
+                // in play", so it must not keep this condition from ever firing (task 1419: a
+                // player who has lost their on-board headquarters and hero never actually lost
+                // the match because an unplayed reserve card technically kept the type alive).
                 bool hadAny = false;
                 bool allDestroyed = endCond.Targets.All(targetType =>
                 {
                     var playerObjects = game.Objects.Where(o =>
                         o.OwnerId == player.Id &&
+                        o.ZoneId != "deck" && o.ZoneId != "hand" &&
                         GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, targetType)).ToList();
                     if (playerObjects.Count == 0) return true;
                     hadAny = true;
