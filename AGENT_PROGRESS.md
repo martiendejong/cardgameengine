@@ -468,6 +468,38 @@ activation the same turn is blocked by the tap; AP correctly accrues +1/turn and
 4-AP activation spends exactly 3, leaving 1 AP unspent (6 Skeletons total, no over-spend).
 Left: nothing — awaiting live playtest.
 
+## 2026-09-04 — task 1411
+Done: Hunk's "Work" ability (Tap → gain 1 Gold) was condition-free, letting a lone Hunk
+print Gold every turn with no mine at all — bypassing the mine-gated economy Gold Mine's
+own `harvest` ability already implements (design-spec.md §2.5). Added a new engine
+condition `controls_tagged` (positive counterpart of the existing `controls_no_tagged`)
+and put it on Work requiring the player control a `resource-node`-tagged entity (Gold
+Mine today, any future mine automatically). `frontend/src/utils/cardText.ts` renders it
+as "Requires you control a Resource Node" so the card text/tooltip stays consistent with
+the rule (Done-when item). The Hunks faction's default deck had **0** Gold Mine copies
+(its whole "put every Hunk to work" identity ran on the now-gated free gold) — added 3x
+Gold Mine (matching Town's existing count) so the faction keeps a working economy.
+design-spec.md §2.5 updated with a short note. Repair and every other Hunk ability,
+and all 8 other factions, untouched (none of them run Hunk cards).
+Verified: `dotnet build` clean (0 warnings/errors); `npm run build` (tsc -b + vite)
+clean. No test project exists in this repo — matched the established verification
+convention (see task 974/887 entries above): a throwaway RuleEngine harness (real
+`AbilityService`/`ObjectFactory`, no mocks) confirmed Work is rejected with reason
+"Condition not met: controls_tagged" and 0 gold gained while no mine is controlled,
+succeeds and grants exactly 1 gold + taps the Hunk once a Gold Mine is controlled,
+an opponent's mine does NOT satisfy the condition, Repair keeps 0 conditions
+unchanged, the updated Hunks deck (47 cards) passes `GameQueries.ValidateDeck`, and
+Gold Mine's own Harvest ability is unregressed (5→4 reserves, +1 gold, taps the
+Worker). Also ran real bot-vs-bot `/api/simulate` matches (dotnet run, live server)
+before/after the change: Hunks' win rate vs Town/Raiders was already 0% on
+unmodified master (a pre-existing bot-AI weakness, not something this change caused
+or worsened — game logs confirm bots on both branches place Gold Mine and use
+Harvest/Work correctly to generate gold once the mine exists, so the deck is not a
+dead combo, just weak in this bot's hands against these two matchups specifically).
+Left: the Hunks faction's 0% simulated win rate vs Town/Raiders is a separate,
+pre-existing bot-AI/deck-power issue outside this task's scope — filed as JengoWork
+task 1499 rather than folded into this PR.
+
 ## 2026-09-04 — task 1426
 Done: added 20 new cards (mix of units/buildings/spells, ~12/3/5 per faction) to each of
 the 8 non-town factions (raiders/machine/conclave/undead/brood/shadow/alchemists/hunks) in
@@ -508,3 +540,29 @@ is satisfied by every new card, same mechanism task 972/1072 already validated l
 Left: nothing agent-doable. A human visual pass in the deckbuilder UI (per the task's own
 "How to test") and the pre-existing cross-faction bot-AI balance skew (separate, larger scope)
 are both left for review/a future task.
+
+## 2026-09-04 — task 1426 (review round)
+Reviewed PR #35 and found the branch's own last commit (f749a06, "remove 160 orphaned WIP
+cards from previous agent run") had corrupted the entire game.json: it round-tripped the
+file through a tool matching PowerShell's `ConvertTo-Json`/`Set-Content` default behavior on
+this host (re-serialized into PowerShell's own JSON style — 4-space padded, UTF-8 BOM — and
+mojibake-corrupted every non-ASCII character it touched). All 426 cards' `icon` fields, 8
+cards' `artworkDescription` fields, and one deck's `description` em-dash were turned into
+garbage Latin-1-supplement byte sequences (e.g. town-hall's icon: U+1F3DB U+FE0F →
+`ðŸ›ï¸`). Confirmed via a full recursive scan for
+Latin-1-supplement-range characters (435 hits pre-fix, 0 post-fix) and confirmed every
+non-flavor (gameplay-affecting) field was byte-identical before/after — the corruption was
+purely cosmetic (icons/flavor text) but total in scope (every card).
+Fixed by rebuilding every surviving card's data from commit 74ef4a6 (the last known-clean
+version — confirmed byte-identical to pre-task master for all 266 original card ids, and
+mechanically identical to the corrupted version for all 426 surviving ids), re-serialized
+in the repo's canonical dotnet `System.Text.Json` style (2-space indent, escaped unicode,
+no BOM) matching every other file in the repo.
+Also merged master (task 1411's Hunk gold-mine gate, task 1050/hero-deck-eligible — neither
+touched by this PR otherwise): applied the same `controls_tagged` condition to `hunk`'s Work
+ability and added `gold-mine: 3` to the Hunks precon deck, trimming 3 more copies from the
+already-tied-at-4 entries (house/reinforced-walls/spear, round-robin highest-first, same
+technique this task's own commits already used) to stay at the 60-card cap.
+Verified: `dotnet build` clean, 0 errors. Full write-up:
+`jengo-knowledge-private/knowledge/powershell-convertto-json-mojibake-corrupts-entire-file-1426.md`.
+Left: nothing agent-doable — same human visual-pass caveat as above.
