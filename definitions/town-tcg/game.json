@@ -6927,7 +6927,12 @@
               "type": "tap"
             }
           ],
-          "conditions": [],
+          "conditions": [
+            {
+              "type": "controls_tagged",
+              "tag": "resource-node"
+            }
+          ],
           "effects": [
             {
               "type": "gain_resource",
@@ -10729,6 +10734,7 @@
         "reinforced-walls": 4,
         "house": 4,
         "bag-of-gold": 2,
+        "gold-mine": 3,
         "scatter-ballista": 2
       },
       "hqOptions": [

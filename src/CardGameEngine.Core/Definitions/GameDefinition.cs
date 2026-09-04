@@ -183,7 +183,7 @@ public class CostDefinition
 
 public class ConditionDefinition
 {
-    public string Type { get; set; } = ""; // "not_tapped", "resource_gte", "has_tag", "is_phase"
+    public string Type { get; set; } = ""; // "not_tapped", "resource_gte", "has_tag", "is_phase", "controls_tagged"
     public string? ResourceId { get; set; }
     public int? Amount { get; set; }
     public string? Tag { get; set; }
