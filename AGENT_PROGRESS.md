@@ -706,3 +706,20 @@ Left: Emplace Artillery's new choice targeting is mechanically correct but has n
 target within this deck alone (none of fort-'s own buildings ever set `constructionRequirement`,
 so none enter play "under construction") — left as-is rather than adding a construction-time
 mechanic to a card's stats, which would be a balance change beyond this task's bug-fix scope.
+
+## 2026-09-05 — task 1508 (round 2, PR #45 review fix)
+Done: fixed the one remaining CHANGES REQUESTED item — the hero's "Coordinated Barrage"
+ability (`fort-siege-commander`) paired a no-op `gain_resource_all_tagged` (`amount:0`) with
+a `direct_damage` effect carrying a `perTaggedBuilding` field `EffectDefinition` never
+declared, so it was silently dropped by JSON deserialization and the ability always dealt a
+flat 2 damage regardless of siege buildings controlled. Added
+`EffectDefinition.PerTaggedBuilding`; `direct_damage`'s handler now multiplies `Amount` by the
+caster's own tagged-object count when it's set (same tag-enumeration pattern as
+`heal_all_tagged`/`gain_resource_all_tagged`). Dropped the no-op companion effect from the
+card data per the reviewer's own suggestion.
+Verified: `dotnet build` clean, 0 warnings/errors. `dotnet test` 10/10 pass — added
+`Coordinated_barrage_scales_damage_by_siege_buildings_controlled_via_perTaggedBuilding`,
+which drives the real engine through `ActivateAbility` with 2 siege-tagged buildings on the
+battlefield and asserts the opponent HQ takes 4 damage (2 base × 2 buildings), not the old
+flat 2.
+Left: nothing — this closes the CHANGES REQUESTED review on PR #45.

@@ -389,7 +389,10 @@ public static class DefaultHandlers
         e.Register("direct_damage", ctx =>
         {
             var obj = ctx.ResolveScope("target");
-            if (obj != null) m.ApplyDirectDamage(ctx.Game, obj, ctx.Effect.Amount ?? 0, ctx.Source);
+            var amount = ctx.Effect.Amount ?? 0;
+            if (ctx.Effect.PerTaggedBuilding is { } tag)
+                amount *= GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id).Count(o => o.Tags.Contains(tag));
+            if (obj != null) m.ApplyDirectDamage(ctx.Game, obj, amount, ctx.Source);
         });
 
         e.Register("draw_cards", ctx =>

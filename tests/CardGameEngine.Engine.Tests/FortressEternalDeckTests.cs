@@ -119,6 +119,10 @@ public class FortressEternalDeckTests
         game.Objects.First(o => o.OwnerId == playerId && o.ZoneId == "battlefield" &&
             GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, "headquarters"));
 
+    private static ObjectInstance FindHero(GameInstance game, string playerId) =>
+        game.Objects.First(o => o.OwnerId == playerId && o.ZoneId == "battlefield" &&
+            GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, "hero"));
+
     [Fact]
     public void Mason_onPlay_grants_growth_now_that_it_is_a_real_onPlay_field_not_a_dead_trigger()
     {
@@ -201,5 +205,37 @@ public class FortressEternalDeckTests
         Assert.True(ok, error);
         Assert.True(enemySoldier.IsTapped);
         Assert.True(enemySoldier.SkipNextUntap);
+    }
+
+    /// <summary>
+    /// PR #45 review round 2 (task 1508): the hero's "Coordinated Barrage" ability paired a
+    /// no-op gain_resource_all_tagged (amount:0) with a direct_damage effect carrying a
+    /// perTaggedBuilding field that EffectDefinition didn't have, so System.Text.Json silently
+    /// dropped it and the ability always dealt a flat 2 damage regardless of siege buildings
+    /// controlled. Fixed by adding EffectDefinition.PerTaggedBuilding and having direct_damage's
+    /// handler multiply Amount by the caster's own tagged-object count (mirrors the tag
+    /// enumeration already used by heal_all_tagged/gain_resource_all_tagged); the no-op
+    /// companion effect was dropped from the card data.
+    /// </summary>
+    [Fact]
+    public void Coordinated_barrage_scales_damage_by_siege_buildings_controlled_via_perTaggedBuilding()
+    {
+        var (game, engine, fort, opp) = CreateMatch();
+        var oppHq = FindHq(game, opp.Id);
+        var startingHp = oppHq.Properties["currentHp"];
+        var hero = FindHero(game, fort.Id);
+        hero.Resources["ap"] = 5;
+        PutOnBattlefield(game, "fort-stone-wall", fort);       // siege-tagged building #1
+        PutOnBattlefield(game, "fort-cannon-emplacement", fort); // siege-tagged building #2
+
+        var (ok, error) = engine.ExecuteAction(game, fort.Id, new ActionRequest
+        {
+            Type = "activateAbility",
+            SourceObjectId = hero.Id,
+            AbilityId = "commander-barrage"
+        });
+
+        Assert.True(ok, error);
+        Assert.Equal(startingHp - 4, oppHq.Properties["currentHp"]); // base 2 damage * 2 siege buildings
     }
 }

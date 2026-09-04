@@ -25023,12 +25023,6 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource_all_tagged",
-              "tag": "siege",
-              "resourceId": "siege_trigger",
-              "amount": 0
-            },
-            {
               "type": "direct_damage",
               "scope": "opponent",
               "target": "hq",
