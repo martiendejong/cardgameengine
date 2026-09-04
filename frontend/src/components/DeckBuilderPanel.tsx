@@ -191,11 +191,17 @@ export function DeckBuilderPanel({
   }, [heroId, heroCards]);
 
   // Pool: the whole deck-eligible catalog, or (campaign) only cards the player owns.
+  // Heroes have no playCost (picked via heroOptions, not purchased) and some HQ subtypes
+  // (e.g. hive-hq with playCosts:{}) also lack one — include both via the type hierarchy.
   const eligibleCards = useMemo(() => {
     const all = gameDef.cards ?? [];
     if (ownedCounts) return all.filter(c => (ownedCounts[c.id] ?? 0) > 0);
-    return all.filter(isDeckEligible);
-  }, [gameDef, ownedCounts]);
+    return all.filter(c =>
+      isDeckEligible(c)
+      || isOrExtends(c.objectType, 'hero', objectTypes)
+      || isOrExtends(c.objectType, 'headquarters', objectTypes)
+    );
+  }, [gameDef, ownedCounts, objectTypes]);
 
   const typeOptions = useMemo(() => {
     const typeNames: Record<string, string> = {};
@@ -249,7 +255,7 @@ export function DeckBuilderPanel({
     const maxCost = maxCostFilter.trim() === '' ? null : Number(maxCostFilter);
     return eligibleCards
       .filter(c => !filter || c.name.toLowerCase().includes(filter))
-      .filter(c => !typeFilter || c.objectType === typeFilter)
+      .filter(c => !typeFilter || isOrExtends(c.objectType, typeFilter, objectTypes))
       .filter(c => {
         if (!factionFilter) return true;
         const factions = cardFactions[c.id] ?? [];
