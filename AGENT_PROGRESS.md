@@ -454,3 +454,16 @@ options each, subtypes included. Selected Arcane Nexus, removed it from the deck
 "niet gekozen" hint reappeared, confirming no phantom pick survives). Zero console
 errors throughout.
 Left: nothing.
+
+## 2026-08-31 — task 974
+Done: PR #12 (5 AP + Tap for Mass Resurrection) tested too weak at 1 AP/turn income.
+Rebalanced per Martien's own proposal: Lich now gets an `onPlay` effect (same pattern as
+`raider-camp`) that summons 2 free Skeletons the instant he's deployed, and Mass
+Resurrection's cost dropped from 5 AP to 3 AP + Tap (still summons 2 Skeletons, still
+tap-gated so it can't be reused the same turn). design-spec.md updated to match.
+Verified: `dotnet build` clean. Throwaway harness driving the real RuleEngine confirmed:
+Lich enters with 2 Skeletons already on the field (no cost paid); 2 AP correctly rejects
+Mass Resurrection; exactly 3 AP pays it, taps Lich, and summons 2 more (4 total); a second
+activation the same turn is blocked by the tap; AP correctly accrues +1/turn and a later
+4-AP activation spends exactly 3, leaving 1 AP unspent (6 Skeletons total, no over-spend).
+Left: nothing — awaiting live playtest.

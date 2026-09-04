@@ -3384,6 +3384,22 @@
           ]
         }
       ],
+      "onPlay": {
+        "id": "lich-rise",
+        "name": "The dead rise with him: two Skeletons join the field",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "skeleton"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "skeleton"
+          }
+        ]
+      },
       "abilities": [
         {
           "id": "mass-res",
@@ -3393,7 +3409,7 @@
               "type": "resource",
               "scope": "self",
               "resourceId": "ap",
-              "amount": 5
+              "amount": 3
             },
             {
               "type": "tap"
