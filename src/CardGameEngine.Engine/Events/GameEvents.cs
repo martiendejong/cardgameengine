@@ -12,6 +12,7 @@ public static class GameEventTypes
     public const string TurnStarted = "turnStarted";
     public const string PhaseEntered = "phaseEntered";
     public const string CardDrawn = "cardDrawn";
+    public const string CardDiscarded = "cardDiscarded"; // Player = who discarded, Target = the card
     public const string CardPlayed = "cardPlayed";
     public const string ObjectSummoned = "objectSummoned";
     public const string ObjectDestroyed = "objectDestroyed";

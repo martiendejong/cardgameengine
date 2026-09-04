@@ -395,6 +395,36 @@ public static class DefaultHandlers
                 s.Bus.Publish(ctx.Game, new GameEvent { Type = "requestDraw", Player = ctx.Player });
         });
 
+        // Forced discard: the mirror of draw_cards. Default target is the opponent
+        // (hand denial); scope "self" discards from your own hand instead.
+        // Discards are picked at random — effect resolution is synchronous, so an
+        // owner-chosen discard would need a mid-resolution choice for the non-acting
+        // player, which the PendingChoice system doesn't support.
+        e.Register("discard_cards", ctx =>
+        {
+            var target = (ctx.Effect.Scope == "self")
+                ? ctx.Player
+                : GameQueries.GetOpponent(ctx.Game, ctx.Player);
+            if (target == null) return;
+
+            var count = ctx.Effect.Amount ?? 1;
+            for (int i = 0; i < count; i++)
+            {
+                var hand = ctx.Game.Objects
+                    .Where(o => o.OwnerId == target.Id && o.ZoneId == "hand" && !o.IsDestroyed)
+                    .ToList();
+                if (hand.Count == 0)
+                {
+                    ctx.Game.Log.Add($"{target.Name} has no cards left to discard.");
+                    break;
+                }
+                var card = hand[Random.Shared.Next(hand.Count)];
+                card.ZoneId = "discard";
+                ctx.Game.Log.Add($"{target.Name} discards {card.Name}. ({hand.Count - 1} card(s) left in hand)");
+                s.Bus.Publish(ctx.Game, new GameEvent { Type = GameEventTypes.CardDiscarded, Player = target, Target = card });
+            }
+        });
+
         // Move an entity resource between the ability's source and its target
         e.Register("transfer_resource", ctx =>
         {
