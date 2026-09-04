@@ -4291,7 +4291,7 @@
       "reactionTo": [
         "abilityActivated"
       ],
-      "icon": "🔑",
+      "icon": "\ud83d\udd11",
       "artworkDescription": "Already had the keys",
       "onPlay": {
         "id": "im",
@@ -10102,7 +10102,7 @@
       "name": "Trade Embargo",
       "objectType": "spell",
       "playCost": 2,
-      "icon": "📜",
+      "icon": "\ud83d\udcdc",
       "artworkDescription": "The gates close; the letters stop",
       "onPlay": {
         "id": "tra-fx",
@@ -10120,7 +10120,7 @@
       "name": "Raid Plans",
       "objectType": "spell",
       "playCost": 2,
-      "icon": "🗺️",
+      "icon": "\ud83d\uddfa\ufe0f",
       "artworkDescription": "Every good raid starts with a bad map",
       "onPlay": {
         "id": "rai-fx",
@@ -10138,7 +10138,7 @@
       "name": "Ransack",
       "objectType": "spell",
       "playCost": 2,
-      "icon": "💥",
+      "icon": "\ud83d\udca5",
       "artworkDescription": "If it is not nailed down it is ours; if it is, it burns",
       "onPlay": {
         "id": "ran-fx",
@@ -10158,7 +10158,7 @@
       "playCosts": {
         "energy": 2
       },
-      "icon": "📊",
+      "icon": "\ud83d\udcca",
       "artworkDescription": "Probability of victory: recalculating",
       "onPlay": {
         "id": "tac-fx",
@@ -10178,7 +10178,7 @@
       "playCosts": {
         "energy": 2
       },
-      "icon": "📡",
+      "icon": "\ud83d\udce1",
       "artworkDescription": "Enemy orders, lost in static",
       "onPlay": {
         "id": "jam-fx",
@@ -10198,7 +10198,7 @@
       "playCosts": {
         "mana": 2
       },
-      "icon": "📖",
+      "icon": "\ud83d\udcd6",
       "artworkDescription": "The pages turn themselves",
       "onPlay": {
         "id": "arc-fx",
@@ -10218,7 +10218,7 @@
       "playCosts": {
         "mana": 2
       },
-      "icon": "💫",
+      "icon": "\ud83d\udcab",
       "artworkDescription": "What plan? There was never a plan",
       "onPlay": {
         "id": "min-fx",
@@ -10238,7 +10238,7 @@
       "playCosts": {
         "corpses": 1
       },
-      "icon": "👻",
+      "icon": "\ud83d\udc7b",
       "artworkDescription": "The dead remember everything",
       "onPlay": {
         "id": "whi-fx",
@@ -10258,7 +10258,7 @@
       "playCosts": {
         "corpses": 1
       },
-      "icon": "🕸️",
+      "icon": "\ud83d\udd78\ufe0f",
       "artworkDescription": "Fear takes what courage forgets",
       "onPlay": {
         "id": "cre-fx",
@@ -10278,7 +10278,7 @@
       "playCosts": {
         "biomass": 2
       },
-      "icon": "🧠",
+      "icon": "\ud83e\udde0",
       "artworkDescription": "A thousand eyes, one thought",
       "onPlay": {
         "id": "hiv-fx",
@@ -10298,7 +10298,7 @@
       "playCosts": {
         "biomass": 2
       },
-      "icon": "🐛",
+      "icon": "\ud83d\udc1b",
       "artworkDescription": "The wagons were full this morning",
       "onPlay": {
         "id": "dev-fx",
@@ -10316,7 +10316,7 @@
       "name": "Blackmail",
       "objectType": "spell",
       "playCost": 2,
-      "icon": "✉️",
+      "icon": "\u2709\ufe0f",
       "artworkDescription": "It would be a shame if this letter got out",
       "onPlay": {
         "id": "bla-fx",
@@ -10336,7 +10336,7 @@
       "playCosts": {
         "reagents": 2
       },
-      "icon": "🌀",
+      "icon": "\ud83c\udf00",
       "artworkDescription": "Side effects include forgetting your strategy",
       "onPlay": {
         "id": "con-fx",
@@ -10354,7 +10354,7 @@
       "name": "Distracting Flex",
       "objectType": "spell",
       "playCost": 2,
-      "icon": "💪",
+      "icon": "\ud83d\udcaa",
       "artworkDescription": "They simply lost their train of thought",
       "onPlay": {
         "id": "dis-fx",
@@ -10366,6 +10366,7223 @@
           }
         ]
       }
+    },
+    {
+      "id": "raiders-reaver",
+      "name": "Reaver",
+      "objectType": "unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingCost": 1,
+      "tags": [
+        "raider",
+        "soldier"
+      ],
+      "icon": "\ud83e\ude93",
+      "artworkDescription": "A scarred raider with a curved blade, hungry eyes scanning for prey",
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": [],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-bloodseeker",
+      "name": "Bloodseeker",
+      "objectType": "unit",
+      "properties": {
+        "attack": 5,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 3,
+        "glory": 1
+      },
+      "housingCost": 1,
+      "tags": [
+        "raider",
+        "soldier",
+        "cleave"
+      ],
+      "icon": "\ud83d\udde1\ufe0f",
+      "artworkDescription": "A frenzied warrior painted in red war-marks, twin blades dripping",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "abilities": [],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-ironbreaker",
+      "name": "Ironbreaker",
+      "objectType": "unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 2
+      },
+      "playCost": 5,
+      "housingCost": 2,
+      "tags": [
+        "raider",
+        "soldier",
+        "guard"
+      ],
+      "icon": "\ud83d\udee1\ufe0f",
+      "artworkDescription": "A heavily armored raider bearing a battered tower shield and war-hammer",
+      "abilities": [
+        {
+          "id": "ironbreaker-taunt",
+          "name": "Iron Wall",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "raider",
+              "propertyId": "armor",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-marauder",
+      "name": "Marauder",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "playCost": 4,
+      "housingCost": 1,
+      "tags": [
+        "raider",
+        "soldier"
+      ],
+      "icon": "\u2694\ufe0f",
+      "artworkDescription": "A seasoned raider with notched armor and a heavy flail",
+      "abilities": [
+        {
+          "id": "marauder-plunder",
+          "name": "Plunder",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "steal_resource",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-warchanter",
+      "name": "Warchanter",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingCost": 1,
+      "tags": [
+        "raider",
+        "soldier"
+      ],
+      "icon": "\ud83e\udd41",
+      "artworkDescription": "A tattooed raider pounding a war-drum, rallying the warband with thunderous beats",
+      "abilities": [
+        {
+          "id": "warchanter-rally",
+          "name": "War Drums",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-sacker",
+      "name": "Sacker",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingCost": 1,
+      "tags": [
+        "raider",
+        "soldier"
+      ],
+      "icon": "\ud83d\udcb0",
+      "artworkDescription": "A quick-footed raider with a bulging sack and a short sword, always ready to grab loot",
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "drain_resource",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": [],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-skullcrusher",
+      "name": "Skullcrusher",
+      "objectType": "unit",
+      "properties": {
+        "attack": 6,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 4,
+        "glory": 2
+      },
+      "housingCost": 2,
+      "tags": [
+        "raider",
+        "soldier",
+        "cleave"
+      ],
+      "icon": "\ud83d\udc80",
+      "artworkDescription": "A massive brute wielding a spiked maul, leaving a trail of crushed helmets",
+      "abilities": [
+        {
+          "id": "skullcrusher-smash",
+          "name": "Skull Smash",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "glory",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 3
+            },
+            {
+              "type": "discard_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-ravager",
+      "name": "Ravager",
+      "objectType": "unit",
+      "properties": {
+        "attack": 5,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 5,
+        "glory": 2
+      },
+      "housingCost": 2,
+      "tags": [
+        "raider",
+        "soldier",
+        "cleave"
+      ],
+      "icon": "\ud83d\udd25",
+      "artworkDescription": "A glory-drunk veteran with a burning axe, wide grin, and fresh scars across his chest",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [
+            {
+              "type": "resource_gte",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 3
+            }
+          ],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "id": "ravager-charge",
+          "name": "Reckless Charge",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "glory",
+              "amount": 1
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-pillage-lord",
+      "name": "Pillage Lord",
+      "objectType": "unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "playCosts": {
+        "gold": 6,
+        "glory": 2
+      },
+      "housingCost": 2,
+      "tags": [
+        "raider",
+        "soldier"
+      ],
+      "icon": "\ud83d\udc51",
+      "artworkDescription": "A battle-crowned warlord draped in plundered finery, commanding raids with cold authority",
+      "abilities": [
+        {
+          "id": "pillage-lord-command",
+          "name": "Lord's Command",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "raider",
+              "propertyId": "attack",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-bone-gnasher",
+      "name": "Bone Gnasher",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "playCost": 2,
+      "housingCost": 1,
+      "tags": [
+        "raider",
+        "soldier"
+      ],
+      "icon": "\ud83e\uddb7",
+      "artworkDescription": "A wiry, feral raider with filed teeth and a rusty cleaver, always fighting at the front",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 1
+            },
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "abilities": [],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-glory-hound",
+      "name": "Glory Hound",
+      "objectType": "unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCost": 4,
+      "housingCost": 1,
+      "tags": [
+        "raider",
+        "soldier"
+      ],
+      "icon": "\ud83c\udfc6",
+      "artworkDescription": "A competitive raider constantly tallying kills on his belt, always pushing to the front",
+      "abilities": [
+        {
+          "id": "glory-hound-boast",
+          "name": "Boast",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "resource_gte",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 3
+            }
+          ],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "propertyId": "attack",
+              "amount": 3
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-thornback",
+      "name": "Thornback Veteran",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 2
+      },
+      "playCost": 5,
+      "housingCost": 2,
+      "tags": [
+        "raider",
+        "soldier",
+        "retaliate"
+      ],
+      "icon": "\ud83e\udd94",
+      "artworkDescription": "An old raider with spike-studded pauldrons, grinning as enemies strike him",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": [],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-war-camp",
+      "name": "War Camp",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 1
+      },
+      "playCost": 4,
+      "housingProvided": 4,
+      "tags": [],
+      "icon": "\u26fa",
+      "artworkDescription": "A fortified camp of tents and bone totems on a scorched hillside",
+      "abilities": [
+        {
+          "id": "war-camp-muster",
+          "name": "Muster",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-plunder-hall",
+      "name": "Plunder Hall",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 0
+      },
+      "playCost": 5,
+      "housingProvided": 2,
+      "tags": [],
+      "icon": "\ud83c\udfda\ufe0f",
+      "artworkDescription": "A crude longhouse overflowing with stolen goods, furs, and caged prisoners",
+      "abilities": [
+        {
+          "id": "plunder-hall-convert",
+          "name": "Convert Loot",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "drain_resource",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-glory-shrine",
+      "name": "Glory Shrine",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingProvided": 0,
+      "tags": [],
+      "icon": "\ud83d\uddff",
+      "artworkDescription": "A crude altar of skulls and trophies where raiders offer tribute to earn glory",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "id": "glory-shrine-empower",
+          "name": "Shrine Blessing",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "raider",
+              "propertyId": "attack",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-blackrock-forge",
+      "name": "Blackrock Forge",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
+      },
+      "playCost": 5,
+      "housingProvided": 2,
+      "tags": [],
+      "icon": "\u2692\ufe0f",
+      "artworkDescription": "A volcanic-stone forge hammering dark-iron weapons day and night",
+      "abilities": [
+        {
+          "id": "blackrock-forge-temper",
+          "name": "Temper Weapons",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "soldier",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-raider-vault",
+      "name": "Raider Vault",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "playCost": 4,
+      "housingProvided": 1,
+      "tags": [],
+      "icon": "\ud83d\udd12",
+      "artworkDescription": "A reinforced chest-room buried under the camp, stuffed with stolen gold",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "id": "raider-vault-stockpile",
+          "name": "Stockpile",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-blood-rage",
+      "name": "Blood Rage",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "\ud83e\ude78",
+      "artworkDescription": "Red mist descends over a raider as fury overtakes reason",
+      "abilities": [
+        {
+          "id": "blood-rage-cast",
+          "name": "Cast Blood Rage",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "raider",
+              "propertyId": "attack",
+              "amount": 3
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-glory-burst",
+      "name": "Glory Burst",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 1,
+        "glory": 3
+      },
+      "icon": "\u2728",
+      "artworkDescription": "A brilliant flash of golden light erupts from a raider champion as he spends his stored glory",
+      "abilities": [
+        {
+          "id": "glory-burst-cast",
+          "name": "Cast Glory Burst",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 4
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "raiders-war-cry",
+      "name": "War Cry",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "\ud83d\udce3",
+      "artworkDescription": "A chieftain bellows across the battlefield, sending raiders into a killing frenzy",
+      "abilities": [
+        {
+          "id": "war-cry-cast",
+          "name": "Cast War Cry",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "raider",
+              "propertyId": "attack",
+              "amount": 2
+            },
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "raider",
+              "propertyId": "armor",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "_faction": "raiders"
+    },
+    {
+      "id": "machine-combat-chassis",
+      "name": "Combat Chassis",
+      "objectType": "module",
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 2
+      },
+      "playCosts": {
+        "gold": 3,
+        "energy": 1
+      },
+      "tags": [
+        "guard"
+      ],
+      "icon": "\ud83e\udd16",
+      "artworkDescription": "A heavy armored shell that bolts onto the war machine",
+      "abilities": [
+        {
+          "id": "combat-chassis-brace",
+          "name": "Brace",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 1
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "propertyId": "armor",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-arc-emitter",
+      "name": "Arc Emitter",
+      "objectType": "module",
+      "properties": {
+        "attack": 4,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 3,
+        "energy": 2
+      },
+      "tags": [
+        "ranged"
+      ],
+      "icon": "\u26a1",
+      "artworkDescription": "A coiled lightning projector that discharges arcing electricity",
+      "abilities": [
+        {
+          "id": "arc-emitter-discharge",
+          "name": "Arc Discharge",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 3
+            },
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-overcharge-module",
+      "name": "Overcharge Module",
+      "objectType": "module",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 2,
+        "energy": 1
+      },
+      "tags": [],
+      "icon": "\ud83d\udd0b",
+      "artworkDescription": "A volatile power conduit that floods the war machine with excess energy",
+      "abilities": [
+        {
+          "id": "overcharge-module-surge",
+          "name": "Power Surge",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 3
+            },
+            {
+              "type": "modify_property",
+              "scope": "self",
+              "propertyId": "currentHp",
+              "amount": -2
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-proximity-mine-launcher",
+      "name": "Proximity Mine Launcher",
+      "objectType": "module",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 4,
+        "energy": 1
+      },
+      "tags": [
+        "ranged"
+      ],
+      "icon": "\ud83d\udca3",
+      "artworkDescription": "A rotating turret that lobs proximity-fused explosive charges",
+      "abilities": [
+        {
+          "id": "proximity-mine-launcher-deploy",
+          "name": "Deploy Mine",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 1
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-chief-engineer",
+      "name": "Chief Engineer",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "playCost": 4,
+      "housingCost": 2,
+      "tags": [
+        "worker"
+      ],
+      "icon": "\ud83d\udd27",
+      "artworkDescription": "A seasoned veteran technician in a heavy exo-suit",
+      "abilities": [
+        {
+          "id": "chief-engineer-supervise",
+          "name": "Supervise Repairs",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 3
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-field-technician",
+      "name": "Field Technician",
+      "objectType": "unit",
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCost": 2,
+      "housingCost": 1,
+      "tags": [
+        "worker"
+      ],
+      "icon": "\ud83d\udee0\ufe0f",
+      "artworkDescription": "A nimble technician in light gear",
+      "abilities": [
+        {
+          "id": "field-technician-patch",
+          "name": "Emergency Patch",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-assault-drone",
+      "name": "Assault Drone",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 2,
+        "energy": 1
+      },
+      "housingCost": 1,
+      "tags": [
+        "ranged",
+        "soldier"
+      ],
+      "icon": "\ud83d\ude81",
+      "artworkDescription": "A small hovering combat drone armed with miniature rockets",
+      "abilities": [],
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-siege-operator",
+      "name": "Siege Operator",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 2
+      },
+      "playCost": 5,
+      "housingCost": 2,
+      "tags": [
+        "worker",
+        "soldier"
+      ],
+      "icon": "\ud83e\ude96",
+      "artworkDescription": "A heavily armored weapons operator",
+      "abilities": [
+        {
+          "id": "siege-operator-precision",
+          "name": "Precision Strike",
+          "costs": [
+            {
+              "type": "crew",
+              "amount": 1,
+              "tag": "worker"
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 5
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-energy-generator",
+      "name": "Energy Generator",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "playCost": 4,
+      "housingProvided": 2,
+      "tags": [
+        "resource-node"
+      ],
+      "icon": "\ud83c\udfed",
+      "artworkDescription": "A towering reactor complex with glowing conduits",
+      "abilities": [
+        {
+          "id": "energy-generator-produce",
+          "name": "Generate Power",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-repair-bay",
+      "name": "Repair Bay",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "playCost": 3,
+      "housingProvided": 2,
+      "tags": [],
+      "icon": "\ud83c\udfd7\ufe0f",
+      "artworkDescription": "A reinforced workshop bay",
+      "abilities": [
+        {
+          "id": "repair-bay-restore",
+          "name": "Restore Unit",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 4
+            },
+            {
+              "type": "untap",
+              "scope": "self"
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-command-bunker",
+      "name": "Command Bunker",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "playCost": 5,
+      "housingProvided": 3,
+      "tags": [
+        "guard"
+      ],
+      "icon": "\ud83c\udff0",
+      "artworkDescription": "A fortified reinforced-concrete command center",
+      "abilities": [
+        {
+          "id": "command-bunker-coordinate",
+          "name": "Tactical Coordination",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            },
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "worker",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-fabrication-plant",
+      "name": "Fabrication Plant",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 4,
+        "energy": 1
+      },
+      "housingProvided": 2,
+      "tags": [
+        "resource-node"
+      ],
+      "icon": "\u2699\ufe0f",
+      "artworkDescription": "An automated manufacturing facility",
+      "abilities": [
+        {
+          "id": "fabrication-plant-output",
+          "name": "Mass Fabricate",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "cost_discount",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-overload-pulse",
+      "name": "Overload Pulse",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 3,
+        "energy": 2
+      },
+      "icon": "\ud83d\udca5",
+      "artworkDescription": "A massive electromagnetic pulse erupts from the war machine's core",
+      "abilities": [
+        {
+          "id": "overload-pulse-cast",
+          "name": "Emit Pulse",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            },
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 3
+            },
+            {
+              "type": "discard_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-system-reboot",
+      "name": "System Reboot",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 2,
+        "energy": 1
+      },
+      "icon": "\ud83d\udd04",
+      "artworkDescription": "A rapid reinitialization protocol",
+      "abilities": [
+        {
+          "id": "system-reboot-cast",
+          "name": "Reboot",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "untap",
+              "scope": "self"
+            },
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 5
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-targeting-override",
+      "name": "Targeting Override",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "\ud83c\udfaf",
+      "artworkDescription": "A burst of override code commandeers an enemy unit's targeting systems",
+      "abilities": [
+        {
+          "id": "targeting-override-cast",
+          "name": "Override",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap",
+              "scope": "target"
+            },
+            {
+              "type": "buff_target_until_end_of_turn",
+              "propertyId": "attack",
+              "amount": -2
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-energy-transfer",
+      "name": "Energy Transfer",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "\ud83d\udd0c",
+      "artworkDescription": "Technicians reroute power from reserve cells",
+      "abilities": [
+        {
+          "id": "energy-transfer-cast",
+          "name": "Transfer Power",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-sensor-array",
+      "name": "Sensor Array",
+      "objectType": "module",
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 2,
+        "energy": 1
+      },
+      "tags": [
+        "ranged"
+      ],
+      "icon": "\ud83d\udce1",
+      "artworkDescription": "A cluster of rotating sensor dishes and optical trackers",
+      "abilities": [
+        {
+          "id": "sensor-array-scan",
+          "name": "Target Lock",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "reveal",
+              "scope": "target"
+            },
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "ranged",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-logistics-coordinator",
+      "name": "Logistics Coordinator",
+      "objectType": "unit",
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingCost": 1,
+      "tags": [
+        "worker"
+      ],
+      "icon": "\ud83d\udccb",
+      "artworkDescription": "A calm, methodical officer with a data-slate",
+      "abilities": [
+        {
+          "id": "logistics-coordinator-organize",
+          "name": "Organize Crew",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-forward-operating-base",
+      "name": "Forward Operating Base",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "playCost": 4,
+      "housingProvided": 3,
+      "tags": [],
+      "icon": "\ud83c\udfd5\ufe0f",
+      "artworkDescription": "A rapidly deployed forward base",
+      "abilities": [
+        {
+          "id": "forward-operating-base-resupply",
+          "name": "Resupply",
+          "costs": [
+            {
+              "type": "crew",
+              "amount": 1,
+              "tag": "worker"
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "machine-demolition-expert",
+      "name": "Demolition Expert",
+      "objectType": "unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCost": 4,
+      "housingCost": 2,
+      "tags": [
+        "soldier",
+        "worker"
+      ],
+      "icon": "\ud83d\udca5",
+      "artworkDescription": "A no-nonsense saboteur laden with shaped charges",
+      "abilities": [
+        {
+          "id": "demolition-expert-detonate",
+          "name": "Controlled Demolition",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 6
+            },
+            {
+              "type": "modify_property",
+              "scope": "self",
+              "propertyId": "currentHp",
+              "amount": -2
+            }
+          ]
+        }
+      ],
+      "_faction": "machine"
+    },
+    {
+      "id": "conclave-runeweaver",
+      "name": "Runeweaver",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 2,
+        "mana": 1
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "\ud83d\udd35",
+      "artworkDescription": "A robed mage tracing glowing runes in the air",
+      "abilities": [
+        {
+          "id": "runeweaver-inscribe",
+          "name": "Inscribe Rune",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-void-scholar",
+      "name": "Void Scholar",
+      "objectType": "unit",
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 3,
+        "mana": 1
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "\ud83d\udcda",
+      "artworkDescription": "A pale scholar surrounded by floating tomes",
+      "abilities": [
+        {
+          "id": "void-scholar-study",
+          "name": "Arcane Study",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-storm-caller",
+      "name": "Storm Caller",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 3,
+        "mana": 2
+      },
+      "housingCost": 1,
+      "tags": [
+        "ranged",
+        "soldier"
+      ],
+      "icon": "\u26a1",
+      "artworkDescription": "A mage with crackling lightning coiling around outstretched arms",
+      "abilities": [
+        {
+          "id": "storm-caller-bolt",
+          "name": "Lightning Bolt",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-aether-blade",
+      "name": "Aether Blade",
+      "objectType": "unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 4,
+        "mana": 2
+      },
+      "housingCost": 2,
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "\ud83d\udde1\ufe0f",
+      "artworkDescription": "A warrior wielding a sword of pure condensed mana",
+      "abilities": [
+        {
+          "id": "aether-blade-surge",
+          "name": "Mana Surge Strike",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "propertyId": "attack",
+              "amount": 3
+            },
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-mana-conduit",
+      "name": "Mana Conduit",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingProvided": 0,
+      "icon": "\ud83d\udd2e",
+      "artworkDescription": "A tall crystalline pillar pulsing with concentrated arcane energy",
+      "abilities": [
+        {
+          "id": "mana-conduit-channel",
+          "name": "Channel Mana",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-arcane-tower",
+      "name": "Arcane Tower",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "playCost": 5,
+      "housingProvided": 2,
+      "icon": "\ud83c\udff0",
+      "artworkDescription": "A tall stone tower wreathed in swirling magical auras",
+      "abilities": [
+        {
+          "id": "arcane-tower-blast",
+          "name": "Arcane Blast",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-mana-vault",
+      "name": "Mana Vault",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "playCost": 4,
+      "housingProvided": 1,
+      "icon": "\ud83c\udfdb\ufe0f",
+      "artworkDescription": "A reinforced vault with glowing mana crystals",
+      "abilities": [
+        {
+          "id": "mana-vault-store",
+          "name": "Mana Reserve",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 3
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-spellshard-staff",
+      "name": "Spellshard Staff",
+      "objectType": "equipment",
+      "playCosts": {
+        "gold": 2,
+        "mana": 1
+      },
+      "icon": "\ud83e\ude84",
+      "artworkDescription": "A gnarled wooden staff topped with a glowing shard of raw arcane crystal",
+      "abilities": [
+        {
+          "id": "spellshard-staff-empower",
+          "name": "Mana Empower",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "is_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            },
+            {
+              "type": "buff_target_until_end_of_turn",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-focus-crystal",
+      "name": "Focus Crystal",
+      "objectType": "equipment",
+      "playCost": 3,
+      "icon": "\ud83d\udc8e",
+      "artworkDescription": "A perfectly cut arcane crystal worn as a pendant",
+      "abilities": [
+        {
+          "id": "focus-crystal-amplify",
+          "name": "Amplify Spell",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ],
+          "conditions": [
+            {
+              "type": "is_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            },
+            {
+              "type": "cost_discount",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-arcane-surge",
+      "name": "Arcane Surge",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 2,
+        "mana": 2
+      },
+      "icon": "\ud83c\udf0a",
+      "artworkDescription": "A wave of raw arcane energy crashing outward",
+      "abilities": [
+        {
+          "id": "arcane-surge-cast",
+          "name": "Cast Arcane Surge",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 4
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-mass-freeze",
+      "name": "Mass Freeze",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 3,
+        "mana": 3
+      },
+      "icon": "\u2744\ufe0f",
+      "artworkDescription": "Frost crystallizes the air as multiple enemy units are encased in arcane ice",
+      "abilities": [
+        {
+          "id": "mass-freeze-cast",
+          "name": "Cast Mass Freeze",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            },
+            {
+              "type": "freeze",
+              "scope": "target"
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-spell-echo",
+      "name": "Spell Echo",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 2,
+        "mana": 2
+      },
+      "icon": "\ud83d\udd01",
+      "artworkDescription": "Shimmering ripples in the air as a spell's resonance is captured and repeated",
+      "abilities": [
+        {
+          "id": "spell-echo-cast",
+          "name": "Cast Spell Echo",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-void-rift",
+      "name": "Void Rift",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 4,
+        "mana": 4
+      },
+      "icon": "\ud83d\udd73\ufe0f",
+      "artworkDescription": "A tear in reality through which void energy pours",
+      "abilities": [
+        {
+          "id": "void-rift-cast",
+          "name": "Open Void Rift",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 4
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 4
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 6
+            },
+            {
+              "type": "discard_cards",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-mana-drain",
+      "name": "Mana Drain",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 2,
+        "mana": 1
+      },
+      "icon": "\ud83c\udf00",
+      "artworkDescription": "Tendrils of dark energy siphoning glowing mana from an enemy caster",
+      "abilities": [
+        {
+          "id": "mana-drain-cast",
+          "name": "Cast Mana Drain",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "transfer_resource",
+              "scope": "target",
+              "resourceId": "mana",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-greater-counterspell",
+      "name": "Greater Counterspell",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 3,
+        "mana": 3
+      },
+      "icon": "\ud83d\udeab",
+      "artworkDescription": "A shimmering arcane barrier shattering an incoming spell mid-cast",
+      "abilities": [
+        {
+          "id": "greater-counterspell-cast",
+          "name": "Counter",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "counter_spell"
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-arcane-collapse",
+      "name": "Arcane Collapse",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 5,
+        "mana": 5
+      },
+      "icon": "\ud83d\udca5",
+      "artworkDescription": "Reality implodes around a target",
+      "abilities": [
+        {
+          "id": "arcane-collapse-cast",
+          "name": "Trigger Collapse",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 5
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 5
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            },
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 5
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-ley-tap",
+      "name": "Ley Tap",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "\u2728",
+      "artworkDescription": "A mage driving a crystalline spike into a glowing ley line underfoot",
+      "abilities": [
+        {
+          "id": "ley-tap-cast",
+          "name": "Tap Ley Line",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-reveal-mind",
+      "name": "Reveal Mind",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 1,
+        "mana": 1
+      },
+      "icon": "\ud83d\udc41\ufe0f",
+      "artworkDescription": "A third eye opens above a mage's brow",
+      "abilities": [
+        {
+          "id": "reveal-mind-cast",
+          "name": "Cast Reveal Mind",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "reveal",
+              "scope": "target"
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-senior-enchanter",
+      "name": "Senior Enchanter",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 4,
+        "mana": 2
+      },
+      "housingCost": 2,
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "\ud83e\uddd9",
+      "artworkDescription": "An elder mage in layered arcane robes",
+      "abilities": [
+        {
+          "id": "senior-enchanter-reinforce",
+          "name": "Arcane Reinforce",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "propertyId": "armor",
+              "amount": 3
+            },
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "conclave-spell-matrix",
+      "name": "Spell Matrix",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 5,
+        "mana": 2
+      },
+      "housingProvided": 3,
+      "icon": "\ud83d\udd2f",
+      "artworkDescription": "A web of glowing arcane lines forming a massive geometric pattern",
+      "abilities": [
+        {
+          "id": "spell-matrix-amplify",
+          "name": "Matrix Amplification",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 2
+            },
+            {
+              "type": "cost_discount",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "conclave"
+    },
+    {
+      "id": "undead-wraith",
+      "name": "Hollow Wraith",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCost": 2,
+      "housingCost": 1,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "\ud83d\udc7b",
+      "artworkDescription": "A translucent spectral form drifting inches above the ground",
+      "abilities": [
+        {
+          "id": "wraith-life-drain",
+          "name": "Life Drain",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-banshee",
+      "name": "Wailing Banshee",
+      "objectType": "unit",
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingCost": 1,
+      "tags": [
+        "ranged"
+      ],
+      "icon": "\ud83d\ude31",
+      "artworkDescription": "A spectral woman with hollow eyes and a gaping mouth frozen in an eternal scream",
+      "abilities": [
+        {
+          "id": "banshee-wail",
+          "name": "Banshee Wail",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "discard_cards",
+              "amount": 1
+            },
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "discard_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-death-knight",
+      "name": "Death Knight",
+      "objectType": "unit",
+      "properties": {
+        "attack": 5,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 2
+      },
+      "playCosts": {
+        "gold": 4,
+        "corpses": 2
+      },
+      "housingCost": 2,
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "\ud83d\udde1\ufe0f",
+      "artworkDescription": "A towering armored revenant with glowing blue eyes",
+      "abilities": [
+        {
+          "id": "death-knight-necrotic-strike",
+          "name": "Necrotic Strike",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "dp",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 4
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-plague-rat",
+      "name": "Plague Rat Swarm",
+      "objectType": "unit",
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "playCost": 1,
+      "housingCost": 1,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "\ud83d\udc00",
+      "artworkDescription": "A writhing mass of rotting rats with festering sores",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "poison",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-bone-archer",
+      "name": "Skeletal Archer",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "playCost": 2,
+      "housingCost": 1,
+      "tags": [
+        "ranged",
+        "archer"
+      ],
+      "icon": "\ud83c\udff9",
+      "artworkDescription": "A skeleton with a longbow crafted from ribs",
+      "abilities": [
+        {
+          "id": "bone-archer-poisoned-arrow",
+          "name": "Poisoned Arrow",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "poison",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            },
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-wight",
+      "name": "Barrow Wight",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 3,
+        "corpses": 1
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier",
+        "retaliate"
+      ],
+      "icon": "\ud83e\udddf",
+      "artworkDescription": "A desiccated corpse-king risen from an ancient burial mound",
+      "abilities": [
+        {
+          "id": "wight-chill-touch",
+          "name": "Chill Touch",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap",
+              "scope": "target"
+            },
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-corpse-crawler",
+      "name": "Corpse Crawler",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "playCost": 1,
+      "housingCost": 1,
+      "tags": [
+        "worker"
+      ],
+      "icon": "\ud83e\udeb1",
+      "artworkDescription": "A half-decomposed body that drags itself along the ground",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-shadow-revenant",
+      "name": "Shadow Revenant",
+      "objectType": "unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 3,
+        "corpses": 2,
+        "dp": 1
+      },
+      "housingCost": 2,
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "\ud83c\udf11",
+      "artworkDescription": "A humanoid silhouette of pure shadow with ember-red eyes",
+      "abilities": [
+        {
+          "id": "shadow-revenant-consume-soul",
+          "name": "Consume Soul",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "dp",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-crypt",
+      "name": "Ancient Crypt",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
+      },
+      "playCost": 3,
+      "housingProvided": 4,
+      "icon": "\ud83c\udfda\ufe0f",
+      "artworkDescription": "A crumbling stone mausoleum with iron-barred doors",
+      "abilities": [
+        {
+          "id": "crypt-raise-bones",
+          "name": "Raise Bones",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-burial-grounds",
+      "name": "Burial Grounds",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "playCost": 2,
+      "housingProvided": 2,
+      "icon": "\u26b0\ufe0f",
+      "artworkDescription": "A walled cemetery with freshly turned earth",
+      "abilities": [
+        {
+          "id": "burial-grounds-harvest",
+          "name": "Harvest the Fallen",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-plague-pit",
+      "name": "Plague Pit",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingProvided": 2,
+      "icon": "\u2623\ufe0f",
+      "artworkDescription": "A sunken mass grave oozing yellowish mist",
+      "abilities": [
+        {
+          "id": "plague-pit-spread",
+          "name": "Spread Plague",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "poison",
+              "amount": 3
+            },
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-ossuary",
+      "name": "Grand Ossuary",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "playCost": 4,
+      "housingProvided": 3,
+      "icon": "\ud83d\udc80",
+      "artworkDescription": "A cathedral-like structure whose walls are constructed entirely from neatly stacked skulls",
+      "abilities": [
+        {
+          "id": "ossuary-bone-cache",
+          "name": "Bone Cache",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "dp",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-death-altar",
+      "name": "Death Altar",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 4,
+        "corpses": 2
+      },
+      "housingProvided": 2,
+      "icon": "\ud83d\udd4d",
+      "artworkDescription": "A blood-stained obsidian altar carved with necromantic runes",
+      "abilities": [
+        {
+          "id": "death-altar-dark-ritual",
+          "name": "Dark Ritual",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "dp",
+              "amount": 3
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-unholy-blight",
+      "name": "Unholy Blight",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "\ud83d\udfe2",
+      "artworkDescription": "A sickly green cloud erupts from the ground",
+      "abilities": [
+        {
+          "id": "unholy-blight-cast",
+          "name": "Cast Unholy Blight",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "poison",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-bone-shatter",
+      "name": "Bone Shatter",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "\ud83e\uddb4",
+      "artworkDescription": "Skeletal remains explode outward in a cone of razor-edged fragments",
+      "abilities": [
+        {
+          "id": "bone-shatter-cast",
+          "name": "Cast Bone Shatter",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-death-coil",
+      "name": "Death Coil",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 2,
+        "dp": 1
+      },
+      "icon": "\ud83c\udf00",
+      "artworkDescription": "A coil of black necrotic energy spirals toward the target",
+      "abilities": [
+        {
+          "id": "death-coil-cast",
+          "name": "Cast Death Coil",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "dp",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 4
+            },
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "maxHp",
+              "amount": -2
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-soul-harvest",
+      "name": "Soul Harvest",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 3,
+        "corpses": 2
+      },
+      "icon": "\ud83d\udc9c",
+      "artworkDescription": "The lich extends skeletal hands as luminous soul-orbs rip free from nearby corpses",
+      "abilities": [
+        {
+          "id": "soul-harvest-cast",
+          "name": "Cast Soul Harvest",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "dp",
+              "amount": 3
+            },
+            {
+              "type": "draw_cards",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-plague-wind",
+      "name": "Plague Wind",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 4,
+        "poison": 2
+      },
+      "icon": "\ud83d\udca8",
+      "artworkDescription": "A foul gale carrying spores and pestilence sweeps across the battlefield",
+      "abilities": [
+        {
+          "id": "plague-wind-cast",
+          "name": "Cast Plague Wind",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 4
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "poison",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 3
+            },
+            {
+              "type": "discard_cards",
+              "amount": 2
+            },
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-gravekeeper",
+      "name": "Gravekeeper",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "playCost": 3,
+      "housingCost": 1,
+      "tags": [
+        "worker",
+        "builder"
+      ],
+      "icon": "\u26cf\ufe0f",
+      "artworkDescription": "A gaunt undead sexton in a tattered coat",
+      "abilities": [
+        {
+          "id": "gravekeeper-bury",
+          "name": "Bury the Dead",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 2
+            },
+            {
+              "type": "add_progress",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "undead-lich-herald",
+      "name": "Lich Herald",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 3,
+        "dp": 1
+      },
+      "housingCost": 2,
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "\ud83d\udcdc",
+      "artworkDescription": "A skeletal figure in ceremonial robes clutching a black tome",
+      "abilities": [
+        {
+          "id": "lich-herald-dark-edict",
+          "name": "Dark Edict",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "dp",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "cost_discount",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "dp",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "undead"
+    },
+    {
+      "id": "brood-larva-drone",
+      "name": "Larva Drone",
+      "objectType": "unit",
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "playCosts": {
+        "biomass": 1
+      },
+      "housingCost": 1,
+      "tags": [
+        "organic",
+        "larva"
+      ],
+      "icon": "\ud83d\udc1b",
+      "artworkDescription": "A pale grub that twitches toward warmth and blood in equal measure",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-acid-spewer",
+      "name": "Acid Spewer",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "biomass": 2
+      },
+      "housingCost": 1,
+      "tags": [
+        "organic",
+        "ranged"
+      ],
+      "icon": "\ud83d\udfe2",
+      "artworkDescription": "A bloated sac-creature that vomits corrosive fluid at range",
+      "abilities": [
+        {
+          "id": "acid-spit",
+          "name": "Acid Spit",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 2
+            },
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": -1
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-death-throes",
+      "name": "Tunnel Burrower",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "playCosts": {
+        "biomass": 3
+      },
+      "housingCost": 1,
+      "tags": [
+        "organic",
+        "soldier"
+      ],
+      "icon": "\ud83e\udeb2",
+      "artworkDescription": "Massive mandibles designed for tearing through earth and flesh alike",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-scythe-hunter",
+      "name": "Scythe Hunter",
+      "objectType": "unit",
+      "properties": {
+        "attack": 5,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 2,
+        "biomass": 2
+      },
+      "housingCost": 2,
+      "tags": [
+        "organic",
+        "soldier"
+      ],
+      "icon": "\ud83e\udd82",
+      "artworkDescription": "Built lean and lethal, its serrated forelimbs move faster than the eye can track",
+      "abilities": [
+        {
+          "id": "scythe-lunge",
+          "name": "Scythe Lunge",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-hive-sentinel",
+      "name": "Hive Sentinel",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
+      },
+      "playCosts": {
+        "gold": 3,
+        "biomass": 2
+      },
+      "housingCost": 2,
+      "tags": [
+        "organic",
+        "guard",
+        "retaliate"
+      ],
+      "icon": "\ud83e\udd97",
+      "artworkDescription": "A hulking insectoid wall assigned to shield the queen at all costs",
+      "abilities": [
+        {
+          "id": "sentinel-reinforce",
+          "name": "Reinforce",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-venom-stalker",
+      "name": "Venom Stalker",
+      "objectType": "unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 2,
+        "biomass": 3
+      },
+      "housingCost": 2,
+      "tags": [
+        "organic",
+        "ranged"
+      ],
+      "icon": "\ud83d\udd77\ufe0f",
+      "artworkDescription": "Clings to ceilings and rains corrosive venom on those below",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-queen-broodmother",
+      "name": "Broodmother",
+      "objectType": "unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "playCosts": {
+        "gold": 4,
+        "biomass": 4
+      },
+      "housingCost": 3,
+      "tags": [
+        "organic",
+        "retaliate"
+      ],
+      "icon": "\ud83d\udc51",
+      "artworkDescription": "The nest-mother whose pheromone commands every chitinous soldier within the hive",
+      "abilities": [
+        {
+          "id": "spawn-brood",
+          "name": "Spawn Brood",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "egg"
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-reaper",
+      "name": "Brood Reaper",
+      "objectType": "unit",
+      "properties": {
+        "attack": 6,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 4,
+        "biomass": 3
+      },
+      "housingCost": 3,
+      "tags": [
+        "organic",
+        "soldier",
+        "cleave"
+      ],
+      "icon": "\ud83e\udd85",
+      "artworkDescription": "Winged death that sweeps through formation lines with scything claws",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-sacrifice-pit",
+      "name": "Sacrifice Pit",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingProvided": 0,
+      "tags": [],
+      "icon": "\ud83d\udd73\ufe0f",
+      "artworkDescription": "A sunken basin where lesser forms are dissolved into raw energy for the hive",
+      "abilities": [
+        {
+          "id": "feed-the-pit",
+          "name": "Feed the Pit",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "sacrifice_units",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-spawning-pool",
+      "name": "Spawning Pool",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 3,
+        "biomass": 1
+      },
+      "housingProvided": 4,
+      "tags": [],
+      "icon": "\ud83c\udf0a",
+      "artworkDescription": "Warm brackish pools where eggs gestate in writhing masses",
+      "abilities": [
+        {
+          "id": "pool-gestate",
+          "name": "Gestate",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "egg"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "egg"
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-enzyme-vat",
+      "name": "Enzyme Vat",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCost": 2,
+      "housingProvided": 0,
+      "tags": [],
+      "icon": "\u2697\ufe0f",
+      "artworkDescription": "Organic tanks filled with digestive slime",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-chrysalis-chamber",
+      "name": "Chrysalis Chamber",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
+      },
+      "playCosts": {
+        "gold": 4,
+        "biomass": 2
+      },
+      "housingProvided": 5,
+      "tags": [],
+      "icon": "\ud83c\udfdb\ufe0f",
+      "artworkDescription": "A cathedral of chitin where dormant warriors hang in their shells",
+      "abilities": [
+        {
+          "id": "accelerate-metamorphosis",
+          "name": "Accelerate Metamorphosis",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "ravager"
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-biomass-surge",
+      "name": "Biomass Surge",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "\ud83d\udc9a",
+      "artworkDescription": "A pulse of raw organic energy floods through every vein in the hive network",
+      "abilities": [
+        {
+          "id": "surge-cast",
+          "name": "Cast Biomass Surge",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-consume",
+      "name": "Consume",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 2
+      },
+      "icon": "\ud83c\udf00",
+      "artworkDescription": "The swarm descends and leaves nothing behind",
+      "abilities": [
+        {
+          "id": "consume-cast",
+          "name": "Cast Consume",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-evolve-sentinel",
+      "name": "Evolve: Sentinel",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 3
+      },
+      "icon": "\ud83e\uddec",
+      "artworkDescription": "The warrior's carapace thickens, its limbs multiply, its mind narrows to pure defense",
+      "abilities": [
+        {
+          "id": "evolve-sentinel-cast",
+          "name": "Evolve Warrior to Sentinel",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "soldier",
+              "propertyId": "armor",
+              "amount": 3
+            },
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "soldier",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-mass-sacrifice",
+      "name": "Mass Sacrifice",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 1
+      },
+      "icon": "\ud83d\udc80",
+      "artworkDescription": "By the queen's will, the weak are unmade so the strong may feast",
+      "abilities": [
+        {
+          "id": "mass-sacrifice-cast",
+          "name": "Cast Mass Sacrifice",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 1
+            },
+            {
+              "type": "sacrifice_units",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 5
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-chitin-fortification",
+      "name": "Chitin Fortification",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 2
+      },
+      "icon": "\ud83d\udee1\ufe0f",
+      "artworkDescription": "Organic plates secrete across the target unit's hide",
+      "abilities": [
+        {
+          "id": "chitin-cast",
+          "name": "Cast Chitin Fortification",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": 2
+            },
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "maxHp",
+              "amount": 2
+            },
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "currentHp",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-nest-cluster",
+      "name": "Nest Cluster",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 2,
+        "biomass": 1
+      },
+      "housingProvided": 3,
+      "tags": [],
+      "icon": "\ud83e\udeba",
+      "artworkDescription": "A compact cluster of interlocking nest-cells humming with larval movement",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-flesh-weaver",
+      "name": "Flesh Weaver",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 2,
+        "biomass": 2
+      },
+      "housingCost": 2,
+      "tags": [
+        "organic"
+      ],
+      "icon": "\ud83d\udd78\ufe0f",
+      "artworkDescription": "A six-limbed surgeon that knits organic matter back together",
+      "abilities": [
+        {
+          "id": "weave-flesh",
+          "name": "Weave Flesh",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "brood-swarm-caller",
+      "name": "Swarm Caller",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 1,
+        "biomass": 2
+      },
+      "housingCost": 1,
+      "tags": [
+        "organic"
+      ],
+      "icon": "\ud83d\udcef",
+      "artworkDescription": "Clicks and shrieks at frequencies that draw every larva within a mile",
+      "abilities": [
+        {
+          "id": "rally-swarm",
+          "name": "Rally the Swarm",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            }
+          ]
+        }
+      ],
+      "_faction": "brood"
+    },
+    {
+      "id": "shadow-infiltrator",
+      "name": "Infiltrator",
+      "objectType": "spy-unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 2,
+        "intel": 1
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "\ud83d\udd75\ufe0f",
+      "artworkDescription": "A cloaked operative slipping through a guarded doorway",
+      "abilities": [
+        {
+          "id": "infiltrator-plant-bug",
+          "name": "Plant Bug",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 2
+            },
+            {
+              "type": "reveal",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-ghost-agent",
+      "name": "Ghost Agent",
+      "objectType": "spy-unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 3,
+        "intel": 2
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "\ud83d\udc64",
+      "artworkDescription": "A barely visible silhouette moving across a moonlit rooftop",
+      "abilities": [
+        {
+          "id": "ghost-agent-infiltrate",
+          "name": "Infiltrate",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-wraith-spy",
+      "name": "Wraith Spy",
+      "objectType": "spy-unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 4,
+        "intel": 3
+      },
+      "housingCost": 2,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "\ud83c\udf11",
+      "artworkDescription": "An ethereal figure in black silk who vanishes between shadows",
+      "abilities": [
+        {
+          "id": "wraith-spy-deep-cover",
+          "name": "Deep Cover",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "steal_resource",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-nightblade",
+      "name": "Nightblade",
+      "objectType": "unit",
+      "properties": {
+        "attack": 5,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 4,
+        "intel": 1
+      },
+      "housingCost": 2,
+      "tags": [
+        "soldier",
+        "mercenary"
+      ],
+      "icon": "\ud83d\udde1\ufe0f",
+      "artworkDescription": "A lithe assassin with twin black blades",
+      "abilities": [
+        {
+          "id": "nightblade-silent-kill",
+          "name": "Silent Kill",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-venom-striker",
+      "name": "Venom Striker",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 3
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier",
+        "mercenary"
+      ],
+      "icon": "\ud83d\udc0d",
+      "artworkDescription": "A lean assassin who coats their blades in rare toxins",
+      "abilities": [
+        {
+          "id": "venom-striker-poison-strike",
+          "name": "Poison Strike",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 2
+            },
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-enforcer",
+      "name": "Guild Enforcer",
+      "objectType": "unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 5
+      },
+      "housingCost": 2,
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "\ud83d\udee1\ufe0f",
+      "artworkDescription": "A broad-shouldered enforcer in midnight leather armor",
+      "abilities": [
+        {
+          "id": "enforcer-intimidate",
+          "name": "Intimidate",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap",
+              "scope": "target"
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-shadow-runner",
+      "name": "Shadow Runner",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "playCost": 2,
+      "housingCost": 1,
+      "tags": [
+        "soldier",
+        "raider"
+      ],
+      "icon": "\ud83d\udca8",
+      "artworkDescription": "A swift courier of the guild",
+      "abilities": [
+        {
+          "id": "runner-intel-run",
+          "name": "Intel Run",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 1
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-spymaster",
+      "name": "Spymaster",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 5,
+        "intel": 2
+      },
+      "housingCost": 2,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "\ud83c\udfa9",
+      "artworkDescription": "A silver-haired elder in a fine coat, surrounded by maps and dossiers",
+      "abilities": [
+        {
+          "id": "spymaster-coordinate",
+          "name": "Coordinate Network",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 3
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-safehouse",
+      "name": "Safehouse",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 3,
+        "intel": 1
+      },
+      "housingProvided": 2,
+      "icon": "\ud83c\udfda\ufe0f",
+      "artworkDescription": "An unremarkable rowhouse with boarded windows",
+      "abilities": [
+        {
+          "id": "safehouse-generate-intel",
+          "name": "Generate Intel",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-black-market",
+      "name": "Black Market",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCost": 4,
+      "housingProvided": 1,
+      "icon": "\ud83c\udfea",
+      "artworkDescription": "A cramped back-alley stall behind a curtain of hanging cloth",
+      "abilities": [
+        {
+          "id": "black-market-fence",
+          "name": "Fence Goods",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-contact-network",
+      "name": "Contact Network",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 3,
+        "intel": 2
+      },
+      "housingProvided": 0,
+      "icon": "\ud83d\udce1",
+      "artworkDescription": "A rooftop relay station with concealed antennae",
+      "abilities": [
+        {
+          "id": "contact-network-intercept",
+          "name": "Intercept Signals",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "reveal",
+              "scope": "target"
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 2
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-dead-drop",
+      "name": "Dead Drop",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 4,
+        "intel": 1
+      },
+      "housingProvided": 2,
+      "icon": "\ud83d\udce6",
+      "artworkDescription": "A hollow stone pillar in a public square",
+      "abilities": [
+        {
+          "id": "dead-drop-cache",
+          "name": "Retrieve Cache",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-extortion",
+      "name": "Extortion",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 2,
+        "intel": 2
+      },
+      "icon": "\ud83d\udcb0",
+      "artworkDescription": "A shadowy hand sliding a note across a table",
+      "abilities": [
+        {
+          "id": "extortion-cast",
+          "name": "Extort",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "steal_resource",
+              "resourceId": "gold",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-mind-wipe",
+      "name": "Mind Wipe",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 3,
+        "intel": 3
+      },
+      "icon": "\ud83e\udde0",
+      "artworkDescription": "A gloved hand pressing a vial of gas to a target's face",
+      "abilities": [
+        {
+          "id": "mind-wipe-cast",
+          "name": "Wipe Memory",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "discard_cards",
+              "amount": 3
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-lockdown",
+      "name": "Lockdown",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 2,
+        "intel": 1
+      },
+      "icon": "\ud83d\udd12",
+      "artworkDescription": "Iron chains materializing from shadows to bind a target in place",
+      "abilities": [
+        {
+          "id": "lockdown-cast",
+          "name": "Freeze Target",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-counter-intel",
+      "name": "Counter-Intel",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 2,
+        "intel": 2
+      },
+      "icon": "\ud83d\udeab",
+      "artworkDescription": "An agent throwing a dossier into flames",
+      "abilities": [
+        {
+          "id": "counter-intel-cast",
+          "name": "Neutralize",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "counter_spell"
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-shadow-walk",
+      "name": "Shadow Walk",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 1,
+        "intel": 1
+      },
+      "icon": "\ud83c\udf2b\ufe0f",
+      "artworkDescription": "A figure dissolving into the floor's shadow",
+      "abilities": [
+        {
+          "id": "shadow-walk-cast",
+          "name": "Phase Through",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "untap",
+              "scope": "self"
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-extraction",
+      "name": "Extraction",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 3,
+        "intel": 2
+      },
+      "icon": "\ud83e\ude82",
+      "artworkDescription": "A rescue team rappelling from a rooftop",
+      "abilities": [
+        {
+          "id": "extraction-cast",
+          "name": "Extract Asset",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "discard_cards",
+              "amount": 2
+            },
+            {
+              "type": "steal_resource",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-saboteur",
+      "name": "Saboteur",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 3,
+        "intel": 1
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier",
+        "raider"
+      ],
+      "icon": "\ud83d\udca3",
+      "artworkDescription": "An operative planting charges at the base of a stone wall",
+      "abilities": [
+        {
+          "id": "saboteur-demolish",
+          "name": "Demolish",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 3
+            },
+            {
+              "type": "drain_resource",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "shadow-double-agent",
+      "name": "Double Agent",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 3,
+        "intel": 2
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier",
+        "mercenary"
+      ],
+      "icon": "\ud83c\udfad",
+      "artworkDescription": "A charming operative with two faces who plays both sides",
+      "abilities": [
+        {
+          "id": "double-agent-turn",
+          "name": "Turn Asset",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "steal_resource",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "discard_cards",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "shadow"
+    },
+    {
+      "id": "alchemists-brew-master",
+      "name": "Brew Master",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 4,
+        "reagents": 1
+      },
+      "housingCost": 2,
+      "tags": [
+        "worker"
+      ],
+      "icon": "\u2697\ufe0f",
+      "artworkDescription": "A robed alchemist stirring a bubbling cauldron",
+      "abilities": [
+        {
+          "id": "brew-master-concoct",
+          "name": "Concoct",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-acid-thrower",
+      "name": "Acid Thrower",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 3,
+        "reagents": 1
+      },
+      "housingCost": 1,
+      "tags": [
+        "ranged",
+        "soldier"
+      ],
+      "icon": "\ud83e\uddea",
+      "artworkDescription": "A masked soldier hurling smoking vials of corrosive liquid at enemies",
+      "abilities": [
+        {
+          "id": "acid-throw",
+          "name": "Acid Throw",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 3
+            },
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": -1
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-golem-tender",
+      "name": "Golem Tender",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 3
+      },
+      "housingCost": 1,
+      "tags": [
+        "worker"
+      ],
+      "icon": "\ud83d\udd27",
+      "artworkDescription": "A nimble technician carrying repair tools and golem animation runes",
+      "abilities": [
+        {
+          "id": "golem-tender-reinforce",
+          "name": "Reinforce Golem",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 1
+            }
+          ],
+          "conditions": [
+            {
+              "type": "has_tag",
+              "tag": "guard"
+            }
+          ],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 4
+            },
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-transmuter",
+      "name": "Transmuter",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 4,
+        "reagents": 2
+      },
+      "housingCost": 2,
+      "tags": [
+        "worker",
+        "soldier"
+      ],
+      "icon": "\ud83d\udd2e",
+      "artworkDescription": "An elder alchemist wreathed in golden light",
+      "abilities": [
+        {
+          "id": "transmuter-drain",
+          "name": "Drain Metal",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "steal_resource",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-reagent-harvester",
+      "name": "Reagent Harvester",
+      "objectType": "unit",
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 2
+      },
+      "housingCost": 1,
+      "tags": [
+        "worker",
+        "resource-node"
+      ],
+      "icon": "\ud83c\udf3f",
+      "artworkDescription": "A young apprentice gathering herbs and minerals from the wilderness",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-homunculus",
+      "name": "Homunculus",
+      "objectType": "unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 3,
+        "reagents": 2
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "\ud83d\udc41\ufe0f",
+      "artworkDescription": "A small but fierce synthetic creature grown in a vat",
+      "abilities": [
+        {
+          "id": "homunculus-mutate",
+          "name": "Mutate",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property",
+              "scope": "self",
+              "propertyId": "attack",
+              "amount": 3
+            },
+            {
+              "type": "modify_property",
+              "scope": "self",
+              "propertyId": "maxHp",
+              "amount": 2
+            },
+            {
+              "type": "modify_property",
+              "scope": "self",
+              "propertyId": "currentHp",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-stone-golem",
+      "name": "Stone Golem",
+      "objectType": "unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 3
+      },
+      "playCosts": {
+        "gold": 6,
+        "reagents": 3
+      },
+      "housingCost": 3,
+      "tags": [
+        "guard",
+        "soldier"
+      ],
+      "icon": "\ud83d\uddff",
+      "artworkDescription": "A massive animate stone figure carved with alchemical runes",
+      "abilities": [
+        {
+          "id": "stone-golem-slam",
+          "name": "Stone Slam",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 5
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-alchemical-still",
+      "name": "Alchemical Still",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingProvided": 0,
+      "tags": [
+        "resource-node"
+      ],
+      "icon": "\ud83c\udfed",
+      "artworkDescription": "A copper distillation apparatus with pipes and vats",
+      "abilities": [
+        {
+          "id": "still-distill",
+          "name": "Distill",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-refinery",
+      "name": "Reagent Refinery",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 5,
+        "reagents": 2
+      },
+      "housingProvided": 2,
+      "tags": [
+        "resource-node"
+      ],
+      "icon": "\ud83d\udd29",
+      "artworkDescription": "A large industrial building with smoking chimneys",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-atelier",
+      "name": "Alchemist Atelier",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 4,
+        "reagents": 1
+      },
+      "housingProvided": 3,
+      "icon": "\ud83c\udfe0",
+      "artworkDescription": "A workshop filled with shelves of ingredients and bubbling flasks",
+      "abilities": [
+        {
+          "id": "atelier-research",
+          "name": "Research",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-crucible-forge",
+      "name": "Crucible Forge",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "playCosts": {
+        "gold": 6,
+        "reagents": 3
+      },
+      "housingProvided": 4,
+      "tags": [
+        "resource-node"
+      ],
+      "icon": "\ud83d\udd25",
+      "artworkDescription": "A massive furnace used to transmute ore into refined metals",
+      "abilities": [
+        {
+          "id": "crucible-smelt",
+          "name": "Smelt",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-reagent-vault",
+      "name": "Reagent Vault",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "playCost": 4,
+      "housingProvided": 0,
+      "tags": [
+        "resource-node"
+      ],
+      "icon": "\ud83c\udfe6",
+      "artworkDescription": "A reinforced stone vault lined with shelves of preserved alchemical ingredients",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "id": "reagent-vault-stockpile",
+          "name": "Stockpile",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-mutagenic-draught",
+      "name": "Mutagenic Draught",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 2,
+        "reagents": 1
+      },
+      "icon": "\ud83d\udfe2",
+      "artworkDescription": "A glowing green vial administered to a friendly unit",
+      "abilities": [
+        {
+          "id": "mutagenic-cast",
+          "name": "Administer Draught",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "attack",
+              "amount": 2
+            },
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "maxHp",
+              "amount": 2
+            },
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "currentHp",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-petrification-brew",
+      "name": "Petrification Brew",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 3,
+        "reagents": 2
+      },
+      "icon": "\ud83e\udea8",
+      "artworkDescription": "A thick grey sludge hurled at a target",
+      "abilities": [
+        {
+          "id": "petrification-cast",
+          "name": "Cast Petrification",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            },
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "attack",
+              "amount": -3
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-caustic-rain",
+      "name": "Caustic Rain",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 4,
+        "reagents": 2
+      },
+      "icon": "\ud83c\udf27\ufe0f",
+      "artworkDescription": "Clouds of corrosive mist rain down across the battlefield",
+      "abilities": [
+        {
+          "id": "caustic-rain-cast",
+          "name": "Summon Caustic Rain",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 4
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 4
+            },
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": -2
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-gilded-touch",
+      "name": "Gilded Touch",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 2,
+        "reagents": 2
+      },
+      "icon": "\u2728",
+      "artworkDescription": "An alchemist touches a pile of base metal and transmutes it instantly to gold",
+      "abilities": [
+        {
+          "id": "gilded-touch-cast",
+          "name": "Transmute to Gold",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 5
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-amplifying-elixir",
+      "name": "Amplifying Elixir",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 2,
+        "reagents": 1
+      },
+      "icon": "\ud83d\udc9c",
+      "artworkDescription": "A shimmering purple potion that enhances the potency of the next alchemical formula",
+      "abilities": [
+        {
+          "id": "amplifying-elixir-cast",
+          "name": "Apply Elixir",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "cost_discount",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-volatile-mixture",
+      "name": "Volatile Mixture",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 3,
+        "reagents": 3
+      },
+      "icon": "\ud83d\udca5",
+      "artworkDescription": "A dangerously unstable concoction that explodes on contact",
+      "abilities": [
+        {
+          "id": "volatile-mixture-cast",
+          "name": "Detonate Mixture",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 8
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-siphon-essence",
+      "name": "Siphon Essence",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 3,
+        "reagents": 1
+      },
+      "icon": "\ud83e\ude78",
+      "artworkDescription": "A vampiric formula drawn across a target creature",
+      "abilities": [
+        {
+          "id": "siphon-essence-cast",
+          "name": "Siphon",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "attack",
+              "amount": -2
+            },
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "currentHp",
+              "amount": -2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "alchemists-flash-powder",
+      "name": "Flash Powder",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 1,
+        "reagents": 1
+      },
+      "icon": "\u26a1",
+      "artworkDescription": "A blinding burst of powder that disorients the target",
+      "abilities": [
+        {
+          "id": "flash-powder-cast",
+          "name": "Flash",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap",
+              "scope": "target"
+            },
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "attack",
+              "amount": -1
+            }
+          ]
+        }
+      ],
+      "_faction": "alchemists"
+    },
+    {
+      "id": "hunks-stone-guard",
+      "name": "Stone Guard",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "playCost": 3,
+      "housingCost": 1,
+      "tags": [
+        "hunk",
+        "soldier",
+        "guard"
+      ],
+      "icon": "\ud83d\udee1\ufe0f",
+      "artworkDescription": "A broad-shouldered Hunk in rough-hewn stone plate",
+      "abilities": [
+        {
+          "id": "stone-guard-stand-firm",
+          "name": "Stand Firm",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "propertyId": "armor",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-sergeant",
+      "name": "Hunk Sergeant",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "playCost": 4,
+      "housingCost": 1,
+      "tags": [
+        "hunk",
+        "soldier",
+        "guard"
+      ],
+      "icon": "\ud83d\udc6e",
+      "artworkDescription": "A scarred veteran Hunk with a dented helmet barking orders",
+      "abilities": [
+        {
+          "id": "sergeant-rally",
+          "name": "Rally",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "hunk",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-wall-warden",
+      "name": "Wall Warden",
+      "objectType": "unit",
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 2
+      },
+      "playCost": 3,
+      "housingCost": 1,
+      "tags": [
+        "hunk",
+        "soldier",
+        "guard"
+      ],
+      "icon": "\ud83c\udff0",
+      "artworkDescription": "A Hunk who has lived on the ramparts so long she thinks the wall is part of her",
+      "abilities": [
+        {
+          "id": "warden-repair-wall",
+          "name": "Patch the Wall",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-earthmover",
+      "name": "Earthmover",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 3,
+        "growth": 1
+      },
+      "housingCost": 2,
+      "tags": [
+        "hunk",
+        "worker",
+        "builder"
+      ],
+      "icon": "\u26cf\ufe0f",
+      "artworkDescription": "A massive Hunk with a pickaxe the size of a tree trunk",
+      "abilities": [
+        {
+          "id": "earthmover-work",
+          "name": "Work",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "growth",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-hammer-hunk",
+      "name": "Hammer Hunk",
+      "objectType": "unit",
+      "properties": {
+        "attack": 4,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingCost": 1,
+      "tags": [
+        "hunk",
+        "worker",
+        "builder"
+      ],
+      "icon": "\ud83d\udd28",
+      "artworkDescription": "Wild-eyed Hunk mid-swing with a comically large sledgehammer",
+      "abilities": [
+        {
+          "id": "hammer-hunk-smash",
+          "name": "Smash",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-block-captain",
+      "name": "Block Captain",
+      "objectType": "unit",
+      "properties": {
+        "attack": 2,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 4,
+        "growth": 1
+      },
+      "housingCost": 2,
+      "tags": [
+        "hunk",
+        "soldier",
+        "guard"
+      ],
+      "icon": "\ud83e\uddf1",
+      "artworkDescription": "A hulking Hunk who stands at the front with arms wide",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "growth",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-foreman",
+      "name": "Construction Foreman",
+      "objectType": "unit",
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "playCost": 2,
+      "housingCost": 1,
+      "tags": [
+        "hunk",
+        "worker",
+        "builder"
+      ],
+      "icon": "\ud83d\udccb",
+      "artworkDescription": "A wiry Hunk with a clipboard, pointing authoritatively at everything",
+      "abilities": [
+        {
+          "id": "foreman-supervise",
+          "name": "Supervise",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "add_progress",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "growth",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-lumberjack",
+      "name": "Lumber Hunk",
+      "objectType": "unit",
+      "properties": {
+        "attack": 3,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingCost": 1,
+      "tags": [
+        "hunk",
+        "worker",
+        "builder"
+      ],
+      "icon": "\ud83e\ude93",
+      "artworkDescription": "A flannel-clad Hunk with an axe over one shoulder",
+      "abilities": [
+        {
+          "id": "lumberjack-harvest",
+          "name": "Harvest",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "growth",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-garrison",
+      "name": "Hunk Garrison",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "playCosts": {
+        "gold": 3,
+        "growth": 1
+      },
+      "housingProvided": 4,
+      "tags": [
+        "fortification"
+      ],
+      "icon": "\ud83c\udfef",
+      "artworkDescription": "A solid stone barracks ring-fenced with timber stakes",
+      "abilities": [
+        {
+          "id": "garrison-muster",
+          "name": "Muster",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "hunk"
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-watchtower",
+      "name": "Watchtower",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 2
+      },
+      "playCost": 3,
+      "housingProvided": 1,
+      "tags": [
+        "fortification"
+      ],
+      "icon": "\ud83d\uddfc",
+      "artworkDescription": "A tall stone tower with a Hunk silhouetted against the horizon",
+      "abilities": [
+        {
+          "id": "watchtower-vigilance",
+          "name": "Vigilance",
+          "costs": [
+            {
+              "type": "crew",
+              "tag": "hunk",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "reveal",
+              "scope": "target"
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-stone-quarry",
+      "name": "Stone Quarry",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 2,
+        "growth": 1
+      },
+      "housingProvided": 2,
+      "icon": "\u26f0\ufe0f",
+      "artworkDescription": "An open-pit quarry with ramps carved into the hillside",
+      "abilities": [
+        {
+          "id": "quarry-mine",
+          "name": "Mine Stone",
+          "costs": [
+            {
+              "type": "crew",
+              "tag": "hunk",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "growth",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-lumber-yard",
+      "name": "Lumber Yard",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "playCost": 2,
+      "housingProvided": 2,
+      "icon": "\ud83c\udf32",
+      "artworkDescription": "Stacked logs taller than the fence, a Hunk dozing on top like a king",
+      "abilities": [
+        {
+          "id": "lumber-yard-harvest",
+          "name": "Cut Lumber",
+          "costs": [
+            {
+              "type": "crew",
+              "tag": "hunk",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "growth",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-training-ground",
+      "name": "Training Ground",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "playCosts": {
+        "gold": 3,
+        "growth": 1
+      },
+      "housingProvided": 3,
+      "icon": "\ud83c\udfcb\ufe0f",
+      "artworkDescription": "A muddy yard of lifting stones and rope climbs",
+      "abilities": [
+        {
+          "id": "training-ground-drill",
+          "name": "Drill",
+          "costs": [
+            {
+              "type": "crew",
+              "tag": "hunk",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "hunk",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-barricade-gate",
+      "name": "Barricade Gate",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 2
+      },
+      "playCosts": {
+        "gold": 4,
+        "growth": 2
+      },
+      "housingProvided": 1,
+      "tags": [
+        "fortification"
+      ],
+      "icon": "\ud83d\udea7",
+      "artworkDescription": "Crossed beams and iron bolts the size of fists",
+      "abilities": [
+        {
+          "id": "barricade-gate-reinforce",
+          "name": "Brace",
+          "costs": [
+            {
+              "type": "crew",
+              "tag": "hunk",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property",
+              "scope": "self",
+              "propertyId": "armor",
+              "amount": 2
+            },
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-supply-depot",
+      "name": "Supply Depot",
+      "objectType": "building",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "playCost": 3,
+      "housingProvided": 2,
+      "icon": "\ud83d\udce6",
+      "artworkDescription": "Crates of bread, bolts, and bandages",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "growth",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-shoulder-to-wall",
+      "name": "Shoulder to the Wall",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "\ud83d\udcaa",
+      "artworkDescription": "A row of Hunks leaning into a crumbling section, muscles straining",
+      "abilities": [
+        {
+          "id": "shoulder-cast",
+          "name": "Cast Shoulder to the Wall",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 4
+            },
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-ground-slam",
+      "name": "Ground Slam",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "\ud83d\udc4a",
+      "artworkDescription": "A single Hunk fist meeting the ground; the shockwave does the rest",
+      "abilities": [
+        {
+          "id": "ground-slam-cast",
+          "name": "Cast Ground Slam",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 4
+            },
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-heavy-labor",
+      "name": "Heavy Labor",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 1,
+        "growth": 2
+      },
+      "icon": "\ud83c\udfd7\ufe0f",
+      "artworkDescription": "Every Hunk drops what they're doing and hauls stone for one legendary hour",
+      "abilities": [
+        {
+          "id": "heavy-labor-cast",
+          "name": "Cast Heavy Labor",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "growth",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "add_progress",
+              "amount": 5
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-iron-shield",
+      "name": "Iron Shield",
+      "objectType": "equipment",
+      "playCost": 3,
+      "icon": "\ud83d\udd30",
+      "artworkDescription": "A thick iron buckler dented from a previous owner's last fight",
+      "tags": [
+        "guard"
+      ],
+      "_faction": "hunks"
+    },
+    {
+      "id": "hunks-builders-hammer",
+      "name": "Builder's Hammer",
+      "objectType": "equipment",
+      "playCost": 2,
+      "icon": "\ud83e\ude9a",
+      "artworkDescription": "A well-worn war-hammer that has driven as many nails as skulls",
+      "tags": [
+        "builder",
+        "worker"
+      ],
+      "_faction": "hunks"
     }
   ],
   "decks": [
@@ -10431,32 +17648,52 @@
       "hq": "raider-camp",
       "hero": "warchief",
       "cards": {
-        "raid-plans": 2,
-        "ransack": 2,
-        "scavenger": 3,
-        "pillager": 3,
-        "axe-thrower": 3,
-        "brute": 3,
-        "fighting-pit": 3,
-        "stolen-treasure": 3,
-        "loot": 3,
-        "bag-of-gold": 2,
-        "battle-axe": 2,
-        "wooden-shield": 2,
+        "raid-plans": 1,
+        "ransack": 1,
+        "scavenger": 2,
+        "pillager": 2,
+        "axe-thrower": 2,
+        "brute": 2,
+        "fighting-pit": 2,
+        "stolen-treasure": 2,
+        "loot": 2,
+        "bag-of-gold": 1,
+        "battle-axe": 1,
+        "wooden-shield": 1,
         "mercenary": 1,
         "fireball": 1,
-        "dirty-trick": 2,
+        "dirty-trick": 1,
         "bloodfang": 1,
-        "raid-leader": 3,
-        "berserker": 3,
-        "torch-thrower": 3,
-        "plunder-cart": 3,
-        "reinforcements": 2,
-        "skull-totem": 3,
-        "smoke-them-out": 2,
+        "raid-leader": 2,
+        "berserker": 2,
+        "torch-thrower": 2,
+        "plunder-cart": 2,
+        "reinforcements": 1,
+        "skull-totem": 2,
+        "smoke-them-out": 1,
         "scrap-armor": 2,
         "war-trophy": 1,
-        "whirlwind-berserker": 2
+        "whirlwind-berserker": 2,
+        "raiders-reaver": 1,
+        "raiders-bloodseeker": 1,
+        "raiders-ironbreaker": 1,
+        "raiders-marauder": 1,
+        "raiders-warchanter": 1,
+        "raiders-sacker": 1,
+        "raiders-skullcrusher": 1,
+        "raiders-ravager": 1,
+        "raiders-pillage-lord": 1,
+        "raiders-bone-gnasher": 1,
+        "raiders-glory-hound": 1,
+        "raiders-thornback": 1,
+        "raiders-war-camp": 1,
+        "raiders-plunder-hall": 1,
+        "raiders-glory-shrine": 1,
+        "raiders-blackrock-forge": 1,
+        "raiders-raider-vault": 1,
+        "raiders-blood-rage": 1,
+        "raiders-glory-burst": 1,
+        "raiders-war-cry": 1
       },
       "hqOptions": [
         "raider-camp",
@@ -10476,25 +17713,45 @@
       "hq": "landing-pad",
       "hero": "ax-01",
       "cards": {
-        "tactical-analysis": 2,
-        "jamming-signal": 2,
-        "plasma-cannon": 4,
-        "missile-launcher": 4,
-        "reinforced-plating": 4,
-        "targeting-computer": 4,
-        "fusion-reactor": 4,
-        "jump-jets": 3,
-        "repair-nanobots": 3,
-        "energy-cell": 3,
-        "emergency-repair": 3,
-        "shield-generator": 3,
-        "overdrive-core": 4,
-        "emp-burst": 3,
-        "salvage": 3,
-        "ablative-armor": 3,
-        "targeting-uplink": 3,
-        "security-sweep": 3,
-        "point-defense-array": 2
+        "tactical-analysis": 1,
+        "jamming-signal": 1,
+        "plasma-cannon": 2,
+        "missile-launcher": 3,
+        "reinforced-plating": 3,
+        "targeting-computer": 3,
+        "fusion-reactor": 3,
+        "jump-jets": 2,
+        "repair-nanobots": 2,
+        "energy-cell": 2,
+        "emergency-repair": 2,
+        "shield-generator": 2,
+        "overdrive-core": 3,
+        "emp-burst": 2,
+        "salvage": 2,
+        "ablative-armor": 2,
+        "targeting-uplink": 2,
+        "security-sweep": 2,
+        "point-defense-array": 1,
+        "machine-combat-chassis": 1,
+        "machine-arc-emitter": 1,
+        "machine-overcharge-module": 1,
+        "machine-proximity-mine-launcher": 1,
+        "machine-chief-engineer": 1,
+        "machine-field-technician": 1,
+        "machine-assault-drone": 1,
+        "machine-siege-operator": 1,
+        "machine-energy-generator": 1,
+        "machine-repair-bay": 1,
+        "machine-command-bunker": 1,
+        "machine-fabrication-plant": 1,
+        "machine-overload-pulse": 1,
+        "machine-system-reboot": 1,
+        "machine-targeting-override": 1,
+        "machine-energy-transfer": 1,
+        "machine-sensor-array": 1,
+        "machine-logistics-coordinator": 1,
+        "machine-forward-operating-base": 1,
+        "machine-demolition-expert": 1
       },
       "hqOptions": [
         "landing-pad",
@@ -10514,31 +17771,51 @@
       "hq": "arcane-nexus",
       "hero": "archmage",
       "cards": {
-        "arcane-insight": 2,
-        "mind-wipe": 2,
-        "apprentice-mage": 3,
-        "mana-seer": 3,
-        "pyromancer": 3,
-        "conjurer": 3,
-        "mana-burst": 3,
-        "arcane-rain": 2,
-        "overcharge": 3,
+        "arcane-insight": 1,
+        "mind-wipe": 1,
+        "apprentice-mage": 2,
+        "mana-seer": 2,
+        "pyromancer": 2,
+        "conjurer": 2,
+        "mana-burst": 2,
+        "arcane-rain": 1,
+        "overcharge": 2,
         "mana-potion": 1,
-        "arcane-fireball": 3,
-        "counterspell": 2,
-        "arcane-shield": 2,
-        "mage-armor": 2,
-        "arcane-blade": 2,
-        "arcane-sentinel": 3,
-        "battle-mage": 3,
-        "leyline-conduit": 3,
-        "frost-nova": 3,
-        "arcane-barrage": 3,
-        "blink-ward": 2,
+        "arcane-fireball": 2,
+        "counterspell": 1,
+        "arcane-shield": 1,
+        "mage-armor": 1,
+        "arcane-blade": 1,
+        "arcane-sentinel": 2,
+        "battle-mage": 2,
+        "leyline-conduit": 2,
+        "frost-nova": 2,
+        "arcane-barrage": 2,
+        "blink-ward": 1,
         "detect-magic": 2,
         "banish": 2,
         "mana-crystal": 1,
-        "chain-lightning": 2
+        "chain-lightning": 2,
+        "conclave-runeweaver": 1,
+        "conclave-void-scholar": 1,
+        "conclave-storm-caller": 1,
+        "conclave-aether-blade": 1,
+        "conclave-mana-conduit": 1,
+        "conclave-arcane-tower": 1,
+        "conclave-mana-vault": 1,
+        "conclave-spellshard-staff": 1,
+        "conclave-focus-crystal": 1,
+        "conclave-arcane-surge": 1,
+        "conclave-mass-freeze": 1,
+        "conclave-spell-echo": 1,
+        "conclave-void-rift": 1,
+        "conclave-mana-drain": 1,
+        "conclave-greater-counterspell": 1,
+        "conclave-arcane-collapse": 1,
+        "conclave-ley-tap": 1,
+        "conclave-reveal-mind": 1,
+        "conclave-senior-enchanter": 1,
+        "conclave-spell-matrix": 1
       },
       "hqOptions": [
         "arcane-nexus",
@@ -10558,31 +17835,51 @@
       "hq": "graveyard",
       "hero": "necromancer",
       "cards": {
-        "whispers-from-the-crypt": 2,
-        "creeping-dread": 2,
-        "skeleton": 3,
-        "shambling-corpse": 3,
-        "plague-zombie": 3,
-        "tomb-spider": 3,
-        "grave-ghoul": 3,
-        "bone-collector": 3,
-        "restless-dead": 3,
-        "flesh-golem": 2,
-        "corpse-explosion": 3,
-        "deathly-wail": 3,
-        "ossuary": 2,
+        "whispers-from-the-crypt": 1,
+        "creeping-dread": 1,
+        "skeleton": 2,
+        "shambling-corpse": 2,
+        "plague-zombie": 2,
+        "tomb-spider": 2,
+        "grave-ghoul": 2,
+        "bone-collector": 2,
+        "restless-dead": 2,
+        "flesh-golem": 1,
+        "corpse-explosion": 2,
+        "deathly-wail": 2,
+        "ossuary": 1,
         "lich": 1,
-        "dark-ritual": 3,
-        "curse-of-rust": 3,
-        "venomous-wight": 3,
-        "wraith": 3,
-        "plague-cloud": 3,
-        "bone-colossus": 2,
-        "crypt-rats": 2,
+        "dark-ritual": 2,
+        "curse-of-rust": 2,
+        "venomous-wight": 2,
+        "wraith": 2,
+        "plague-cloud": 2,
+        "bone-colossus": 1,
+        "crypt-rats": 1,
         "bone-blade": 1,
         "graveplate": 1,
         "soul-amulet": 1,
-        "reaper-wight": 2
+        "reaper-wight": 2,
+        "undead-wraith": 1,
+        "undead-banshee": 1,
+        "undead-death-knight": 1,
+        "undead-plague-rat": 1,
+        "undead-bone-archer": 1,
+        "undead-wight": 1,
+        "undead-corpse-crawler": 1,
+        "undead-shadow-revenant": 1,
+        "undead-crypt": 1,
+        "undead-burial-grounds": 1,
+        "undead-plague-pit": 1,
+        "undead-ossuary": 1,
+        "undead-death-altar": 1,
+        "undead-unholy-blight": 1,
+        "undead-bone-shatter": 1,
+        "undead-death-coil": 1,
+        "undead-soul-harvest": 1,
+        "undead-plague-wind": 1,
+        "undead-gravekeeper": 1,
+        "undead-lich-herald": 1
       },
       "hqOptions": [
         "graveyard",
@@ -10602,28 +17899,48 @@
       "hq": "the-hive",
       "hero": "broodmother",
       "cards": {
-        "hive-mind": 2,
-        "devour-supplies": 2,
-        "evolve-ravager": 3,
-        "evolve-carapace": 3,
-        "evolve-spitter": 3,
-        "metamorphosis": 3,
-        "egg-cluster": 3,
-        "brood-warrior": 3,
-        "ravenous-swarm": 3,
-        "broodguard": 2,
-        "bloated-spawn": 3,
-        "corpse-harvester": 3,
-        "hardened-carapace": 3,
-        "additional-limbs": 3,
-        "swarmling-burst": 3,
-        "toxic-mist": 3,
-        "hive-warden": 3,
-        "devouring-maw": 2,
-        "winged-drone": 3,
-        "regenerative-flesh": 3,
+        "hive-mind": 1,
+        "devour-supplies": 1,
+        "evolve-ravager": 2,
+        "evolve-carapace": 2,
+        "evolve-spitter": 2,
+        "metamorphosis": 2,
+        "egg-cluster": 2,
+        "brood-warrior": 2,
+        "ravenous-swarm": 2,
+        "broodguard": 1,
+        "bloated-spawn": 2,
+        "corpse-harvester": 2,
+        "hardened-carapace": 2,
+        "additional-limbs": 2,
+        "swarmling-burst": 2,
+        "toxic-mist": 2,
+        "hive-warden": 2,
+        "devouring-maw": 1,
+        "winged-drone": 2,
+        "regenerative-flesh": 2,
         "venom-glands": 2,
-        "corrosive-spitter": 2
+        "corrosive-spitter": 2,
+        "brood-larva-drone": 1,
+        "brood-acid-spewer": 1,
+        "brood-death-throes": 1,
+        "brood-scythe-hunter": 1,
+        "brood-hive-sentinel": 1,
+        "brood-venom-stalker": 1,
+        "brood-queen-broodmother": 1,
+        "brood-reaper": 1,
+        "brood-sacrifice-pit": 1,
+        "brood-spawning-pool": 1,
+        "brood-enzyme-vat": 1,
+        "brood-chrysalis-chamber": 1,
+        "brood-biomass-surge": 1,
+        "brood-consume": 1,
+        "brood-evolve-sentinel": 1,
+        "brood-mass-sacrifice": 1,
+        "brood-chitin-fortification": 1,
+        "brood-nest-cluster": 1,
+        "brood-flesh-weaver": 1,
+        "brood-swarm-caller": 1
       },
       "hqOptions": [
         "the-hive",
@@ -10643,27 +17960,47 @@
       "hq": "thieves-guild",
       "hero": "spymaster",
       "cards": {
-        "blackmail": 2,
-        "spy": 4,
-        "ambush": 4,
-        "cutthroat": 4,
-        "smoke-bomb": 2,
-        "shadow-blade": 2,
-        "footpad": 3,
-        "informant": 3,
-        "loot": 3,
-        "bag-of-gold": 2,
-        "mercenary": 4,
-        "dagger-throw": 3,
-        "venom-blade": 4,
-        "knife-thrower": 4,
-        "extortion-racket": 3,
-        "decoy": 2,
-        "assassinate": 3,
-        "master-thief": 3,
-        "counter-spy": 2,
+        "blackmail": 1,
+        "spy": 3,
+        "ambush": 3,
+        "cutthroat": 3,
+        "smoke-bomb": 1,
+        "shadow-blade": 1,
+        "footpad": 2,
+        "informant": 2,
+        "loot": 2,
+        "bag-of-gold": 1,
+        "mercenary": 3,
+        "dagger-throw": 2,
+        "venom-blade": 3,
+        "knife-thrower": 3,
+        "extortion-racket": 2,
+        "decoy": 1,
+        "assassinate": 2,
+        "master-thief": 2,
+        "counter-spy": 1,
         "thieves-tools": 1,
-        "cull-the-weak": 2
+        "cull-the-weak": 1,
+        "shadow-infiltrator": 1,
+        "shadow-ghost-agent": 1,
+        "shadow-wraith-spy": 1,
+        "shadow-nightblade": 1,
+        "shadow-venom-striker": 1,
+        "shadow-enforcer": 1,
+        "shadow-shadow-runner": 1,
+        "shadow-spymaster": 1,
+        "shadow-safehouse": 1,
+        "shadow-black-market": 1,
+        "shadow-contact-network": 1,
+        "shadow-dead-drop": 1,
+        "shadow-extortion": 1,
+        "shadow-mind-wipe": 1,
+        "shadow-lockdown": 1,
+        "shadow-counter-intel": 1,
+        "shadow-shadow-walk": 1,
+        "shadow-extraction": 1,
+        "shadow-saboteur": 1,
+        "shadow-double-agent": 1
       },
       "hqOptions": [
         "thieves-guild",
@@ -10683,26 +18020,46 @@
       "hq": "laboratory",
       "hero": "master-alchemist",
       "cards": {
-        "confusion-draught": 2,
-        "freeze": 3,
-        "corrosive-acid": 4,
-        "weaken": 3,
-        "acid-flask": 3,
-        "alchemists-fire": 3,
-        "transmutation": 2,
-        "reagent-infusion": 4,
-        "philosophers-stone": 4,
-        "vial-carrier": 3,
-        "guard-golem": 3,
-        "iron-golem": 3,
-        "dissolve": 4,
-        "stone-skin": 3,
-        "plague-bomb": 3,
-        "adaptive-golem": 3,
-        "reagent-condenser": 3,
-        "shrink-ray": 3,
-        "fumigate": 2,
-        "caustic-cloud": 2
+        "confusion-draught": 1,
+        "freeze": 2,
+        "corrosive-acid": 3,
+        "weaken": 2,
+        "acid-flask": 2,
+        "alchemists-fire": 2,
+        "transmutation": 1,
+        "reagent-infusion": 3,
+        "philosophers-stone": 3,
+        "vial-carrier": 2,
+        "guard-golem": 2,
+        "iron-golem": 2,
+        "dissolve": 3,
+        "stone-skin": 2,
+        "plague-bomb": 2,
+        "adaptive-golem": 2,
+        "reagent-condenser": 2,
+        "shrink-ray": 2,
+        "fumigate": 1,
+        "caustic-cloud": 1,
+        "alchemists-brew-master": 1,
+        "alchemists-acid-thrower": 1,
+        "alchemists-golem-tender": 1,
+        "alchemists-transmuter": 1,
+        "alchemists-reagent-harvester": 1,
+        "alchemists-homunculus": 1,
+        "alchemists-stone-golem": 1,
+        "alchemists-alchemical-still": 1,
+        "alchemists-refinery": 1,
+        "alchemists-atelier": 1,
+        "alchemists-crucible-forge": 1,
+        "alchemists-reagent-vault": 1,
+        "alchemists-mutagenic-draught": 1,
+        "alchemists-petrification-brew": 1,
+        "alchemists-caustic-rain": 1,
+        "alchemists-gilded-touch": 1,
+        "alchemists-amplifying-elixir": 1,
+        "alchemists-volatile-mixture": 1,
+        "alchemists-siphon-essence": 1,
+        "alchemists-flash-powder": 1
       },
       "hqOptions": [
         "laboratory",
@@ -10723,19 +18080,39 @@
       "hero": "hunk-coordinator",
       "cards": {
         "distracting-flex": 2,
-        "hunk": 4,
-        "big-friend": 4,
-        "bolt-tower": 4,
-        "great-wall": 4,
+        "hunk": 3,
+        "big-friend": 3,
+        "bolt-tower": 3,
+        "great-wall": 3,
         "grand-ballista": 3,
         "hunk-workshop": 3,
-        "spear": 4,
+        "spear": 3,
         "wooden-shield": 4,
-        "reinforced-walls": 4,
-        "house": 4,
+        "reinforced-walls": 3,
+        "house": 3,
         "bag-of-gold": 2,
-        "gold-mine": 3,
-        "scatter-ballista": 2
+        "scatter-ballista": 2,
+        "hunks-stone-guard": 1,
+        "hunks-sergeant": 1,
+        "hunks-wall-warden": 1,
+        "hunks-earthmover": 1,
+        "hunks-hammer-hunk": 1,
+        "hunks-block-captain": 1,
+        "hunks-foreman": 1,
+        "hunks-lumberjack": 1,
+        "hunks-garrison": 1,
+        "hunks-watchtower": 1,
+        "hunks-stone-quarry": 1,
+        "hunks-lumber-yard": 1,
+        "hunks-training-ground": 1,
+        "hunks-barricade-gate": 1,
+        "hunks-supply-depot": 1,
+        "hunks-shoulder-to-wall": 1,
+        "hunks-ground-slam": 1,
+        "hunks-heavy-labor": 1,
+        "hunks-iron-shield": 1,
+        "hunks-builders-hammer": 1,
+        "gold-mine": 3
       },
       "hqOptions": [
         "hunk-stronghold",

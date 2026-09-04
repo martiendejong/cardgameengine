@@ -499,3 +499,70 @@ dead combo, just weak in this bot's hands against these two matchups specificall
 Left: the Hunks faction's 0% simulated win rate vs Town/Raiders is a separate,
 pre-existing bot-AI/deck-power issue outside this task's scope — filed as JengoWork
 task 1499 rather than folded into this PR.
+
+## 2026-09-04 — task 1426
+Done: added 20 new cards (mix of units/buildings/spells, ~12/3/5 per faction) to each of
+the 8 non-town factions (raiders/machine/conclave/undead/brood/shadow/alchemists/hunks) in
+definitions/town-tcg/game.json — 160 new cards total, data-only. Every card matches its
+faction's existing resource economy (flat gold for raiders/shadow/hunks; playCosts energy/
+mana/corpses/biomass/reagents for machine/conclave/undead/brood/alchemists) and reuses only
+already-registered tags/effects/costs/conditions (no new engine mechanics). Each faction's
+precon deck (`decks[x].cards`, used both as the bot/quick-play deck AND as the source the
+deckbuilder's Faction filter reads card membership from) was already at or within 16 of the
+60-card maxDeckSize cap, so the 20 new card ids were added there too (count 1 each) with a
+mechanical, proportional trim (existing count>1 entries decremented round-robin, highest
+first) freeing exactly enough room — every faction's precon deck still sums to exactly 60.
+Verified: `dotnet build` clean, 0 warnings/errors. A static Python check cross-referenced
+every effect/cost/condition type and resourceId used by all 426 cards (160 new + 266
+existing) against the actual registered vocabulary in DefaultHandlers.cs — 0 errors. Ran
+the real API server and used the built-in `/api/simulate` bot-vs-bot endpoint (exactly the
+tool the repo already ships for balance testing) for every faction's full new-card-inclusive
+precon deck: 8 faction-vs-town runs + 8 faction-vs-faction round-robin runs @ 30 games each,
+plus a further 8 faction-vs-town runs @ 60 games — 1000+ bot-played games total, zero server
+errors/exceptions, confirming every new card's JSON parses and its effects/abilities resolve
+correctly under real bot play (not just static validation). Also captured full game logs for
+8-game samples per faction and confirmed a good fraction of each faction's new cards appear
+by name in actual play (log only retains the *last* game per `/api/simulate` call, so this
+undercounts real coverage — the 1000+-game zero-error result is the stronger signal).
+Balance check: several faction match-ups showed lopsided bot win-rates (e.g. conclave 0%
+vs undead, undead 100% vs brood, brood 0% vs shadow) — before concluding this was caused by
+the new cards, re-ran the identical match-ups against the *unmodified* (git-stashed) game.json
+as a controlled baseline: every one of these skews was already present, at essentially
+identical win/loss/draw counts, before this task's changes (e.g. conclave vs undead was
+0/29/1 baseline and 0/29/1 after). This is a pre-existing bot-AI/game-balance characteristic
+unrelated to card content, out of this task's scope ("Buiten scope: nieuwe game-mechanieken")
+— confirmed the 20-per-faction addition does not introduce or worsen relative imbalance.
+Faction-filter/deckbuilder selectability verified by direct inspection (not a live browser
+pass, matching task 908's precedent for a data-only game.json change): `DeckBuilderPanel.tsx`
+derives a card's faction purely from `Object.keys(precon.cards)` membership, which is now
+confirmed to include exactly the 20 new ids per faction; `isDeckEligible` (playCost present)
+is satisfied by every new card, same mechanism task 972/1072 already validated live.
+Left: nothing agent-doable. A human visual pass in the deckbuilder UI (per the task's own
+"How to test") and the pre-existing cross-faction bot-AI balance skew (separate, larger scope)
+are both left for review/a future task.
+
+## 2026-09-04 — task 1426 (review round)
+Reviewed PR #35 and found the branch's own last commit (f749a06, "remove 160 orphaned WIP
+cards from previous agent run") had corrupted the entire game.json: it round-tripped the
+file through a tool matching PowerShell's `ConvertTo-Json`/`Set-Content` default behavior on
+this host (re-serialized into PowerShell's own JSON style — 4-space padded, UTF-8 BOM — and
+mojibake-corrupted every non-ASCII character it touched). All 426 cards' `icon` fields, 8
+cards' `artworkDescription` fields, and one deck's `description` em-dash were turned into
+garbage Latin-1-supplement byte sequences (e.g. town-hall's icon: U+1F3DB U+FE0F →
+`ðŸ›ï¸`). Confirmed via a full recursive scan for
+Latin-1-supplement-range characters (435 hits pre-fix, 0 post-fix) and confirmed every
+non-flavor (gameplay-affecting) field was byte-identical before/after — the corruption was
+purely cosmetic (icons/flavor text) but total in scope (every card).
+Fixed by rebuilding every surviving card's data from commit 74ef4a6 (the last known-clean
+version — confirmed byte-identical to pre-task master for all 266 original card ids, and
+mechanically identical to the corrupted version for all 426 surviving ids), re-serialized
+in the repo's canonical dotnet `System.Text.Json` style (2-space indent, escaped unicode,
+no BOM) matching every other file in the repo.
+Also merged master (task 1411's Hunk gold-mine gate, task 1050/hero-deck-eligible — neither
+touched by this PR otherwise): applied the same `controls_tagged` condition to `hunk`'s Work
+ability and added `gold-mine: 3` to the Hunks precon deck, trimming 3 more copies from the
+already-tied-at-4 entries (house/reinforced-walls/spear, round-robin highest-first, same
+technique this task's own commits already used) to stay at the 60-card cap.
+Verified: `dotnet build` clean, 0 errors. Full write-up:
+`jengo-knowledge-private/knowledge/powershell-convertto-json-mojibake-corrupts-entire-file-1426.md`.
+Left: nothing agent-doable — same human visual-pass caveat as above.
