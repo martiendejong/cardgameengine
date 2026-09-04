@@ -41,6 +41,10 @@ public static class DefaultHandlers
             GameQueries.IsObjectTypeOrSubtype(ctx.Game, o.ObjectType, "hero")));
         c.Register("controls_no_tagged", ctx => !GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
             .Any(o => o.Tags.Contains(ctx.Condition.Tag ?? "")));
+        // Positive counterpart of controls_no_tagged — e.g. gate a worker's free gold on
+        // actually owning a mine (tag "resource-node") rather than any battlefield presence.
+        c.Register("controls_tagged", ctx => GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
+            .Any(o => o.Tags.Contains(ctx.Condition.Tag ?? "")));
         // Infiltration state: gates a spy's abilities to inside/outside a building
         c.Register("is_attached", ctx => ctx.Object.AttachedToId != null);
         c.Register("not_attached", ctx => ctx.Object.AttachedToId == null);
