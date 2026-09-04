@@ -467,3 +467,11 @@ Mass Resurrection; exactly 3 AP pays it, taps Lich, and summons 2 more (4 total)
 activation the same turn is blocked by the tap; AP correctly accrues +1/turn and a later
 4-AP activation spends exactly 3, leaving 1 AP unspent (6 Skeletons total, no over-spend).
 Left: nothing — awaiting live playtest.
+
+## 2026-09-04 — task 1411 (WIP)
+Plan: gate Hunk's "Work" ability (tap → gain 1 Gold, currently condition-free) behind
+controlling a mine (tag `resource-node`) via a new `controls_tagged` condition — the
+Gold Mine's own `harvest` ability already implements the intended mine-gated economy
+(design-spec.md §2.5), so Hunk's standalone free gold bypasses it entirely. The Hunks
+faction's default deck currently has 0 Gold Mine copies, so this needs a deck fix too
+to avoid a dead economy for that faction.
