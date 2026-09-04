@@ -1,17 +1,7 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
-import { CampaignOverview, CampaignMission, GameDefinitionFull, CardDefinitionDto, SavedDeck, ObjectTypeDto } from '../types/game';
+import { CampaignOverview, CampaignMission, GameDefinitionFull, SavedDeck } from '../types/game';
 import { BASE } from '../config';
-
-function isOrExtends(objectType: string, root: string, types: ObjectTypeDto[]): boolean {
-  const byId: Record<string, ObjectTypeDto> = {};
-  for (const t of types) byId[t.id] = t;
-  let cur: string | undefined = objectType;
-  while (cur) {
-    if (cur === root) return true;
-    cur = byId[cur]?.parentType ?? undefined;
-  }
-  return false;
-}
+import { DeckBuilderPanel } from '../components/DeckBuilderPanel';
 
 interface CampaignPageProps {
   onMissionStarted: (matchId: string, seat: string) => void;
@@ -54,7 +44,6 @@ export function CampaignPage({ onMissionStarted, onOpenLobby, onOpenVsComputer }
   const [customDeck, setCustomDeck] = useState<Record<string, number>>(loadDeck);
   const [customHq, setCustomHq] = useState<string>(loadHq);
   const [customHero, setCustomHero] = useState<string>(loadHero);
-  const [deckFilter, setDeckFilter] = useState('');
   const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
   const [savedDeckId, setSavedDeckId] = useState('');
 
@@ -89,41 +78,16 @@ export function CampaignPage({ onMissionStarted, onOpenLobby, onOpenVsComputer }
     return names;
   }, [gameDef]);
 
-  const cardDefs = useMemo(() => {
-    const map: Record<string, CardDefinitionDto> = {};
-    if (gameDef) for (const c of gameDef.cards) map[c.id] = c;
-    return map;
-  }, [gameDef]);
-
-  const maxCopies = gameDef?.deckRules?.maxCopies ?? 4;
   const deckTotal = Object.values(customDeck).reduce((s, v) => s + v, 0);
-  const minDeck = gameDef?.deckRules?.maxDeckSize ?? 40;
 
-  function addCard(cardId: string) {
-    const owned = overview?.profile.collection[cardId] ?? 0;
-    const inDeck = customDeck[cardId] ?? 0;
-    if (inDeck >= Math.min(maxCopies, owned)) return;
-    const next = { ...customDeck, [cardId]: inDeck + 1 };
+  function changeDeck(next: Record<string, number>) {
     setCustomDeck(next);
     saveDeck(next);
     setSavedDeckId(''); // manual edit diverges from whichever saved deck was loaded
   }
 
-  function removeCard(cardId: string) {
-    const inDeck = customDeck[cardId] ?? 0;
-    if (inDeck <= 0) return;
-    const next = { ...customDeck };
-    if (inDeck === 1) delete next[cardId];
-    else next[cardId] = inDeck - 1;
-    setCustomDeck(next);
-    saveDeck(next);
-    setSavedDeckId('');
-  }
-
   function clearDeck() {
-    setCustomDeck({});
-    saveDeck({});
-    setSavedDeckId('');
+    changeDeck({});
   }
 
   function useSavedDeck(deckId: string) {
@@ -141,18 +105,20 @@ export function CampaignPage({ onMissionStarted, onOpenLobby, onOpenVsComputer }
     localStorage.setItem('campaignHero', hero);
   }
 
+  // id === '' is the panel auto-clearing a pick whose card left the deck — that is not
+  // a manual edit, so it doesn't mark the loaded saved deck as diverged.
   function selectHq(id: string) {
     const next = customHq === id ? '' : id;
     setCustomHq(next);
     localStorage.setItem('campaignHq', next);
-    setSavedDeckId('');
+    if (id !== '') setSavedDeckId('');
   }
 
   function selectHero(id: string) {
     const next = customHero === id ? '' : id;
     setCustomHero(next);
     localStorage.setItem('campaignHero', next);
-    setSavedDeckId('');
+    if (id !== '') setSavedDeckId('');
   }
 
   async function startMission(missionId: string) {
@@ -196,59 +162,6 @@ export function CampaignPage({ onMissionStarted, onOpenLobby, onOpenVsComputer }
     return missionsByCampaign[campaign]?.some(m => m.unlocked) ?? false;
   }
 
-  const objectTypes = gameDef?.objectTypes ?? [];
-
-  // HQ/hero options are scoped to the cards actually in the deck being built
-  // (customDeck), not the whole collection — mirrors LobbyPage.tsx's reserveOptions()
-  // convention (this page has no faction-precon-deck to combine with), and uses the
-  // same type-hierarchy walk so faction subtypes (nexus, graveyard-hq, hive-hq,
-  // laboratory-hq, homestead-hq, caster-hero, necromancer-hero) are offered too, not
-  // just the literal 'headquarters'/'hero' objectType.
-  const hqCards = useMemo(() =>
-    Object.entries(customDeck)
-      .filter(([, count]) => count > 0)
-      .map(([id]) => cardDefs[id])
-      .filter((c): c is CardDefinitionDto => !!c && isOrExtends(c.objectType, 'headquarters', objectTypes)),
-    [customDeck, cardDefs, objectTypes]);
-
-  const heroCards = useMemo(() =>
-    Object.entries(customDeck)
-      .filter(([, count]) => count > 0)
-      .map(([id]) => cardDefs[id])
-      .filter((c): c is CardDefinitionDto => !!c && isOrExtends(c.objectType, 'hero', objectTypes)),
-    [customDeck, cardDefs, objectTypes]);
-
-  // A previously-picked HQ/hero that got removed from the deck (or was never a match,
-  // e.g. after loading a different saved deck) can no longer be selected — clear it so
-  // the mission doesn't start with a phantom pick that isn't in the deck being used.
-  // Gated on gameDef being loaded so this doesn't wipe the localStorage-persisted pick
-  // during the initial async load, before hqCards/heroCards can be computed.
-  useEffect(() => {
-    if (!gameDef || !customHq) return;
-    if (!hqCards.some(c => c.id === customHq)) {
-      setCustomHq('');
-      localStorage.setItem('campaignHq', '');
-    }
-  }, [gameDef, hqCards, customHq]);
-
-  useEffect(() => {
-    if (!gameDef || !customHero) return;
-    if (!heroCards.some(c => c.id === customHero)) {
-      setCustomHero('');
-      localStorage.setItem('campaignHero', '');
-    }
-  }, [gameDef, heroCards, customHero]);
-
-  // Cards available to put in deck = cards in collection
-  const collectionCards = useMemo(() => {
-    if (!overview) return [];
-    return Object.entries(overview.profile.collection)
-      .filter(([, count]) => count > 0)
-      .map(([id, owned]) => ({ id, owned, def: cardDefs[id] }))
-      .filter(c => !deckFilter || (c.def?.name ?? c.id).toLowerCase().includes(deckFilter.toLowerCase()))
-      .sort((a, b) => (a.def?.objectType ?? '').localeCompare(b.def?.objectType ?? '') || (a.def?.name ?? a.id).localeCompare(b.def?.name ?? b.id));
-  }, [overview, cardDefs, deckFilter]);
-
   function MissionList({ missions }: { missions: CampaignMission[] }) {
     return (
       <div className="mission-list">
@@ -280,8 +193,13 @@ export function CampaignPage({ onMissionStarted, onOpenLobby, onOpenVsComputer }
     );
   }
 
-  function DeckBuilder() {
-    const deckEntries = Object.entries(customDeck).filter(([, v]) => v > 0);
+  // The campaign uses the same real-cards deck builder as My Decks (DeckBuilderPanel),
+  // restricted to the player's earned collection, with the HQ/hero picked from the cards
+  // in the deck being built — the campaign convention the shared panel implements.
+  // Rendered as a plain call (not <DeckBuilder />): a component type defined inside the
+  // page gets a new identity every render, which would remount DeckBuilderPanel — and
+  // wipe its filter/inspect state — on every card add/remove.
+  function renderDeckBuilder() {
     return (
       <div className="deck-builder">
         <div className="deck-builder-header">
@@ -313,99 +231,22 @@ export function CampaignPage({ onMissionStarted, onOpenLobby, onOpenVsComputer }
           </div>
         )}
 
-        {/* HQ picker */}
-        <div className="deck-picker-section">
-          <div className="deck-picker-label">
-            🏛 Headquarters{customHq ? '' : <span className="deck-hint"> (niet gekozen — missie gebruikt standaard)</span>}
-          </div>
-          <div className="deck-picker-row">
-            {hqCards.map(c => (
-              <div
-                key={c.id}
-                className={`deck-picker-card ${customHq === c.id ? 'deck-picker-selected' : ''}`}
-                onClick={() => selectHq(c.id)}
-                title={c.id}
-              >
-                <span className="deck-picker-icon">{c.icon ?? '🏛'}</span>
-                <span className="deck-picker-name">{c.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Hero picker */}
-        <div className="deck-picker-section">
-          <div className="deck-picker-label">
-            ★ Hero{customHero ? '' : <span className="deck-hint"> (niet gekozen — missie gebruikt standaard)</span>}
-          </div>
-          <div className="deck-picker-row">
-            {heroCards.map(c => (
-              <div
-                key={c.id}
-                className={`deck-picker-card ${customHero === c.id ? 'deck-picker-selected' : ''}`}
-                onClick={() => selectHero(c.id)}
-                title={c.id}
-              >
-                <span className="deck-picker-icon">{c.icon ?? '★'}</span>
-                <span className="deck-picker-name">{c.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="deck-builder-columns">
-          {/* Collection */}
-          <div className="deck-collection">
-            <div className="deck-section-title">Jouw collectie — klik om toe te voegen</div>
-            <input
-              className="player-name-input deck-filter"
-              placeholder="Zoek kaart..."
-              value={deckFilter}
-              onChange={e => setDeckFilter(e.target.value)}
-            />
-            {collectionCards.length === 0 && (
-              <div className="deck-empty">Nog geen kaarten in je collectie. Win missies om kaarten te verdienen.</div>
-            )}
-            <div className="deck-card-grid">
-              {collectionCards.map(({ id, owned, def }) => {
-                const inDeck = customDeck[id] ?? 0;
-                const canAdd = inDeck < Math.min(maxCopies, owned);
-                return (
-                  <div
-                    key={id}
-                    className={`deck-card-item ${canAdd ? 'deck-card-addable' : 'deck-card-full'}`}
-                    onClick={() => addCard(id)}
-                    title={canAdd ? 'Klik om toe te voegen' : `Maximum bereikt (${inDeck}/${Math.min(maxCopies, owned)})`}
-                  >
-                    <span className="deck-card-icon">{def?.icon ?? '🃏'}</span>
-                    <span className="deck-card-name">{def?.name ?? id}</span>
-                    <span className="deck-card-type">{def?.objectType ?? ''}</span>
-                    <span className="deck-card-count">{inDeck > 0 ? `${inDeck}/${owned}` : `0/${owned}`}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Current deck */}
-          <div className="deck-current">
-            <div className="deck-section-title">Huidig deck — klik om te verwijderen</div>
-            {deckEntries.length === 0 && (
-              <div className="deck-empty">Deck is leeg — voeg kaarten toe vanuit je collectie.</div>
-            )}
-            <div className="deck-list">
-              {deckEntries
-                .sort(([a], [b]) => (cardDefs[a]?.objectType ?? '').localeCompare(cardDefs[b]?.objectType ?? '') || (cardDefs[a]?.name ?? a).localeCompare(cardDefs[b]?.name ?? b))
-                .map(([id, count]) => (
-                  <div key={id} className="deck-list-item" onClick={() => removeCard(id)} title="Klik om te verwijderen">
-                    <span className="deck-card-icon">{cardDefs[id]?.icon ?? '🃏'}</span>
-                    <span className="deck-card-name">{cardDefs[id]?.name ?? id}</span>
-                    <span className="deck-list-count">×{count}</span>
-                  </div>
-                ))}
-            </div>
-          </div>
-        </div>
+        {gameDef && overview && (
+          <DeckBuilderPanel
+            gameDef={gameDef}
+            deck={customDeck}
+            onDeckChange={changeDeck}
+            hqId={customHq}
+            heroId={customHero}
+            onSelectHq={selectHq}
+            onSelectHero={selectHero}
+            ownedCounts={overview.profile.collection}
+            hqLabel={<>🏛 Headquarters{customHq ? '' : <span className="deck-hint"> (niet gekozen — missie gebruikt standaard)</span>}</>}
+            heroLabel={<>★ Hero{customHero ? '' : <span className="deck-hint"> (niet gekozen — missie gebruikt standaard)</span>}</>}
+            hqEmptyHint="Voeg een headquarters-kaart uit je collectie toe aan je deck om hem hier te kiezen."
+            heroEmptyHint="Voeg een hero-kaart uit je collectie toe aan je deck om hem hier te kiezen."
+          />
+        )}
       </div>
     );
   }
@@ -465,7 +306,7 @@ export function CampaignPage({ onMissionStarted, onOpenLobby, onOpenVsComputer }
               </button>
             </div>
 
-            {activeTab === 'deck' && <DeckBuilder />}
+            {activeTab === 'deck' && renderDeckBuilder()}
 
             {CAMPAIGN_ORDER.map(camp => {
               const campUnlocked = isCampaignUnlocked(camp);
