@@ -467,3 +467,12 @@ Mass Resurrection; exactly 3 AP pays it, taps Lich, and summons 2 more (4 total)
 activation the same turn is blocked by the tap; AP correctly accrues +1/turn and a later
 4-AP activation spends exactly 3, leaving 1 AP unspent (6 Skeletons total, no over-spend).
 Left: nothing — awaiting live playtest.
+
+## 2026-09-04 — task 1426 (plan)
+Plan: add 20 new thematically/mechanically fitting cards (mostly units, plus a few
+buildings/spells) to each of the 8 non-town factions (raiders/machine/conclave/undead/
+brood/shadow/alchemists/hunks) in definitions/town-tcg/game.json, reusing only existing
+tags/effects/costs (no new engine mechanics). Each faction's precon deck (`decks[x].cards`)
+is already at or near the 60-card maxDeckSize cap, so new cards are added there too (for
+correct faction-filter membership in the deckbuilder) with a mechanical, proportional trim
+of existing high-count entries to stay within the cap.
