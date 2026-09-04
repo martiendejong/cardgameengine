@@ -467,3 +467,13 @@ Mass Resurrection; exactly 3 AP pays it, taps Lich, and summons 2 more (4 total)
 activation the same turn is blocked by the tap; AP correctly accrues +1/turn and a later
 4-AP activation spends exactly 3, leaving 1 AP unspent (6 Skeletons total, no over-spend).
 Left: nothing — awaiting live playtest.
+
+## 2026-09-04 — task 1327 (round 2, testing failed)
+Plan: PR #30 shipped correct backend costs (Raider Camp gold+glory, Arcane Nexus 10 mana,
+Graveyard corpses+sacrifice, The Hive sacrifice-5), but "i dont see the changes" is real:
+CardView/CardDetailModal/LobbyPage only ever render `def.playCost` (singular) — any HQ
+whose cost lives solely in `playCosts`/`playCostsExtra` shows NO cost badge at all, and
+LobbyPage's admin-pool list literally prints "· free" for them. LobbyPage's toggleAdmin
+deck-clamp also uses a raw `playCost` null-check instead of the shared `isDeckEligible`
+helper, so it silently drops playCosts-only HQs from a deck when leaving admin mode.
+Also covering landing-pad (War Machine HQ), the other reported gap.
