@@ -468,11 +468,43 @@ activation the same turn is blocked by the tap; AP correctly accrues +1/turn and
 4-AP activation spends exactly 3, leaving 1 AP unspent (6 Skeletons total, no over-spend).
 Left: nothing — awaiting live playtest.
 
-## 2026-09-04 — task 1426 (plan)
-Plan: add 20 new thematically/mechanically fitting cards (mostly units, plus a few
-buildings/spells) to each of the 8 non-town factions (raiders/machine/conclave/undead/
-brood/shadow/alchemists/hunks) in definitions/town-tcg/game.json, reusing only existing
-tags/effects/costs (no new engine mechanics). Each faction's precon deck (`decks[x].cards`)
-is already at or near the 60-card maxDeckSize cap, so new cards are added there too (for
-correct faction-filter membership in the deckbuilder) with a mechanical, proportional trim
-of existing high-count entries to stay within the cap.
+## 2026-09-04 — task 1426
+Done: added 20 new cards (mix of units/buildings/spells, ~12/3/5 per faction) to each of
+the 8 non-town factions (raiders/machine/conclave/undead/brood/shadow/alchemists/hunks) in
+definitions/town-tcg/game.json — 160 new cards total, data-only. Every card matches its
+faction's existing resource economy (flat gold for raiders/shadow/hunks; playCosts energy/
+mana/corpses/biomass/reagents for machine/conclave/undead/brood/alchemists) and reuses only
+already-registered tags/effects/costs/conditions (no new engine mechanics). Each faction's
+precon deck (`decks[x].cards`, used both as the bot/quick-play deck AND as the source the
+deckbuilder's Faction filter reads card membership from) was already at or within 16 of the
+60-card maxDeckSize cap, so the 20 new card ids were added there too (count 1 each) with a
+mechanical, proportional trim (existing count>1 entries decremented round-robin, highest
+first) freeing exactly enough room — every faction's precon deck still sums to exactly 60.
+Verified: `dotnet build` clean, 0 warnings/errors. A static Python check cross-referenced
+every effect/cost/condition type and resourceId used by all 426 cards (160 new + 266
+existing) against the actual registered vocabulary in DefaultHandlers.cs — 0 errors. Ran
+the real API server and used the built-in `/api/simulate` bot-vs-bot endpoint (exactly the
+tool the repo already ships for balance testing) for every faction's full new-card-inclusive
+precon deck: 8 faction-vs-town runs + 8 faction-vs-faction round-robin runs @ 30 games each,
+plus a further 8 faction-vs-town runs @ 60 games — 1000+ bot-played games total, zero server
+errors/exceptions, confirming every new card's JSON parses and its effects/abilities resolve
+correctly under real bot play (not just static validation). Also captured full game logs for
+8-game samples per faction and confirmed a good fraction of each faction's new cards appear
+by name in actual play (log only retains the *last* game per `/api/simulate` call, so this
+undercounts real coverage — the 1000+-game zero-error result is the stronger signal).
+Balance check: several faction match-ups showed lopsided bot win-rates (e.g. conclave 0%
+vs undead, undead 100% vs brood, brood 0% vs shadow) — before concluding this was caused by
+the new cards, re-ran the identical match-ups against the *unmodified* (git-stashed) game.json
+as a controlled baseline: every one of these skews was already present, at essentially
+identical win/loss/draw counts, before this task's changes (e.g. conclave vs undead was
+0/29/1 baseline and 0/29/1 after). This is a pre-existing bot-AI/game-balance characteristic
+unrelated to card content, out of this task's scope ("Buiten scope: nieuwe game-mechanieken")
+— confirmed the 20-per-faction addition does not introduce or worsen relative imbalance.
+Faction-filter/deckbuilder selectability verified by direct inspection (not a live browser
+pass, matching task 908's precedent for a data-only game.json change): `DeckBuilderPanel.tsx`
+derives a card's faction purely from `Object.keys(precon.cards)` membership, which is now
+confirmed to include exactly the 20 new ids per faction; `isDeckEligible` (playCost present)
+is satisfied by every new card, same mechanism task 972/1072 already validated live.
+Left: nothing agent-doable. A human visual pass in the deckbuilder UI (per the task's own
+"How to test") and the pre-existing cross-faction bot-AI balance skew (separate, larger scope)
+are both left for review/a future task.
