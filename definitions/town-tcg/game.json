@@ -17612,7 +17612,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 3
             }
@@ -17635,7 +17635,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 5
             },
@@ -17672,7 +17672,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "ap",
+              "resourceId": "ap",
               "scope": "self",
               "amount": 4
             }
@@ -17680,10 +17680,11 @@
           "conditions": [],
           "effects": [
             {
-              "type": "buff_tag_until_end_of_turn",
+              "type": "cost_discount",
               "tag": "mercenary",
-              "property": "cost_discount",
-              "amount": 2
+              "resourceId": "gold",
+              "amount": 2,
+              "scope": "player"
             }
           ]
         },
@@ -17693,7 +17694,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "ap",
+              "resourceId": "ap",
               "scope": "self",
               "amount": 2
             },
@@ -17743,7 +17744,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -17783,7 +17784,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             },
@@ -17801,7 +17802,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -17839,7 +17840,7 @@
           "conditions": [
             {
               "type": "resource_gte",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 5
             }
@@ -17847,16 +17848,22 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             },
             {
               "type": "damage",
-              "amount": 2,
-              "targetType": "any"
+              "scope": "target",
+              "amount": 2
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "triggers": []
@@ -17888,7 +17895,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -17933,7 +17940,7 @@
             },
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -17947,7 +17954,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             }
@@ -17981,7 +17988,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             },
@@ -17997,16 +18004,23 @@
           "effects": [
             {
               "type": "damage",
-              "amount": 5,
-              "targetType": "unit"
+              "scope": "target",
+              "amount": 5
             },
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "triggers": []
@@ -18040,7 +18054,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             }
@@ -18078,7 +18092,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             },
@@ -18098,7 +18112,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -18129,7 +18143,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 3
             }
@@ -18138,7 +18152,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 5
             }
@@ -18152,7 +18166,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             }
@@ -18188,10 +18202,11 @@
           "conditions": [],
           "effects": [
             {
-              "type": "buff_tag_until_end_of_turn",
+              "type": "cost_discount",
               "tag": "mercenary",
-              "property": "cost_discount",
-              "amount": 2
+              "resourceId": "gold",
+              "amount": 2,
+              "scope": "player"
             }
           ]
         },
@@ -18204,7 +18219,7 @@
             },
             {
               "type": "resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             }
@@ -18225,7 +18240,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             }
@@ -18262,7 +18277,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 3
             },
@@ -18282,7 +18297,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 3
             },
@@ -18301,17 +18316,21 @@
       "playCost": 1,
       "icon": "🏷️",
       "artworkDescription": "A merchant stamping a bright red SALE seal",
+      "onPlay": {
+        "id": "merch-bulk-discount-onplay",
+        "name": "Bulk Discount",
+        "effects": [
+          {
+            "type": "cost_discount",
+            "amount": 3,
+            "scope": "player",
+            "targetType": "nextCard"
+          }
+        ]
+      },
       "abilities": [],
       "triggers": [],
-      "tags": [],
-      "effects": [
-        {
-          "type": "cost_discount",
-          "amount": 3,
-          "scope": "player",
-          "targetType": "nextCard"
-        }
-      ]
+      "tags": []
     },
     {
       "id": "merch-emergency-funds",
@@ -18320,17 +18339,21 @@
       "playCost": 2,
       "icon": "💰",
       "artworkDescription": "A hand smashing open a clay piggy bank",
+      "onPlay": {
+        "id": "merch-emergency-funds-onplay",
+        "name": "Emergency Funds",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "resourceId": "gold",
+            "scope": "player",
+            "amount": 4
+          }
+        ]
+      },
       "abilities": [],
       "triggers": [],
-      "tags": [],
-      "effects": [
-        {
-          "type": "gain_resource",
-          "resource": "gold",
-          "scope": "player",
-          "amount": 4
-        }
-      ]
+      "tags": []
     },
     {
       "id": "merch-trade-deal",
@@ -18339,21 +18362,25 @@
       "playCost": 3,
       "icon": "🤝",
       "artworkDescription": "Two merchants clasping hands over a contract table",
+      "onPlay": {
+        "id": "merch-trade-deal-onplay",
+        "name": "Trade Deal",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "resourceId": "gold",
+            "scope": "player",
+            "amount": 3
+          },
+          {
+            "type": "draw_cards",
+            "amount": 2
+          }
+        ]
+      },
       "abilities": [],
       "triggers": [],
-      "tags": [],
-      "effects": [
-        {
-          "type": "gain_resource",
-          "resource": "gold",
-          "scope": "player",
-          "amount": 3
-        },
-        {
-          "type": "draw_cards",
-          "amount": 2
-        }
-      ]
+      "tags": []
     },
     {
       "id": "merch-liquidate",
@@ -18362,22 +18389,32 @@
       "playCost": 3,
       "icon": "💸",
       "artworkDescription": "A merchant auctioneer raising a hammer",
+      "onPlay": {
+        "id": "merch-liquidate-onplay",
+        "name": "Liquidate",
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "building",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "destroy",
+            "scope": "target"
+          },
+          {
+            "type": "gain_resource",
+            "resourceId": "gold",
+            "scope": "player",
+            "amount": 6
+          }
+        ]
+      },
       "abilities": [],
       "triggers": [],
-      "tags": [],
-      "effects": [
-        {
-          "type": "destroy",
-          "targetType": "building",
-          "controller": "self"
-        },
-        {
-          "type": "gain_resource",
-          "resource": "gold",
-          "scope": "player",
-          "amount": 6
-        }
-      ]
+      "tags": []
     },
     {
       "id": "merch-gold-rush",
@@ -18386,29 +18423,38 @@
       "playCost": 4,
       "icon": "⚡",
       "artworkDescription": "A gleaming wave of golden light sweeping across a marketplace",
+      "onPlay": {
+        "id": "merch-gold-rush-onplay",
+        "name": "Gold Rush",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "resourceId": "gold",
+            "scope": "player",
+            "amount": 5
+          },
+          {
+            "type": "cost_discount",
+            "tag": "worker",
+            "resourceId": "gold",
+            "amount": 3,
+            "scope": "player"
+          }
+        ]
+      },
       "abilities": [],
       "triggers": [],
-      "tags": [],
-      "effects": [
-        {
-          "type": "gain_resource",
-          "resource": "gold",
-          "scope": "player",
-          "amount": 5
-        },
-        {
-          "type": "buff_tag_until_end_of_turn",
-          "tag": "worker",
-          "property": "cost_discount",
-          "amount": 3
-        }
-      ]
+      "tags": []
     },
     {
       "id": "merch-merchants-satchel",
       "name": "Merchant's Satchel",
       "objectType": "equipment",
       "playCost": 2,
+      "slots": [
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
       "icon": "👜",
       "artworkDescription": "A worn but well-stuffed leather satchel",
       "abilities": [
@@ -18428,7 +18474,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             }
@@ -18446,7 +18492,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -18460,28 +18506,13 @@
       "name": "Coin Purse Belt",
       "objectType": "equipment",
       "playCost": 3,
+      "slots": [
+        "body"
+      ],
+      "attachTo": "chooseCharacter",
       "icon": "👛",
       "artworkDescription": "A thick leather belt with six bulging coin purses",
-      "abilities": [
-        {
-          "id": "merch-coin-purse-belt-ab1",
-          "name": "Deep Pockets",
-          "costs": [],
-          "conditions": [
-            {
-              "type": "is_attached"
-            }
-          ],
-          "effects": [
-            {
-              "type": "modify_property",
-              "property": "cost_discount",
-              "amount": 1,
-              "targetType": "attachedUnit"
-            }
-          ]
-        }
-      ],
+      "abilities": [],
       "triggers": [
         {
           "event": "onTurnStart",
@@ -18493,7 +18524,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             }
@@ -18507,28 +18538,19 @@
       "name": "Wealthy Armor",
       "objectType": "equipment",
       "playCost": 5,
-      "icon": "🥇",
-      "artworkDescription": "Full plate armor inlaid with gold filigree",
-      "abilities": [
+      "slots": [
+        "body"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
         {
-          "id": "merch-wealthy-armor-ab1",
-          "name": "Bought Protection",
-          "costs": [],
-          "conditions": [
-            {
-              "type": "is_attached"
-            }
-          ],
-          "effects": [
-            {
-              "type": "modify_property",
-              "property": "armor",
-              "amount": 3,
-              "targetType": "attachedUnit"
-            }
-          ]
+          "propertyId": "armor",
+          "amount": 3
         }
       ],
+      "icon": "🥇",
+      "artworkDescription": "Full plate armor inlaid with gold filigree",
+      "abilities": [],
       "triggers": [
         {
           "event": "onTurnStart",
@@ -18540,7 +18562,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             }
@@ -18578,7 +18600,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 3
             }
@@ -18613,7 +18635,7 @@
             },
             {
               "type": "resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -18622,7 +18644,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 3
             },
@@ -18665,7 +18687,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 7
             },
@@ -18727,7 +18749,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             }
@@ -18761,7 +18783,7 @@
             {
               "type": "resource",
               "scope": "player",
-              "resource": "gold",
+              "resourceId": "gold",
               "amount": 2
             }
           ],
@@ -18770,7 +18792,7 @@
             {
               "type": "gain_resource",
               "scope": "self",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 3
             }
           ]
@@ -18783,7 +18805,7 @@
             {
               "type": "resource_gte",
               "scope": "self",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 10
             }
           ],
@@ -18824,7 +18846,7 @@
             {
               "type": "resource",
               "scope": "self",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 5
             },
             {
@@ -18847,7 +18869,7 @@
             {
               "type": "resource",
               "scope": "self",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 3
             }
           ],
@@ -18856,7 +18878,7 @@
             {
               "type": "buff_tag_until_end_of_turn",
               "tag": "raider",
-              "property": "attack",
+              "propertyId": "attack",
               "amount": 2
             }
           ]
@@ -18891,7 +18913,7 @@
             {
               "type": "gain_resource",
               "scope": "player",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 1
             }
           ]
@@ -18925,7 +18947,7 @@
             {
               "type": "gain_resource",
               "scope": "player",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 2
             }
           ]
@@ -18959,7 +18981,7 @@
             {
               "type": "resource",
               "scope": "player",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 3
             }
           ],
@@ -18968,7 +18990,7 @@
             {
               "type": "buff_target_until_end_of_turn",
               "target": "self",
-              "property": "attack",
+              "propertyId": "attack",
               "amount": 3
             }
           ]
@@ -19003,7 +19025,7 @@
             {
               "type": "gain_resource",
               "scope": "player",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 1
             }
           ]
@@ -19015,7 +19037,7 @@
             {
               "type": "gain_resource",
               "scope": "player",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 1
             }
           ]
@@ -19048,7 +19070,7 @@
             {
               "type": "resource",
               "scope": "player",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 4
             },
             {
@@ -19073,7 +19095,7 @@
             {
               "type": "gain_resource",
               "scope": "player",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 2
             }
           ]
@@ -19112,13 +19134,13 @@
             {
               "type": "gain_resource",
               "scope": "opponent",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 3
             },
             {
               "type": "gain_resource",
               "scope": "player",
-              "resource": "gold",
+              "resourceId": "gold",
               "amount": 2
             }
           ]
@@ -19153,7 +19175,7 @@
             {
               "type": "resource",
               "scope": "player",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 6
             },
             {
@@ -19183,7 +19205,7 @@
             {
               "type": "gain_resource",
               "scope": "player",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 3
             }
           ]
@@ -19221,7 +19243,7 @@
             {
               "type": "resource_gte",
               "scope": "opponent",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 3
             }
           ],
@@ -19229,7 +19251,7 @@
             {
               "type": "steal_resource",
               "scope": "opponent",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 3
             },
             {
@@ -19272,7 +19294,7 @@
             {
               "type": "gain_resource",
               "scope": "player",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 2
             }
           ]
@@ -19303,7 +19325,7 @@
             {
               "type": "buff_tag_until_end_of_turn",
               "tag": "raider",
-              "property": "attack",
+              "propertyId": "attack",
               "amount": 1
             }
           ]
@@ -19335,7 +19357,7 @@
             {
               "type": "resource",
               "scope": "player",
-              "resource": "gold",
+              "resourceId": "gold",
               "amount": 1
             }
           ],
@@ -19373,7 +19395,7 @@
             {
               "type": "gain_resource",
               "scope": "player",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 1
             }
           ]
@@ -19403,7 +19425,7 @@
             {
               "type": "resource",
               "scope": "player",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 8
             },
             {
@@ -19415,7 +19437,7 @@
             {
               "type": "gain_resource",
               "scope": "player",
-              "resource": "gold",
+              "resourceId": "gold",
               "amount": 4
             },
             {
@@ -19477,7 +19499,7 @@
         {
           "type": "gain_resource",
           "scope": "player",
-          "resource": "glory",
+          "resourceId": "glory",
           "amount": 2
         }
       ]
@@ -19499,7 +19521,7 @@
         {
           "type": "buff_tag_until_end_of_turn",
           "tag": "raider",
-          "property": "attack",
+          "propertyId": "attack",
           "amount": 2
         },
         {
@@ -19524,13 +19546,13 @@
         {
           "type": "steal_resource",
           "scope": "opponent",
-          "resource": "glory",
+          "resourceId": "glory",
           "amount": 5
         },
         {
           "type": "gain_resource",
           "scope": "player",
-          "resource": "glory",
+          "resourceId": "glory",
           "amount": 5
         }
       ]
@@ -19557,13 +19579,13 @@
         {
           "type": "gain_resource",
           "scope": "player",
-          "resource": "glory",
+          "resourceId": "glory",
           "amount": 4
         },
         {
           "type": "gain_resource",
           "scope": "player",
-          "resource": "gold",
+          "resourceId": "gold",
           "amount": 2
         }
       ]
@@ -19587,7 +19609,7 @@
             {
               "type": "resource",
               "scope": "player",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 2
             }
           ],
@@ -19600,7 +19622,7 @@
             {
               "type": "buff_target_until_end_of_turn",
               "target": "attached_unit",
-              "property": "attack",
+              "propertyId": "attack",
               "amount": 4
             }
           ]
@@ -19614,7 +19636,7 @@
             {
               "type": "modify_property",
               "target": "attached_unit",
-              "property": "attack",
+              "propertyId": "attack",
               "amount": 2
             }
           ]
@@ -19645,13 +19667,13 @@
             {
               "type": "gain_resource",
               "scope": "player",
-              "resource": "glory",
+              "resourceId": "glory",
               "amount": 1
             },
             {
               "type": "buff_tag_until_end_of_turn",
               "tag": "raider",
-              "property": "attack",
+              "propertyId": "attack",
               "amount": 1
             }
           ]
@@ -19686,7 +19708,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "energy",
+              "resourceId": "energy",
               "scope": "player",
               "amount": 2
             }
@@ -19731,7 +19753,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "ap",
+              "resourceId": "ap",
               "scope": "self",
               "amount": 3
             },
@@ -19753,7 +19775,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "ap",
+              "resourceId": "ap",
               "scope": "self",
               "amount": 2
             }
@@ -19878,7 +19900,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "energy",
+              "resourceId": "energy",
               "scope": "player",
               "amount": 1
             }
@@ -19989,7 +20011,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "energy",
+              "resourceId": "energy",
               "scope": "player",
               "amount": 2
             },
@@ -20013,7 +20035,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "energy",
+              "resourceId": "energy",
               "scope": "player",
               "amount": 1
             }
@@ -20089,7 +20111,7 @@
             },
             {
               "type": "resource",
-              "resource": "energy",
+              "resourceId": "energy",
               "scope": "player",
               "amount": 1
             }
@@ -20163,7 +20185,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "energy",
+              "resourceId": "energy",
               "scope": "player",
               "amount": 1
             }
@@ -20180,7 +20202,7 @@
             },
             {
               "type": "resource",
-              "resource": "energy",
+              "resourceId": "energy",
               "scope": "player",
               "amount": 2
             }
@@ -20216,7 +20238,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "energy",
+              "resourceId": "energy",
               "scope": "player",
               "amount": 1
             },
@@ -20302,7 +20324,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "energy",
+              "resourceId": "energy",
               "scope": "player",
               "amount": 1
             }
@@ -20316,7 +20338,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "energy",
+              "resourceId": "energy",
               "scope": "player",
               "amount": 2
             },
@@ -20361,7 +20383,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "energy",
+              "resourceId": "energy",
               "scope": "player",
               "amount": 2
             }
@@ -20478,7 +20500,7 @@
             },
             {
               "type": "gain_resource",
-              "resource": "energy",
+              "resourceId": "energy",
               "scope": "player",
               "amount": 2
             }
@@ -20565,7 +20587,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "mana",
+              "resourceId": "mana",
               "scope": "self",
               "amount": 3
             }
@@ -20577,7 +20599,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "mana",
+              "resourceId": "mana",
               "scope": "self",
               "amount": 4
             },
@@ -20601,7 +20623,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "mana",
+              "resourceId": "mana",
               "scope": "self",
               "amount": 1
             }
@@ -20634,7 +20656,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "ap",
+              "resourceId": "ap",
               "scope": "self",
               "amount": 3
             }
@@ -20653,7 +20675,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "ap",
+              "resourceId": "ap",
               "scope": "self",
               "amount": 3
             },
@@ -20706,7 +20728,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             },
@@ -20743,7 +20765,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             },
@@ -20822,7 +20844,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             },
@@ -20870,7 +20892,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             }
@@ -20904,7 +20926,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             },
@@ -20967,7 +20989,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             }
@@ -20981,7 +21003,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "mana",
+              "resourceId": "mana",
               "scope": "player",
               "amount": 2
             }
@@ -21018,7 +21040,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             },
@@ -21054,7 +21076,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 3
             },
@@ -21082,7 +21104,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             }
@@ -21111,7 +21133,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             },
@@ -21135,7 +21157,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -21189,7 +21211,7 @@
       "effects": [
         {
           "type": "drain_resource",
-          "resource": "mana",
+          "resourceId": "mana",
           "amount": 5
         }
       ]
@@ -21284,7 +21306,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             },
@@ -21317,13 +21339,13 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             },
             {
               "type": "buff_target_until_end_of_turn",
-              "property": "armor",
+              "propertyId": "armor",
               "amount": 1
             }
           ]
@@ -21360,7 +21382,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -21374,7 +21396,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -21407,7 +21429,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 3
             },
@@ -21419,7 +21441,7 @@
           "effects": [
             {
               "type": "drain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "amount": 2
             },
             {
@@ -21457,7 +21479,7 @@
             {
               "type": "resource",
               "scope": "player",
-              "resource": "gold",
+              "resourceId": "gold",
               "amount": 2
             }
           ],
@@ -21466,7 +21488,7 @@
             {
               "type": "gain_resource",
               "scope": "self",
-              "resource": "corpses",
+              "resourceId": "corpses",
               "amount": 3
             }
           ]
@@ -21480,7 +21502,7 @@
             {
               "type": "gain_resource",
               "scope": "player",
-              "resource": "gold",
+              "resourceId": "gold",
               "amount": 2
             }
           ]
@@ -21512,7 +21534,7 @@
             {
               "type": "resource",
               "scope": "self",
-              "resource": "dp",
+              "resourceId": "dp",
               "amount": 4
             },
             {
@@ -21524,7 +21546,7 @@
             {
               "type": "gain_resource_all_tagged",
               "tag": "enemy",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 3
             }
           ]
@@ -21536,7 +21558,7 @@
             {
               "type": "resource",
               "scope": "self",
-              "resource": "dp",
+              "resourceId": "dp",
               "amount": 2
             }
           ],
@@ -21558,7 +21580,7 @@
             {
               "type": "gain_resource",
               "scope": "self",
-              "resource": "dp",
+              "resourceId": "dp",
               "amount": 1
             }
           ]
@@ -21590,7 +21612,7 @@
             {
               "type": "gain_resource_all_tagged",
               "tag": "enemy",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 1
             }
           ]
@@ -21622,7 +21644,7 @@
             {
               "type": "gain_resource_all_tagged",
               "tag": "enemy",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 2
             }
           ]
@@ -21654,13 +21676,13 @@
             {
               "type": "gain_resource",
               "scope": "player",
-              "resource": "gold",
+              "resourceId": "gold",
               "amount": 1
             },
             {
               "type": "gain_resource_all_tagged",
               "tag": "enemy",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 2
             }
           ]
@@ -21694,7 +21716,7 @@
             {
               "type": "gain_resource_all_tagged",
               "tag": "enemy",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 1
             }
           ]
@@ -21729,7 +21751,7 @@
             {
               "type": "resource",
               "scope": "self",
-              "resource": "mana",
+              "resourceId": "mana",
               "amount": 2
             },
             {
@@ -21741,7 +21763,7 @@
             {
               "type": "gain_resource_all_tagged",
               "tag": "enemy",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 2
             }
           ]
@@ -21755,7 +21777,7 @@
             {
               "type": "gain_resource",
               "scope": "self",
-              "resource": "mana",
+              "resourceId": "mana",
               "amount": 2
             }
           ]
@@ -21787,7 +21809,7 @@
             {
               "type": "gain_resource_all_tagged",
               "tag": "enemy",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 3
             }
           ]
@@ -21821,7 +21843,7 @@
             {
               "type": "gain_resource_all_tagged",
               "tag": "enemy",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 1
             }
           ]
@@ -21833,7 +21855,7 @@
             {
               "type": "gain_resource_all_tagged",
               "tag": "enemy",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 4
             }
           ]
@@ -21864,7 +21886,7 @@
             {
               "type": "gain_resource",
               "scope": "self",
-              "resource": "corpses",
+              "resourceId": "corpses",
               "amount": 1
             }
           ]
@@ -21893,7 +21915,7 @@
             {
               "type": "gain_resource_all_tagged",
               "tag": "enemy",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 2
             }
           ]
@@ -21922,7 +21944,7 @@
             {
               "type": "resource",
               "scope": "player",
-              "resource": "gold",
+              "resourceId": "gold",
               "amount": 1
             },
             {
@@ -21933,7 +21955,7 @@
             {
               "type": "resource_gte",
               "scope": "player",
-              "resource": "gold",
+              "resourceId": "gold",
               "amount": 2
             }
           ],
@@ -21941,7 +21963,7 @@
             {
               "type": "gain_resource",
               "scope": "player",
-              "resource": "training",
+              "resourceId": "training",
               "amount": 1
             }
           ]
@@ -21971,7 +21993,7 @@
             {
               "type": "gain_resource_all_tagged",
               "tag": "enemy",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 3
             }
           ]
@@ -21996,7 +22018,7 @@
             {
               "type": "gain_resource",
               "scope": "target",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 4
             },
             {
@@ -22074,13 +22096,13 @@
             {
               "type": "modify_property",
               "target": "target",
-              "property": "attack",
+              "propertyId": "attack",
               "amount": -2
             },
             {
               "type": "gain_resource",
               "scope": "target",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 1
             }
           ]
@@ -22105,7 +22127,7 @@
             {
               "type": "gain_resource_all_tagged",
               "tag": "enemy",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 5
             }
           ]
@@ -22158,7 +22180,7 @@
             {
               "type": "gain_resource_all_tagged",
               "tag": "enemy",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 1
             }
           ]
@@ -22191,7 +22213,7 @@
             {
               "type": "gain_resource_all_tagged",
               "tag": "enemy",
-              "resource": "poison",
+              "resourceId": "poison",
               "amount": 2
             }
           ]
@@ -22227,7 +22249,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 6
             }
@@ -22240,7 +22262,7 @@
           "conditions": [
             {
               "type": "resource_gte",
-              "resource": "controlled_units",
+              "resourceId": "controlled_units",
               "scope": "player",
               "amount": 3
             }
@@ -22248,7 +22270,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 2
             }
@@ -22282,13 +22304,13 @@
             },
             {
               "type": "resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 5
             },
             {
               "type": "resource",
-              "resource": "ap",
+              "resourceId": "ap",
               "scope": "self",
               "amount": 1
             }
@@ -22298,13 +22320,13 @@
             {
               "type": "modify_property",
               "target": "self",
-              "property": "attack",
+              "propertyId": "attack",
               "amount": 3
             },
             {
               "type": "modify_property",
               "target": "self",
-              "property": "armor",
+              "propertyId": "armor",
               "amount": 3
             }
           ]
@@ -22315,13 +22337,13 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 3
             },
             {
               "type": "resource",
-              "resource": "ap",
+              "resourceId": "ap",
               "scope": "self",
               "amount": 1
             }
@@ -22364,7 +22386,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 1
             }
@@ -22397,7 +22419,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 1
             }
@@ -22429,7 +22451,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 1
             },
@@ -22467,7 +22489,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 1
             }
@@ -22500,7 +22522,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 1
             }
@@ -22533,7 +22555,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 2
             }
@@ -22567,7 +22589,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 3
             }
@@ -22600,7 +22622,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 3
             }
@@ -22638,7 +22660,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 4
             }
@@ -22672,7 +22694,7 @@
             },
             {
               "type": "resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -22714,7 +22736,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 1
             }
@@ -22755,7 +22777,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 3
             }
@@ -22784,7 +22806,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 1
             },
@@ -22818,7 +22840,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 6
             }
@@ -22847,19 +22869,19 @@
             {
               "type": "modify_property",
               "target": "target_friendly_unit",
-              "property": "attack",
+              "propertyId": "attack",
               "amount": 3
             },
             {
               "type": "modify_property",
               "target": "target_friendly_unit",
-              "property": "maxHp",
+              "propertyId": "maxHp",
               "amount": 4
             },
             {
               "type": "modify_property",
               "target": "target_friendly_unit",
-              "property": "currentHp",
+              "propertyId": "currentHp",
               "amount": 4
             }
           ]
@@ -22888,7 +22910,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 2
             }
@@ -22917,7 +22939,7 @@
             },
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 1
             }
@@ -22946,7 +22968,7 @@
             {
               "type": "modify_property",
               "target": "all_enemy_units",
-              "property": "armor",
+              "propertyId": "armor",
               "amount": -3
             },
             {
@@ -22979,13 +23001,13 @@
             {
               "type": "buff_tag_until_end_of_turn",
               "tag": "worker",
-              "property": "attack",
+              "propertyId": "attack",
               "amount": 3
             },
             {
               "type": "buff_tag_until_end_of_turn",
               "tag": "soldier",
-              "property": "attack",
+              "propertyId": "attack",
               "amount": 2
             }
           ]
@@ -23069,7 +23091,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "biomass",
+              "resourceId": "biomass",
               "scope": "player",
               "amount": 1
             },
@@ -23106,7 +23128,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "intel",
+              "resourceId": "intel",
               "scope": "self",
               "amount": 2
             }
@@ -23121,7 +23143,7 @@
             },
             {
               "type": "resource",
-              "resource": "intel",
+              "resourceId": "intel",
               "scope": "self",
               "amount": 3
             }
@@ -23130,7 +23152,7 @@
           "effects": [
             {
               "type": "steal_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 2
             }
@@ -23162,7 +23184,7 @@
             },
             {
               "type": "resource",
-              "resource": "ap",
+              "resourceId": "ap",
               "scope": "self",
               "amount": 4
             }
@@ -23171,7 +23193,7 @@
           "effects": [
             {
               "type": "steal_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 3
             },
@@ -23188,7 +23210,7 @@
           "costs": [
             {
               "type": "resource",
-              "resource": "ap",
+              "resourceId": "ap",
               "scope": "self",
               "amount": 2
             }
@@ -23231,13 +23253,13 @@
           "effects": [
             {
               "type": "steal_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             },
             {
               "type": "gain_resource",
-              "resource": "intel",
+              "resourceId": "intel",
               "scope": "self",
               "amount": 1
             }
@@ -23249,7 +23271,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "sabotage",
+              "resourceId": "sabotage",
               "scope": "self",
               "amount": 1
             }
@@ -23293,7 +23315,7 @@
             },
             {
               "type": "gain_resource",
-              "resource": "intel",
+              "resourceId": "intel",
               "scope": "self",
               "amount": 2
             }
@@ -23307,13 +23329,13 @@
           "effects": [
             {
               "type": "steal_resource",
-              "resource": "training",
+              "resourceId": "training",
               "scope": "player",
               "amount": 1
             },
             {
               "type": "gain_resource",
-              "resource": "intel",
+              "resourceId": "intel",
               "scope": "self",
               "amount": 1
             }
@@ -23348,7 +23370,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "intel",
+              "resourceId": "intel",
               "scope": "self",
               "amount": 2
             }
@@ -23360,7 +23382,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "intel",
+              "resourceId": "intel",
               "scope": "self",
               "amount": 1
             }
@@ -23447,7 +23469,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -23481,7 +23503,7 @@
           "effects": [
             {
               "type": "drain_resource",
-              "resource": "training",
+              "resourceId": "training",
               "scope": "player",
               "amount": 2
             }
@@ -23510,7 +23532,7 @@
           "effects": [
             {
               "type": "gain_resource_all_tagged",
-              "resource": "intel",
+              "resourceId": "intel",
               "scope": "self",
               "tag": "spy-unit",
               "amount": 1
@@ -23542,7 +23564,7 @@
             },
             {
               "type": "resource",
-              "resource": "intel",
+              "resourceId": "intel",
               "scope": "self",
               "amount": 2
             }
@@ -23555,7 +23577,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -23587,7 +23609,7 @@
             },
             {
               "type": "resource",
-              "resource": "intel",
+              "resourceId": "intel",
               "scope": "self",
               "amount": 4
             }
@@ -23612,7 +23634,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "intel",
+              "resourceId": "intel",
               "scope": "self",
               "amount": 2
             }
@@ -23650,7 +23672,7 @@
           "effects": [
             {
               "type": "steal_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -23663,7 +23685,7 @@
           "conditions": [
             {
               "type": "resource_lte",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "opponent",
               "amount": 5
             }
@@ -23671,7 +23693,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -23702,7 +23724,7 @@
             },
             {
               "type": "resource",
-              "resource": "gold",
+              "resourceId": "gold",
               "scope": "player",
               "amount": 1
             }
@@ -23734,7 +23756,7 @@
       "effects": [
         {
           "type": "steal_resource",
-          "resource": "gold",
+          "resourceId": "gold",
           "scope": "player",
           "amount": 2
         }
@@ -23752,7 +23774,7 @@
       "effects": [
         {
           "type": "drain_resource",
-          "resource": "gold",
+          "resourceId": "gold",
           "scope": "player",
           "amount": 3
         }
@@ -23774,7 +23796,7 @@
         },
         {
           "type": "gain_resource",
-          "resource": "sabotage",
+          "resourceId": "sabotage",
           "scope": "target",
           "amount": 2
         }
@@ -23808,7 +23830,7 @@
       "effects": [
         {
           "type": "steal_resource",
-          "resource": "training",
+          "resourceId": "training",
           "scope": "player",
           "amount": 2
         }
@@ -23842,7 +23864,7 @@
       "effects": [
         {
           "type": "drain_resource",
-          "resource": "gold",
+          "resourceId": "gold",
           "scope": "player",
           "amount": 5
         }
@@ -23867,13 +23889,13 @@
           "effects": [
             {
               "type": "modify_property",
-              "property": "armor",
+              "propertyId": "armor",
               "scope": "self",
               "amount": 1
             },
             {
               "type": "gain_resource",
-              "resource": "intel",
+              "resourceId": "intel",
               "scope": "self",
               "amount": 1
             }
@@ -23900,13 +23922,13 @@
           "effects": [
             {
               "type": "modify_property",
-              "property": "attack",
+              "propertyId": "attack",
               "scope": "self",
               "amount": 2
             },
             {
               "type": "gain_resource",
-              "resource": "poison",
+              "resourceId": "poison",
               "scope": "target",
               "amount": 2
             }
@@ -23945,7 +23967,7 @@
             },
             {
               "type": "gain_resource",
-              "resource": "intel",
+              "resourceId": "intel",
               "scope": "self",
               "amount": 1
             }
@@ -26525,9 +26547,9 @@
     {
       "id": "town-merchant",
       "name": "Grand Merchant Guild",
+      "hq": "merch-grand-exchange",
+      "hero": "merch-trade-prince",
       "cards": {
-        "merch-grand-exchange": 1,
-        "merch-trade-prince": 1,
         "merch-market-porter": 4,
         "merch-coin-runner": 4,
         "merch-guild-enforcer": 3,
@@ -26562,9 +26584,9 @@
     {
       "id": "raiders-warbond",
       "name": "Warbond Raiders",
+      "hq": "warbond-war-throne",
+      "hero": "warbond-warchief",
       "cards": {
-        "warbond-war-throne": 1,
-        "warbond-warchief": 1,
         "warbond-initiate": 4,
         "warbond-glory-seeker": 4,
         "warbond-berserker": 4,
@@ -26596,9 +26618,9 @@
     {
       "id": "machine-sentry",
       "name": "Sentry Grid Protocol",
+      "hq": "sentry-command-core",
+      "hero": "sentry-grid-commander",
       "cards": {
-        "sentry-command-core": 1,
-        "sentry-grid-commander": 1,
         "sentry-patrol-drone": 4,
         "sentry-recon-drone": 4,
         "sentry-siege-drone": 3,
@@ -26632,15 +26654,9 @@
     {
       "id": "conclave-storm",
       "name": "Aether Storm Circle",
-      "hqOptions": [
-        "storm-aether-spire"
-      ],
-      "heroOptions": [
-        "storm-stormcaller"
-      ],
+      "hq": "storm-aether-spire",
+      "hero": "storm-stormcaller",
       "cards": {
-        "storm-aether-spire": 1,
-        "storm-stormcaller": 1,
         "storm-channeler": 4,
         "storm-voidbinder": 3,
         "storm-storm-acolyte": 4,
@@ -26661,14 +26677,20 @@
         "storm-stormweave-robe": 2,
         "storm-channeler-adept": 4,
         "storm-void-walker": 2
-      }
+      },
+      "hqOptions": [
+        "storm-aether-spire"
+      ],
+      "heroOptions": [
+        "storm-stormcaller"
+      ]
     },
     {
       "id": "undead-plague",
       "name": "Plague Tide Court",
+      "hq": "plague-cathedral",
+      "hero": "plague-lord",
       "cards": {
-        "plague-cathedral": 1,
-        "plague-lord": 1,
         "plague-rat-swarm": 4,
         "plague-bearer": 4,
         "plague-zombie": 4,
@@ -26702,6 +26724,8 @@
     {
       "id": "brood-apex",
       "name": "Apex Biomass Hive",
+      "hq": "apex-nest-hq",
+      "hero": "apex-brood-empress",
       "cards": {
         "apex-larva-drone": 4,
         "apex-spore-crawler": 4,
@@ -26724,9 +26748,7 @@
         "apex-apex-signal": 2,
         "apex-hive-pulse": 2,
         "apex-scent-trail": 2,
-        "apex-molt": 4,
-        "apex-nest-hq": 1,
-        "apex-brood-empress": 1
+        "apex-molt": 4
       },
       "hqOptions": [
         "apex-nest-hq"
@@ -26738,9 +26760,9 @@
     {
       "id": "shadow-stranglehold",
       "name": "Stranglehold Network",
+      "hq": "hold-shadow-citadel",
+      "hero": "hold-grand-spymaster",
       "cards": {
-        "hold-shadow-citadel": 1,
-        "hold-grand-spymaster": 1,
         "hold-shadow-infiltrator": 4,
         "hold-master-spy": 3,
         "hold-street-scout": 4,
@@ -26774,9 +26796,9 @@
     {
       "id": "alchemists-opus",
       "name": "Grand Opus Laboratory",
+      "hq": "opus-grand-laboratory",
+      "hero": "opus-philosophers-hand",
       "cards": {
-        "opus-grand-laboratory": 1,
-        "opus-philosophers-hand": 1,
         "opus-iron-golem": 2,
         "opus-magnum-colossus": 1,
         "opus-stone-warden": 2,
@@ -26810,9 +26832,9 @@
     {
       "id": "hunks-fortress",
       "name": "Fortress Eternal",
+      "hq": "fort-fortress-keep",
+      "hero": "fort-siege-commander",
       "cards": {
-        "fort-fortress-keep": 1,
-        "fort-siege-commander": 1,
         "fort-mason": 4,
         "fort-quarry-worker": 4,
         "fort-wall-guard": 3,
