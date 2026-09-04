@@ -467,3 +467,12 @@ Mass Resurrection; exactly 3 AP pays it, taps Lich, and summons 2 more (4 total)
 activation the same turn is blocked by the tap; AP correctly accrues +1/turn and a later
 4-AP activation spends exactly 3, leaving 1 AP unspent (6 Skeletons total, no over-spend).
 Left: nothing — awaiting live playtest.
+
+## 2026-09-04 — task 1421 (in progress)
+Plan: prior session (task 1421) confirmed all 27 heroes (incl. ax-01) already exist in
+game.json with valid stats/abilities, and PR #36 (merged just before this session) fixed
+the frontend `isDeckEligible` filter that hid heroes without a playCost from the deck
+builder pool. Investigating whether the server-side `GameQueries.IsDeckEligible` (C#)
+needs the same hero exemption — it currently only checks PlayCost/PlayCosts, so saving a
+custom deck containing ax-01 or any of the other 22 no-cost heroes would still be
+rejected by `ValidateDeck` even though the frontend now shows them as addable.
