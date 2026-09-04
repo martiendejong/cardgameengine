@@ -587,3 +587,14 @@ technique this task's own commits already used) to stay at the 60-card cap.
 Verified: `dotnet build` clean, 0 errors. Full write-up:
 `jengo-knowledge-private/knowledge/powershell-convertto-json-mojibake-corrupts-entire-file-1426.md`.
 Left: nothing agent-doable — same human visual-pass caveat as above.
+
+## 2026-09-04 — task 1510 (WIP)
+Plan: task's own description/comments were empty — only the title "New Alchemists deck:
+Opus Magnus — reagent buff stack on unstoppable golem" to go on. Investigated: no
+"Opus Magnus"/"unstoppable golem" card exists yet; Iron Golem's own flavor text already
+reads "Slow, patient, unstoppable" (the "unstoppable golem" the title means). Adding a new
+Alchemist spell "Opus Magnus" (3 reagents) that permanently (stacks on recast) buffs a
+target Golem's Attack, restricted via a new "golem" tag on the 4 Alchemist golem units
+(guard-golem, iron-golem, adaptive-golem, alchemists-stone-golem). Pure data change
+(`modify_property` + tag-scoped `choice` already exist in the engine; `cardText.ts` already
+renders both generically) — trimming reagent-infusion's precon count to keep the 60-card cap.
