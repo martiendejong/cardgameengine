@@ -493,3 +493,14 @@ Broader post-fix sweep across 5 more faction pairs (including factions with no r
 heroes at all): 0 draws in all of them.
 Left: nothing agent-doable. Balance (e.g. machine vs conclave running 20-0 in the sweep
 above) is explicitly out of scope per the task's own note.
+
+## 2026-09-04 — task 1512 (WIP)
+Plan: task description is empty (title only: "New Machine deck: Sentry Grid — auto-turret
+lockdown + freeze control"). Following the established precedent for this class of task
+(PR #14 counter-infiltration, PR #15 anti-swarm, PR #35 20-cards-per-faction — all shipped
+from a loose brief, no detailed ClickUp spec) rather than blocking on `needs input`: adding
+a themed ~6-card "Sentry Grid" sub-set to the Machine faction card pool (standalone turret
+modules + a support building + a control spell), reusing only already-registered effect
+types (damage, direct_damage, freeze, untap, tap) — no new engine mechanics. Will proportionally
+trim the machine precon deck (already at the 60-card cap) to make room, matching task 1426's
+technique.
