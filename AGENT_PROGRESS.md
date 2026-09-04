@@ -657,3 +657,16 @@ Left: same bug classes (missing HQ/hero split, `resource`/`property` typos) like
 the other 8 decks in PR #42 too — only fixed engine-wide for the 2 crash-causing key
 renames; each sibling deck's own card-specific structural issues (missing choice/onPlay/
 slots, same as this deck had) are still that task's own scope to verify, not fixed here.
+
+## 2026-09-04 — task 1508
+Plan: task 1508 asks for the Hunks "Fortress Eternal" deck (`hunks-fortress`, cards
+prefixed `fort-`). Its HQ-can't-start-a-match bug is already fixed by PR #44's
+engine-wide HQ/hero-split + resourceId/propertyId rename. Auditing `fort-`'s own 24
+cards the same way PR #44 audited `merch-`'s: 9 cards use `"triggers":[{"event":"onPlay"}]`,
+which `TriggerService` never fires (no `CardPlayed` case) — dead code, same silent-no-op
+class of bug as PR #44's orphaned-`effects` fix. 3 of those 9 are equipment with no
+`slots`/`attachTo` at all (can never attach). 5 more cards use `heal`/`modify_property`
+with `scope:"player"+tag:"building"` intending a mass building-heal/buff, but
+`EffectContext.ResolveScope()` only understands self/target/host scopes — this pattern is
+unique to `fort-` (grepped 0 hits elsewhere), so it's a fresh authoring bug, not a known
+established (if ugly) convention.
