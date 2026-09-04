@@ -24984,8 +24984,7 @@
               "amount": 3
             },
             {
-              "type": "heal",
-              "scope": "player",
+              "type": "heal_all_tagged",
               "tag": "building",
               "amount": 3
             }
@@ -25023,12 +25022,6 @@
           ],
           "conditions": [],
           "effects": [
-            {
-              "type": "gain_resource_all_tagged",
-              "tag": "siege",
-              "resourceId": "siege_trigger",
-              "amount": 0
-            },
             {
               "type": "direct_damage",
               "scope": "opponent",
@@ -25080,20 +25073,16 @@
       "icon": "🧱",
       "artworkDescription": "A stocky craftsman with calloused hands",
       "deckLimit": "unlimited",
-      "triggers": [
-        {
-          "event": "onPlay",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "growth",
-              "amount": 1
-            }
-          ]
-        }
-      ]
+      "onPlay": {
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "growth",
+            "amount": 1
+          }
+        ]
+      }
     },
     {
       "id": "fort-quarry-worker",
@@ -25206,11 +25195,18 @@
             }
           ],
           "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "building",
+            "min": 1,
+            "max": 1,
+            "requireUnderConstruction": true
+          },
           "effects": [
             {
               "type": "add_progress",
-              "scope": "player",
-              "tag": "building",
+              "scope": "target",
               "amount": 1
             }
           ]
@@ -25274,20 +25270,16 @@
       ],
       "icon": "🪓",
       "artworkDescription": "A massive warrior swinging a two-handed maul",
-      "triggers": [
-        {
-          "event": "onPlay",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "growth",
-              "amount": 2
-            }
-          ]
-        }
-      ]
+      "onPlay": {
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "growth",
+            "amount": 2
+          }
+        ]
+      }
     },
     {
       "id": "fort-veterans-bulwark",
@@ -25332,8 +25324,7 @@
               "amount": 2
             },
             {
-              "type": "heal",
-              "scope": "player",
+              "type": "heal_all_tagged",
               "tag": "building",
               "amount": 1
             }
@@ -25356,7 +25347,8 @@
       },
       "housingProvided": 0,
       "tags": [
-        "siege"
+        "siege",
+        "building"
       ],
       "icon": "🧱",
       "artworkDescription": "A thick section of dressed granite wall",
@@ -25391,7 +25383,8 @@
       },
       "housingProvided": 1,
       "tags": [
-        "siege"
+        "siege",
+        "building"
       ],
       "icon": "🏯",
       "artworkDescription": "A reinforced section of fortress wall",
@@ -25447,7 +25440,8 @@
       "housingProvided": 2,
       "tags": [
         "siege",
-        "ranged"
+        "ranged",
+        "building"
       ],
       "icon": "🗼",
       "artworkDescription": "A tall wooden siege tower on iron-rimmed wheels",
@@ -25504,7 +25498,8 @@
       "housingProvided": 1,
       "tags": [
         "siege",
-        "ranged"
+        "ranged",
+        "building"
       ],
       "icon": "💣",
       "artworkDescription": "A squat reinforced bunker housing a massive iron cannon",
@@ -25564,7 +25559,8 @@
       },
       "housingProvided": 3,
       "tags": [
-        "siege"
+        "siege",
+        "building"
       ],
       "icon": "🚪",
       "artworkDescription": "A colossal iron-banded gate",
@@ -25622,7 +25618,8 @@
       },
       "housingProvided": 2,
       "tags": [
-        "resource-node"
+        "resource-node",
+        "building"
       ],
       "icon": "🔨",
       "artworkDescription": "A hulking forge building belching smoke",
@@ -25681,7 +25678,8 @@
       },
       "housingProvided": 2,
       "tags": [
-        "resource-node"
+        "resource-node",
+        "building"
       ],
       "icon": "📦",
       "artworkDescription": "A squat stone storehouse",
@@ -25735,7 +25733,8 @@
       "housingProvided": 2,
       "tags": [
         "siege",
-        "ranged"
+        "ranged",
+        "building"
       ],
       "icon": "🔥",
       "artworkDescription": "A vast battery of six massive cannons",
@@ -25789,28 +25788,21 @@
       },
       "icon": "🪨",
       "artworkDescription": "Magical runes blaze across fortress stonework",
-      "triggers": [
-        {
-          "event": "onPlay",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "heal",
-              "scope": "player",
-              "tag": "building",
-              "amount": 4
-            },
-            {
-              "type": "modify_property",
-              "scope": "player",
-              "tag": "building",
-              "propertyId": "armor",
-              "amount": 1,
-              "duration": "end_of_turn"
-            }
-          ]
-        }
-      ]
+      "onPlay": {
+        "effects": [
+          {
+            "type": "heal_all_tagged",
+            "tag": "building",
+            "amount": 4
+          },
+          {
+            "type": "buff_tag_until_end_of_turn",
+            "tag": "building",
+            "propertyId": "armor",
+            "amount": 1
+          }
+        ]
+      }
     },
     {
       "id": "fort-siege-barrage",
@@ -25822,20 +25814,15 @@
       },
       "icon": "💥",
       "artworkDescription": "A volley of massive boulders and cannonballs",
-      "triggers": [
-        {
-          "event": "onPlay",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "direct_damage",
-              "scope": "opponent",
-              "target": "hq",
-              "amount": 6
-            }
-          ]
-        }
-      ]
+      "onPlay": {
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "opponent",
+            "amount": 6
+          }
+        ]
+      }
     },
     {
       "id": "fort-emergency-repair",
@@ -25844,25 +25831,20 @@
       "playCost": 2,
       "icon": "🛠️",
       "artworkDescription": "Workers scramble over a damaged wall section",
-      "triggers": [
-        {
-          "event": "onPlay",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "draw_cards",
-              "scope": "player",
-              "amount": 1
-            },
-            {
-              "type": "heal",
-              "scope": "player",
-              "tag": "building",
-              "amount": 3
-            }
-          ]
-        }
-      ]
+      "onPlay": {
+        "effects": [
+          {
+            "type": "draw_cards",
+            "scope": "player",
+            "amount": 1
+          },
+          {
+            "type": "heal_all_tagged",
+            "tag": "building",
+            "amount": 3
+          }
+        ]
+      }
     },
     {
       "id": "fort-breach-stopper",
@@ -25874,26 +25856,27 @@
       },
       "icon": "🛡️",
       "artworkDescription": "A wall of shimmering force energy slams into place",
-      "triggers": [
-        {
-          "event": "onPlay",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "freeze",
-              "scope": "opponent",
-              "tag": "soldier",
-              "amount": 1
-            },
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "growth",
-              "amount": 1
-            }
-          ]
-        }
-      ]
+      "onPlay": {
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "tag": "soldier",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "freeze",
+            "scope": "target"
+          },
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "growth",
+            "amount": 1
+          }
+        ]
+      }
     },
     {
       "id": "fort-siege-harness",
@@ -25903,55 +25886,49 @@
         "gold": 2,
         "growth": 1
       },
-      "icon": "🦺",
-      "artworkDescription": "A reinforced leather-and-iron body harness",
-      "triggers": [
+      "slots": [
+        "body"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
         {
-          "event": "onPlay",
-          "conditions": [
-            {
-              "type": "is_attached"
-            }
-          ],
-          "effects": [
-            {
-              "type": "modify_property",
-              "scope": "target",
-              "propertyId": "armor",
-              "amount": 2
-            },
-            {
-              "type": "modify_property",
-              "scope": "target",
-              "propertyId": "attack",
-              "amount": 1
-            }
-          ]
+          "propertyId": "armor",
+          "amount": 2
+        },
+        {
+          "propertyId": "attack",
+          "amount": 1
         }
-      ]
+      ],
+      "icon": "🦺",
+      "artworkDescription": "A reinforced leather-and-iron body harness"
     },
     {
       "id": "fort-engineers-kit",
       "name": "Engineer's Kit",
       "objectType": "equipment",
       "playCost": 2,
+      "slots": [
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 2
+        }
+      ],
       "icon": "🧰",
       "artworkDescription": "A battered iron toolbox",
       "triggers": [
         {
-          "event": "onPlay",
+          "event": "onTurnStart",
           "conditions": [
             {
               "type": "is_attached"
             }
           ],
           "effects": [
-            {
-              "type": "modify_property",
-              "scope": "target",
-              "propertyId": "attack",
-              "amount": 2
-            },
             {
               "type": "gain_resource",
               "scope": "player",
@@ -25970,38 +25947,22 @@
         "gold": 3,
         "growth": 2
       },
-      "icon": "🔩",
-      "artworkDescription": "Thick overlapping iron plates bolted onto a building's exterior",
-      "triggers": [
+      "slots": [
+        "body"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
         {
-          "event": "onPlay",
-          "conditions": [
-            {
-              "type": "is_attached"
-            }
-          ],
-          "effects": [
-            {
-              "type": "modify_property",
-              "scope": "target",
-              "propertyId": "armor",
-              "amount": 3
-            },
-            {
-              "type": "modify_property",
-              "scope": "target",
-              "propertyId": "maxHp",
-              "amount": 4
-            },
-            {
-              "type": "modify_property",
-              "scope": "target",
-              "propertyId": "currentHp",
-              "amount": 4
-            }
-          ]
+          "propertyId": "armor",
+          "amount": 3
+        },
+        {
+          "propertyId": "maxHp",
+          "amount": 4
         }
-      ]
+      ],
+      "icon": "🔩",
+      "artworkDescription": "Thick overlapping iron plates bolted onto a defender's armor"
     }
   ],
   "decks": [

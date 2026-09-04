@@ -657,3 +657,69 @@ Left: same bug classes (missing HQ/hero split, `resource`/`property` typos) like
 the other 8 decks in PR #42 too — only fixed engine-wide for the 2 crash-causing key
 renames; each sibling deck's own card-specific structural issues (missing choice/onPlay/
 slots, same as this deck had) are still that task's own scope to verify, not fixed here.
+
+## 2026-09-04 — task 1508
+Plan: task 1508 asks for the Hunks "Fortress Eternal" deck (`hunks-fortress`, cards
+prefixed `fort-`). Its HQ-can't-start-a-match bug is already fixed by PR #44's
+engine-wide HQ/hero-split + resourceId/propertyId rename. Auditing `fort-`'s own 24
+cards the same way PR #44 audited `merch-`'s: 9 cards use `"triggers":[{"event":"onPlay"}]`,
+which `TriggerService` never fires (no `CardPlayed` case) — dead code, same silent-no-op
+class of bug as PR #44's orphaned-`effects` fix. 3 of those 9 are equipment with no
+`slots`/`attachTo` at all (can never attach). 5 more cards use `heal`/`modify_property`
+with `scope:"player"+tag:"building"` intending a mass building-heal/buff, but
+`EffectContext.ResolveScope()` only understands self/target/host scopes — this pattern is
+unique to `fort-` (grepped 0 hits elsewhere), so it's a fresh authoring bug, not a known
+established (if ugly) convention.
+
+Done: fixed all 24 `fort-` cards' remaining defects (the HQ-can't-start-a-match crash was
+already fixed engine-wide by PR #44). Engine-wide additions (both reusable by every deck,
+matching PR #44's "shared mechanism" precedent): a new `heal_all_tagged` effect handler
+(mirrors `gain_resource_all_tagged`) so mass building-heal effects actually work instead of
+silently healing whichever object happened to be `Source`; and a new `"opponent"` scope in
+`EffectContext.ResolveScope()` resolving to the opponent's HQ object — every "siege" building
+across all 9 new precon decks used `scope:"opponent"` for its per-turn `direct_damage`, which
+previously resolved to `Source` (the building/spell itself) via the same "unrecognized scope
+falls to the default case" bug. `fort-`-scoped content fixes: converted 6 cards' dead
+`triggers:[{event:onPlay}]` to real top-level `onPlay` blocks; gave 3 equipment cards
+`slots`/`attachTo`/`attachModifiers` (Engineer's Kit kept its per-turn growth trigger, now on
+`onTurnStart` — the one trigger event that actually fires for an attached object — instead of
+the dead `onPlay`); converted Fortify's `modify_property`+fake `"duration"` field to the real
+`buff_tag_until_end_of_turn` effect; gave Siege Engineer's "Emplace Artillery" a real
+`choice`(`objectType:"building"`, `requireUnderConstruction:true`) mirroring `master-builder`/
+`handy-hunk`'s working convention, instead of a dead `scope:"player"+tag` that always resolved
+to the ability's own non-building source; gave Breach Stopper a real `choice`
+(`controller:"opponent"`, `tag:"soldier"`) instead of a dead `scope:"opponent"+tag` freeze;
+and added a real `"building"` tag to all 8 `fort-` building cards (previously nothing in the
+whole file used `"building"` as a tag — only as an `objectType` — so the `heal_all_tagged`/
+`buff_tag_until_end_of_turn` fixes above had nothing to match without it).
+Verified: `dotnet build` clean, 0 errors/warnings. `dotnet test` 9/9 pass — the pre-existing
+4 plus 5 new `FortressEternalDeckTests` that drive the real engine (`RuleEngine`, no bot, no
+mocks) through each fixed mechanism directly: Mason's onPlay growth gain, Fortify's
+heal-all-buildings + armor buff, Siege Barrage hitting the opponent's HQ specifically (not
+itself), Siege Harness actually attaching with its stat bonuses applying, Breach Stopper
+freezing a chosen enemy soldier. Direct unit tests were necessary here because the bot AI
+doesn't reliably choose to play cheap units/equipment/situational spells, so bot-vs-bot win
+rate alone couldn't prove any one of these fixes fires. Also ran the real engine via
+`/api/simulate`: 340 bot-vs-bot games, `hunks-fortress` vs all 17 other decks (17 matchups x
+20 games) — zero engine errors throughout.
+Left: Emplace Artillery's new choice targeting is mechanically correct but has no valid
+target within this deck alone (none of fort-'s own buildings ever set `constructionRequirement`,
+so none enter play "under construction") — left as-is rather than adding a construction-time
+mechanic to a card's stats, which would be a balance change beyond this task's bug-fix scope.
+
+## 2026-09-05 — task 1508 (round 2, PR #45 review fix)
+Done: fixed the one remaining CHANGES REQUESTED item — the hero's "Coordinated Barrage"
+ability (`fort-siege-commander`) paired a no-op `gain_resource_all_tagged` (`amount:0`) with
+a `direct_damage` effect carrying a `perTaggedBuilding` field `EffectDefinition` never
+declared, so it was silently dropped by JSON deserialization and the ability always dealt a
+flat 2 damage regardless of siege buildings controlled. Added
+`EffectDefinition.PerTaggedBuilding`; `direct_damage`'s handler now multiplies `Amount` by the
+caster's own tagged-object count when it's set (same tag-enumeration pattern as
+`heal_all_tagged`/`gain_resource_all_tagged`). Dropped the no-op companion effect from the
+card data per the reviewer's own suggestion.
+Verified: `dotnet build` clean, 0 warnings/errors. `dotnet test` 10/10 pass — added
+`Coordinated_barrage_scales_damage_by_siege_buildings_controlled_via_perTaggedBuilding`,
+which drives the real engine through `ActivateAbility` with 2 siege-tagged buildings on the
+battlefield and asserts the opponent HQ takes 4 damage (2 base × 2 buildings), not the old
+flat 2.
+Left: nothing — this closes the CHANGES REQUESTED review on PR #45.

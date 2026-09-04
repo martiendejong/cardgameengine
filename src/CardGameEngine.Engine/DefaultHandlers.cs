@@ -389,7 +389,10 @@ public static class DefaultHandlers
         e.Register("direct_damage", ctx =>
         {
             var obj = ctx.ResolveScope("target");
-            if (obj != null) m.ApplyDirectDamage(ctx.Game, obj, ctx.Effect.Amount ?? 0, ctx.Source);
+            var amount = ctx.Effect.Amount ?? 0;
+            if (ctx.Effect.PerTaggedBuilding is { } tag)
+                amount *= GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id).Count(o => o.Tags.Contains(tag));
+            if (obj != null) m.ApplyDirectDamage(ctx.Game, obj, amount, ctx.Source);
         });
 
         e.Register("draw_cards", ctx =>
@@ -455,6 +458,17 @@ public static class DefaultHandlers
             foreach (var obj in GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
                          .Where(o => o.Tags.Contains(ctx.Effect.Tag ?? "")).ToList())
                 m.GainEntityResource(ctx.Game, obj, resId, amount);
+        });
+
+        // Mass heal for cards that patch up every friendly building/tag at once (Fortify,
+        // Emergency Repair) — mirrors gain_resource_all_tagged's tag enumeration; "self"/
+        // "target"/"host" scope alone (ResolveScope) can't reach more than one object.
+        e.Register("heal_all_tagged", ctx =>
+        {
+            var amount = ctx.Effect.Amount ?? 0;
+            foreach (var obj in GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
+                         .Where(o => o.Tags.Contains(ctx.Effect.Tag ?? "")).ToList())
+                m.Heal(ctx.Game, obj, amount);
         });
 
         // A spy leaves your battlefield and burrows under an enemy building

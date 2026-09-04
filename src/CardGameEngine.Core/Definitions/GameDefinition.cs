@@ -230,6 +230,9 @@ public class EffectDefinition
     public bool IgnoreHousing { get; set; } // for summon: bypass the housing-capacity check (e.g. Muster)
     public string? Line { get; set; } // AoE effects: only units on this battlefield line ("front"/"back")
     public int? MaxHp { get; set; }   // AoE effects: only units with effective maxHp at or below this
+    // direct_damage: when set, multiplies Amount by how many objects the acting player
+    // controls with this tag (e.g. Coordinated Barrage scaling by siege buildings held).
+    public string? PerTaggedBuilding { get; set; }
 }
 
 public class PlayTimingDefinition

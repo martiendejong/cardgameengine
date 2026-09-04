@@ -69,6 +69,12 @@ public class EffectContext
             "host" => Source?.AttachedToId != null
                 ? Game.Objects.FirstOrDefault(o => o.Id == Source.AttachedToId)
                 : null,
+            // siege-style "hit the enemy's home base" effects (direct_damage on a
+            // building's onTurnStart trigger, "target": "hq" in the card data — that
+            // field isn't a real schema key, this scope is what actually resolves it)
+            "opponent" => GameQueries.GetOpponent(Game, Player) is { } opp
+                ? GameQueries.FindResourceBank(Game, opp.Id)
+                : null,
             _ => Source
         };
     }
