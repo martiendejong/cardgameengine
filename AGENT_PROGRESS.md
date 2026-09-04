@@ -626,3 +626,34 @@ intact) in their original chronological position, ahead of the 1419 entry.
 Verified: diff against the merge of 901d8db's tail + current file is a pure addition (120
 lines, 0 removals) - no other content touched.
 Left: nothing.
+
+## 2026-09-04 — task 1511 (Grand Merchant Guild deck)
+PR #42 added the `town-merchant` deck for this task (and 8 sibling decks) but it was
+completely unplayable: `ValidateDeck` rejected the HQ card outright, and every new card's
+abilities used wrong JSON keys (`resource`/`property` instead of `resourceId`/`propertyId`),
+so `gain_resource`/`modify_property` effects null-crashed the engine or silently no-opped.
+PR #42 merged (by Martien) mid-session, before this fix could land on that branch, so this
+is a follow-up PR on a fresh branch off master rather than a push to #42's branch.
+Fixed for `town-merchant` specifically: HQ/hero moved out of the `cards` pool into the
+deck's `hq`/`hero` fields (all 9 new decks shared this bug, fixed for all 9 since it's one
+shared file); renamed `resource`→`resourceId` (191 instances on current master, all 9
+decks) and `property`→`propertyId` (24 instances) engine-wide; then, scoped to just this
+deck's 24 cards: wrapped 5 spell cards' orphaned top-level `effects` in a real `onPlay`
+block (they were silently inert — no `Effects` property exists on `CardDefinition`), added
+`choice`/`scope:target` to 2 units' damage abilities that had no real targeting, converted 3
+`buff_tag_until_end_of_turn`+`property:cost_discount` effects (not a real stat) to the actual
+`cost_discount` effect type, and gave 3 equipment cards `slots`/`attachTo` (missing entirely,
+so they could never attach) — `merch-wealthy-armor` also moved from a broken ability to the
+standard declarative `attachModifiers`.
+Verified: `dotnet build` clean, 0 errors/warnings; `dotnet test` 4/4 pass (the
+`CardGameEngine.Engine.Tests` project landed on master since PR #42 branched). Ran the real
+engine via `/api/simulate` (not a mock) — 495 bot-vs-bot games total across two passes,
+`town-merchant` vs all 9 factions — zero engine errors after the fix (vs. immediate crash
+before). Win rates are low (0–8%, heavy on draws), but a `town`-vs-`raiders` baseline came
+back 100% draws too — this repo's bot AI is broadly stalemate-prone regardless of deck (see
+task 1499), not a `town-merchant`-specific regression; left as a follow-up, matching how
+task 1510 treated the same class of issue.
+Left: same bug classes (missing HQ/hero split, `resource`/`property` typos) likely affect
+the other 8 decks in PR #42 too — only fixed engine-wide for the 2 crash-causing key
+renames; each sibling deck's own card-specific structural issues (missing choice/onPlay/
+slots, same as this deck had) are still that task's own scope to verify, not fixed here.
