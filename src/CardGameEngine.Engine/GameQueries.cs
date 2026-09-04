@@ -6,14 +6,19 @@ namespace CardGameEngine.Engine;
 /// <summary>Read-only helpers over game state. No mutations, no events.</summary>
 public static class GameQueries
 {
-    public static bool IsObjectTypeOrSubtype(GameInstance game, string objectType, string targetType)
+    public static bool IsObjectTypeOrSubtype(GameInstance game, string objectType, string targetType) =>
+        IsObjectTypeOrSubtype(game.Definition, objectType, targetType);
+
+    /// <summary>Same type-hierarchy walk as the GameInstance overload, for call sites that only
+    /// have the static GameDefinition (no live match) — e.g. deck-eligibility checks.</summary>
+    public static bool IsObjectTypeOrSubtype(GameDefinition definition, string objectType, string targetType)
     {
         if (objectType == targetType) return true;
-        var typeDef = game.Definition.ObjectTypes.FirstOrDefault(t => t.Id == objectType);
+        var typeDef = definition.ObjectTypes.FirstOrDefault(t => t.Id == objectType);
         while (typeDef?.ParentType != null)
         {
             if (typeDef.ParentType == targetType) return true;
-            typeDef = game.Definition.ObjectTypes.FirstOrDefault(t => t.Id == typeDef.ParentType);
+            typeDef = definition.ObjectTypes.FirstOrDefault(t => t.Id == typeDef.ParentType);
         }
         return false;
     }
@@ -92,8 +97,18 @@ public static class GameQueries
         return new Dictionary<string, int>();
     }
 
-    public static bool IsDeckEligible(CardDefinition cardDef) =>
-        cardDef.PlayCost != null || cardDef.PlayCosts != null;
+    /// <summary>
+    /// A card belongs in deck-builder pools when it has any play cost — single-resource
+    /// (playCost, e.g. Peasant) or multi-resource (playCosts, e.g. Soldier's gold+training).
+    /// Hero-lineage cards are always eligible regardless of play cost: most heroes enter via
+    /// the lobby/deck-builder hero picker (no playCost at all, e.g. ax-01), not from hand, but
+    /// still need to be selectable in a custom deck's card pool (task 1421). Mirrors the
+    /// frontend's isDeckEligible (frontend/src/utils/deckEligibility.ts, task 1421 follow-up
+    /// to PR #36) so both sides agree on what "deck-eligible" means.
+    /// </summary>
+    public static bool IsDeckEligible(GameDefinition definition, CardDefinition cardDef) =>
+        IsObjectTypeOrSubtype(definition, cardDef.ObjectType, "hero")
+        || cardDef.PlayCost != null || cardDef.PlayCosts != null;
 
     /// <summary>
     /// Validates a deck's card ids/counts against a game definition's card pool and, for
@@ -114,7 +129,7 @@ public static class GameQueries
             var cardDef = definition.Cards.FirstOrDefault(c => c.Id == cardId);
             if (cardDef == null)
                 return $"unknown card '{cardId}'";
-            if (!isAdmin && !IsDeckEligible(cardDef))
+            if (!isAdmin && !IsDeckEligible(definition, cardDef))
                 return $"card '{cardDef.Name}' is not deck-eligible";
         }
 

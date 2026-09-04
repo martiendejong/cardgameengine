@@ -468,6 +468,27 @@ activation the same turn is blocked by the tap; AP correctly accrues +1/turn and
 4-AP activation spends exactly 3, leaving 1 AP unspent (6 Skeletons total, no over-spend).
 Left: nothing — awaiting live playtest.
 
+## 2026-09-04 — task 1421
+Done: confirmed all 27 heroes (incl. ax-01) already exist in game.json with valid
+stats/tags/abilities (prior session, task 908/PR #10) and the frontend deck-builder pool
+already shows them (PR #36, merged just before this session). Found the real remaining
+gap: `GameQueries.IsDeckEligible` (C#) had no hero exemption, so `ValidateDeck` — called
+by both `DeckService.SaveDeck` (My Decks) and `MatchService.CreateMatch` (Lobby) — still
+rejected ax-01 and 22 other no-playCost heroes the instant a player put one in a custom
+deck's card list, even though the frontend now displays them as addable. PR #37 mirrors
+the frontend's hero exemption into the server validator via the existing
+`IsObjectTypeOrSubtype` type-hierarchy walk (added a `GameDefinition` overload so
+`IsDeckEligible` doesn't need a live `GameInstance`).
+Verified: `dotnet build` clean, 0 warnings/errors. Throwaway harness deserializing the
+real game.json and calling the real engine functions confirmed: all 27 heroes now report
+`IsDeckEligible == true` (including the 4 that already worked via ascension/succession
+play costs — no regression); `ValidateDeck(isAdmin:false)` accepts a realistic 60-card
+custom deck containing ax-01; a non-hero, no-cost control card is still correctly
+rejected (fix didn't over-widen eligibility); a full `RuleEngine.ExecuteSetup` match with
+ax-01 as the chosen hero places it on the battlefield with attack=3/currentHp=12/armor=1
+and its Overdrive ability intact.
+Left: nothing — awaiting human eyeball in the live deck builder / a match.
+
 ## 2026-09-04 — task 1411
 Done: Hunk's "Work" ability (Tap → gain 1 Gold) was condition-free, letting a lone Hunk
 print Gold every turn with no mine at all — bypassing the mine-gated economy Gold Mine's

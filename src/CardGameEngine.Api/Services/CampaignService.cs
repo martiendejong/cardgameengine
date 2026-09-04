@@ -190,7 +190,7 @@ public class CampaignService
     /// </summary>
     public void AttachQuickMatchReward(GameInstance game, string humanUserId, string humanPlayerId, string botPlayerId)
     {
-        var pool = game.Definition.Cards.Where(GameQueries.IsDeckEligible).ToList();
+        var pool = game.Definition.Cards.Where(c => GameQueries.IsDeckEligible(game.Definition, c)).ToList();
         if (pool.Count == 0) return;
 
         var rewardCard = pool[Random.Shared.Next(pool.Count)].Id;
