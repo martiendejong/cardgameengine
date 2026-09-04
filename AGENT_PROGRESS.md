@@ -468,6 +468,126 @@ activation the same turn is blocked by the tap; AP correctly accrues +1/turn and
 4-AP activation spends exactly 3, leaving 1 AP unspent (6 Skeletons total, no over-spend).
 Left: nothing — awaiting live playtest.
 
+## 2026-09-04 — task 1421
+Done: confirmed all 27 heroes (incl. ax-01) already exist in game.json with valid
+stats/tags/abilities (prior session, task 908/PR #10) and the frontend deck-builder pool
+already shows them (PR #36, merged just before this session). Found the real remaining
+gap: `GameQueries.IsDeckEligible` (C#) had no hero exemption, so `ValidateDeck` — called
+by both `DeckService.SaveDeck` (My Decks) and `MatchService.CreateMatch` (Lobby) — still
+rejected ax-01 and 22 other no-playCost heroes the instant a player put one in a custom
+deck's card list, even though the frontend now displays them as addable. PR #37 mirrors
+the frontend's hero exemption into the server validator via the existing
+`IsObjectTypeOrSubtype` type-hierarchy walk (added a `GameDefinition` overload so
+`IsDeckEligible` doesn't need a live `GameInstance`).
+Verified: `dotnet build` clean, 0 warnings/errors. Throwaway harness deserializing the
+real game.json and calling the real engine functions confirmed: all 27 heroes now report
+`IsDeckEligible == true` (including the 4 that already worked via ascension/succession
+play costs — no regression); `ValidateDeck(isAdmin:false)` accepts a realistic 60-card
+custom deck containing ax-01; a non-hero, no-cost control card is still correctly
+rejected (fix didn't over-widen eligibility); a full `RuleEngine.ExecuteSetup` match with
+ax-01 as the chosen hero places it on the battlefield with attack=3/currentHp=12/armor=1
+and its Overdrive ability intact.
+Left: nothing — awaiting human eyeball in the live deck builder / a match.
+
+## 2026-09-04 — task 1411
+Done: Hunk's "Work" ability (Tap → gain 1 Gold) was condition-free, letting a lone Hunk
+print Gold every turn with no mine at all — bypassing the mine-gated economy Gold Mine's
+own `harvest` ability already implements (design-spec.md §2.5). Added a new engine
+condition `controls_tagged` (positive counterpart of the existing `controls_no_tagged`)
+and put it on Work requiring the player control a `resource-node`-tagged entity (Gold
+Mine today, any future mine automatically). `frontend/src/utils/cardText.ts` renders it
+as "Requires you control a Resource Node" so the card text/tooltip stays consistent with
+the rule (Done-when item). The Hunks faction's default deck had **0** Gold Mine copies
+(its whole "put every Hunk to work" identity ran on the now-gated free gold) — added 3x
+Gold Mine (matching Town's existing count) so the faction keeps a working economy.
+design-spec.md §2.5 updated with a short note. Repair and every other Hunk ability,
+and all 8 other factions, untouched (none of them run Hunk cards).
+Verified: `dotnet build` clean (0 warnings/errors); `npm run build` (tsc -b + vite)
+clean. No test project exists in this repo — matched the established verification
+convention (see task 974/887 entries above): a throwaway RuleEngine harness (real
+`AbilityService`/`ObjectFactory`, no mocks) confirmed Work is rejected with reason
+"Condition not met: controls_tagged" and 0 gold gained while no mine is controlled,
+succeeds and grants exactly 1 gold + taps the Hunk once a Gold Mine is controlled,
+an opponent's mine does NOT satisfy the condition, Repair keeps 0 conditions
+unchanged, the updated Hunks deck (47 cards) passes `GameQueries.ValidateDeck`, and
+Gold Mine's own Harvest ability is unregressed (5→4 reserves, +1 gold, taps the
+Worker). Also ran real bot-vs-bot `/api/simulate` matches (dotnet run, live server)
+before/after the change: Hunks' win rate vs Town/Raiders was already 0% on
+unmodified master (a pre-existing bot-AI weakness, not something this change caused
+or worsened — game logs confirm bots on both branches place Gold Mine and use
+Harvest/Work correctly to generate gold once the mine exists, so the deck is not a
+dead combo, just weak in this bot's hands against these two matchups specifically).
+Left: the Hunks faction's 0% simulated win rate vs Town/Raiders is a separate,
+pre-existing bot-AI/deck-power issue outside this task's scope — filed as JengoWork
+task 1499 rather than folded into this PR.
+
+## 2026-09-04 — task 1426
+Done: added 20 new cards (mix of units/buildings/spells, ~12/3/5 per faction) to each of
+the 8 non-town factions (raiders/machine/conclave/undead/brood/shadow/alchemists/hunks) in
+definitions/town-tcg/game.json — 160 new cards total, data-only. Every card matches its
+faction's existing resource economy (flat gold for raiders/shadow/hunks; playCosts energy/
+mana/corpses/biomass/reagents for machine/conclave/undead/brood/alchemists) and reuses only
+already-registered tags/effects/costs/conditions (no new engine mechanics). Each faction's
+precon deck (`decks[x].cards`, used both as the bot/quick-play deck AND as the source the
+deckbuilder's Faction filter reads card membership from) was already at or within 16 of the
+60-card maxDeckSize cap, so the 20 new card ids were added there too (count 1 each) with a
+mechanical, proportional trim (existing count>1 entries decremented round-robin, highest
+first) freeing exactly enough room — every faction's precon deck still sums to exactly 60.
+Verified: `dotnet build` clean, 0 warnings/errors. A static Python check cross-referenced
+every effect/cost/condition type and resourceId used by all 426 cards (160 new + 266
+existing) against the actual registered vocabulary in DefaultHandlers.cs — 0 errors. Ran
+the real API server and used the built-in `/api/simulate` bot-vs-bot endpoint (exactly the
+tool the repo already ships for balance testing) for every faction's full new-card-inclusive
+precon deck: 8 faction-vs-town runs + 8 faction-vs-faction round-robin runs @ 30 games each,
+plus a further 8 faction-vs-town runs @ 60 games — 1000+ bot-played games total, zero server
+errors/exceptions, confirming every new card's JSON parses and its effects/abilities resolve
+correctly under real bot play (not just static validation). Also captured full game logs for
+8-game samples per faction and confirmed a good fraction of each faction's new cards appear
+by name in actual play (log only retains the *last* game per `/api/simulate` call, so this
+undercounts real coverage — the 1000+-game zero-error result is the stronger signal).
+Balance check: several faction match-ups showed lopsided bot win-rates (e.g. conclave 0%
+vs undead, undead 100% vs brood, brood 0% vs shadow) — before concluding this was caused by
+the new cards, re-ran the identical match-ups against the *unmodified* (git-stashed) game.json
+as a controlled baseline: every one of these skews was already present, at essentially
+identical win/loss/draw counts, before this task's changes (e.g. conclave vs undead was
+0/29/1 baseline and 0/29/1 after). This is a pre-existing bot-AI/game-balance characteristic
+unrelated to card content, out of this task's scope ("Buiten scope: nieuwe game-mechanieken")
+— confirmed the 20-per-faction addition does not introduce or worsen relative imbalance.
+Faction-filter/deckbuilder selectability verified by direct inspection (not a live browser
+pass, matching task 908's precedent for a data-only game.json change): `DeckBuilderPanel.tsx`
+derives a card's faction purely from `Object.keys(precon.cards)` membership, which is now
+confirmed to include exactly the 20 new ids per faction; `isDeckEligible` (playCost present)
+is satisfied by every new card, same mechanism task 972/1072 already validated live.
+Left: nothing agent-doable. A human visual pass in the deckbuilder UI (per the task's own
+"How to test") and the pre-existing cross-faction bot-AI balance skew (separate, larger scope)
+are both left for review/a future task.
+
+## 2026-09-04 — task 1426 (review round)
+Reviewed PR #35 and found the branch's own last commit (f749a06, "remove 160 orphaned WIP
+cards from previous agent run") had corrupted the entire game.json: it round-tripped the
+file through a tool matching PowerShell's `ConvertTo-Json`/`Set-Content` default behavior on
+this host (re-serialized into PowerShell's own JSON style — 4-space padded, UTF-8 BOM — and
+mojibake-corrupted every non-ASCII character it touched). All 426 cards' `icon` fields, 8
+cards' `artworkDescription` fields, and one deck's `description` em-dash were turned into
+garbage Latin-1-supplement byte sequences (e.g. town-hall's icon: U+1F3DB U+FE0F →
+`ðŸ›ï¸`). Confirmed via a full recursive scan for
+Latin-1-supplement-range characters (435 hits pre-fix, 0 post-fix) and confirmed every
+non-flavor (gameplay-affecting) field was byte-identical before/after — the corruption was
+purely cosmetic (icons/flavor text) but total in scope (every card).
+Fixed by rebuilding every surviving card's data from commit 74ef4a6 (the last known-clean
+version — confirmed byte-identical to pre-task master for all 266 original card ids, and
+mechanically identical to the corrupted version for all 426 surviving ids), re-serialized
+in the repo's canonical dotnet `System.Text.Json` style (2-space indent, escaped unicode,
+no BOM) matching every other file in the repo.
+Also merged master (task 1411's Hunk gold-mine gate, task 1050/hero-deck-eligible — neither
+touched by this PR otherwise): applied the same `controls_tagged` condition to `hunk`'s Work
+ability and added `gold-mine: 3` to the Hunks precon deck, trimming 3 more copies from the
+already-tied-at-4 entries (house/reinforced-walls/spear, round-robin highest-first, same
+technique this task's own commits already used) to stay at the 60-card cap.
+Verified: `dotnet build` clean, 0 errors. Full write-up:
+`jengo-knowledge-private/knowledge/powershell-convertto-json-mojibake-corrupts-entire-file-1426.md`.
+Left: nothing agent-doable — same human visual-pass caveat as above.
+
 ## 2026-09-04 — task 1419
 Done: root cause was `RuleEngine.CheckEndConditions`' `all_destroyed` scan counting a
 player's owned objects of the target type (headquarters/hero) with no zone filter — a
@@ -493,3 +613,16 @@ Broader post-fix sweep across 5 more faction pairs (including factions with no r
 heroes at all): 0 draws in all of them.
 Left: nothing agent-doable. Balance (e.g. machine vs conclave running 20-0 in the sweep
 above) is explicitly out of scope per the task's own note.
+
+## 2026-09-04 — task 1419 (review round, AGENT_PROGRESS.md restore)
+Done: reviewed PR #38 (task 1419) - the RuleEngine end-condition fix itself is correct and
+well tested (independently rebuilt clean, xUnit 4/4 pass on master, GameHub/BotService
+broadcast wiring traced end-to-end and confirmed sound). Separately found that the PR's
+own final commit had deleted the AGENT_PROGRESS.md entries for tasks 1421, 1411, 1426, and
+1426 (review round) instead of appending after them - the branch was current with master
+when it started, so this was a straight editing mistake, not a stale-branch merge
+artifact. Restored all four entries verbatim from commit 901d8db (the last point they were
+intact) in their original chronological position, ahead of the 1419 entry.
+Verified: diff against the merge of 901d8db's tail + current file is a pure addition (120
+lines, 0 removals) - no other content touched.
+Left: nothing.
