@@ -457,6 +457,17 @@ public static class DefaultHandlers
                 m.GainEntityResource(ctx.Game, obj, resId, amount);
         });
 
+        // Mass heal for cards that patch up every friendly building/tag at once (Fortify,
+        // Emergency Repair) — mirrors gain_resource_all_tagged's tag enumeration; "self"/
+        // "target"/"host" scope alone (ResolveScope) can't reach more than one object.
+        e.Register("heal_all_tagged", ctx =>
+        {
+            var amount = ctx.Effect.Amount ?? 0;
+            foreach (var obj in GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
+                         .Where(o => o.Tags.Contains(ctx.Effect.Tag ?? "")).ToList())
+                m.Heal(ctx.Game, obj, amount);
+        });
+
         // A spy leaves your battlefield and burrows under an enemy building
         e.Register("infiltrate", ctx =>
         {
