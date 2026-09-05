@@ -244,6 +244,9 @@ export interface DeckRulesDto {
 export interface PreconDeckDto {
   id: string;
   name: string;
+  // Canonical faction id (task 1524) — multiple precon decks share one real faction; the
+  // deck-builder faction filter groups by this. Empty/absent = deck id is its own faction.
+  faction?: string;
   description: string;
   hq: string;
   hero: string;

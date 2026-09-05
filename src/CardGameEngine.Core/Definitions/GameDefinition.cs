@@ -26,6 +26,11 @@ public class PreconDeckDefinition
 {
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";
+    // Canonical faction id (task 1524): several precon decks can belong to one real faction
+    // (e.g. "raiders" covers Blackrock Raiders, Warbond Raiders, and Bloodfang's Wrath), so
+    // the deck-builder faction filter groups by this instead of by deck id. Empty = the deck
+    // is its own faction (fallback keeps older definitions working).
+    public string Faction { get; set; } = "";
     public string Description { get; set; } = "";
     public string Hq { get; set; } = "";   // default headquarters card id
     public string Hero { get; set; } = ""; // default hero card id
