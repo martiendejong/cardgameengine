@@ -18829,8 +18829,8 @@
       "objectType": "hero",
       "properties": {
         "attack": 4,
-        "currentHp": 14,
-        "maxHp": 14,
+        "currentHp": 7,
+        "maxHp": 7,
         "armor": 1,
         "ap": 2
       },
@@ -19739,8 +19739,8 @@
       "objectType": "hero",
       "properties": {
         "attack": 3,
-        "currentHp": 22,
-        "maxHp": 22,
+        "currentHp": 9,
+        "maxHp": 9,
         "armor": 2,
         "ap": 4
       },
@@ -20642,8 +20642,8 @@
       "objectType": "caster-hero",
       "properties": {
         "attack": 3,
-        "currentHp": 22,
-        "maxHp": 22,
+        "currentHp": 7,
+        "maxHp": 7,
         "armor": 1,
         "ap": 5
       },
@@ -21521,8 +21521,8 @@
       "objectType": "necromancer-hero",
       "properties": {
         "attack": 3,
-        "currentHp": 20,
-        "maxHp": 20,
+        "currentHp": 8,
+        "maxHp": 8,
         "armor": 1
       },
       "playCost": 6,
@@ -23175,8 +23175,8 @@
       "objectType": "hero",
       "properties": {
         "attack": 3,
-        "currentHp": 22,
-        "maxHp": 22,
+        "currentHp": 8,
+        "maxHp": 8,
         "armor": 1,
         "ap": 6
       },
@@ -26852,6 +26852,29 @@
       "heroOptions": [
         "fort-siege-commander"
       ]
+    },
+    {
+      "id": "bloodfangs-wrath",
+      "name": "Bloodfang's Wrath",
+      "cards": {
+        "town-hall": 1,
+        "bloodfang": 1,
+        "militia": 4,
+        "soldier": 4,
+        "axe-thrower": 4,
+        "berserker": 4,
+        "pillager": 4,
+        "cutthroat": 4,
+        "brute": 4,
+        "mercenary": 4,
+        "shadow-enforcer": 4,
+        "spear": 4,
+        "opus-philosophers-stone-amulet": 2,
+        "storm-void-surge": 4,
+        "fireball": 4,
+        "hold-assassination-order": 4,
+        "house": 4
+      }
     }
   ],
   "setup": {
