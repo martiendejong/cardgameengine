@@ -25978,6 +25978,6569 @@
       ],
       "icon": "🔩",
       "artworkDescription": "Thick overlapping iron plates bolted onto a defender's armor"
+    },
+    {
+      "id": "plague-bone-archer",
+      "name": "Bone Archer",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "housingCost": 1,
+      "icon": "🏹",
+      "artworkDescription": "A skeletal archer whose ribcage is bound together with strips of rotted leather, nocking an arrow tipped with a festering boil"
+    },
+    {
+      "id": "plague-festering-brute",
+      "name": "Festering Brute",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 4,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "splash"
+      ],
+      "housingCost": 1,
+      "icon": "🧟",
+      "artworkDescription": "An enormous bloated corpse that swings wildly with decaying limbs, spraying infectious pus on nearby enemies with each blow",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "plague-miasma-wraith",
+      "name": "Miasma Wraith",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "👻",
+      "artworkDescription": "A translucent specter trailing a sickly green fog, its hollow eye sockets glowing with diseased light",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "plague-siege-catapult",
+      "name": "Plague Catapult",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "siege",
+        "ranged"
+      ],
+      "housingCost": 2,
+      "icon": "💣",
+      "artworkDescription": "A rusted war catapult manned by skeletal crew, hurling rotted corpse-bombs packed with disease over enemy fortifications"
+    },
+    {
+      "id": "plague-rot-summoner",
+      "name": "Rot Summoner",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "🧙",
+      "artworkDescription": "A hunched plague-priest in tattered robes, gesturing over freshly dug earth to animate the dead below",
+      "abilities": [
+        {
+          "id": "plague-rot-summoner-ab1",
+          "name": "Reanimate",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "cardId": "plague-shambler",
+              "targetZone": "field"
+            }
+          ]
+        }
+      ],
+      "triggers": []
+    },
+    {
+      "id": "plague-necrotic-volley",
+      "name": "Necrotic Volley",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "🪶",
+      "artworkDescription": "A barrage of bone-tipped arrows dipped in plague ichor arcing through a sickly amber sky",
+      "onPlay": {
+        "id": "plague-necrotic-volley-effect",
+        "name": "Cast: Necrotic Volley",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "all_opponent_units",
+            "amount": 1
+          },
+          {
+            "type": "give_poison",
+            "scope": "all_opponent_units",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "plague-consume-the-fallen",
+      "name": "Consume the Fallen",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "🌑",
+      "artworkDescription": "Shadowy tendrils tear apart a fallen warrior's corpse, drawing its dark essence into the necromancer's outstretched hands",
+      "onPlay": {
+        "id": "plague-consume-the-fallen-effect",
+        "name": "Cast: Consume the Fallen",
+        "effects": [
+          {
+            "type": "destroy",
+            "scope": "target"
+          },
+          {
+            "type": "draw_cards",
+            "scope": "player",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "plague-deathmark",
+      "name": "Deathmark",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "🩸",
+      "artworkDescription": "A cursed brand of rotting flesh seared onto a target unit, marking it as prey for the undead horde",
+      "onPlay": {
+        "id": "plague-deathmark-effect",
+        "name": "Cast: Deathmark",
+        "effects": [
+          {
+            "type": "buff_property",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": -1
+          },
+          {
+            "type": "give_poison",
+            "scope": "target",
+            "amount": 2
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "plague-charnel-pit",
+      "name": "Charnel Pit",
+      "objectType": "building",
+      "playCost": 3,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7
+      },
+      "housingProvided": 3,
+      "icon": "🕳️",
+      "artworkDescription": "A massive open mass grave reeking of decay, skeletal hands clawing upward from a writhing heap of plague-ridden bodies",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "plague-venom-stalker",
+      "name": "Venom Stalker",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 4,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "retaliate"
+      ],
+      "housingCost": 2,
+      "icon": "🦂",
+      "artworkDescription": "A long-limbed undead predator with hollow veins filled with black venom, stalking silently before striking with poisoned claws",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "give_poison",
+              "scope": "all_opponent_units",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "plague-hollow-sovereign",
+      "name": "Hollow Sovereign",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 4,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "housingCost": 2,
+      "icon": "👑",
+      "artworkDescription": "An ancient undead ruler clad in a crown of fused rib bones, its presence radiating an aura of accelerated decay that withers nearby foes",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "id": "plague-hollow-sovereign-ab1",
+          "name": "Decay Aura",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "all_opponent_units",
+              "propertyId": "attack",
+              "amount": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "merch-debt-collector",
+      "name": "Debt Collector",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3
+      },
+      "tags": [
+        "soldier",
+        "mercenary"
+      ],
+      "icon": "💼",
+      "artworkDescription": "A broad-shouldered collector in a fine coat, ledger tucked under one arm and knuckles wrapped in leather",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "merch-silk-road-scout",
+      "name": "Silk Road Scout",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4
+      },
+      "tags": [
+        "ranged",
+        "worker",
+        "mercenary"
+      ],
+      "icon": "🏹",
+      "artworkDescription": "A wiry desert scout draped in silk scarves, longbow slung over one shoulder and trade maps tucked into a sash",
+      "housingCost": 1,
+      "abilities": [
+        {
+          "id": "merch-silk-road-scout-ab1",
+          "name": "Chart the Route",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "resourceId": "gold",
+              "scope": "player",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": []
+    },
+    {
+      "id": "merch-price-fixer",
+      "name": "Price Fixer",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5
+      },
+      "tags": [
+        "mercenary",
+        "worker"
+      ],
+      "icon": "📊",
+      "artworkDescription": "A pale thin man in spectacles surrounded by stacked ledgers, fingers steepled as he dictates impossible prices to a nervous clerk",
+      "housingCost": 2,
+      "abilities": [
+        {
+          "id": "merch-price-fixer-ab1",
+          "name": "Corner the Market",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "resourceId": "gold",
+              "scope": "player",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "cost_discount",
+              "tag": "mercenary",
+              "resourceId": "gold",
+              "amount": 3,
+              "scope": "player"
+            },
+            {
+              "type": "gain_resource",
+              "resourceId": "gold",
+              "scope": "player",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": []
+    },
+    {
+      "id": "merch-caravan-raider",
+      "name": "Caravan Raider",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 4,
+        "currentHp": 3,
+        "maxHp": 3
+      },
+      "tags": [
+        "soldier",
+        "mercenary"
+      ],
+      "icon": "🗡️",
+      "artworkDescription": "A masked brigand in dust-caked riding leathers, curved blade dripping gold paint, looting a ransacked wagon",
+      "housingCost": 2,
+      "abilities": [],
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resourceId": "gold",
+              "scope": "player",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "merch-profit-guard",
+      "name": "Profit Guard",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 4,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "mercenary",
+        "guard"
+      ],
+      "icon": "🛡️",
+      "artworkDescription": "A massive mercenary in gilded half-plate, standing before a vault door with arms crossed and a no-nonsense expression",
+      "housingCost": 2,
+      "abilities": [
+        {
+          "id": "merch-profit-guard-ab1",
+          "name": "Protective Fee",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 3
+            },
+            {
+              "type": "gain_resource",
+              "resourceId": "gold",
+              "scope": "player",
+              "amount": 1
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "triggers": []
+    },
+    {
+      "id": "merch-market-squeeze",
+      "name": "Market Squeeze",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "🤑",
+      "artworkDescription": "A merchant's iron fist crushing a cluster of rival coin purses, gold coins bursting out",
+      "onPlay": {
+        "id": "merch-market-squeeze-onplay",
+        "name": "Market Squeeze",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "all_opponent_units",
+            "amount": 1
+          },
+          {
+            "type": "gain_resource",
+            "resourceId": "gold",
+            "scope": "player",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "merch-hostile-buyout",
+      "name": "Hostile Buyout",
+      "objectType": "spell",
+      "playCost": 5,
+      "icon": "📜",
+      "artworkDescription": "A gold-sealed contract descending onto a rival's crumbling storefront as coin chests are loaded onto a departing wagon",
+      "onPlay": {
+        "id": "merch-hostile-buyout-onplay",
+        "name": "Hostile Buyout",
+        "effects": [
+          {
+            "type": "destroy",
+            "scope": "target"
+          },
+          {
+            "type": "gain_resource",
+            "resourceId": "gold",
+            "scope": "player",
+            "amount": 4
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "building",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "merch-payroll",
+      "name": "Payroll",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "💳",
+      "artworkDescription": "A steward distributing gleaming coin stacks to a row of eager workers, each perking up with renewed vigour",
+      "onPlay": {
+        "id": "merch-payroll-onplay",
+        "name": "Payroll",
+        "effects": [
+          {
+            "type": "heal",
+            "scope": "all_ally_units",
+            "amount": 2
+          },
+          {
+            "type": "gain_resource",
+            "resourceId": "gold",
+            "scope": "player",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "merch-counting-house",
+      "name": "Counting House",
+      "objectType": "building",
+      "playCost": 5,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7
+      },
+      "housingProvided": 2,
+      "icon": "🏦",
+      "artworkDescription": "A narrow stone building crammed with clerks hunched over candlelit ledgers, stacks of counted coin lining every shelf",
+      "tags": [
+        "resource-node"
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resourceId": "gold",
+              "scope": "player",
+              "amount": 2
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "merch-smuggler",
+      "name": "Smuggler",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2
+      },
+      "tags": [
+        "worker",
+        "peasant"
+      ],
+      "icon": "🎒",
+      "artworkDescription": "A shifty figure in a hooded cloak weaving through night market alleys, bulging sacks slung over both shoulders",
+      "housingCost": 1,
+      "abilities": [
+        {
+          "id": "merch-smuggler-ab1",
+          "name": "Hidden Goods",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resourceId": "gold",
+              "scope": "player",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "merch-toll-warden",
+      "name": "Toll Warden",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "guard",
+        "mercenary"
+      ],
+      "icon": "🚧",
+      "artworkDescription": "A stout official in peaked cap standing at a road barrier, hand outstretched expectantly while armed deputies flank a checkpoint tower",
+      "housingCost": 2,
+      "abilities": [],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resourceId": "gold",
+              "scope": "player",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "opus-rune-scribe",
+      "name": "Rune Scribe",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "worker"
+      ],
+      "icon": "📜",
+      "artworkDescription": "A hunched scholar in ink-stained robes etching glowing runes onto a clay tablet by candlelight",
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "scope": "player",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "opus-tome-golem",
+      "name": "Tome Golem",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "housingCost": 2,
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "📚",
+      "artworkDescription": "A hulking construct assembled from stacked leather-bound tomes, orbited by floating open books that launch arcane bolts",
+      "abilities": [
+        {
+          "id": "opus-tome-golem-ab-inscribe",
+          "name": "Inscribe Knowledge",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "scope": "player",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "opus-archivist-sage",
+      "name": "Archivist Sage",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "worker"
+      ],
+      "icon": "🧙",
+      "artworkDescription": "An elderly robed scholar with a towering stack of reference scrolls under one arm and a glowing quill in the other",
+      "abilities": [
+        {
+          "id": "opus-archivist-sage-ab-study",
+          "name": "Deep Study",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "scope": "player",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "opus-runic-warden",
+      "name": "Runic Warden",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingCost": 2,
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "🔰",
+      "artworkDescription": "A towering stone guardian carved with luminous runic sigils, its chest bearing a pulsing ward-glyph that detonates on death",
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "opus-lexicon-titan",
+      "name": "Lexicon Titan",
+      "objectType": "unit",
+      "playCost": 7,
+      "properties": {
+        "attack": 6,
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 2
+      },
+      "housingCost": 3,
+      "tags": [
+        "soldier",
+        "cleave"
+      ],
+      "icon": "🏛️",
+      "artworkDescription": "A colossal runic construct fashioned in the image of an ancient scholar-god, its body inscribed with every known arcane text, eyes blazing with golden knowledge-light",
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "scope": "player",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "opus-arcane-inscription",
+      "name": "Arcane Inscription",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "✍️",
+      "artworkDescription": "A scholar's hand tracing glowing runes in the air above an open grimoire, pages fluttering with sudden knowledge",
+      "onPlay": {
+        "id": "opus-arcane-inscription-play",
+        "name": "Draw 3 cards",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "scope": "player",
+            "amount": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "opus-rune-shatter",
+      "name": "Rune Shatter",
+      "objectType": "spell",
+      "playCost": 4,
+      "icon": "💢",
+      "artworkDescription": "A binding rune carved into stone explodes outward in a cascade of razor-edged glyphs, shredding the target",
+      "onPlay": {
+        "id": "opus-rune-shatter-play",
+        "name": "Deal 6 damage to target enemy unit",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 6
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "opus-tome-of-poison",
+      "name": "Tome of Poison",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "☠️",
+      "artworkDescription": "A decrepit black grimoire falls open to a page of corrosive glyphs that seep into the target like invisible acid",
+      "onPlay": {
+        "id": "opus-tome-of-poison-play",
+        "name": "Apply 3 poison stacks to target enemy unit",
+        "effects": [
+          {
+            "type": "give_poison",
+            "scope": "target",
+            "amount": 3
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "opus-grand-library",
+      "name": "Grand Library",
+      "objectType": "building",
+      "playCost": 4,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6
+      },
+      "housingProvided": 2,
+      "icon": "📖",
+      "artworkDescription": "A grand vaulted library with towering shelves of glowing tomes, arcane lanterns floating between the stacks, and a mosaic floor of interlocking runic seals",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "scope": "player",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "opus-glyph-walker",
+      "name": "Glyph Walker",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 3,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "🔣",
+      "artworkDescription": "A lithe humanoid construct whose body is entirely composed of shifting, living rune-script that rearranges itself with each step",
+      "abilities": [
+        {
+          "id": "opus-glyph-walker-ab-inscribe",
+          "name": "Rune Mark",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "give_poison",
+              "scope": "target",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "opus-lore-keeper",
+      "name": "Lore Keeper",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 4,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingCost": 2,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "🔭",
+      "artworkDescription": "A robed scholar-commander standing atop a floating dais of open books, directing runic constructs with precise hand signals and arcane notation",
+      "abilities": [
+        {
+          "id": "opus-lore-keeper-ab-empower",
+          "name": "Empower Construct",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "target",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "apex-bone-stalker",
+      "name": "Bone Stalker",
+      "objectType": "unit",
+      "playCost": 2,
+      "housingCost": 1,
+      "properties": {
+        "attack": 3,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "🦴",
+      "artworkDescription": "A lean, sinewy predator draped in the bleached bones of its past kills, crouched low in tall grass with glowing amber eyes",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resourceId": "biomass",
+              "scope": "player",
+              "amount": 1
+            },
+            {
+              "type": "give_poison",
+              "target": "attacker",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "apex-chitin-crusher",
+      "name": "Chitin Crusher",
+      "objectType": "unit",
+      "playCost": 3,
+      "housingCost": 2,
+      "properties": {
+        "attack": 4,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "siege"
+      ],
+      "icon": "🦏",
+      "artworkDescription": "A massive beetle-rhinoceros hybrid with layered chitinous plates forming a battering ram of a head, built for smashing fortifications",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resourceId": "biomass",
+              "scope": "player",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "apex-pack-hunter",
+      "name": "Pack Hunter",
+      "objectType": "unit",
+      "playCost": 2,
+      "housingCost": 1,
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "icon": "🐺",
+      "artworkDescription": "A swift predatory creature running in formation with others of its kind, its body built sleek for coordinated ambush strikes",
+      "triggers": [
+        {
+          "event": "on_ally_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "target": "self",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resourceId": "biomass",
+              "scope": "player",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "apex-trophy-beast",
+      "name": "Trophy Beast",
+      "objectType": "unit",
+      "playCost": 4,
+      "housingCost": 2,
+      "properties": {
+        "attack": 3,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "guard",
+        "retaliate"
+      ],
+      "icon": "🦬",
+      "artworkDescription": "A towering horned megafauna covered in ceremonial scars left by failed hunters, wearing the remnants of weapons lodged in its thick hide as trophies of its own",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resourceId": "biomass",
+              "scope": "player",
+              "amount": 3
+            },
+            {
+              "type": "buff_property",
+              "target": "all_ally_units",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "apex-alpha-predator",
+      "name": "Alpha Predator",
+      "objectType": "unit",
+      "playCost": 5,
+      "housingCost": 3,
+      "properties": {
+        "attack": 5,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "cleave"
+      ],
+      "icon": "🐆",
+      "artworkDescription": "A colossal feline apex creature, twice the size of any predator in the wilds, its golden coat streaked with bio-luminescent markings that pulse when it moves to strike",
+      "triggers": [
+        {
+          "event": "on_kill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resourceId": "biomass",
+              "scope": "player",
+              "amount": 2
+            },
+            {
+              "type": "heal",
+              "target": "self",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resourceId": "biomass",
+              "scope": "player",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "apex-death-mark",
+      "name": "Death Mark",
+      "objectType": "spell",
+      "playCost": 2,
+      "tags": [],
+      "icon": "🎯",
+      "artworkDescription": "A hunter's pheromone glyph is smeared across a target, the entire predator swarm locking its gaze on the marked prey",
+      "onPlay": {
+        "id": "apex-death-mark-effect",
+        "name": "Death Mark",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 3
+          },
+          {
+            "type": "gain_resource",
+            "resourceId": "biomass",
+            "scope": "player",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "apex-predator-surge",
+      "name": "Predator Surge",
+      "objectType": "spell",
+      "playCost": 3,
+      "tags": [],
+      "icon": "⚡",
+      "artworkDescription": "A subsonic roar ripples through the pack, every hunter exploding forward in a synchronized killing charge",
+      "onPlay": {
+        "id": "apex-predator-surge-effect",
+        "name": "Predator Surge",
+        "effects": [
+          {
+            "type": "buff_property",
+            "scope": "all_ally_units",
+            "propertyId": "attack",
+            "amount": 2
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          },
+          {
+            "type": "gain_resource",
+            "resourceId": "biomass",
+            "scope": "player",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "apex-culling-strike",
+      "name": "Culling Strike",
+      "objectType": "spell",
+      "playCost": 1,
+      "tags": [],
+      "icon": "🗡️",
+      "artworkDescription": "A precise predatory lunge ends the suffering of an already wounded prey — the weak do not survive the hunt",
+      "onPlay": {
+        "id": "apex-culling-strike-effect",
+        "name": "Culling Strike",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 5
+          },
+          {
+            "type": "gain_resource",
+            "resourceId": "biomass",
+            "scope": "player",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "apex-trophy-lodge",
+      "name": "Trophy Lodge",
+      "objectType": "building",
+      "playCost": 3,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6
+      },
+      "housingProvided": 2,
+      "tags": [
+        "resource-node"
+      ],
+      "icon": "🏚️",
+      "artworkDescription": "A crude fortified structure built from the bones and hides of slain megafauna, antlers and skulls mounted across every beam, reeking of dominance",
+      "triggers": [
+        {
+          "event": "on_any_unit_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "resourceId": "biomass",
+              "scope": "player",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "apex-maw-leaper",
+      "name": "Maw Leaper",
+      "objectType": "unit",
+      "playCost": 1,
+      "housingCost": 1,
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "icon": "🦎",
+      "artworkDescription": "A compact ambush predator with an oversized jaw, capable of launching itself across the battlefield in a single coiled-spring leap",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "target": "attacker",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "resourceId": "biomass",
+              "scope": "player",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "apex-hunger-call",
+      "name": "Hunger Call",
+      "objectType": "spell",
+      "playCost": 2,
+      "tags": [],
+      "icon": "📯",
+      "artworkDescription": "A guttural hunting call echoes from the hive depths, drawing dormant predators to the surface ready to feed",
+      "onPlay": {
+        "id": "apex-hunger-call-effect",
+        "name": "Hunger Call",
+        "effects": [
+          {
+            "type": "summon",
+            "cardId": "apex-maw-leaper"
+          },
+          {
+            "type": "summon",
+            "cardId": "apex-bone-stalker"
+          },
+          {
+            "type": "gain_resource",
+            "resourceId": "biomass",
+            "scope": "player",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "sentry-hunter-drone",
+      "name": "Hunter Drone",
+      "objectType": "unit",
+      "playCost": 4,
+      "housingCost": 2,
+      "properties": {
+        "attack": 4,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "🎯",
+      "artworkDescription": "A sleek matte-black pursuit drone with twin rail-gun barrels angled forward, red targeting lasers scanning the dark"
+    },
+    {
+      "id": "sentry-bulwark-drone",
+      "name": "Bulwark Drone",
+      "objectType": "unit",
+      "playCost": 5,
+      "housingCost": 3,
+      "properties": {
+        "attack": 3,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "🛡️",
+      "artworkDescription": "A massive hexagonal-shielded drone hovering low to the ground, layered blast-plates glowing with absorbed energy",
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "all_ally_units",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sentry-shock-sentry",
+      "name": "Shock Sentry",
+      "objectType": "unit",
+      "playCost": 3,
+      "housingCost": 2,
+      "properties": {
+        "attack": 4,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "retaliate"
+      ],
+      "icon": "⚡",
+      "artworkDescription": "A spindly bipedal combat bot crackling with coiled discharge coils, hunched in an aggressive stance"
+    },
+    {
+      "id": "sentry-overwatch-drone",
+      "name": "Overwatch Drone",
+      "objectType": "unit",
+      "playCost": 2,
+      "housingCost": 1,
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "worker",
+        "ranged"
+      ],
+      "icon": "🔭",
+      "artworkDescription": "A lightweight hovering drone with an oversized optical sensor dome, quietly circling at altitude",
+      "abilities": [
+        {
+          "id": "sentry-overwatch-drone-ab1",
+          "name": "Overcharge Ally",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "target",
+              "property": "attack",
+              "amount": 1
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "sentry-blast-walker",
+      "name": "Blast Walker",
+      "objectType": "unit",
+      "playCost": 4,
+      "housingCost": 2,
+      "properties": {
+        "attack": 5,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "cleave"
+      ],
+      "icon": "💣",
+      "artworkDescription": "A four-legged walking artillery platform with concussive blast vents on each shoulder, surrounded by impact craters",
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sentry-tactical-uplink",
+      "name": "Tactical Uplink",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "📡",
+      "artworkDescription": "A burst of blue signal light erupting from a command terminal, data streams arcing to allied units across the battlefield",
+      "onPlay": {
+        "id": "sentry-tactical-uplink-effect",
+        "name": "Broadcast Orders",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "scope": "player",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "sentry-emp-strike",
+      "name": "EMP Strike",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "📻",
+      "artworkDescription": "A compact pulse grenade detonating in a white ring of electromagnetic force, enemy machines stuttering and sparking",
+      "onPlay": {
+        "id": "sentry-emp-strike-effect",
+        "name": "Electromagnetic Pulse",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 2
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "sentry-repair-protocol",
+      "name": "Repair Protocol",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "🔧",
+      "artworkDescription": "A swarm of micro-repair nanobots washing over a battered drone unit, sealing cracks and restoring chassis plating",
+      "onPlay": {
+        "id": "sentry-repair-protocol-effect",
+        "name": "Field Repair",
+        "effects": [
+          {
+            "type": "heal",
+            "scope": "target",
+            "amount": 4
+          },
+          {
+            "type": "buff_property",
+            "scope": "target",
+            "property": "armor",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "sentry-deployment-bay",
+      "name": "Rapid Deployment Bay",
+      "objectType": "building",
+      "playCost": 4,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7
+      },
+      "housingProvided": 2,
+      "icon": "🏗️",
+      "artworkDescription": "A low armored hangar bay with blast doors yawning open, patrol drones queued in launch cradles beneath amber launch lights",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "self",
+              "cardId": "sentry-patrol-drone"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sentry-caster",
+      "name": "Aegis Protocol Unit",
+      "objectType": "caster",
+      "playCost": 5,
+      "housingCost": 2,
+      "properties": {
+        "attack": 2,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "🤖",
+      "artworkDescription": "An angular bipedal command-class sentry drone with a glowing aegis emitter array on its chest, projecting a soft blue defensive field over nearby allies",
+      "abilities": [
+        {
+          "id": "sentry-caster-ab1",
+          "name": "Aegis Field",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "target",
+              "property": "armor",
+              "amount": 1
+            },
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 1
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "sentry-interceptor-drone",
+      "name": "Interceptor Drone",
+      "objectType": "unit",
+      "playCost": 5,
+      "housingCost": 3,
+      "properties": {
+        "attack": 5,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "ranged",
+        "siege"
+      ],
+      "icon": "🚀",
+      "artworkDescription": "A dart-shaped high-velocity intercept drone with twin forward missile pods, trailing exhaust as it locks on a distant target",
+      "triggers": [
+        {
+          "event": "on_play",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fort-crossbow-warden",
+      "name": "Crossbow Warden",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "🏹",
+      "artworkDescription": "A lean soldier in a green-brown gambeson, crossbow raised and eye narrowed along the bolt.",
+      "housingCost": 1
+    },
+    {
+      "id": "fort-powder-runner",
+      "name": "Powder Runner",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "💨",
+      "artworkDescription": "A wiry youth sprinting across the battlefield, arms full of black-powder kegs.",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fort-garrison-pikeman",
+      "name": "Garrison Pikeman",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "guard",
+        "blocking"
+      ],
+      "icon": "🪖",
+      "artworkDescription": "A disciplined soldier in half-plate, pike braced at the gate arch.",
+      "housingCost": 1
+    },
+    {
+      "id": "fort-bombardier",
+      "name": "Bombardier",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 4,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "ranged",
+        "splash"
+      ],
+      "icon": "💣",
+      "artworkDescription": "A stout gunner in scorched leather, lighting a massive mortar shell with a smoldering slow-match.",
+      "housingCost": 2,
+      "abilities": [
+        {
+          "id": "bombardier-mortar",
+          "name": "Mortar Barrage",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fort-bastion-champion",
+      "name": "Bastion Champion",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 4,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "guard",
+        "retaliate"
+      ],
+      "icon": "🛡️",
+      "artworkDescription": "A towering knight in blackened full plate, war banner planted behind him on the rampart.",
+      "housingCost": 2,
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fort-iron-decree",
+      "name": "Iron Decree",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "📜",
+      "artworkDescription": "A war-seal stamped in iron-red wax burns with commanding light as the order is read aloud.",
+      "onPlay": {
+        "id": "fort-iron-decree-effect",
+        "name": "Issue the Decree",
+        "effects": [
+          {
+            "type": "buff_property",
+            "scope": "all_ally_units",
+            "propertyId": "attack",
+            "amount": 1
+          },
+          {
+            "type": "draw_cards",
+            "scope": "player",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "fort-precision-bolt",
+      "name": "Precision Bolt",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "🎯",
+      "artworkDescription": "A single gleaming crossbow bolt strikes a target precisely between the joints of its armour.",
+      "onPlay": {
+        "id": "fort-precision-bolt-effect",
+        "name": "Aimed Shot",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 5
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "fort-war-doctrine",
+      "name": "War Doctrine",
+      "objectType": "spell",
+      "playCost": 4,
+      "icon": "⚔️",
+      "artworkDescription": "Pages of tactical scripture flutter in a war-lit wind as every soldier snaps to a new formation.",
+      "onPlay": {
+        "id": "fort-war-doctrine-effect",
+        "name": "Enforce Doctrine",
+        "effects": [
+          {
+            "type": "buff_property",
+            "scope": "all_ally_units",
+            "propertyId": "attack",
+            "amount": 2
+          },
+          {
+            "type": "buff_property",
+            "scope": "all_ally_units",
+            "propertyId": "maxHp",
+            "amount": 2
+          },
+          {
+            "type": "heal",
+            "scope": "all_ally_units",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "fort-watchtower",
+      "name": "Watchtower",
+      "objectType": "building",
+      "playCost": 3,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7
+      },
+      "housingProvided": 1,
+      "icon": "🗼",
+      "artworkDescription": "A narrow stone tower capped with a signal fire, overlooking the surrounding approaches.",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "scope": "player",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fort-drill-sergeant",
+      "name": "Drill Sergeant",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "tags": [
+        "soldier"
+      ],
+      "icon": "📣",
+      "artworkDescription": "A broad-chested officer bellowing orders from the drill ground, swagger stick raised.",
+      "housingCost": 1,
+      "abilities": [
+        {
+          "id": "drill-sergeant-training",
+          "name": "Drill Formation",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "all_ally_units",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ],
+          "choice": null
+        }
+      ]
+    },
+    {
+      "id": "fort-shield-bearer",
+      "name": "Shield Bearer",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "🔰",
+      "artworkDescription": "A compact soldier crouching behind an enormous tower shield, nearly invisible behind its face.",
+      "housingCost": 1,
+      "abilities": [
+        {
+          "id": "shield-bearer-cover",
+          "name": "Shield Wall",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "hold-dungeon-warden",
+      "name": "Dungeon Warden",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "🔑",
+      "artworkDescription": "A hunched jailer in rusted mail, keys clinking at his belt, standing before a torchlit iron door",
+      "housingCost": 1
+    },
+    {
+      "id": "hold-bone-shackler",
+      "name": "Bone Shackler",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4
+      },
+      "tags": [
+        "soldier",
+        "guard",
+        "blocking"
+      ],
+      "icon": "⛓️",
+      "artworkDescription": "A skeletal enforcer wrapped in cursed chain-links, fingers fused to rusted manacles",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap",
+              "scope": "target"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hold-curse-whisperer",
+      "name": "Curse Whisperer",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4
+      },
+      "tags": [
+        "soldier",
+        "mage"
+      ],
+      "icon": "🌑",
+      "artworkDescription": "A hooded figure whose mouth never closes, trailing shadows that whisper back",
+      "housingCost": 1,
+      "abilities": [
+        {
+          "id": "hold-curse-whisperer-hex",
+          "name": "Hex",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "give_poison",
+              "scope": "target",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "triggers": []
+    },
+    {
+      "id": "hold-iron-torturer",
+      "name": "Iron Torturer",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 4,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "retaliate"
+      ],
+      "icon": "🔩",
+      "artworkDescription": "A towering figure in soot-black plate, wielding a serrated iron wheel as a weapon",
+      "housingCost": 2,
+      "abilities": [],
+      "triggers": []
+    },
+    {
+      "id": "hold-dungeon-lord",
+      "name": "Dungeon Lord",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 5,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "cleave"
+      ],
+      "icon": "👑",
+      "artworkDescription": "A crowned warlord enthroned in shadow, rising from his obsidian seat to lead the assault personally",
+      "housingCost": 2,
+      "abilities": [],
+      "triggers": [
+        {
+          "event": "on_play",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "give_poison",
+              "scope": "all_opponent_units",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hold-cursed-snare",
+      "name": "Cursed Snare",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "🕸️",
+      "artworkDescription": "A glowing rune-trap etched into stone, snapping shut as an enemy steps across it",
+      "onPlay": {
+        "id": "hold-cursed-snare-effect",
+        "name": "Ensnare",
+        "effects": [
+          {
+            "type": "tap",
+            "scope": "target"
+          },
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "hold-hex-bolt",
+      "name": "Hex Bolt",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "💀",
+      "artworkDescription": "A black crackling bolt of necrotic energy arcing from a gauntleted fist toward an enemy commander",
+      "onPlay": {
+        "id": "hold-hex-bolt-effect",
+        "name": "Corrupt",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 4
+          },
+          {
+            "type": "give_poison",
+            "scope": "target",
+            "amount": 2
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "hold-dungeon-collapse",
+      "name": "Dungeon Collapse",
+      "objectType": "spell",
+      "playCost": 5,
+      "icon": "💥",
+      "artworkDescription": "The ceiling of a vast underground hall buckles and crashes down, burying everything beneath tonnes of cursed stone",
+      "onPlay": {
+        "id": "hold-dungeon-collapse-effect",
+        "name": "Cave In",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "all_opponent_units",
+            "amount": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "hold-oubliette",
+      "name": "Oubliette",
+      "objectType": "building",
+      "playCost": 3,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7
+      },
+      "housingProvided": 1,
+      "icon": "🕳️",
+      "artworkDescription": "A squat stone pit-prison sunk into the dungeon floor, its iron grate sealed with a heavy padlock and curse-wards",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap",
+              "scope": "target"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shadow-cutpurse",
+      "name": "Cutpurse",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2
+      },
+      "tags": [
+        "soldier",
+        "raider"
+      ],
+      "icon": "🔪",
+      "artworkDescription": "A wiry street thief in a dark alley, coin pouch in one hand and a short blade in the other",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shadow-toxin-courier",
+      "name": "Toxin Courier",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3
+      },
+      "tags": [
+        "soldier"
+      ],
+      "icon": "🧪",
+      "artworkDescription": "A slender operative in a grey cloak carrying a rack of sealed vials across rooftops",
+      "housingCost": 1,
+      "abilities": [
+        {
+          "id": "toxin-courier-administer",
+          "name": "Administer Poison",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "give_poison",
+              "scope": "target",
+              "amount": 1
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "shadow-rooftop-archer",
+      "name": "Rooftop Archer",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "🏹",
+      "artworkDescription": "A masked marksman perched on a chimney at dusk, silhouetted against a blood-red sky",
+      "housingCost": 1
+    },
+    {
+      "id": "shadow-venomfang-duelist",
+      "name": "Venomfang Duelist",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 4,
+        "currentHp": 3,
+        "maxHp": 3
+      },
+      "tags": [
+        "soldier",
+        "mercenary"
+      ],
+      "icon": "⚗️",
+      "artworkDescription": "A nimble duelist whose rapier drips with emerald venom, challenging a knight in a candlelit corridor",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_attack",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "give_poison",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shadow-umbral-blade",
+      "name": "Umbral Blade",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 4,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "cleave"
+      ],
+      "icon": "🌒",
+      "artworkDescription": "A towering warrior wreathed in living shadow, their massive black greatsword trailing darkness with every swing",
+      "housingCost": 2,
+      "abilities": [
+        {
+          "id": "umbral-blade-shadow-surge",
+          "name": "Shadow Surge",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "self",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shadow-wraith-herald",
+      "name": "Wraith Herald",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 4,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "tags": [
+        "soldier"
+      ],
+      "icon": "👁️",
+      "artworkDescription": "A spectral harbinger floating inches above the cobblestones, its hollow eyes scanning every shadow for enemies",
+      "housingCost": 2,
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "id": "wraith-herald-life-drain",
+          "name": "Life Drain",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 2
+            },
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "shadow-poison-dart",
+      "name": "Poison Dart",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "🎯",
+      "artworkDescription": "A slim black dart sailing through dim torchlight toward an unsuspecting guard",
+      "onPlay": {
+        "id": "shadow-poison-dart-effect",
+        "name": "Dart Strike",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 2
+          },
+          {
+            "type": "give_poison",
+            "scope": "target",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "shadow-smoke-veil",
+      "name": "Smoke Veil",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "💨",
+      "artworkDescription": "Billowing black smoke pouring from a shattered canister across a narrow street",
+      "onPlay": {
+        "id": "shadow-smoke-veil-effect",
+        "name": "Obscure",
+        "effects": [
+          {
+            "type": "tap",
+            "scope": "all_opponent_units"
+          }
+        ]
+      }
+    },
+    {
+      "id": "shadow-marked-for-death",
+      "name": "Marked for Death",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "💀",
+      "artworkDescription": "A shadowy hand sketching a red X over a portrait pinned to a corkboard",
+      "onPlay": {
+        "id": "shadow-marked-for-death-effect",
+        "name": "Eliminate",
+        "effects": [
+          {
+            "type": "destroy",
+            "scope": "target"
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "shadow-venom-cloud",
+      "name": "Venom Cloud",
+      "objectType": "spell",
+      "playCost": 4,
+      "icon": "☠️",
+      "artworkDescription": "A green-black miasma rolling across a battlefield, leaving all who breathe it writhing on the ground",
+      "onPlay": {
+        "id": "shadow-venom-cloud-effect",
+        "name": "Toxic Miasma",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "all_opponent_units",
+            "amount": 2
+          },
+          {
+            "type": "give_poison",
+            "scope": "all_opponent_units",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "shadow-assassins-guildhall",
+      "name": "Assassins Guildhall",
+      "objectType": "building",
+      "playCost": 3,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6
+      },
+      "housingProvided": 2,
+      "icon": "🏯",
+      "artworkDescription": "A fortified townhouse with no visible windows, its black door bearing only a dagger sigil",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "all_ally_units",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shadow-poison-workshop",
+      "name": "Poison Workshop",
+      "objectType": "building",
+      "playCost": 4,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5
+      },
+      "housingProvided": 1,
+      "icon": "⚗️",
+      "artworkDescription": "A cellar laboratory lit by sickly green lanterns, shelves lined with oozing specimens and bubbling vials",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "give_poison",
+              "scope": "all_opponent_units",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shadow-venomed-gauntlet",
+      "name": "Venomed Gauntlet",
+      "objectType": "equipment",
+      "playCost": 2,
+      "icon": "🧤",
+      "artworkDescription": "A black leather gauntlet with hollow fingertips that seep amber toxin on contact",
+      "attachCondition": {
+        "controller": "self",
+        "objectType": "unit"
+      },
+      "modifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        },
+        {
+          "tag": "retaliate"
+        }
+      ]
+    },
+    {
+      "id": "storm-gale-striker",
+      "name": "Gale Striker",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2
+      },
+      "tags": [
+        "soldier"
+      ],
+      "icon": "💨",
+      "artworkDescription": "A wiry scout sprinting through a howling gale, hair and cloak streaming horizontal in the wind",
+      "housingCost": 1
+    },
+    {
+      "id": "storm-thunder-warden",
+      "name": "Thunder Warden",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "🛡️",
+      "artworkDescription": "A stout warrior in lightning-scorched plate armor, shield raised against crackling arcs of electricity",
+      "housingCost": 1
+    },
+    {
+      "id": "storm-cloud-reaper",
+      "name": "Cloud Reaper",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 3,
+        "currentHp": 4,
+        "maxHp": 4
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "🏹",
+      "artworkDescription": "An archer perched atop a thundercloud, firing bolts of condensed lightning downward at enemies below",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "storm-squall-berserker",
+      "name": "Squall Berserker",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 5,
+        "currentHp": 5,
+        "maxHp": 5
+      },
+      "tags": [
+        "soldier",
+        "cleave"
+      ],
+      "icon": "⚡",
+      "artworkDescription": "A towering warrior consumed by a living tempest, twin axes crackling with chained lightning that leaps between foes on each swing",
+      "housingCost": 2
+    },
+    {
+      "id": "storm-cyclone-herald",
+      "name": "Cyclone Herald",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 4,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "tags": [
+        "soldier"
+      ],
+      "icon": "🌪️",
+      "artworkDescription": "A robed herald encased in a whirling cyclone, levitating above the ground, storm winds deflecting incoming attacks",
+      "housingCost": 2,
+      "abilities": [
+        {
+          "id": "cyclone-herald-rally",
+          "name": "Storm Rally",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "all_ally_units",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ],
+          "choice": null
+        }
+      ]
+    },
+    {
+      "id": "storm-lightning-lash",
+      "name": "Lightning Lash",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "⚡",
+      "artworkDescription": "A thin whip of pure lightning snapping from an outstretched hand, scorching a single target with pinpoint precision",
+      "onPlay": {
+        "id": "storm-lightning-lash-effect",
+        "name": "Lash",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 2
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "storm-thunderclap",
+      "name": "Thunderclap",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "💥",
+      "artworkDescription": "A deafening shockwave erupting from the sky, flattening every enemy on the field as sonic and electrical energy collide",
+      "onPlay": {
+        "id": "storm-thunderclap-effect",
+        "name": "Thunderclap Wave",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "all_opponent_units",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "storm-arc-infusion",
+      "name": "Arc Infusion",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "✨",
+      "artworkDescription": "Writhing arcs of electricity pouring into a friendly unit, muscles surging with unnatural speed and power",
+      "onPlay": {
+        "id": "storm-arc-infusion-effect",
+        "name": "Infuse",
+        "effects": [
+          {
+            "type": "buff_property",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": 2
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "storm-tempest-bastion",
+      "name": "Tempest Bastion",
+      "objectType": "building",
+      "playCost": 4,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7
+      },
+      "housingProvided": 2,
+      "icon": "🏰",
+      "artworkDescription": "A fortified storm tower bristling with lightning rods that continuously discharge arcs onto the surrounding battlefield",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "storm-fog-wraith",
+      "name": "Fog Wraith",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4
+      },
+      "tags": [
+        "soldier"
+      ],
+      "icon": "👁️",
+      "artworkDescription": "A semi-translucent spirit woven from dense storm fog, drifting silently across the battlefield with hollow glowing eyes",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "all_ally_units",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "storm-gale-dancer",
+      "name": "Gale Dancer",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6
+      },
+      "tags": [
+        "soldier",
+        "retaliate"
+      ],
+      "icon": "🌬️",
+      "artworkDescription": "A lithe duelist who flows between gusts of wind, turning each incoming blow into momentum for a counter-strike",
+      "housingCost": 2,
+      "abilities": [
+        {
+          "id": "gale-dancer-windstep",
+          "name": "Windstep",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 2
+            }
+          ],
+          "choice": null
+        }
+      ]
+    },
+    {
+      "id": "brood-pheromone-spreader",
+      "name": "Pheromone Spreader",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "organic",
+        "larva"
+      ],
+      "icon": "🫧",
+      "artworkDescription": "A translucent grub that leaks chemical signals, drawing swarm-mates into frenzied cohesion",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "all_ally_units",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "brood-spore-caster",
+      "name": "Spore Caster",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "organic",
+        "ranged",
+        "splash"
+      ],
+      "icon": "🍄",
+      "artworkDescription": "A bloated fungal beetle that erupts clouds of paralysing spores over clusters of enemies",
+      "housingCost": 1,
+      "abilities": [
+        {
+          "id": "spore-cloud",
+          "name": "Spore Cloud",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 1
+            },
+            {
+              "type": "give_poison",
+              "scope": "all_opponent_units",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "brood-carapace-brute",
+      "name": "Carapace Brute",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "organic",
+        "soldier",
+        "guard"
+      ],
+      "icon": "🪳",
+      "artworkDescription": "A thick-shelled warrior whose layered chitin deflects blade and bolt alike, planted in the vanguard",
+      "housingCost": 1
+    },
+    {
+      "id": "brood-acid-bombardier",
+      "name": "Acid Bombardier",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "tags": [
+        "organic",
+        "ranged",
+        "siege"
+      ],
+      "icon": "💥",
+      "artworkDescription": "A barrel-bodied creature that launches compressed acid bolts capable of dissolving stone walls",
+      "housingCost": 2,
+      "abilities": [
+        {
+          "id": "acid-barrage",
+          "name": "Acid Barrage",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 3
+            },
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": -2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "brood-molt-ravager",
+      "name": "Molt Ravager",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 5,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [
+        "organic",
+        "soldier",
+        "cleave"
+      ],
+      "icon": "🦖",
+      "artworkDescription": "A freshly moulted monster, pale and ravenous, whose new shell is still hardening as it charges",
+      "housingCost": 2,
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "brood-acid-deluge",
+      "name": "Acid Deluge",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "☠️",
+      "artworkDescription": "A torrent of caustic bile rains down, melting armour and dissolving ranks of enemy soldiers",
+      "onPlay": {
+        "id": "brood-acid-deluge-effect",
+        "name": "Cast Acid Deluge",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "all_opponent_units",
+            "amount": 2
+          },
+          {
+            "type": "modify_property",
+            "scope": "all_opponent_units",
+            "propertyId": "armor",
+            "amount": -1
+          }
+        ]
+      }
+    },
+    {
+      "id": "brood-frenzy-pheromone",
+      "name": "Frenzy Pheromone",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "🟡",
+      "artworkDescription": "A concentrated chemical burst that sends every brood warrior into a bloodthirsty rampage",
+      "onPlay": {
+        "id": "brood-frenzy-pheromone-effect",
+        "name": "Cast Frenzy Pheromone",
+        "effects": [
+          {
+            "type": "buff_property",
+            "scope": "all_ally_units",
+            "propertyId": "attack",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "brood-larval-flood",
+      "name": "Larval Flood",
+      "objectType": "spell",
+      "playCost": 4,
+      "icon": "🌊",
+      "artworkDescription": "Tunnels crack open and a tide of larvae pour forth, overwhelming every position on the field",
+      "onPlay": {
+        "id": "brood-larval-flood-effect",
+        "name": "Cast Larval Flood",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "larva"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "larva"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "larva"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "larva"
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "brood-pheromone-throne",
+      "name": "Pheromone Throne",
+      "objectType": "building",
+      "playCost": 4,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7
+      },
+      "housingProvided": 2,
+      "icon": "🧿",
+      "artworkDescription": "A pulsating organic spire that broadcasts the queen's will across the battlefield, sharpening every soldier's instincts",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "all_ally_units",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "warbond-oath-shield",
+      "name": "Oath Shield",
+      "objectType": "unit",
+      "playCost": 2,
+      "housingCost": 1,
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "tags": [
+        "raider",
+        "soldier",
+        "guard"
+      ],
+      "icon": "🛡️",
+      "artworkDescription": "A broad-shouldered warrior holding a shield carved with oath-marks, standing firm before the warband",
+      "abilities": [],
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "warbond-fury-brand",
+      "name": "Fury Brand",
+      "objectType": "unit",
+      "playCost": 3,
+      "housingCost": 1,
+      "properties": {
+        "attack": 4,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "raider",
+        "soldier"
+      ],
+      "icon": "🔱",
+      "artworkDescription": "A raider with glowing brand-marks seared into both forearms, wielding two short blades",
+      "abilities": [],
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "warbond-arrow-sworn",
+      "name": "Arrow-Sworn",
+      "objectType": "unit",
+      "playCost": 3,
+      "housingCost": 1,
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "raider",
+        "soldier",
+        "ranged"
+      ],
+      "icon": "🏹",
+      "artworkDescription": "A lean warbond archer who has sworn to fell one foe per battle, notching arrows marked with blood-oath runes",
+      "abilities": [
+        {
+          "id": "warbond-arrow-sworn-ab1",
+          "name": "Oath Shot",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "triggers": []
+    },
+    {
+      "id": "warbond-blood-sworn",
+      "name": "Blood-Sworn",
+      "objectType": "unit",
+      "playCost": 4,
+      "housingCost": 2,
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [
+        "raider",
+        "soldier",
+        "retaliate"
+      ],
+      "icon": "🩸",
+      "artworkDescription": "A veteran warrior with blood-pact scars covering their chest, eyes burning with oath-fire",
+      "abilities": [
+        {
+          "id": "warbond-blood-sworn-ab1",
+          "name": "Pact of Vengeance",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 3
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "triggers": []
+    },
+    {
+      "id": "warbond-sunder-lord",
+      "name": "Sunder Lord",
+      "objectType": "unit",
+      "playCost": 5,
+      "housingCost": 2,
+      "properties": {
+        "attack": 5,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "tags": [
+        "raider",
+        "soldier",
+        "cleave"
+      ],
+      "icon": "💀",
+      "artworkDescription": "A towering warlord in shattered black plate who collects the skulls of those who broke their oaths",
+      "abilities": [
+        {
+          "id": "warbond-sunder-lord-ab1",
+          "name": "Rend the Line",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 4
+            },
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 3
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "on_play",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "warbond-forge-shrine",
+      "name": "Forge Shrine",
+      "objectType": "building",
+      "playCost": 4,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "housingProvided": 1,
+      "icon": "⚒️",
+      "artworkDescription": "A blazing war-forge built atop sacred ground, where weapons are tempered in the blood of enemies and blessed by the warchief's oath",
+      "abilities": [],
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "all_ally_units",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "warbond-oath-of-fury",
+      "name": "Oath of Fury",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "😡",
+      "artworkDescription": "A warrior driving a blade through their own palm and screaming an oath to the sky as fire erupts around them",
+      "onPlay": {
+        "id": "warbond-oath-of-fury-effect",
+        "name": "Fury Oath",
+        "effects": [
+          {
+            "type": "buff_property",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": 3
+          },
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "glory",
+            "amount": 2
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "warbond-bond-unbroken",
+      "name": "Bond Unbroken",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "🔗",
+      "artworkDescription": "A glowing chain of golden light binding two warriors back-to-back as wounds knit shut and battle-fury reignites",
+      "onPlay": {
+        "id": "warbond-bond-unbroken-effect",
+        "name": "Unbreakable Bond",
+        "effects": [
+          {
+            "type": "heal",
+            "scope": "all_ally_units",
+            "amount": 3
+          },
+          {
+            "type": "draw_cards",
+            "scope": "player",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "warbond-skull-oath",
+      "name": "Skull Oath",
+      "objectType": "spell",
+      "playCost": 4,
+      "icon": "💀",
+      "artworkDescription": "A warchief raising a severed skull to the heavens, swearing an oath that crackles with dark energy before the skull explodes outward",
+      "onPlay": {
+        "id": "warbond-skull-oath-effect",
+        "name": "Oath of Ruin",
+        "effects": [
+          {
+            "type": "destroy",
+            "scope": "target"
+          },
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "glory",
+            "amount": 4
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "alchemists-bomb-lobber",
+      "name": "Bomb Lobber",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier",
+        "ranged",
+        "splash"
+      ],
+      "icon": "💣",
+      "artworkDescription": "A grinning goblin-like alchemist with a bandolier of smoking black bombs, winding up a throw",
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alchemists-poison-brewer",
+      "name": "Poison Brewer",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "worker",
+        "soldier"
+      ],
+      "icon": "☠️",
+      "artworkDescription": "A hunched alchemist in a plague-doctor mask, stirring a vat of sickly green venom",
+      "abilities": [
+        {
+          "id": "poison-brewer-infect",
+          "name": "Infect",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "give_poison",
+              "scope": "target",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "alchemists-volatile-courier",
+      "name": "Volatile Courier",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "housingCost": 2,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "🧨",
+      "artworkDescription": "A frantic alchemist sprinting across the battlefield carrying a crate of unstable explosives",
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_units",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alchemists-fume-sentinel",
+      "name": "Fume Sentinel",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "housingCost": 1,
+      "tags": [
+        "guard",
+        "soldier"
+      ],
+      "icon": "🛡️",
+      "artworkDescription": "A stout alchemist soldier encased in a sealed brass pressure suit, venting toxic vapours through exhaust pipes",
+      "triggers": [
+        {
+          "event": "on_attacked",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "give_poison",
+              "scope": "target",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alchemists-grand-mutant",
+      "name": "Grand Mutant",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 5,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "housingCost": 3,
+      "tags": [
+        "soldier",
+        "cleave"
+      ],
+      "icon": "🧬",
+      "artworkDescription": "A hulking creature barely recognizable as humanoid, its body warped by years of experimental injections, arms elongated into crushing clubs",
+      "abilities": [
+        {
+          "id": "grand-mutant-overdose",
+          "name": "Overdose",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property",
+              "scope": "self",
+              "propertyId": "attack",
+              "amount": 4
+            },
+            {
+              "type": "modify_property",
+              "scope": "self",
+              "propertyId": "maxHp",
+              "amount": 3
+            },
+            {
+              "type": "modify_property",
+              "scope": "self",
+              "propertyId": "currentHp",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alchemists-chain-detonation",
+      "name": "Chain Detonation",
+      "objectType": "spell",
+      "playCost": 4,
+      "icon": "💥",
+      "artworkDescription": "A series of explosions leaping from one enemy unit to the next across the battlefield in a roaring chain of fire and smoke",
+      "onPlay": {
+        "id": "alchemists-chain-detonation-effect",
+        "name": "Detonate Chain",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "all_opponent_units",
+            "amount": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "alchemists-restoration-tonic",
+      "name": "Restoration Tonic",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "💚",
+      "artworkDescription": "A bright green restorative draught poured over an injured ally, knitting wounds shut with visible alchemical energy",
+      "onPlay": {
+        "id": "alchemists-restoration-tonic-effect",
+        "name": "Restore",
+        "effects": [
+          {
+            "type": "heal",
+            "scope": "target",
+            "amount": 4
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "alchemists-plague-vial",
+      "name": "Plague Vial",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "🧫",
+      "artworkDescription": "A murky glass vial shattered against a target, releasing a cloud of diseased spores that spread to nearby enemies",
+      "onPlay": {
+        "id": "alchemists-plague-vial-effect",
+        "name": "Spread Plague",
+        "effects": [
+          {
+            "type": "give_poison",
+            "scope": "target",
+            "amount": 3
+          },
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 2
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "alchemists-blast-furnace",
+      "name": "Blast Furnace",
+      "objectType": "building",
+      "playCost": 4,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6
+      },
+      "housingProvided": 1,
+      "tags": [
+        "resource-node"
+      ],
+      "icon": "🏗️",
+      "artworkDescription": "A squat industrial tower with a roaring open mouth of fire, used to crack reagents into explosive compounds",
+      "abilities": [
+        {
+          "id": "blast-furnace-overcharge",
+          "name": "Overcharge",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alchemists-apprentice-bomber",
+      "name": "Apprentice Bomber",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "🎆",
+      "artworkDescription": "A wide-eyed young alchemist clutching a single oversized vial, looking terrified and exhilarated in equal measure",
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alchemists-catalytic-injector",
+      "name": "Catalytic Injector",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "housingCost": 2,
+      "tags": [
+        "worker",
+        "soldier"
+      ],
+      "icon": "💉",
+      "artworkDescription": "An alchemist in a reinforced lab coat wielding a massive pressurized syringe, scanning the battlefield for targets to enhance or debilitate",
+      "abilities": [
+        {
+          "id": "catalytic-injector-boost",
+          "name": "Catalyst Boost",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "reagents",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "attack",
+              "amount": 3
+            },
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 3
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "conclave-ley-initiate",
+      "name": "Ley Initiate",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "icon": "🔹",
+      "artworkDescription": "A young apprentice mage pressing a bare hand to a glowing ley line crack in the cobblestones, absorbing raw arcane energy with wide eyes",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "conclave-glyph-warden",
+      "name": "Glyph Warden",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "🛡️",
+      "artworkDescription": "A stocky mage-knight etched with glowing ward-glyphs across their armour, standing with a defensive stance",
+      "housingCost": 1,
+      "abilities": [
+        {
+          "id": "glyph-warden-ward",
+          "name": "Arcane Ward",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": 1
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "conclave-chain-binder",
+      "name": "Chain Binder",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "🔗",
+      "artworkDescription": "A slender enchanter flinging arcs of crackling binding chains from outstretched fingertips, freezing two enemies mid-lunge",
+      "housingCost": 1,
+      "abilities": [
+        {
+          "id": "chain-binder-ensnare",
+          "name": "Ensnare",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap",
+              "scope": "target"
+            },
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 1
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "conclave-ley-channeler",
+      "name": "Ley Channeler",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "splash"
+      ],
+      "icon": "🌐",
+      "artworkDescription": "A robed mage hovering above a nexus of three ley lines, their body crackling with overcharged arcane energy that radiates in visible waves",
+      "housingCost": 2,
+      "abilities": [
+        {
+          "id": "ley-channeler-overload",
+          "name": "Ley Overload",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "conclave-grand-arbiter",
+      "name": "Grand Arbiter",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 4,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "⚖️",
+      "artworkDescription": "An imperious elder of the conclave seated in a floating throne of interlocked arcane seals, gesturing with calm authority as wards materialize around allies",
+      "housingCost": 2,
+      "abilities": [
+        {
+          "id": "grand-arbiter-decree",
+          "name": "Arcane Decree",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "all_ally_units",
+              "amount": 2
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "conclave-ley-pulse",
+      "name": "Ley Pulse",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "💠",
+      "artworkDescription": "A shockwave of pure ley-line energy erupting outward from a glowing node, scattering enemies like leaves",
+      "onPlay": {
+        "id": "conclave-ley-pulse-effect",
+        "name": "Pulse the Ley Line",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "all_opponent_units",
+            "amount": 1
+          },
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "mana",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "conclave-mending-sigil",
+      "name": "Mending Sigil",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "✴️",
+      "artworkDescription": "A golden sigil materialising above a wounded unit, knitting flesh and armour with threads of warm arcane light",
+      "onPlay": {
+        "id": "conclave-mending-sigil-effect",
+        "name": "Inscribe Sigil",
+        "effects": [
+          {
+            "type": "heal",
+            "scope": "target",
+            "amount": 4
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "conclave-mind-shatter",
+      "name": "Mind Shatter",
+      "objectType": "spell",
+      "playCost": 4,
+      "icon": "🧠",
+      "artworkDescription": "Concentric rings of violet force imploding around an enemy unit's skull, leaving them staggered and weakened",
+      "onPlay": {
+        "id": "conclave-mind-shatter-effect",
+        "name": "Shatter Mind",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 3
+          },
+          {
+            "type": "buff_property",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": -2
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "conclave-sanctum-of-accord",
+      "name": "Sanctum of Accord",
+      "objectType": "building",
+      "playCost": 4,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingProvided": 2,
+      "icon": "🏛️",
+      "artworkDescription": "A domed chamber of white marble veined with glowing blue channels, where conclave delegates sit in ringed tiers beneath a swirling arcane orrery",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "all_ally_units",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "conclave-veil-dancer",
+      "name": "Veil Dancer",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "🌫️",
+      "artworkDescription": "A lithe enchanter spinning in a half-visible shimmer, launching arcing bolts from between the folds of an arcane veil",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "conclave-rift-sentinel",
+      "name": "Rift Sentinel",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "🔵",
+      "artworkDescription": "A hulking construct of compressed void-crystal standing before a shimmering rift gate, one hand raised to halt any who approach",
+      "housingCost": 1,
+      "abilities": [
+        {
+          "id": "rift-sentinel-absorb",
+          "name": "Void Absorption",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 2
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "raiders-hook-runner",
+      "name": "Hook Runner",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "raider",
+        "soldier"
+      ],
+      "icon": "🪝",
+      "artworkDescription": "A lean raider sprinting across a gangplank, a boarding hook in one hand and a short blade in the other",
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "raiders-crow-archer",
+      "name": "Crow Archer",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "raider",
+        "soldier",
+        "ranged"
+      ],
+      "icon": "🏹",
+      "artworkDescription": "A wiry raider perched on a crow's nest, loosing black-feathered arrows into enemy ranks below",
+      "abilities": [],
+      "triggers": []
+    },
+    {
+      "id": "raiders-venom-slicer",
+      "name": "Venom Slicer",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "raider",
+        "soldier"
+      ],
+      "icon": "🐍",
+      "artworkDescription": "A raider with serrated blades smeared in dark sap, grinning as the poison does his work for him",
+      "abilities": [
+        {
+          "id": "venom-slicer-envenom",
+          "name": "Envenom",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "give_poison",
+              "scope": "target",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "raiders-loot-hauler",
+      "name": "Loot Hauler",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "raider",
+        "soldier"
+      ],
+      "icon": "🛻",
+      "artworkDescription": "A broad-shouldered raider hauling a cart piled high with plundered goods, always the last to leave a sacked village",
+      "abilities": [
+        {
+          "id": "loot-hauler-haul",
+          "name": "Haul Loot",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "scope": "player",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "raiders-dread-captain",
+      "name": "Dread Captain",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 4,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingCost": 2,
+      "tags": [
+        "raider",
+        "soldier"
+      ],
+      "icon": "⚓",
+      "artworkDescription": "A salt-weathered captain in a stolen admiral's coat, boarding hook in hand, leading the charge onto enemy decks",
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "raider",
+              "propertyId": "attack",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "id": "dread-captain-board",
+          "name": "Board and Seize",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "steal_resource",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "draw_cards",
+              "scope": "player",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "raiders-plunder-torch",
+      "name": "Plunder Torch",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "🔥",
+      "artworkDescription": "A raider hurls a blazing torch into enemy ranks, lighting up the battlefield and their shields",
+      "onPlay": {
+        "id": "plunder-torch-effect",
+        "name": "Torch Effect",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "all_opponent_units",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "raiders-golden-wound",
+      "name": "Golden Wound",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "💛",
+      "artworkDescription": "Raiders pour stolen salves over their wounds, their crude medicine fueled by looted apothecary goods",
+      "onPlay": {
+        "id": "golden-wound-effect",
+        "name": "Golden Wound Effect",
+        "effects": [
+          {
+            "type": "heal",
+            "scope": "target",
+            "amount": 3
+          },
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "glory",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "raiders-chain-drag",
+      "name": "Chain Drag",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "⛓️",
+      "artworkDescription": "A raider flings a spiked chain that snags an enemy and drags them stumbling through the mud",
+      "onPlay": {
+        "id": "chain-drag-effect",
+        "name": "Chain Drag Effect",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 3
+          },
+          {
+            "type": "tap",
+            "scope": "target"
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "raiders-longship-dock",
+      "name": "Longship Dock",
+      "objectType": "building",
+      "playCost": 4,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7
+      },
+      "housingProvided": 3,
+      "icon": "⛵",
+      "artworkDescription": "A rough-hewn dock on a rocky shore with a creak of longships moored and ready to launch at any tide",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "id": "longship-dock-launch",
+          "name": "Launch Raid",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "glory",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 1
+            },
+            {
+              "type": "steal_resource",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "raiders-cutthroat",
+      "name": "Cutthroat",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 3,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "raider",
+        "soldier"
+      ],
+      "icon": "🔪",
+      "artworkDescription": "A slender raider in a hooded cloak who strikes fast from behind, blade already drawn before the target turns",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "raiders-siege-breaker",
+      "name": "Siege Breaker",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "housingCost": 2,
+      "tags": [
+        "raider",
+        "soldier",
+        "siege"
+      ],
+      "icon": "🪵",
+      "artworkDescription": "A hulking raider swinging a crude battering ram of lashed logs, built to knock down gates and walls",
+      "abilities": [
+        {
+          "id": "siege-breaker-smash-gate",
+          "name": "Smash Gate",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 4
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "undead-bonelord",
+      "name": "Bonelord",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 5,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "guard",
+        "cleave"
+      ],
+      "housingCost": 2,
+      "icon": "💀",
+      "artworkDescription": "A hulking colossus assembled from the bones of dozens of fallen warriors, crowned with a massive ribcage pauldron and wielding a femur club the size of a war axe",
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "add_resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "undead-grave-stalker",
+      "name": "Grave Stalker",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 4,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "siege"
+      ],
+      "housingCost": 1,
+      "icon": "🦂",
+      "artworkDescription": "A sinuous undead predator with elongated limbs, moving on all fours through rubble and walls with unnatural ease, leaving a trail of grave dust",
+      "abilities": [
+        {
+          "id": "grave-stalker-phase",
+          "name": "Phase Through",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "undead-rot-shield",
+      "name": "Rotshield Sentinel",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 1,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "guard",
+        "blocking"
+      ],
+      "housingCost": 1,
+      "icon": "🛡️",
+      "artworkDescription": "A broad-shouldered skeleton braced behind a tower shield fashioned from overlapping ribcages and coffin lids, its eye sockets glowing a dull amber",
+      "triggers": [
+        {
+          "event": "on_damaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "add_resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "undead-soul-puppet",
+      "name": "Soul Puppet",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "🪆",
+      "artworkDescription": "A small ragged corpse animated by a single tethered soul-thread, jerking along on stiff limbs with glassy vacant eyes",
+      "triggers": [
+        {
+          "event": "on_play",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "add_resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "undead-lich-sovereign",
+      "name": "Lich Sovereign",
+      "objectType": "unit",
+      "playCost": 6,
+      "properties": {
+        "attack": 4,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "housingCost": 3,
+      "icon": "🌑",
+      "artworkDescription": "An ancient lich enthroned on a floating obsidian dais, robes fraying into shadow-tendrils, phylactery gem pulsing violet in its chest cavity",
+      "abilities": [
+        {
+          "id": "lich-sovereign-mass-raise",
+          "name": "Mass Raise",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "on_ally_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "add_resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "undead-necrotic-surge",
+      "name": "Necrotic Surge",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "⚡",
+      "artworkDescription": "A crackling bolt of sickly green necrotic energy arcs from skeletal fingertips, leaving scorch marks of decaying flesh on contact",
+      "onPlay": {
+        "id": "undead-necrotic-surge-effect",
+        "name": "Necrotic Surge Effect",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 3
+          },
+          {
+            "type": "heal",
+            "scope": "all_ally_units",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "undead-corpse-explosion",
+      "name": "Corpse Explosion",
+      "objectType": "spell",
+      "playCost": 4,
+      "icon": "💥",
+      "artworkDescription": "A bloated corpse detonates in a spectacular shower of gore and bone shards, spraying the entire enemy line with lethal fragments",
+      "onPlay": {
+        "id": "undead-corpse-explosion-effect",
+        "name": "Corpse Explosion Effect",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "all_opponent_units",
+            "amount": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "undead-dark-mending",
+      "name": "Dark Mending",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "🩸",
+      "artworkDescription": "Tendrils of shadow-magic weave shattered bones back together and knit necrotic tissue, restoring the undead horde with stolen vitality",
+      "onPlay": {
+        "id": "undead-dark-mending-effect",
+        "name": "Dark Mending Effect",
+        "effects": [
+          {
+            "type": "heal",
+            "scope": "all_ally_units",
+            "amount": 3
+          },
+          {
+            "type": "add_resource",
+            "scope": "player",
+            "resourceId": "dp",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "undead-charnel-spire",
+      "name": "Charnel Spire",
+      "objectType": "building",
+      "playCost": 4,
+      "constructionRequirement": 3,
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8
+      },
+      "housingProvided": 3,
+      "icon": "🗼",
+      "artworkDescription": "A jagged tower of fused bones and mortar, its apex crowned with a skull-lantern that emits a pale deathly radiance over the battlefield, emboldening all undead in its glow",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "all_ally_units",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "id": "charnel-spire-death-knell",
+          "name": "Death Knell",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "undead-ossified-brute",
+      "name": "Ossified Brute",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 4,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "cleave"
+      ],
+      "housingCost": 2,
+      "icon": "🦷",
+      "artworkDescription": "A massive undead giant whose skin has been replaced entirely by interlocking plates of calcified bone, its fists the size of boulders",
+      "abilities": [
+        {
+          "id": "ossified-brute-bone-crush",
+          "name": "Bone Crush",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 5
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "undead-specter-knight",
+      "name": "Specter Knight",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 3,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "housingCost": 1,
+      "icon": "🗡️",
+      "artworkDescription": "A translucent armored phantom that flickers in and out of visibility, lunging forward with a spectral lance that passes through physical armor",
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            },
+            {
+              "type": "add_resource",
+              "scope": "player",
+              "resourceId": "dp",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "machine-clockwork-grunt",
+      "name": "Clockwork Grunt",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2
+      },
+      "tags": [
+        "soldier"
+      ],
+      "icon": "⚙️",
+      "artworkDescription": "A compact brass automaton with a single oversized fist, belching steam with every stomping step",
+      "housingCost": 1
+    },
+    {
+      "id": "machine-ironclad-sentinel",
+      "name": "Ironclad Sentinel",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "🛡️",
+      "artworkDescription": "A towering iron golem with a riveted shield-plate fused to its forearm, standing immovable at the gate",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "all_ally_units",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "machine-gear-reaper",
+      "name": "Gear Reaper",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 4,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "cleave"
+      ],
+      "icon": "⚔️",
+      "artworkDescription": "A spinning war machine with saw-blade arms that carve through enemy ranks in a shower of sparks",
+      "housingCost": 2
+    },
+    {
+      "id": "machine-piston-bombardier",
+      "name": "Piston Bombardier",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "siege",
+        "ranged"
+      ],
+      "icon": "💣",
+      "artworkDescription": "A hulking steam-powered mortar frame that locks hydraulic legs into the ground before unleashing a barrage",
+      "housingCost": 2,
+      "abilities": [
+        {
+          "id": "piston-bombardier-barrage",
+          "name": "Steam Barrage",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "machine-coilspring-skirmisher",
+      "name": "Coilspring Skirmisher",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3
+      },
+      "tags": [
+        "soldier",
+        "retaliate"
+      ],
+      "icon": "🔩",
+      "artworkDescription": "A wiry mechanical scout with coiled spring legs, launching counter-strikes with a snap of compressed steel",
+      "housingCost": 1
+    },
+    {
+      "id": "machine-scrap-volley",
+      "name": "Scrap Volley",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "🔧",
+      "artworkDescription": "A cannon fires a cloud of razor-edged metal shards and broken gears across the enemy line",
+      "onPlay": {
+        "id": "machine-scrap-volley-effect",
+        "name": "Spray Shrapnel",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "all_opponent_units",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "machine-emergency-protocols",
+      "name": "Emergency Protocols",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "🔄",
+      "artworkDescription": "A technician slams a glowing override panel, instantly rerouting power to the most damaged unit on the field",
+      "onPlay": {
+        "id": "machine-emergency-protocols-effect",
+        "name": "Reroute Power",
+        "effects": [
+          {
+            "type": "heal",
+            "scope": "target",
+            "amount": 4
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "machine-overclock-directive",
+      "name": "Overclock Directive",
+      "objectType": "spell",
+      "playCost": 4,
+      "icon": "⚡",
+      "artworkDescription": "Sparks cascade across a war machine as its governor is stripped out and every cylinder pushed far beyond rated capacity",
+      "onPlay": {
+        "id": "machine-overclock-directive-effect",
+        "name": "Push to Limit",
+        "effects": [
+          {
+            "type": "buff_property",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": 3
+          },
+          {
+            "type": "untap",
+            "scope": "target"
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "machine-armaments-foundry",
+      "name": "Armaments Foundry",
+      "objectType": "building",
+      "playCost": 4,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6
+      },
+      "housingProvided": 2,
+      "icon": "🏭",
+      "artworkDescription": "A smoke-belching forge complex where mechanical soldiers roll off assembly lines, weapons glowing fresh from the smelter",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "all_ally_units",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "machine-pressure-venter",
+      "name": "Pressure Venter",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4
+      },
+      "tags": [
+        "soldier"
+      ],
+      "icon": "💨",
+      "artworkDescription": "A squat boiler-construct that vents scalding steam clouds when struck, scorching anything nearby",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_damage_taken",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "machine-warden-automaton",
+      "name": "Warden Automaton",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 4,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "🤖",
+      "artworkDescription": "A massive clockwork warden bristling with gear-driven blades and reinforced boiler-plate, its single eye sweeping the battlefield for threats",
+      "housingCost": 2,
+      "abilities": [
+        {
+          "id": "warden-automaton-lockdown",
+          "name": "Gear Lock",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap",
+              "scope": "target"
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "hunks-pit-brawler",
+      "name": "Pit Brawler",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2
+      },
+      "tags": [
+        "hunk",
+        "soldier"
+      ],
+      "icon": "🥊",
+      "artworkDescription": "A bare-chested Hunk with scarred knuckles and a grin that says he has nothing to lose",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hunks-grappler",
+      "name": "Iron Grappler",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5
+      },
+      "tags": [
+        "hunk",
+        "soldier",
+        "retaliate"
+      ],
+      "icon": "🤼",
+      "artworkDescription": "A wide-legged wrestler Hunk in a leotard, arms spread wide, daring anyone to step in",
+      "housingCost": 1,
+      "abilities": [
+        {
+          "id": "grappler-body-lock",
+          "name": "Body Lock",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap",
+              "scope": "target"
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "hunks-colossus",
+      "name": "The Colossus",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 6,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 1
+      },
+      "tags": [
+        "hunk",
+        "soldier",
+        "cleave"
+      ],
+      "icon": "🗿",
+      "artworkDescription": "A titanic Hunk whose shadow swallows an entire street, fists like boulders, breathing through his nose",
+      "housingCost": 2,
+      "triggers": [
+        {
+          "event": "on_play",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hunks-bruiser-champion",
+      "name": "Bruiser Champion",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 5,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "hunk",
+        "soldier"
+      ],
+      "icon": "🏆",
+      "artworkDescription": "A barrel-chested Hunk wearing a championship belt over chain mail, posing mid-combat",
+      "housingCost": 1,
+      "abilities": [
+        {
+          "id": "bruiser-champion-pummel",
+          "name": "Pummel",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 3
+            },
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "hunks-slag-stomper",
+      "name": "Slag Stomper",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3
+      },
+      "tags": [
+        "hunk",
+        "soldier",
+        "siege"
+      ],
+      "icon": "🦶",
+      "artworkDescription": "A squat Hunk who walks heel-first, crushing anything underfoot, boots reinforced with iron plates",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_attack",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hunks-battle-cry",
+      "name": "Battle Cry",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "📣",
+      "artworkDescription": "A Hunk roars at the sky; every ally straightens up and cracks their knuckles",
+      "onPlay": {
+        "id": "hunks-battle-cry-effect",
+        "name": "Unleash Battle Cry",
+        "effects": [
+          {
+            "type": "buff_property",
+            "scope": "all_ally_units",
+            "propertyId": "attack",
+            "amount": 2
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "hunks-quake-stomp",
+      "name": "Quake Stomp",
+      "objectType": "spell",
+      "playCost": 4,
+      "icon": "🌋",
+      "artworkDescription": "A colossal Hunk foot coming down from above, the shockwave sending enemy soldiers airborne",
+      "onPlay": {
+        "id": "hunks-quake-stomp-effect",
+        "name": "Unleash Quake Stomp",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "all_opponent_units",
+            "amount": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "hunks-crowd-charge",
+      "name": "Crowd Charge",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "🏃",
+      "artworkDescription": "A wall of Hunks shoulder-to-shoulder, thundering forward at full speed",
+      "onPlay": {
+        "id": "hunks-crowd-charge-effect",
+        "name": "Unleash Crowd Charge",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 5
+          },
+          {
+            "type": "buff_property",
+            "scope": "all_ally_units",
+            "propertyId": "attack",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "hunks-fighting-pit",
+      "name": "Fighting Pit",
+      "objectType": "building",
+      "playCost": 4,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6
+      },
+      "housingProvided": 2,
+      "tags": [
+        "fortification"
+      ],
+      "icon": "🩸",
+      "artworkDescription": "A sawdust ring surrounded by roaring crowds, torchlit at night, iron shackles bolted to the posts",
+      "triggers": [
+        {
+          "event": "on_ally_unit_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "all_ally_units",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hunks-pile-driver",
+      "name": "Pile Driver",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 4,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
+      },
+      "tags": [
+        "hunk",
+        "soldier",
+        "guard"
+      ],
+      "icon": "🔩",
+      "artworkDescription": "A hulking Hunk with hydraulic braces bolted to her shoulders, using opponents as foundation posts",
+      "housingCost": 2,
+      "abilities": [
+        {
+          "id": "pile-driver-spike",
+          "name": "Ground Spike",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "target",
+              "amount": 4
+            },
+            {
+              "type": "tap",
+              "scope": "target"
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "hunks-rage-bender",
+      "name": "Rage Bender",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 4,
+        "currentHp": 4,
+        "maxHp": 4
+      },
+      "tags": [
+        "hunk",
+        "soldier"
+      ],
+      "icon": "😤",
+      "artworkDescription": "A furious Hunk who bends iron bars with bare hands as a warm-up, veins visible from across the field",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_damaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_property",
+              "scope": "self",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arcane-void-stalker",
+      "name": "Void Stalker",
+      "objectType": "unit",
+      "playCost": 1,
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2
+      },
+      "tags": [
+        "ranged"
+      ],
+      "icon": "👁️",
+      "artworkDescription": "A flickering silhouette of compressed void energy, two luminous eyes staring from within a rift seam",
+      "housingCost": 1
+    },
+    {
+      "id": "arcane-rift-channeler",
+      "name": "Rift Channeler",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3
+      },
+      "tags": [
+        "caster"
+      ],
+      "icon": "🌀",
+      "artworkDescription": "A robed figure whose hands are submerged wrist-deep into a crackling violet dimensional rift",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_play",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arcane-mana-elemental",
+      "name": "Mana Elemental",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 3,
+        "currentHp": 4,
+        "maxHp": 4
+      },
+      "tags": [],
+      "icon": "🔷",
+      "artworkDescription": "A humanoid construct of pure crystallised mana, geometric shards orbiting its core like a living diagram",
+      "housingCost": 1,
+      "triggers": [
+        {
+          "event": "on_death",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "add_resource",
+              "resourceId": "mana",
+              "amount": 2,
+              "scope": "player"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arcane-void-wraith",
+      "name": "Void Wraith",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 4,
+        "currentHp": 3,
+        "maxHp": 3
+      },
+      "tags": [
+        "ranged",
+        "retaliate"
+      ],
+      "icon": "🕳️",
+      "artworkDescription": "A spectral form woven from collapsed void rift threads, trailing tendrils of inverted light",
+      "housingCost": 1
+    },
+    {
+      "id": "arcane-prism-guardian",
+      "name": "Prism Guardian",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [
+        "guard",
+        "blocking"
+      ],
+      "icon": "💎",
+      "artworkDescription": "A towering crystalline golem whose facets deflect incoming blows in showers of refracted arcane light",
+      "housingCost": 2,
+      "abilities": [
+        {
+          "id": "arcane-prism-shield-pulse",
+          "name": "Shield Pulse",
+          "costs": [
+            {
+              "type": "tap",
+              "scope": "self"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "target",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "arcane-nexus-colossus",
+      "name": "Nexus Colossus",
+      "objectType": "unit",
+      "playCost": 5,
+      "properties": {
+        "attack": 5,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "tags": [
+        "cleave"
+      ],
+      "icon": "🗿",
+      "artworkDescription": "A colossal figure assembled from compressed nexus fragments, its chest a roiling core of raw arcane power that pulses with each stride",
+      "housingCost": 2,
+      "triggers": [
+        {
+          "event": "on_attack",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage",
+              "scope": "all_opponent_units",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arcane-void-rupture",
+      "name": "Void Rupture",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "🌑",
+      "artworkDescription": "A fissure tears open in the air and vomits void energy across everything caught in its radius",
+      "onPlay": {
+        "id": "arcane-void-rupture-effect",
+        "name": "Deal 2 damage to all opponent units",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "all_opponent_units",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "arcane-temporal-surge",
+      "name": "Temporal Surge",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "⏩",
+      "artworkDescription": "Arcane energy accelerates a chosen unit through compressed time, leaving afterimage trails of luminous blue",
+      "onPlay": {
+        "id": "arcane-temporal-surge-effect",
+        "name": "Untap and buff attack +2",
+        "effects": [
+          {
+            "type": "untap",
+            "scope": "target"
+          },
+          {
+            "type": "buff_property",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": 2
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    {
+      "id": "arcane-mana-siphon",
+      "name": "Mana Siphon",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "💧",
+      "artworkDescription": "Tendrils of arcane energy reach across the field, drawing mana from an enemy to fuel your own reserves",
+      "onPlay": {
+        "id": "arcane-mana-siphon-effect",
+        "name": "Drain 2 mana from opponent, gain 2 mana",
+        "effects": [
+          {
+            "type": "add_resource",
+            "resourceId": "mana",
+            "amount": 2,
+            "scope": "player"
+          },
+          {
+            "type": "set_resource",
+            "resourceId": "mana",
+            "amount": -2,
+            "scope": "opponent"
+          }
+        ]
+      }
+    },
+    {
+      "id": "arcane-annihilation-wave",
+      "name": "Annihilation Wave",
+      "objectType": "spell",
+      "playCost": 5,
+      "icon": "💥",
+      "artworkDescription": "A rolling wall of pure annihilating arcane force that unmakes everything in its path, leaving only scorched silence",
+      "onPlay": {
+        "id": "arcane-annihilation-wave-effect",
+        "name": "Deal 4 damage to all opponent units",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "all_opponent_units",
+            "amount": 4
+          }
+        ]
+      }
+    },
+    {
+      "id": "arcane-rift-gate",
+      "name": "Rift Gate",
+      "objectType": "building",
+      "playCost": 3,
+      "constructionRequirement": 2,
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7
+      },
+      "housingProvided": 2,
+      "icon": "🚪",
+      "artworkDescription": "A standing archway of carved void-stone that hums at its keystone with a permanent dimensional rift held open by rune-chains",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "add_resource",
+              "resourceId": "mana",
+              "amount": 1,
+              "scope": "player"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arcane-mana-forge",
+      "name": "Mana Forge",
+      "objectType": "building",
+      "playCost": 4,
+      "constructionRequirement": 3,
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5
+      },
+      "housingProvided": 0,
+      "icon": "⚗️",
+      "artworkDescription": "A squat basalt tower lined with rune-etched conduits that siphon ambient arcane energy and crystallise it into usable mana charges",
+      "triggers": [
+        {
+          "event": "on_turn_start",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "add_resource",
+              "resourceId": "mana",
+              "amount": 2,
+              "scope": "player"
+            },
+            {
+              "type": "heal",
+              "scope": "all_ally_units",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arcane-void-mantle",
+      "name": "Void Mantle",
+      "objectType": "equipment",
+      "playCost": 2,
+      "icon": "🌌",
+      "artworkDescription": "A cloak woven from compressed void-thread that bends incoming strikes around its wearer and lends unnatural speed to counterattacks",
+      "attachCondition": {
+        "controller": "self",
+        "objectType": "unit"
+      },
+      "modifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        },
+        {
+          "tag": "retaliate"
+        }
+      ]
     }
   ],
   "decks": [
