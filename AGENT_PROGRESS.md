@@ -722,4 +722,16 @@ Verified: `dotnet build` clean, 0 warnings/errors. `dotnet test` 10/10 pass — 
 which drives the real engine through `ActivateAbility` with 2 siege-tagged buildings on the
 battlefield and asserts the opponent HQ takes 4 damage (2 base × 2 buildings), not the old
 flat 2.
+
+## 2026-09-05 — task 1499 (started)
+Plan: diagnose Hunks' ~0% simulated win rate vs Town/Raiders via `/api/simulate` +
+turn-by-turn logs. Working hypothesis after a first log read: Hunk Stronghold (the default
+Hunks HQ) is the only HQ in the game with no direct resource-generation ability — every other
+faction HQ (Collect Taxes, Channel, Extort, Exhume, Distill, even the alt "Hunk Village" HQ's
+Barn Raising) grants a resource for a bare tap; Hunk Stronghold's only ability is "Grow
+Community" (free unit, no resource). That makes the whole deck's economy depend on drawing one
+of 5 zero-cost bootstrap cards (bag-of-gold/gold-mine) out of ~58, and games where neither is
+drawn early show the bot doing nothing but spam free 1-atk/2-hp Hunks turn after turn. Will
+verify against a fresh baseline (current master already includes an unrelated armor-cap
+rebalance from today) before deciding the exact fix.
 Left: nothing — this closes the CHANGES REQUESTED review on PR #45.
