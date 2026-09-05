@@ -3711,9 +3711,9 @@
       "objectType": "unit",
       "properties": {
         "attack": 7,
-        "currentHp": 9,
-        "maxHp": 9,
-        "armor": 3
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
       },
       "tags": [
         "organic",
@@ -4851,9 +4851,9 @@
       },
       "properties": {
         "attack": 4,
-        "currentHp": 7,
-        "maxHp": 7,
-        "armor": 3
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
       },
       "tags": [
         "retaliate"
@@ -6828,7 +6828,7 @@
       "properties": {
         "currentHp": 10,
         "maxHp": 10,
-        "armor": 3
+        "armor": 2
       },
       "housingProvided": 5,
       "tags": [],
@@ -7445,8 +7445,8 @@
       "objectType": "graveyard-hq",
       "playCost": 7,
       "properties": {
-        "currentHp": 12,
-        "maxHp": 12,
+        "currentHp": 10,
+        "maxHp": 10,
         "armor": 2
       },
       "resourceCapacities": {
@@ -7654,9 +7654,9 @@
       "objectType": "headquarters",
       "playCost": 7,
       "properties": {
-        "currentHp": 12,
-        "maxHp": 12,
-        "armor": 3
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 2
       },
       "icon": "🛠️",
       "artworkDescription": "Gantries and diagnostic cradles built for one very large patient",
@@ -7897,9 +7897,9 @@
       "objectType": "hero",
       "properties": {
         "attack": 2,
-        "currentHp": 11,
-        "maxHp": 11,
-        "armor": 3
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
       },
       "resources": {
         "ap": 0
@@ -7964,9 +7964,9 @@
       "objectType": "nexus",
       "playCost": 7,
       "properties": {
-        "currentHp": 10,
-        "maxHp": 10,
-        "armor": 3
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
       },
       "resources": {
         "mana": 4
@@ -8281,8 +8281,8 @@
       "objectType": "hive-hq",
       "playCost": 8,
       "properties": {
-        "currentHp": 14,
-        "maxHp": 14,
+        "currentHp": 11,
+        "maxHp": 11,
         "armor": 2
       },
       "resourceCapacities": {
@@ -8406,9 +8406,9 @@
       "objectType": "hero",
       "properties": {
         "attack": 2,
-        "currentHp": 10,
-        "maxHp": 10,
-        "armor": 3
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
       },
       "icon": "🐌",
       "artworkDescription": "Armor grown thick enough that it forgot how to run",
@@ -8681,9 +8681,9 @@
       "objectType": "laboratory-hq",
       "playCost": 7,
       "properties": {
-        "currentHp": 10,
-        "maxHp": 10,
-        "armor": 3
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
       },
       "resourceCapacities": {
         "reagents": 14
@@ -9018,9 +9018,9 @@
       "objectType": "headquarters",
       "playCost": 9,
       "properties": {
-        "currentHp": 14,
-        "maxHp": 14,
-        "armor": 4
+        "currentHp": 12,
+        "maxHp": 12,
+        "armor": 2
       },
       "housingProvided": 5,
       "tags": [],
@@ -16176,9 +16176,9 @@
       "objectType": "unit",
       "properties": {
         "attack": 4,
-        "currentHp": 8,
-        "maxHp": 8,
-        "armor": 3
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
       },
       "playCosts": {
         "gold": 6,
@@ -17593,9 +17593,9 @@
       "name": "Grand Exchange",
       "objectType": "headquarters",
       "properties": {
-        "currentHp": 10,
-        "maxHp": 10,
-        "armor": 3
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 2
       },
       "housingProvided": 8,
       "tags": [
@@ -17972,9 +17972,9 @@
       "objectType": "unit",
       "properties": {
         "attack": 5,
-        "currentHp": 7,
-        "maxHp": 7,
-        "armor": 3
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
       },
       "housingCost": 3,
       "playCost": 6,
@@ -18129,9 +18129,9 @@
       "name": "Golden Vault",
       "objectType": "building",
       "properties": {
-        "currentHp": 8,
-        "maxHp": 8,
-        "armor": 3
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 2
       },
       "housingProvided": 0,
       "playCost": 4,
@@ -21828,9 +21828,9 @@
       "objectType": "unit",
       "properties": {
         "attack": 6,
-        "currentHp": 12,
-        "maxHp": 12,
-        "armor": 3
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 2
       },
       "playCost": 7,
       "housingCost": 3,
@@ -22291,9 +22291,9 @@
       "objectType": "hero",
       "properties": {
         "attack": 5,
-        "currentHp": 28,
-        "maxHp": 28,
-        "armor": 3
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 2
       },
       "housingCost": 0,
       "tags": [
@@ -22576,9 +22576,9 @@
       "objectType": "unit",
       "properties": {
         "attack": 3,
-        "currentHp": 8,
-        "maxHp": 8,
-        "armor": 3
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
       },
       "playCost": 4,
       "housingCost": 2,
@@ -22643,9 +22643,9 @@
       "objectType": "unit",
       "properties": {
         "attack": 8,
-        "currentHp": 12,
-        "maxHp": 12,
-        "armor": 4
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 2
       },
       "playCosts": {
         "gold": 7,
@@ -24157,9 +24157,9 @@
       "playCost": 6,
       "properties": {
         "attack": 5,
-        "currentHp": 9,
-        "maxHp": 9,
-        "armor": 3
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
       },
       "housingCost": 3,
       "tags": [
@@ -24177,9 +24177,9 @@
       "playCost": 9,
       "properties": {
         "attack": 7,
-        "currentHp": 14,
-        "maxHp": 14,
-        "armor": 4
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 2
       },
       "housingCost": 3,
       "tags": [
@@ -24211,9 +24211,9 @@
       "playCost": 5,
       "properties": {
         "attack": 4,
-        "currentHp": 8,
-        "maxHp": 8,
-        "armor": 3
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
       },
       "housingCost": 2,
       "tags": [
@@ -24948,9 +24948,9 @@
       "name": "Fortress Keep",
       "objectType": "homestead-hq",
       "properties": {
-        "currentHp": 12,
-        "maxHp": 12,
-        "armor": 3
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 2
       },
       "housingProvided": 10,
       "icon": "🏰",
@@ -25296,9 +25296,9 @@
       "objectType": "unit",
       "properties": {
         "attack": 3,
-        "currentHp": 8,
-        "maxHp": 8,
-        "armor": 4
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 2
       },
       "playCosts": {
         "gold": 5,
@@ -25346,9 +25346,9 @@
       "name": "Stone Wall",
       "objectType": "building",
       "properties": {
-        "currentHp": 8,
-        "maxHp": 8,
-        "armor": 4
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
       },
       "playCosts": {
         "gold": 2,
@@ -25382,9 +25382,9 @@
       "name": "Fortified Rampart",
       "objectType": "building",
       "properties": {
-        "currentHp": 8,
-        "maxHp": 8,
-        "armor": 4
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
       },
       "playCosts": {
         "gold": 3,
@@ -25558,9 +25558,9 @@
       "name": "Bastion Gate",
       "objectType": "building",
       "properties": {
-        "currentHp": 10,
-        "maxHp": 10,
-        "armor": 4
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 2
       },
       "playCosts": {
         "gold": 5,
@@ -25617,9 +25617,9 @@
       "name": "War Foundry",
       "objectType": "building",
       "properties": {
-        "currentHp": 7,
-        "maxHp": 7,
-        "armor": 3
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
       },
       "playCosts": {
         "gold": 4,
@@ -25731,9 +25731,9 @@
       "name": "Grand Battery",
       "objectType": "building",
       "properties": {
-        "currentHp": 8,
-        "maxHp": 8,
-        "armor": 4
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
       },
       "playCosts": {
         "gold": 7,
