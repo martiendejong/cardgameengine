@@ -141,13 +141,15 @@ public class FortressEternalDeckTests
     {
         var (game, engine, fort, _) = CreateMatch();
         var wall = PutOnBattlefield(game, "fort-stone-wall", fort);
-        wall.Properties["currentHp"] = 3; // damaged, below its maxHp of 8
+        wall.Properties["currentHp"] = 3; // damaged, below its maxHp
         var fortify = PutInHand(game, "fort-fortify", fort);
 
         var (ok, error) = engine.ExecuteAction(game, fort.Id, new ActionRequest { Type = "playCard", SourceObjectId = fortify.Id });
 
         Assert.True(ok, error);
-        Assert.Equal(7, wall.Properties["currentHp"]); // +4 heal, capped at maxHp 8
+        // +4 heal, capped at maxHp — 8 before the unrelated armor-cap rebalance (commit
+        // a94ef85, direct push, no PR) dropped fort-stone-wall's armor 3→2 and maxHp 8→6.
+        Assert.Equal(6, wall.Properties["currentHp"]);
         Assert.Contains(game.ActiveModifiers, m => m.TargetObjectId == wall.Id && m.PropertyId == "armor" && m.Amount == 1);
     }
 
