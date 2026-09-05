@@ -78,13 +78,39 @@ export function GameBoard({
     }, ANIMATION_PAUSE_MS);
   }, [gameState]);
   const [inspectedId, setInspectedId] = useState<string | null>(null);
+  const [viewingOpponentIdx, setViewingOpponentIdx] = useState(0);
 
   const inspectedCard = inspectedId
     ? gameState.objects.find(o => o.id === inspectedId) ?? null
     : null;
 
   const myPlayer = gameState.players.find(p => p.id === myPlayerId);
-  const opponentPlayer = gameState.players.find(p => p.id !== myPlayerId);
+
+  // Ring-FFA neighbor computation: among non-eliminated players, find my right and left neighbors.
+  // For 2-player games this reduces to the single opponent. For spectators (myPlayerId not in list)
+  // fall back to showing all non-self players.
+  const alivePlayers = gameState.players.filter(p => !p.isLoser);
+  const myAliveIdx = alivePlayers.findIndex(p => p.id === myPlayerId);
+  const opponents: typeof gameState.players = myAliveIdx >= 0 && alivePlayers.length > 1
+    ? (() => {
+        const rightIdx = (myAliveIdx + 1) % alivePlayers.length;
+        const leftIdx  = (myAliveIdx - 1 + alivePlayers.length) % alivePlayers.length;
+        const result = [alivePlayers[rightIdx]];
+        if (leftIdx !== rightIdx) result.push(alivePlayers[leftIdx]);
+        return result;
+      })()
+    : gameState.players.filter(p => p.id !== myPlayerId);
+
+  // Auto-show the opponent whose board is currently active, or whose units are being targeted
+  const activeOpponent = opponents.find(p => p.id === gameState.activePlayerId);
+  const targetOpponent = pendingAction?.validTargets?.length
+    ? opponents.find(p =>
+        gameState.objects.some(o => o.controllerId === p.id && pendingAction.validTargets!.includes(o.id)))
+    : undefined;
+
+  // Clamp viewing index to valid range (e.g. after an opponent is eliminated)
+  const clampedIdx = Math.min(viewingOpponentIdx, opponents.length - 1);
+  const opponentPlayer = targetOpponent ?? activeOpponent ?? opponents[clampedIdx] ?? opponents[0];
 
   const selectableTargets = pendingAction?.validTargets ?? [];
 
@@ -162,6 +188,20 @@ export function GameBoard({
       {/* Main play area: one scroll container for both player sections */}
       <div className="board-main" ref={boardRef}>
         {/* Opponent area (top) */}
+        {opponents.length > 1 && (
+          <div className="opponent-tabs">
+            {opponents.map((opp, i) => (
+              <button
+                key={opp.id}
+                className={`opp-tab${opp.id === opponentPlayer?.id ? ' opp-tab-active' : ''}${opp.isLoser ? ' opp-tab-eliminated' : ''}`}
+                onClick={() => setViewingOpponentIdx(i)}
+              >
+                {opp.name}{opp.isLoser ? ' (eliminated)' : ''}
+                {opp.id === gameState.activePlayerId ? ' *' : ''}
+              </button>
+            ))}
+          </div>
+        )}
         {opponentPlayer && (
           <PlayerArea
             player={opponentPlayer}

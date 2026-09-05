@@ -210,14 +210,25 @@ public class RuleEngine
             }
         }
 
-        var losers = game.Players.Where(p => p.IsLoser).ToList();
-        if (losers.Count > 0)
+        // FFA ring: the game ends only when one player remains standing.
+        // For 2-player games this behaves identically to before (1 loser → 1 winner).
+        // For 3+ players, elimination logs a message and the ring closes for future turns;
+        // the game continues until one survivor remains.
+        var newlyEliminated = game.Players.Where(p => p.IsLoser).ToList();
+        foreach (var loser in newlyEliminated.Where(p => !game.Log.Any(l => l.Contains(p.Name + " has been eliminated"))))
+            game.Log.Add($"{loser.Name} has been eliminated!");
+
+        var survivors = game.Players.Where(p => !p.IsLoser).ToList();
+        if (survivors.Count == 1)
         {
-            foreach (var winner in game.Players.Where(p => !p.IsLoser))
-            {
-                winner.IsWinner = true;
-                game.Log.Add($"{winner.Name} wins!");
-            }
+            survivors[0].IsWinner = true;
+            game.Log.Add($"{survivors[0].Name} wins!");
+            game.State = GameState.GameEnded;
+        }
+        else if (survivors.Count == 0)
+        {
+            // Simultaneous mutual destruction — edge case
+            game.Log.Add("Draw — no survivors!");
             game.State = GameState.GameEnded;
         }
     }

@@ -83,6 +83,17 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
     { name: 'Player 1', isAdmin: false, deckId: '', hqId: '', heroId: '', deck: {} },
     { name: 'Player 2', isAdmin: false, deckId: '', hqId: '', heroId: '', deck: {} },
   ]);
+
+  function addPlayer() {
+    if (players.length >= 8) return;
+    const n = players.length + 1;
+    setPlayers(prev => [...prev, { name: `Player ${n}`, isAdmin: false, deckId: '', hqId: '', heroId: '', deck: {} }]);
+  }
+
+  function removePlayer() {
+    if (players.length <= 2) return;
+    setPlayers(prev => prev.slice(0, -1));
+  }
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [mode, setMode] = useState<'hotseat' | 'seats' | 'bot'>(initialMode ?? 'hotseat');
@@ -250,13 +261,13 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
           gameId: selectedGame,
           players: players.map((p, i) => ({
             id: `p${i + 1}`,
-            name: mode === 'bot' && i === 1 ? 'Computer' : p.name,
+            name: mode === 'bot' && i > 0 ? (players.length === 2 ? 'Computer' : `Computer ${i}`) : p.name,
             deckId: p.deckId || undefined,
             hqId: p.hqId || undefined,
             heroId: p.heroId || undefined,
             deck: p.deck,
             isAdmin: p.isAdmin,
-            isBot: mode === 'bot' && i === 1,
+            isBot: mode === 'bot' && i > 0,
           })),
         }),
       });
@@ -311,6 +322,13 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
             Admins ignore all limits and can use every card.
           </div>
         )}
+
+        <div className="player-count-row">
+          <span className="player-count-label">Players: {players.length}</span>
+          <button className="count-btn" onClick={removePlayer} disabled={players.length <= 2}>−</button>
+          <button className="count-btn" onClick={addPlayer} disabled={players.length >= 8}>+</button>
+          <span className="player-count-hint">2–8 players, ring FFA</span>
+        </div>
 
         <div className="deck-builders">
           {players.map((player, idx) => {
@@ -482,7 +500,7 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
               checked={mode === 'seats'}
               onChange={() => setMode('seats')}
             />
-            <strong>Two browsers</strong> — you play as Player 1; share an invite link for Player 2. Hands stay hidden.
+            <strong>Multiple browsers</strong> — you play as Player 1; each other player gets their own invite link. Hands stay hidden.
           </label>
           <label className={`mode-option ${mode === 'bot' ? 'mode-active' : ''}`}>
             <input
@@ -491,7 +509,7 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
               checked={mode === 'bot'}
               onChange={() => setMode('bot')}
             />
-            <strong>vs Computer</strong> — you play as Player 1 against a computer opponent using Player 2's deck.
+            <strong>vs Computer</strong> — you play as Player 1; all other players are computer opponents.
           </label>
         </div>
 

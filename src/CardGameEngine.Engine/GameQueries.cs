@@ -52,8 +52,46 @@ public static class GameQueries
             o.OwnerId == playerId && !o.IsDestroyed && o.ZoneId == "battlefield" &&
             IsObjectTypeOrSubtype(game, o.ObjectType, "hero"));
 
+    /// <summary>
+    /// Returns the ring-neighbors of a player: the closest alive players to the left and right.
+    /// The ring closes dynamically as players are eliminated.
+    /// Returns 1 entry when only 2 survive (both directions point to the same player).
+    /// Returns empty when the player is eliminated or is the last survivor.
+    /// </summary>
+    public static List<PlayerInstance> GetNeighbors(GameInstance game, string playerId)
+    {
+        var alive = game.Players.Where(p => !p.IsLoser).ToList();
+        if (alive.Count <= 1) return new List<PlayerInstance>();
+
+        var idx = alive.FindIndex(p => p.Id == playerId);
+        if (idx < 0) return new List<PlayerInstance>(); // caller is eliminated
+
+        var rightIdx = (idx + 1) % alive.Count;
+        var leftIdx  = (idx - 1 + alive.Count) % alive.Count;
+
+        var result = new List<PlayerInstance> { alive[rightIdx] };
+        if (leftIdx != rightIdx) result.Add(alive[leftIdx]);
+        return result;
+    }
+
+    /// <summary>
+    /// Walks the full player list (preserving ring seat order) from currentPlayerId
+    /// and returns the next player who has not been eliminated.
+    /// </summary>
+    public static PlayerInstance? GetNextActivePlayer(GameInstance game, string currentPlayerId)
+    {
+        var idx = game.Players.FindIndex(p => p.Id == currentPlayerId);
+        for (int i = 1; i <= game.Players.Count; i++)
+        {
+            var candidate = game.Players[(idx + i) % game.Players.Count];
+            if (!candidate.IsLoser) return candidate;
+        }
+        return null; // everyone eliminated — game should have already ended
+    }
+
+    /// <summary>Backward-compat: first ring neighbor (right neighbor in seat order).</summary>
     public static PlayerInstance? GetOpponent(GameInstance game, PlayerInstance player) =>
-        game.Players.FirstOrDefault(p => p.Id != player.Id);
+        GetNeighbors(game, player.Id).FirstOrDefault();
 
     public static IEnumerable<ObjectInstance> BattlefieldObjects(GameInstance game, string? controllerId = null) =>
         game.Objects.Where(o =>
