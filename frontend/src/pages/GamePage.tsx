@@ -5,13 +5,14 @@ import { GameBoard } from '../components/GameBoard';
 import { ActionPanel } from '../components/ActionPanel';
 import { TargetSelectBanner } from '../components/TargetSelectBanner';
 import { BASE } from '../config';
-import { hasAnimatableChange, ANIMATION_PAUSE_MS } from '../utils/animationDiff';
 
 interface GamePageProps {
   matchId: string;
   seat: string; // fixed player id, or '' for hotseat (perspective follows the active player)
   onLeave: () => void;
 }
+
+type QueuedAction = { action: AvailableAction; targetIds: string[]; chosenAmount?: number };
 
 export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   const [gameState, setGameState] = useState<GameStateDto | null>(null);
@@ -22,18 +23,13 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   const [pendingAction, setPendingAction] = useState<AvailableAction | null>(null);
   const [selectedTargets, setSelectedTargets] = useState<string[]>([]);
   const [chosenAmount, setChosenAmount] = useState<number>(1);
-  const [isPaused, setIsPaused] = useState(false);
-  const prevStateForPauseRef = useRef<GameStateDto | null>(null);
-  const pauseTimerRef = useRef<number | null>(null);
+
+  // Track in-flight request and queue one follow-up action.
+  // The queue holds the most recent click: clicking twice while waiting replaces the queue.
+  const isRequestInFlightRef = useRef(false);
+  const queuedActionRef = useRef<QueuedAction | null>(null);
 
   const isHotseat = seat === '';
-
-  // Clear any pending pause timer on unmount so it doesn't fire after teardown.
-  useEffect(() => {
-    return () => {
-      if (pauseTimerRef.current !== null) window.clearTimeout(pauseTimerRef.current);
-    };
-  }, []);
 
   // Load the static card definitions once (for the card inspector)
   const gameId = gameState?.gameId;
@@ -51,21 +47,8 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
 
   const handleStateUpdate = useCallback((state: GameStateDto) => {
     hasGameStateRef.current = true;
-    const prev = prevStateForPauseRef.current;
-    prevStateForPauseRef.current = state;
     setGameState(state);
     if (isHotseat) setMyPlayerId(state.activePlayerId);
-
-    // A unit was attacked/hit/summoned — hold input for the same window the
-    // card animation plays, so a quick follow-up click can't cut it short.
-    if (hasAnimatableChange(prev, state)) {
-      setIsPaused(true);
-      if (pauseTimerRef.current !== null) window.clearTimeout(pauseTimerRef.current);
-      pauseTimerRef.current = window.setTimeout(() => {
-        setIsPaused(false);
-        pauseTimerRef.current = null;
-      }, ANIMATION_PAUSE_MS);
-    }
   }, [isHotseat]);
 
   const [joinDenied, setJoinDenied] = useState<string | null>(null);
@@ -90,30 +73,47 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   // In hotseat mode we act as whoever is active; in seat mode always as our seat
   const actAs = isHotseat ? myPlayerId : seat;
 
-  async function handleAction(action: AvailableAction, targetIds?: string[], chosenAmount?: number) {
-    if (isPaused) return; // let the current animation finish before sending the next action
+  // actAsRef keeps dispatchAction's closure from capturing a stale actAs.
+  const actAsRef = useRef(actAs);
+  actAsRef.current = actAs;
+
+  const dispatchAction = useCallback(async (action: AvailableAction, targetIds: string[] = [], amount?: number) => {
+    if (isRequestInFlightRef.current) {
+      // Store latest queued intent; previous queued click is discarded.
+      queuedActionRef.current = { action, targetIds, chosenAmount: amount };
+      return;
+    }
+
+    isRequestInFlightRef.current = true;
     try {
       if (action.type === 'endPhase') {
-        await endPhase(actAs);
-        return;
+        await endPhase(actAsRef.current);
+      } else {
+        await sendAction(actAsRef.current, {
+          type: action.type,
+          sourceObjectId: action.sourceObjectId,
+          abilityId: action.abilityId,
+          targetIds,
+          chosenAmount: amount,
+        });
       }
-      await sendAction(actAs, {
-        type: action.type,
-        sourceObjectId: action.sourceObjectId,
-        abilityId: action.abilityId,
-        targetIds: targetIds ?? [],
-        chosenAmount,
-      });
     } catch (err: any) {
       handleError(err.message ?? 'Action failed');
+    } finally {
+      isRequestInFlightRef.current = false;
+      const queued = queuedActionRef.current;
+      if (queued) {
+        queuedActionRef.current = null;
+        void dispatchAction(queued.action, queued.targetIds, queued.chosenAmount);
+      }
     }
-  }
+  }, [sendAction, endPhase, handleError]);
 
   function handleActionClick(action: AvailableAction) {
     if (!action.available) return;
 
     if (action.type === 'endPhase') {
-      handleAction(action, []);
+      void dispatchAction(action, []);
       return;
     }
 
@@ -123,11 +123,9 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
       setSelectedTargets([]);
       setChosenAmount(action.requiresChoice.amountMin ?? 1);
     } else if (action.requiresChoice && (!action.validTargets || action.validTargets.length === 0)) {
-      // No valid targets, send with empty
-      handleAction(action, []);
+      void dispatchAction(action, []);
     } else {
-      // No choice needed
-      handleAction(action, []);
+      void dispatchAction(action, []);
     }
   }
 
@@ -148,7 +146,7 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
     if (selectedTargets.length < min) return;
 
     const amount = pendingAction.requiresChoice?.chooseAmount ? chosenAmount : undefined;
-    handleAction(pendingAction, selectedTargets, amount);
+    void dispatchAction(pendingAction, selectedTargets, amount);
     setPendingAction(null);
     setSelectedTargets([]);
     setChosenAmount(1);
@@ -160,7 +158,6 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
   }
 
   async function handleEndPhase() {
-    if (isPaused) return; // let the current animation finish before sending the next action
     try {
       await endPhase(actAs);
     } catch (err: any) {
@@ -257,10 +254,10 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
         cardDefs={cardDefs}
         pendingAction={pendingAction}
         selectedTargets={selectedTargets}
-        isPaused={isPaused}
+        isPaused={false}
         onActionClick={handleActionClick}
         onSelectTarget={handleSelectTarget}
-        onAction={handleAction}
+        onAction={(action, targetIds, amount) => void dispatchAction(action, targetIds, amount)}
         onResolveChoice={handleResolveChoice}
       />
 
@@ -278,7 +275,7 @@ export function GamePage({ matchId, seat, onLeave }: GamePageProps) {
       <ActionPanel
         gameState={gameState}
         myPlayerId={actAs}
-        isPaused={isPaused}
+        isPaused={false}
         onEndPhase={handleEndPhase}
         onLeave={onLeave}
       />

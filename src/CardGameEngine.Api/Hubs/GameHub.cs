@@ -171,9 +171,20 @@ public class GameHub : Hub
     /// <summary>Each connection receives its own projection — hidden information stays server-side.</summary>
     private async Task BroadcastStateUpdate(string matchId, GameInstance game)
     {
-        // If the turn passed to a computer player, let it play before broadcasting
-        _bot.PlayBotTurns(game);
+        // Let the bot play its turn, broadcasting state after each action so the
+        // human can watch every move play out with a realistic think-time gap.
+        await _bot.PlayBotTurnsAsync(game, async () =>
+        {
+            await SendStateToAll(matchId, game);
+            await Task.Delay(1000); // pause between bot actions so animations are visible
+        });
 
+        // Always send the final state (covers human turns and the state after bot finishes).
+        await SendStateToAll(matchId, game);
+    }
+
+    private async Task SendStateToAll(string matchId, GameInstance game)
+    {
         foreach (var (connectionId, playerId) in _registry.GetForMatch(matchId))
         {
             await Clients.Client(connectionId)
