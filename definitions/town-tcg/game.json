@@ -6865,6 +6865,12 @@
               "type": "summon",
               "scope": "player",
               "cardId": "hunk"
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
             }
           ]
         },
