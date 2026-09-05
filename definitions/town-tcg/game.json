@@ -3720,7 +3720,11 @@
         "retaliate"
       ],
       "icon": "🐲",
-      "artworkDescription": "The Cocoon delivered on its promise"
+      "artworkDescription": "The Cocoon delivered on its promise",
+      "playCosts": {
+        "biomass": 6
+      },
+      "housingCost": 3
     },
     {
       "id": "cocoon-shell",
@@ -7893,8 +7897,8 @@
       "objectType": "hero",
       "properties": {
         "attack": 2,
-        "currentHp": 15,
-        "maxHp": 15,
+        "currentHp": 11,
+        "maxHp": 11,
         "armor": 3
       },
       "resources": {
@@ -18762,9 +18766,9 @@
       "name": "War Throne",
       "objectType": "raider-hq",
       "properties": {
-        "currentHp": 30,
-        "maxHp": 30,
-        "armor": 1
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 2
       },
       "housingProvided": 8,
       "tags": [
@@ -19685,8 +19689,8 @@
       "name": "Command Core",
       "objectType": "headquarters",
       "properties": {
-        "currentHp": 30,
-        "maxHp": 30,
+        "currentHp": 9,
+        "maxHp": 9,
         "armor": 2
       },
       "housingProvided": 5,
@@ -19726,7 +19730,8 @@
             }
           ]
         }
-      ]
+      ],
+      "playCost": 6
     },
     {
       "id": "sentry-grid-commander",
@@ -20564,9 +20569,9 @@
       "name": "Aether Spire",
       "objectType": "nexus",
       "properties": {
-        "currentHp": 30,
-        "maxHp": 30,
-        "armor": 2
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 1
       },
       "housingProvided": 8,
       "tags": [
@@ -21458,9 +21463,9 @@
       "name": "Plague Cathedral",
       "objectType": "graveyard-hq",
       "properties": {
-        "currentHp": 30,
-        "maxHp": 30,
-        "armor": 2
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 1
       },
       "housingProvided": 8,
       "tags": [
@@ -21507,7 +21512,8 @@
             }
           ]
         }
-      ]
+      ],
+      "playCost": 6
     },
     {
       "id": "plague-lord",
@@ -22225,9 +22231,9 @@
       "name": "Apex Nest",
       "objectType": "hive-hq",
       "properties": {
-        "currentHp": 30,
-        "maxHp": 30,
-        "armor": 2
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 1
       },
       "housingProvided": 12,
       "tags": [
@@ -22276,7 +22282,8 @@
             }
           ]
         }
-      ]
+      ],
+      "playCost": 6
     },
     {
       "id": "apex-brood-empress",
@@ -23108,9 +23115,9 @@
       "name": "Shadow Citadel",
       "objectType": "headquarters",
       "properties": {
-        "currentHp": 30,
-        "maxHp": 30,
-        "armor": 2
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 1
       },
       "housingProvided": 4,
       "icon": "🏯",
@@ -23159,7 +23166,8 @@
           ]
         }
       ],
-      "triggers": []
+      "triggers": [],
+      "playCost": 6
     },
     {
       "id": "hold-grand-spymaster",
@@ -23981,8 +23989,8 @@
       "name": "Grand Opus Laboratory",
       "objectType": "laboratory-hq",
       "properties": {
-        "currentHp": 12,
-        "maxHp": 12,
+        "currentHp": 10,
+        "maxHp": 10,
         "armor": 2
       },
       "playCost": 6,
@@ -24940,9 +24948,9 @@
       "name": "Fortress Keep",
       "objectType": "homestead-hq",
       "properties": {
-        "currentHp": 15,
-        "maxHp": 15,
-        "armor": 4
+        "currentHp": 12,
+        "maxHp": 12,
+        "armor": 3
       },
       "housingProvided": 10,
       "icon": "🏰",
@@ -24990,7 +24998,8 @@
             }
           ]
         }
-      ]
+      ],
+      "playCost": 7
     },
     {
       "id": "fort-siege-commander",
@@ -25373,9 +25382,9 @@
       "name": "Fortified Rampart",
       "objectType": "building",
       "properties": {
-        "currentHp": 10,
-        "maxHp": 10,
-        "armor": 5
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 4
       },
       "playCosts": {
         "gold": 3,
@@ -25549,9 +25558,9 @@
       "name": "Bastion Gate",
       "objectType": "building",
       "properties": {
-        "currentHp": 12,
-        "maxHp": 12,
-        "armor": 6
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 4
       },
       "playCosts": {
         "gold": 5,
@@ -26533,7 +26542,9 @@
         "merch-gold-mine": 3,
         "merch-prosperity-shrine": 2,
         "merch-treasure-cache": 2,
-        "merch-contract-broker": 1
+        "merch-contract-broker": 1,
+        "merch-grand-exchange": 1,
+        "merch-trade-prince": 1
       },
       "hqOptions": [
         "merch-grand-exchange"
@@ -26567,7 +26578,9 @@
         "warbond-debt-demand": 2,
         "warbond-plunder-tide": 2,
         "warbond-glory-axe": 2,
-        "warbond-glory-banner": 2
+        "warbond-glory-banner": 2,
+        "warbond-war-throne": 1,
+        "warbond-warchief": 1
       },
       "hqOptions": [
         "warbond-war-throne"
@@ -26603,7 +26616,9 @@
         "sentry-system-purge": 2,
         "sentry-grid-surge": 2,
         "sentry-cascade-freeze": 1,
-        "sentry-emergency-shutdown": 1
+        "sentry-emergency-shutdown": 1,
+        "sentry-command-core": 1,
+        "sentry-grid-commander": 1
       },
       "hqOptions": [
         "sentry-command-core"
@@ -26637,7 +26652,9 @@
         "storm-focus-lens": 2,
         "storm-stormweave-robe": 2,
         "storm-channeler-adept": 4,
-        "storm-void-walker": 2
+        "storm-void-walker": 2,
+        "storm-aether-spire": 1,
+        "storm-stormcaller": 1
       },
       "hqOptions": [
         "storm-aether-spire"
@@ -26673,7 +26690,9 @@
         "plague-mass-rot": 2,
         "plague-shambler": 4,
         "plague-ghoul": 3,
-        "plague-bone-golem": 1
+        "plague-bone-golem": 1,
+        "plague-cathedral": 1,
+        "plague-lord": 1
       },
       "hqOptions": [
         "plague-cathedral"
@@ -26709,7 +26728,9 @@
         "apex-apex-signal": 2,
         "apex-hive-pulse": 2,
         "apex-scent-trail": 2,
-        "apex-molt": 4
+        "apex-molt": 4,
+        "apex-nest-hq": 1,
+        "apex-brood-empress": 1
       },
       "hqOptions": [
         "apex-nest-hq"
@@ -26745,7 +26766,9 @@
         "hold-economic-collapse": 1,
         "hold-shadow-cloak": 2,
         "hold-poisoned-blade": 2,
-        "hold-garrote-wire": 1
+        "hold-garrote-wire": 1,
+        "hold-shadow-citadel": 1,
+        "hold-grand-spymaster": 1
       },
       "hqOptions": [
         "hold-shadow-citadel"
@@ -26781,7 +26804,9 @@
         "opus-quintessence-burst": 2,
         "opus-quintessence-flask": 2,
         "opus-alchemical-bracer": 2,
-        "opus-philosophers-stone-amulet": 2
+        "opus-philosophers-stone-amulet": 2,
+        "opus-grand-laboratory": 1,
+        "opus-philosophers-hand": 1
       },
       "hqOptions": [
         "opus-grand-laboratory"
@@ -26817,7 +26842,9 @@
         "fort-breach-stopper": 3,
         "fort-siege-harness": 2,
         "fort-engineers-kit": 2,
-        "fort-iron-plating": 1
+        "fort-iron-plating": 1,
+        "fort-fortress-keep": 1,
+        "fort-siege-commander": 1
       },
       "hqOptions": [
         "fort-fortress-keep"
