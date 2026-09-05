@@ -212,30 +212,43 @@ export function DeckBuilderPanel({
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [eligibleCards, objectTypes]);
 
-  // A card's faction = every preconstructed deck whose cards/hqOptions/heroOptions list
-  // includes its id. A card can belong to zero decks (unaffiliated) or several.
+  // A card's faction = the canonical faction of every preconstructed deck whose
+  // cards/hqOptions/heroOptions list includes its id (task 1524: multiple precon decks —
+  // e.g. Blackrock Raiders and Warbond Raiders — share one real faction). A card can
+  // belong to zero factions (unaffiliated) or several.
   const cardFactions = useMemo(() => {
     const map: Record<string, string[]> = {};
     for (const precon of gameDef.decks ?? []) {
+      const faction = precon.faction || precon.id;
       const memberIds = new Set<string>([
         ...Object.keys(precon.cards ?? {}),
         ...(precon.hqOptions ?? []),
         ...(precon.heroOptions ?? []),
       ]);
       for (const id of memberIds) {
-        (map[id] ??= []).push(precon.id);
+        const factions = (map[id] ??= []);
+        if (!factions.includes(faction)) factions.push(faction);
       }
     }
     return map;
   }, [gameDef]);
 
-  const factionOptions = useMemo(
-    () => [
-      ...(gameDef.decks ?? []).map(d => ({ id: d.id, name: d.name })),
+  // One option per real faction (not per precon deck). The faction's display name is the
+  // base deck's name (the deck whose id equals the faction id, e.g. "raiders" -> Blackrock
+  // Raiders); decks without a faction field fall back to being their own option.
+  const factionOptions = useMemo(() => {
+    const labels = new Map<string, string>();
+    for (const d of gameDef.decks ?? []) {
+      const faction = d.faction || d.id;
+      if (!labels.has(faction) || d.id === faction) {
+        labels.set(faction, d.id === faction ? d.name : faction);
+      }
+    }
+    return [
+      ...Array.from(labels, ([id, name]) => ({ id, name })),
       { id: UNAFFILIATED_FACTION, name: 'Unaffiliated' },
-    ],
-    [gameDef],
-  );
+    ];
+  }, [gameDef]);
 
   const unitTypeOptions = useMemo(() => {
     const present = new Set<string>();
