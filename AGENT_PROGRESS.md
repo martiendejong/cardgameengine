@@ -722,16 +722,36 @@ Verified: `dotnet build` clean, 0 warnings/errors. `dotnet test` 10/10 pass — 
 which drives the real engine through `ActivateAbility` with 2 siege-tagged buildings on the
 battlefield and asserts the opponent HQ takes 4 damage (2 base × 2 buildings), not the old
 flat 2.
-
-## 2026-09-05 — task 1499 (started)
-Plan: diagnose Hunks' ~0% simulated win rate vs Town/Raiders via `/api/simulate` +
-turn-by-turn logs. Working hypothesis after a first log read: Hunk Stronghold (the default
-Hunks HQ) is the only HQ in the game with no direct resource-generation ability — every other
-faction HQ (Collect Taxes, Channel, Extort, Exhume, Distill, even the alt "Hunk Village" HQ's
-Barn Raising) grants a resource for a bare tap; Hunk Stronghold's only ability is "Grow
-Community" (free unit, no resource). That makes the whole deck's economy depend on drawing one
-of 5 zero-cost bootstrap cards (bag-of-gold/gold-mine) out of ~58, and games where neither is
-drawn early show the bot doing nothing but spam free 1-atk/2-hp Hunks turn after turn. Will
-verify against a fresh baseline (current master already includes an unrelated armor-cap
-rebalance from today) before deciding the exact fix.
 Left: nothing — this closes the CHANGES REQUESTED review on PR #45.
+
+## 2026-09-05 — task 1499
+Done: diagnosed and fixed Hunks' near-0% simulated win rate vs fast decks (Raiders, Shadow).
+Turn-by-turn `/api/simulate` logs showed the Hunks bot doing nothing but spam free 1-atk/2-hp
+Hunks turn after turn — never playing a single card from hand, including 0-cost ones — because
+Hunk Stronghold (the default Hunks HQ) is the only headquarters in the game with no direct
+resource-generation ability. Every other faction HQ grants a resource for a bare tap (Town
+Hall's Collect Taxes, Arcane Nexus's Channel, Graveyard's Exhume, Thieves' Guild's Extort,
+Laboratory's Distill), and even Hunks' own alternate HQ (Hunk Village's Barn Raising) already
+has one — only the default Grow Community produced a body with zero resource. That forced the
+whole deck's early economy to depend on drawing one of 5 zero-cost bootstrap cards out of ~58.
+Fix (PR #48): Grow Community now also grants 1 gold alongside its existing free Hunk summon,
+matched to Hunk Village's Barn Raising amount (not Town Hall's stronger Collect Taxes, since
+Hunk Stronghold's summon is already a repeatable free body Town's paid Recruit Peasant lacks).
+Change is isolated to hunk-stronghold's own card data — no shared engine/bot code touched.
+Also fixed one unrelated stale test (`FortressEternalDeckTests`) broken by today's separate
+armor-cap rebalance commit (a94ef85, direct push, no PR) — noted explicitly as a drive-by.
+Verified: `dotnet build` clean (0 warnings/errors), `dotnet test` 11/11 pass (added
+`Grow_community_now_also_grants_1_gold_giving_hunk_stronghold_a_bootstrap_economy`, which
+drives the real engine through `ActivateAbility` and asserts the gold lands alongside the
+summon). Fresh 30-game `/api/simulate` batches, before (current master, post armor-cap) vs
+after (this fix): Hunks vs Town 43.3%→53.3%, vs Raiders 6.7%→10.0%, vs Machine 50.0%→70.0%,
+vs Conclave 80.0%→96.7%, vs Undead 43.3%→36.7%, vs Brood 93.3%→96.7%, vs Shadow 3.3%→16.7%,
+vs Alchemists 80.0%→76.7% (small Undead/Alchemists dips are within 30-game sampling noise).
+Control pairs with no Hunks involved (Town vs Raiders, Machine vs Conclave, Undead vs Brood,
+Shadow vs Alchemists) are structurally unaffected since the change never touches shared code.
+Left: Raiders (10%) and Shadow (16.7%) are still below parity — logs show the bot still
+spends gold somewhat randomly (e.g. equipping a soon-to-die 1-atk Hunk instead of building a
+tower) rather than prioritizing defense against fast aggro. That's a bot-decision-quality gap
+in the shared `BotService`, not a Hunks-specific one; fixing it risks shifting every other
+faction's win rate too and is out of this task's scope given the Done-when bar (both
+matchups now non-trivial, not 0/30) is met.
