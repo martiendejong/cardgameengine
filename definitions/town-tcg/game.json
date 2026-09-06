@@ -32546,6 +32546,7 @@
   "decks": [
     {
       "id": "town",
+      "faction": "town",
       "name": "Town of Millbrook",
       "description": "Build a town from scratch: peasants work, buildings train them into an army, and the Town Chief mobilizes the population in emergencies.",
       "hq": "town-hall",
@@ -32601,6 +32602,7 @@
     },
     {
       "id": "raiders",
+      "faction": "raiders",
       "name": "Blackrock Raiders",
       "description": "No workers, no patience. Earn gold through violence: kill for bounties, burn buildings for plunder, and steal what the enemy saved.",
       "hq": "raider-camp",
@@ -32666,6 +32668,7 @@
     },
     {
       "id": "machine",
+      "faction": "machine",
       "name": "AX-01 War Machine",
       "description": "You brought an army; I brought one machine. No units, no gold — just energy, modules, and one increasingly dangerous robot backed by its Landing Pad.",
       "hq": "landing-pad",
@@ -32724,6 +32727,7 @@
     },
     {
       "id": "conclave",
+      "faction": "conclave",
       "name": "Arcane Conclave",
       "description": "A network of casters pooling mana into the Nexus. Counterspells, fading summons, and fireballs for everyone.",
       "hq": "arcane-nexus",
@@ -32788,6 +32792,7 @@
     },
     {
       "id": "undead",
+      "faction": "undead",
       "name": "The Restless Court",
       "description": "Death is inventory. The Graveyard banks corpses; the Necromancer turns every casualty into power.",
       "hq": "graveyard",
@@ -32852,6 +32857,7 @@
     },
     {
       "id": "brood",
+      "faction": "brood",
       "name": "The Brood",
       "description": "Eggs hatch, larvae evolve, and everything is food. Wants its own units to die almost as much as yours.",
       "hq": "the-hive",
@@ -32913,6 +32919,7 @@
     },
     {
       "id": "shadow",
+      "faction": "shadow",
       "name": "Shadow Guild",
       "description": "Spies burrow under enemy buildings, secrets wait face-down, and gold changes pockets unseen.",
       "hq": "thieves-guild",
@@ -32973,6 +32980,7 @@
     },
     {
       "id": "alchemists",
+      "faction": "alchemists",
       "name": "Alchemist Guild",
       "description": "Weak bodies, strong chemistry. Freeze, dissolve, weaken and transmute the mighty into mutton.",
       "hq": "laboratory",
@@ -33032,6 +33040,7 @@
     },
     {
       "id": "hunks",
+      "faction": "hunks",
       "name": "The Hunks",
       "description": "Population is power. Grow your community, put every Hunk to work, and build an unstoppable city. Machines and beasts are useless without Hunks to crew them.",
       "hq": "hunk-stronghold",
@@ -33085,6 +33094,7 @@
     },
     {
       "id": "town-merchant",
+      "faction": "town",
       "name": "Grand Merchant Guild",
       "hq": "merch-grand-exchange",
       "hero": "merch-trade-prince",
@@ -33124,6 +33134,7 @@
     },
     {
       "id": "raiders-warbond",
+      "faction": "raiders",
       "name": "Warbond Raiders",
       "hq": "warbond-war-throne",
       "hero": "warbond-warchief",
@@ -33160,6 +33171,7 @@
     },
     {
       "id": "machine-sentry",
+      "faction": "machine",
       "name": "Sentry Grid Protocol",
       "hq": "sentry-command-core",
       "hero": "sentry-grid-commander",
@@ -33198,6 +33210,7 @@
     },
     {
       "id": "conclave-storm",
+      "faction": "conclave",
       "name": "Aether Storm Circle",
       "hq": "storm-aether-spire",
       "hero": "storm-stormcaller",
@@ -33234,6 +33247,7 @@
     },
     {
       "id": "undead-plague",
+      "faction": "undead",
       "name": "Plague Tide Court",
       "hq": "plague-cathedral",
       "hero": "plague-lord",
@@ -33272,6 +33286,7 @@
     },
     {
       "id": "brood-apex",
+      "faction": "brood",
       "name": "Apex Biomass Hive",
       "hq": "apex-nest-hq",
       "hero": "apex-brood-empress",
@@ -33310,6 +33325,7 @@
     },
     {
       "id": "shadow-stranglehold",
+      "faction": "shadow",
       "name": "Stranglehold Network",
       "hq": "hold-shadow-citadel",
       "hero": "hold-grand-spymaster",
@@ -33348,6 +33364,7 @@
     },
     {
       "id": "alchemists-opus",
+      "faction": "alchemists",
       "name": "Grand Opus Laboratory",
       "hq": "opus-grand-laboratory",
       "hero": "opus-philosophers-hand",
@@ -33386,6 +33403,7 @@
     },
     {
       "id": "hunks-fortress",
+      "faction": "hunks",
       "name": "Fortress Eternal",
       "hq": "fort-fortress-keep",
       "hero": "fort-siege-commander",
@@ -33424,6 +33442,7 @@
     },
     {
       "id": "bloodfangs-wrath",
+      "faction": "raiders",
       "name": "Bloodfang's Wrath",
       "cards": {
         "town-hall": 1,
