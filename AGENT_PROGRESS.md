@@ -755,3 +755,38 @@ tower) rather than prioritizing defense against fast aggro. That's a bot-decisio
 in the shared `BotService`, not a Hunks-specific one; fixing it risks shifting every other
 faction's win rate too and is out of this task's scope given the Done-when bar (both
 matchups now non-trivial, not 0/30) is met.
+
+## 2026-09-11 — task 1604 (PR #52 QA: 196 new cards across 18 factions)
+Done: PR #52's 196 new cards were all completely orphaned (no precon deck referenced them,
+so the deck-builder faction filter never showed any of them) and ~140 used a hallucinated
+schema (snake_case effect types like `give_poison`/`buff_property`/`add_resource`, scopes
+like `all_opponent_units`) the engine never registered, so most abilities silently no-op'd.
+Fixed: renamed every hallucinated effect/scope to real vocabulary, added 5 small new engine
+effect handlers for genuinely-missing "whole board" mechanics (`buff_own_units_until_end_of_turn`,
+`heal_own_units`, `modify_property_enemy_units`, `tap_enemy_units`, `damage_all_units`), and
+gave each of the 196 new cards an explicit `CardDefinition.Faction` tag (mirrored into the
+frontend DTO + `DeckBuilderPanel`'s faction filter) instead of requiring precon-deck
+membership, so a bulk card-expansion never again needs to touch any precon's curated pool.
+Also found and fixed, via an 18-deck bot-vs-bot `/api/simulate` sweep (all pre-existing,
+none introduced by PR #52 — confirmed against the pre-PR-52 commit): (1) `TriggerService`
+never fired a `"onPlay"` trigger event at all (only `CardDefinition.OnPlay` did) — 24 cards
+(3 of PR #52's new ones, 21 pre-existing across 6 other decks) declared their play effect
+that way and it silently never ran; added a `CardPlayed` case that fires it. (2) `IsDeckEligible`
+rejected every headquarters-type card, even though MatchService's own "reserve copy" pattern
+(task 906) requires a deck to be able to carry a spare HQ — broke match creation for 4 precon
+decks (town-merchant, raiders-warbond, machine-sentry, conclave-storm); added a headquarters
+exemption mirroring the existing hero one, in both `GameQueries.IsDeckEligible` and the
+frontend's `isDeckEligible`. (3) The "Bloodfang's Wrath" meta deck (bloodfangs-wrath) declared
+no `hq`/`hero` fields at all despite carrying reserve copies of both in its card list, so
+`SetupService.PlaceStartingCard(game, null, ...)` crashed instantly on match creation —
+pointed its `hq`/`hero` fields at its own existing reserve cards (`town-hall`/`bloodfang`).
+Verified: `dotnet build` clean (0 warnings/errors), `dotnet test` 25/25 pass (10 new tests in
+`CardExpansion1604Tests`, covering the onPlay-trigger fix, 3 of the 5 new effect handlers via
+real PR #52 cards, the headquarters deck-eligibility fix for all 4 affected decks, and the
+Bloodfang's Wrath setup crash). `npm run build` (frontend, tsc+vite) clean. Live `/api/simulate`
+bot-vs-bot sweep across all 18 decks pairwise (17 matchups × 10 games = 170 games): 0 crashes,
+0 errors (was 6 failures — 5×400 + 1×500 crash — before these fixes).
+Left: nothing known. The 196 new cards themselves are still orphaned from every precon deck's
+starting 60-card pool by design (that's what the new `faction` tag + deck-builder filter is
+for) — a human wanting them in an actual precon's curated pool is a separate balance/curation
+decision, not a bug.

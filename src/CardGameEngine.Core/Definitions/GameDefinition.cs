@@ -146,6 +146,11 @@ public class CardDefinition
     public Dictionary<string, int>? EquipmentSlots { get; set; } // on heroes: slot id -> capacity
     public int? HousingCost { get; set; }     // living space this unit occupies while on the battlefield
     public int? HousingProvided { get; set; } // living space this card supplies while on the battlefield
+    // Canonical faction id (task 1604) this card belongs to, independent of whether it's
+    // included in any precon deck's Cards list — the deck-builder faction filter groups by
+    // this so a bulk card-expansion PR doesn't need to touch any precon's curated 60-card
+    // pool just to make its new cards filterable. Null = unaffiliated.
+    public string? Faction { get; set; }
 }
 
 public class AttachModifierDefinition
@@ -159,6 +164,7 @@ public class TriggerDefinition
     // "onKill"                    - this card destroyed an enemy in combat
     // "onDestroyBuilding"         - this card destroyed an enemy building in combat
     // "onFriendlyDamageHqOrHero"  - any friendly card damaged an enemy hero or HQ in combat
+    // "onDamaged"                 - this card took combat damage from an enemy card
     // "onTurnStart"               - at the start of its controller's turn
     public string Event { get; set; } = "";
     public bool OncePerTurn { get; set; }

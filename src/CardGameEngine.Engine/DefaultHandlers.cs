@@ -675,9 +675,75 @@ public static class DefaultHandlers
                 m.GainEntityResource(ctx.Game, victim, ctx.Effect.ResourceId ?? "poison", ctx.Effect.Amount ?? 1);
         });
 
+        // Rally: every unit the caster controls gains +Amount PropertyId until end of turn
+        // (mirrors buff_tag_until_end_of_turn but with no tag filter — a "pump the whole
+        // board" effect rather than one restricted to units sharing a tag).
+        e.Register("buff_own_units_until_end_of_turn", ctx =>
+        {
+            var propId = ctx.Effect.PropertyId ?? "attack";
+            var amount = ctx.Effect.Amount ?? 1;
+            foreach (var obj in OwnUnits(ctx))
+            {
+                m.AddModifier(ctx.Game, obj, propId, amount, "endOfTurn");
+                ctx.Game.Log.Add($"{obj.Name} gains +{amount} {propId} until end of turn.");
+            }
+        });
+
+        // Mass heal for every unit the caster controls (mirrors heal_all_tagged with no
+        // tag filter).
+        e.Register("heal_own_units", ctx =>
+        {
+            var amount = ctx.Effect.Amount ?? 0;
+            foreach (var obj in OwnUnits(ctx))
+                m.Heal(ctx.Game, obj, amount);
+        });
+
+        // Siege-style board debuff: permanently modify a property on every enemy unit (the
+        // permanent counterpart of damage_enemy_units).
+        e.Register("modify_property_enemy_units", ctx =>
+        {
+            var propId = ctx.Effect.PropertyId ?? "attack";
+            var amount = ctx.Effect.Amount ?? 0;
+            foreach (var obj in EnemyUnits(ctx))
+                m.ModifyProperty(ctx.Game, obj, propId, amount);
+        });
+
+        // Control spell: tap every enemy unit.
+        e.Register("tap_enemy_units", ctx =>
+        {
+            foreach (var obj in EnemyUnits(ctx))
+                m.Tap(ctx.Game, obj);
+        });
+
+        // Symmetric board-wide nova: every unit on the battlefield, both sides, takes
+        // Amount damage reduced by Armor (a self-destructing bomb's on-death blast).
+        e.Register("damage_all_units", ctx =>
+        {
+            foreach (var victim in EnemyUnits(ctx).Concat(OwnUnits(ctx)).ToList())
+            {
+                var dmg = Math.Max(0, (ctx.Effect.Amount ?? 0) - GameQueries.GetEffectiveProperty(ctx.Game, victim, "armor"));
+                if (dmg <= 0) continue;
+                m.ApplyDamage(ctx.Game, victim, dmg, ctx.Source);
+                if (victim.IsDestroyed)
+                    s.Bus.Publish(ctx.Game, new GameEvent { Type = GameEventTypes.UnitKilled, Source = ctx.Source, Target = victim });
+            }
+        });
+
         static List<ObjectInstance> EnemyUnits(EffectContext ctx) =>
             ctx.Game.Objects.Where(o =>
                 o.ControllerId != ctx.Player.Id
+                && !o.IsDestroyed
+                && o.ZoneId == "battlefield"
+                && o.AttachedToId == null
+                && GameQueries.IsObjectTypeOrSubtype(ctx.Game, o.ObjectType, "unit")
+                && (ctx.Effect.Line == null || o.Line == ctx.Effect.Line)
+                && (ctx.Effect.MaxHp == null ||
+                    GameQueries.GetEffectiveProperty(ctx.Game, o, "maxHp") <= ctx.Effect.MaxHp))
+            .ToList();
+
+        static List<ObjectInstance> OwnUnits(EffectContext ctx) =>
+            ctx.Game.Objects.Where(o =>
+                o.ControllerId == ctx.Player.Id
                 && !o.IsDestroyed
                 && o.ZoneId == "battlefield"
                 && o.AttachedToId == null
