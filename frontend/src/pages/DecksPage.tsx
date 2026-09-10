@@ -2,16 +2,13 @@ import { useEffect, useState, useCallback } from 'react';
 import { GameDefinitionFull, SavedDeck } from '../types/game';
 import { BASE } from '../config';
 import { DeckBuilderPanel } from '../components/DeckBuilderPanel';
+import { SESSION_EXPIRED } from '../session';
 
 interface DecksPageProps {
   onOpenLobby: () => void;
 }
 
 const GAME_ID = 'town-tcg';
-
-// The app's login gate only runs at page load, so a cookie that expires while the tab
-// stays open surfaces here as a 401 — not as a backend outage.
-const SESSION_EXPIRED = 'Your session has expired. Please reload the page and sign in again.';
 
 function deckSize(deck: Record<string, number>): number {
   return Object.values(deck).reduce((a, b) => a + b, 0);
