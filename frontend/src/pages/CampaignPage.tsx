@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo, useCallback } from 'react';
 import { CampaignOverview, CampaignMission, GameDefinitionFull, SavedDeck } from '../types/game';
 import { BASE } from '../config';
 import { DeckBuilderPanel } from '../components/DeckBuilderPanel';
+import { SESSION_EXPIRED } from '../session';
 
 interface CampaignPageProps {
   onMissionStarted: (matchId: string, seat: string) => void;
@@ -67,8 +68,13 @@ export function CampaignPage({ onMissionStarted, onOpenLobby, onOpenVsComputer }
 
   useEffect(() => {
     fetch(`${BASE}api/campaign?gameId=${GAME_ID}`, { credentials: 'include' })
-      .then(r => r.json())
-      .then(setOverview)
+      .then(async r => {
+        if (r.status === 401) {
+          setError(SESSION_EXPIRED);
+          return;
+        }
+        setOverview(await r.json());
+      })
       .catch(() => setError('Failed to load the campaign. Is the backend running?'));
   }, []);
 
@@ -135,6 +141,7 @@ export function CampaignPage({ onMissionStarted, onOpenLobby, onOpenVsComputer }
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
+      if (res.status === 401) throw new Error(SESSION_EXPIRED);
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
       onMissionStarted(data.matchId, data.playerId);
