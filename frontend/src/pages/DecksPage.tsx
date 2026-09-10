@@ -9,6 +9,10 @@ interface DecksPageProps {
 
 const GAME_ID = 'town-tcg';
 
+// The app's login gate only runs at page load, so a cookie that expires while the tab
+// stays open surfaces here as a 401 — not as a backend outage.
+const SESSION_EXPIRED = 'Your session has expired. Please reload the page and sign in again.';
+
 function deckSize(deck: Record<string, number>): number {
   return Object.values(deck).reduce((a, b) => a + b, 0);
 }
@@ -37,8 +41,14 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
   const loadDecks = useCallback(() => {
     setLoading(true);
     fetch(`${BASE}api/decks?gameId=${GAME_ID}`, { credentials: 'include' })
-      .then(r => r.json())
-      .then(data => setDecks(data.decks ?? []))
+      .then(async r => {
+        if (r.status === 401) {
+          setError(SESSION_EXPIRED);
+          return;
+        }
+        const data = await r.json();
+        setDecks(data.decks ?? []);
+      })
       .catch(() => setError('Failed to load your decks. Is the backend running?'))
       .finally(() => setLoading(false));
   }, []);
@@ -104,6 +114,7 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
           cards: editCards,
         }),
       });
+      if (res.status === 401) throw new Error(SESSION_EXPIRED);
       if (!res.ok) throw new Error((await res.text()) || 'Failed to save the deck');
       setEditingId(null);
       loadDecks();
@@ -122,6 +133,7 @@ export function DecksPage({ onOpenLobby }: DecksPageProps) {
         method: 'DELETE',
         credentials: 'include',
       });
+      if (res.status === 401) throw new Error(SESSION_EXPIRED);
       if (!res.ok && res.status !== 204) throw new Error((await res.text()) || 'Failed to delete the deck');
       if (editingId === deck.id) setEditingId(null);
       loadDecks();
