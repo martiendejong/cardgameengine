@@ -790,3 +790,13 @@ Left: nothing known. The 196 new cards themselves are still orphaned from every 
 starting 60-card pool by design (that's what the new `faction` tag + deck-builder filter is
 for) — a human wanting them in an actual precon's curated pool is a separate balance/curation
 decision, not a bug.
+
+## 2026-09-11 — task 1604 watchdog pass (PR #55 drift fix)
+Done: a concurrent session had already opened PR #55 for the fix above and posted evidence
+to ClickUp. Independently re-verified the fix holds (build clean, 25/25 tests, frontend build
+clean, live 19-deck bot-vs-bot sweep 0 errors, 0 duplicate card IDs, all 196 new cards carry
+the faction tag, 0 hallucinated schema strings remain).
+Verified: the branch was behind master (PR #54, session-expired-401 fix, landed after this
+branch was created) — merged origin/master in (clean, no conflicts), rebuilt and retested
+(clean, 25/25), pushed. PR #55 is now MERGEABLE/CLEAN.
+Left: status left at `review` — no reviewer has looked at PR #55 yet, watchdog did not merge.
