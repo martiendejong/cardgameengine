@@ -230,6 +230,9 @@ export interface CardDefinitionDto {
   artworkDescription?: string | null;
   housingCost?: number | null;
   housingProvided?: number | null;
+  // Canonical faction id (task 1604) this card belongs to, independent of precon deck
+  // membership — see PreconDeckDto.faction. Absent = unaffiliated.
+  faction?: string | null;
 }
 
 export interface DeckRulesDto {

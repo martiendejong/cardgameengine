@@ -214,8 +214,10 @@ export function DeckBuilderPanel({
 
   // A card's faction = the canonical faction of every preconstructed deck whose
   // cards/hqOptions/heroOptions list includes its id (task 1524: multiple precon decks —
-  // e.g. Blackrock Raiders and Warbond Raiders — share one real faction). A card can
-  // belong to zero factions (unaffiliated) or several.
+  // e.g. Blackrock Raiders and Warbond Raiders — share one real faction), PLUS the card's
+  // own declared faction if any (task 1604: a bulk card-expansion doesn't have to touch any
+  // precon's curated, already-60-card pool just to make its new cards filterable). A card
+  // can belong to zero factions (unaffiliated) or several.
   const cardFactions = useMemo(() => {
     const map: Record<string, string[]> = {};
     for (const precon of gameDef.decks ?? []) {
@@ -229,6 +231,11 @@ export function DeckBuilderPanel({
         const factions = (map[id] ??= []);
         if (!factions.includes(faction)) factions.push(faction);
       }
+    }
+    for (const c of gameDef.cards ?? []) {
+      if (!c.faction) continue;
+      const factions = (map[c.id] ??= []);
+      if (!factions.includes(c.faction)) factions.push(c.faction);
     }
     return map;
   }, [gameDef]);

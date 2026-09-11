@@ -10410,7 +10410,7 @@
         }
       ],
       "abilities": [],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-bloodseeker",
@@ -10449,7 +10449,7 @@
         }
       ],
       "abilities": [],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-ironbreaker",
@@ -10490,7 +10490,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-marauder",
@@ -10529,7 +10529,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-warchanter",
@@ -10569,7 +10569,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-sacker",
@@ -10602,7 +10602,7 @@
         }
       ],
       "abilities": [],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-skullcrusher",
@@ -10655,7 +10655,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-ravager",
@@ -10724,7 +10724,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-pillage-lord",
@@ -10773,7 +10773,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-bone-gnasher",
@@ -10813,7 +10813,7 @@
         }
       ],
       "abilities": [],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-glory-hound",
@@ -10871,7 +10871,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-thornback",
@@ -10907,7 +10907,7 @@
         }
       ],
       "abilities": [],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-war-camp",
@@ -10943,7 +10943,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-plunder-hall",
@@ -10989,7 +10989,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-glory-shrine",
@@ -11051,7 +11051,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-blackrock-forge",
@@ -11087,7 +11087,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-raider-vault",
@@ -11143,7 +11143,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-blood-rage",
@@ -11181,7 +11181,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-glory-burst",
@@ -11221,7 +11221,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "raiders-war-cry",
@@ -11265,7 +11265,7 @@
           ]
         }
       ],
-      "_faction": "raiders"
+      "faction": "raiders"
     },
     {
       "id": "machine-combat-chassis",
@@ -11311,7 +11311,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-arc-emitter",
@@ -11361,7 +11361,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-overcharge-module",
@@ -11406,7 +11406,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-proximity-mine-launcher",
@@ -11452,7 +11452,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-chief-engineer",
@@ -11496,7 +11496,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-field-technician",
@@ -11534,7 +11534,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-assault-drone",
@@ -11571,7 +11571,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-siege-operator",
@@ -11615,7 +11615,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-energy-generator",
@@ -11653,7 +11653,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-repair-bay",
@@ -11692,7 +11692,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-command-bunker",
@@ -11734,7 +11734,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-fabrication-plant",
@@ -11780,7 +11780,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-overload-pulse",
@@ -11828,7 +11828,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-system-reboot",
@@ -11872,7 +11872,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-targeting-override",
@@ -11907,7 +11907,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-energy-transfer",
@@ -11939,7 +11939,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-sensor-array",
@@ -11984,7 +11984,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-logistics-coordinator",
@@ -12029,7 +12029,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-forward-operating-base",
@@ -12074,7 +12074,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "machine-demolition-expert",
@@ -12125,7 +12125,7 @@
           ]
         }
       ],
-      "_faction": "machine"
+      "faction": "machine"
     },
     {
       "id": "conclave-runeweaver",
@@ -12181,7 +12181,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-void-scholar",
@@ -12241,7 +12241,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-storm-caller",
@@ -12303,7 +12303,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-aether-blade",
@@ -12370,7 +12370,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-mana-conduit",
@@ -12419,7 +12419,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-arcane-tower",
@@ -12473,7 +12473,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-mana-vault",
@@ -12514,7 +12514,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-spellshard-staff",
@@ -12555,7 +12555,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-focus-crystal",
@@ -12597,7 +12597,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-arcane-surge",
@@ -12643,7 +12643,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-mass-freeze",
@@ -12690,7 +12690,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-spell-echo",
@@ -12735,7 +12735,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-void-rift",
@@ -12779,7 +12779,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-mana-drain",
@@ -12826,7 +12826,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-greater-counterspell",
@@ -12874,7 +12874,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-arcane-collapse",
@@ -12922,7 +12922,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-ley-tap",
@@ -12954,7 +12954,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-reveal-mind",
@@ -12997,7 +12997,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-senior-enchanter",
@@ -13064,7 +13064,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "conclave-spell-matrix",
@@ -13125,7 +13125,7 @@
           ]
         }
       ],
-      "_faction": "conclave"
+      "faction": "conclave"
     },
     {
       "id": "undead-wraith",
@@ -13169,7 +13169,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-banshee",
@@ -13222,7 +13222,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-death-knight",
@@ -13276,7 +13276,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-plague-rat",
@@ -13309,7 +13309,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-bone-archer",
@@ -13358,7 +13358,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-wight",
@@ -13404,7 +13404,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-corpse-crawler",
@@ -13437,7 +13437,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-shadow-revenant",
@@ -13491,7 +13491,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-crypt",
@@ -13531,7 +13531,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-burial-grounds",
@@ -13580,7 +13580,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-plague-pit",
@@ -13620,7 +13620,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-ossuary",
@@ -13661,7 +13661,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-death-altar",
@@ -13709,7 +13709,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-unholy-blight",
@@ -13746,7 +13746,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-bone-shatter",
@@ -13782,7 +13782,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-death-coil",
@@ -13828,7 +13828,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-soul-harvest",
@@ -13873,7 +13873,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-plague-wind",
@@ -13921,7 +13921,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-gravekeeper",
@@ -13965,7 +13965,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "undead-lich-herald",
@@ -14033,7 +14033,7 @@
           ]
         }
       ],
-      "_faction": "undead"
+      "faction": "undead"
     },
     {
       "id": "brood-larva-drone",
@@ -14069,7 +14069,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-acid-spewer",
@@ -14116,7 +14116,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-death-throes",
@@ -14156,7 +14156,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-scythe-hunter",
@@ -14198,7 +14198,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-hive-sentinel",
@@ -14247,7 +14247,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-venom-stalker",
@@ -14283,7 +14283,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-queen-broodmother",
@@ -14355,7 +14355,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-reaper",
@@ -14393,7 +14393,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-sacrifice-pit",
@@ -14433,7 +14433,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-spawning-pool",
@@ -14482,7 +14482,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-enzyme-vat",
@@ -14512,7 +14512,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-chrysalis-chamber",
@@ -14562,7 +14562,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-biomass-surge",
@@ -14594,7 +14594,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-consume",
@@ -14632,7 +14632,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-evolve-sentinel",
@@ -14672,7 +14672,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-mass-sacrifice",
@@ -14714,7 +14714,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-chitin-fortification",
@@ -14760,7 +14760,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-nest-cluster",
@@ -14792,7 +14792,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-flesh-weaver",
@@ -14839,7 +14839,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "brood-swarm-caller",
@@ -14896,7 +14896,7 @@
           ]
         }
       ],
-      "_faction": "brood"
+      "faction": "brood"
     },
     {
       "id": "shadow-infiltrator",
@@ -14942,7 +14942,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-ghost-agent",
@@ -14988,7 +14988,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-wraith-spy",
@@ -15041,7 +15041,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-nightblade",
@@ -15089,7 +15089,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-venom-striker",
@@ -15135,7 +15135,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-enforcer",
@@ -15181,7 +15181,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-shadow-runner",
@@ -15225,7 +15225,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-spymaster",
@@ -15271,7 +15271,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-safehouse",
@@ -15323,7 +15323,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-black-market",
@@ -15382,7 +15382,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-contact-network",
@@ -15442,7 +15442,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-dead-drop",
@@ -15504,7 +15504,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-extortion",
@@ -15544,7 +15544,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-mind-wipe",
@@ -15589,7 +15589,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-lockdown",
@@ -15628,7 +15628,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-counter-intel",
@@ -15666,7 +15666,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-shadow-walk",
@@ -15709,7 +15709,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-extraction",
@@ -15759,7 +15759,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-saboteur",
@@ -15811,7 +15811,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "shadow-double-agent",
@@ -15883,7 +15883,7 @@
           ]
         }
       ],
-      "_faction": "shadow"
+      "faction": "shadow"
     },
     {
       "id": "alchemists-brew-master",
@@ -15925,7 +15925,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-acid-thrower",
@@ -15979,7 +15979,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-golem-tender",
@@ -16036,7 +16036,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-transmuter",
@@ -16078,7 +16078,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-reagent-harvester",
@@ -16114,7 +16114,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-homunculus",
@@ -16174,7 +16174,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-stone-golem",
@@ -16216,7 +16216,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-alchemical-still",
@@ -16254,7 +16254,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-refinery",
@@ -16289,7 +16289,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-atelier",
@@ -16337,7 +16337,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-crucible-forge",
@@ -16390,7 +16390,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-reagent-vault",
@@ -16448,7 +16448,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-mutagenic-draught",
@@ -16501,7 +16501,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-petrification-brew",
@@ -16546,7 +16546,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-caustic-rain",
@@ -16592,7 +16592,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-gilded-touch",
@@ -16633,7 +16633,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-amplifying-elixir",
@@ -16677,7 +16677,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-volatile-mixture",
@@ -16717,7 +16717,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-siphon-essence",
@@ -16770,7 +16770,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-flash-powder",
@@ -16815,7 +16815,7 @@
           ]
         }
       ],
-      "_faction": "alchemists"
+      "faction": "alchemists"
     },
     {
       "id": "hunks-stone-guard",
@@ -16855,7 +16855,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-sergeant",
@@ -16896,7 +16896,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-wall-warden",
@@ -16936,7 +16936,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-earthmover",
@@ -16980,7 +16980,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-hammer-hunk",
@@ -17026,7 +17026,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-block-captain",
@@ -17064,7 +17064,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-foreman",
@@ -17109,7 +17109,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-lumberjack",
@@ -17156,7 +17156,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-garrison",
@@ -17202,7 +17202,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-watchtower",
@@ -17244,7 +17244,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-stone-quarry",
@@ -17290,7 +17290,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-lumber-yard",
@@ -17327,7 +17327,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-training-ground",
@@ -17367,7 +17367,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-barricade-gate",
@@ -17415,7 +17415,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-supply-depot",
@@ -17450,7 +17450,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-shoulder-to-wall",
@@ -17487,7 +17487,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-ground-slam",
@@ -17522,7 +17522,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-heavy-labor",
@@ -17567,7 +17567,7 @@
           ]
         }
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-iron-shield",
@@ -17579,7 +17579,7 @@
       "tags": [
         "guard"
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "hunks-builders-hammer",
@@ -17592,7 +17592,7 @@
         "builder",
         "worker"
       ],
-      "_faction": "hunks"
+      "faction": "hunks"
     },
     {
       "id": "merch-grand-exchange",
@@ -25996,7 +25996,8 @@
       ],
       "housingCost": 1,
       "icon": "🏹",
-      "artworkDescription": "A skeletal archer whose ribcage is bound together with strips of rotted leather, nocking an arrow tipped with a festering boil"
+      "artworkDescription": "A skeletal archer whose ribcage is bound together with strips of rotted leather, nocking an arrow tipped with a festering boil",
+      "faction": "undead"
     },
     {
       "id": "plague-festering-brute",
@@ -26022,13 +26023,13 @@
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 2
             }
           ]
         }
-      ]
+      ],
+      "faction": "undead"
     },
     {
       "id": "plague-miasma-wraith",
@@ -26053,13 +26054,13 @@
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "undead"
     },
     {
       "id": "plague-siege-catapult",
@@ -26079,7 +26080,8 @@
       ],
       "housingCost": 2,
       "icon": "💣",
-      "artworkDescription": "A rusted war catapult manned by skeletal crew, hurling rotted corpse-bombs packed with disease over enemy fortifications"
+      "artworkDescription": "A rusted war catapult manned by skeletal crew, hurling rotted corpse-bombs packed with disease over enemy fortifications",
+      "faction": "undead"
     },
     {
       "id": "plague-rot-summoner",
@@ -26118,7 +26120,7 @@
           ]
         }
       ],
-      "triggers": []
+      "faction": "undead"
     },
     {
       "id": "plague-necrotic-volley",
@@ -26132,17 +26134,17 @@
         "name": "Cast: Necrotic Volley",
         "effects": [
           {
-            "type": "damage",
-            "scope": "all_opponent_units",
+            "type": "damage_enemy_units",
             "amount": 1
           },
           {
-            "type": "give_poison",
-            "scope": "all_opponent_units",
-            "amount": 1
+            "type": "afflict_enemy_units",
+            "amount": 1,
+            "resourceId": "poison"
           }
         ]
-      }
+      },
+      "faction": "undead"
     },
     {
       "id": "plague-consume-the-fallen",
@@ -26172,7 +26174,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "undead"
     },
     {
       "id": "plague-deathmark",
@@ -26186,15 +26189,16 @@
         "name": "Cast: Deathmark",
         "effects": [
           {
-            "type": "buff_property",
+            "type": "modify_property",
             "scope": "target",
             "propertyId": "attack",
             "amount": -1
           },
           {
-            "type": "give_poison",
+            "type": "gain_resource",
             "scope": "target",
-            "amount": 2
+            "amount": 2,
+            "resourceId": "poison"
           }
         ],
         "choice": {
@@ -26204,7 +26208,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "undead"
     },
     {
       "id": "plague-charnel-pit",
@@ -26221,17 +26226,17 @@
       "artworkDescription": "A massive open mass grave reeking of decay, skeletal hands clawing upward from a writhing heap of plague-ridden bodies",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "undead"
     },
     {
       "id": "plague-venom-stalker",
@@ -26257,13 +26262,14 @@
           "conditions": [],
           "effects": [
             {
-              "type": "give_poison",
-              "scope": "all_opponent_units",
-              "amount": 2
+              "type": "afflict_enemy_units",
+              "amount": 2,
+              "resourceId": "poison"
             }
           ]
         }
-      ]
+      ],
+      "faction": "undead"
     },
     {
       "id": "plague-hollow-sovereign",
@@ -26289,8 +26295,7 @@
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 1
             }
           ]
@@ -26309,14 +26314,14 @@
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
-              "scope": "all_opponent_units",
+              "type": "modify_property_enemy_units",
               "propertyId": "attack",
               "amount": -1
             }
           ]
         }
-      ]
+      ],
+      "faction": "undead"
     },
     {
       "id": "merch-debt-collector",
@@ -26335,20 +26340,26 @@
       "icon": "💼",
       "artworkDescription": "A broad-shouldered collector in a fine coat, ledger tucked under one arm and knuckles wrapped in leather",
       "housingCost": 1,
-      "triggers": [
-        {
-          "event": "onPlay",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "damage",
-              "scope": "target",
-              "amount": 1
-            }
-          ]
+      "abilities": [],
+      "faction": "town",
+      "onPlay": {
+        "id": "merch-debt-collector-effect",
+        "name": "Play: Debt Collector",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
         }
-      ],
-      "abilities": []
+      }
     },
     {
       "id": "merch-silk-road-scout",
@@ -26392,7 +26403,7 @@
           ]
         }
       ],
-      "triggers": []
+      "faction": "town"
     },
     {
       "id": "merch-price-fixer",
@@ -26444,7 +26455,7 @@
           ]
         }
       ],
-      "triggers": []
+      "faction": "town"
     },
     {
       "id": "merch-caravan-raider",
@@ -26477,7 +26488,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "town"
     },
     {
       "id": "merch-profit-guard",
@@ -26530,7 +26542,7 @@
           }
         }
       ],
-      "triggers": []
+      "faction": "town"
     },
     {
       "id": "merch-market-squeeze",
@@ -26544,8 +26556,7 @@
         "name": "Market Squeeze",
         "effects": [
           {
-            "type": "damage",
-            "scope": "all_opponent_units",
+            "type": "damage_enemy_units",
             "amount": 1
           },
           {
@@ -26555,7 +26566,8 @@
             "amount": 2
           }
         ]
-      }
+      },
+      "faction": "town"
     },
     {
       "id": "merch-hostile-buyout",
@@ -26586,7 +26598,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "town"
     },
     {
       "id": "merch-payroll",
@@ -26600,8 +26613,7 @@
         "name": "Payroll",
         "effects": [
           {
-            "type": "heal",
-            "scope": "all_ally_units",
+            "type": "heal_own_units",
             "amount": 2
           },
           {
@@ -26611,7 +26623,8 @@
             "amount": 1
           }
         ]
-      }
+      },
+      "faction": "town"
     },
     {
       "id": "merch-counting-house",
@@ -26647,7 +26660,8 @@
           ]
         }
       ],
-      "abilities": []
+      "abilities": [],
+      "faction": "town"
     },
     {
       "id": "merch-smuggler",
@@ -26697,7 +26711,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "town"
     },
     {
       "id": "merch-toll-warden",
@@ -26732,7 +26747,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "town"
     },
     {
       "id": "opus-rune-scribe",
@@ -26751,19 +26767,18 @@
       ],
       "icon": "📜",
       "artworkDescription": "A hunched scholar in ink-stained robes etching glowing runes onto a clay tablet by candlelight",
-      "triggers": [
-        {
-          "event": "onPlay",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "draw_cards",
-              "scope": "player",
-              "amount": 1
-            }
-          ]
-        }
-      ]
+      "faction": "alchemists",
+      "onPlay": {
+        "id": "opus-rune-scribe-effect",
+        "name": "Play: Rune Scribe",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "scope": "player",
+            "amount": 1
+          }
+        ]
+      }
     },
     {
       "id": "opus-tome-golem",
@@ -26802,7 +26817,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "alchemists"
     },
     {
       "id": "opus-archivist-sage",
@@ -26840,7 +26856,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "alchemists"
     },
     {
       "id": "opus-runic-warden",
@@ -26862,17 +26879,17 @@
       "artworkDescription": "A towering stone guardian carved with luminous runic sigils, its chest bearing a pulsing ward-glyph that detonates on death",
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 2
             }
           ]
         }
-      ]
+      ],
+      "faction": "alchemists"
     },
     {
       "id": "opus-lexicon-titan",
@@ -26892,19 +26909,18 @@
       ],
       "icon": "🏛️",
       "artworkDescription": "A colossal runic construct fashioned in the image of an ancient scholar-god, its body inscribed with every known arcane text, eyes blazing with golden knowledge-light",
-      "triggers": [
-        {
-          "event": "onPlay",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "draw_cards",
-              "scope": "player",
-              "amount": 2
-            }
-          ]
-        }
-      ]
+      "faction": "alchemists",
+      "onPlay": {
+        "id": "opus-lexicon-titan-effect",
+        "name": "Play: Lexicon Titan",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "scope": "player",
+            "amount": 2
+          }
+        ]
+      }
     },
     {
       "id": "opus-arcane-inscription",
@@ -26923,7 +26939,8 @@
             "amount": 3
           }
         ]
-      }
+      },
+      "faction": "alchemists"
     },
     {
       "id": "opus-rune-shatter",
@@ -26949,7 +26966,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "alchemists"
     },
     {
       "id": "opus-tome-of-poison",
@@ -26963,9 +26981,10 @@
         "name": "Apply 3 poison stacks to target enemy unit",
         "effects": [
           {
-            "type": "give_poison",
+            "type": "gain_resource",
             "scope": "target",
-            "amount": 3
+            "amount": 3,
+            "resourceId": "poison"
           }
         ],
         "choice": {
@@ -26975,7 +26994,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "alchemists"
     },
     {
       "id": "opus-grand-library",
@@ -26992,7 +27012,7 @@
       "artworkDescription": "A grand vaulted library with towering shelves of glowing tomes, arcane lanterns floating between the stacks, and a mosaic floor of interlocking runic seals",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
@@ -27002,7 +27022,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "alchemists"
     },
     {
       "id": "opus-glyph-walker",
@@ -27034,9 +27055,10 @@
           "conditions": [],
           "effects": [
             {
-              "type": "give_poison",
+              "type": "gain_resource",
               "scope": "target",
-              "amount": 2
+              "amount": 2,
+              "resourceId": "poison"
             }
           ],
           "choice": {
@@ -27047,7 +27069,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "alchemists"
     },
     {
       "id": "opus-lore-keeper",
@@ -27079,7 +27102,7 @@
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
+              "type": "modify_property",
               "scope": "target",
               "propertyId": "attack",
               "amount": 2
@@ -27093,7 +27116,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "alchemists"
     },
     {
       "id": "apex-bone-stalker",
@@ -27125,13 +27149,15 @@
               "amount": 1
             },
             {
-              "type": "give_poison",
-              "target": "attacker",
-              "amount": 2
+              "type": "gain_resource",
+              "amount": 2,
+              "scope": "target",
+              "resourceId": "poison"
             }
           ]
         }
-      ]
+      ],
+      "faction": "brood"
     },
     {
       "id": "apex-chitin-crusher",
@@ -27164,7 +27190,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "brood"
     },
     {
       "id": "apex-pack-hunter",
@@ -27185,14 +27212,14 @@
       "artworkDescription": "A swift predatory creature running in formation with others of its kind, its body built sleek for coordinated ambush strikes",
       "triggers": [
         {
-          "event": "on_ally_death",
+          "event": "onUnitDied",
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
-              "target": "self",
+              "type": "modify_property",
               "propertyId": "attack",
-              "amount": 1
+              "amount": 1,
+              "scope": "self"
             }
           ]
         },
@@ -27208,7 +27235,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "brood"
     },
     {
       "id": "apex-trophy-beast",
@@ -27241,14 +27269,14 @@
               "amount": 3
             },
             {
-              "type": "buff_property",
-              "target": "all_ally_units",
+              "type": "buff_own_units_until_end_of_turn",
               "propertyId": "attack",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "brood"
     },
     {
       "id": "apex-alpha-predator",
@@ -27270,7 +27298,7 @@
       "artworkDescription": "A colossal feline apex creature, twice the size of any predator in the wilds, its golden coat streaked with bio-luminescent markings that pulse when it moves to strike",
       "triggers": [
         {
-          "event": "on_kill",
+          "event": "onKill",
           "conditions": [],
           "effects": [
             {
@@ -27281,8 +27309,8 @@
             },
             {
               "type": "heal",
-              "target": "self",
-              "amount": 2
+              "amount": 2,
+              "scope": "self"
             }
           ]
         },
@@ -27298,7 +27326,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "brood"
     },
     {
       "id": "apex-death-mark",
@@ -27331,7 +27360,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "brood"
     },
     {
       "id": "apex-predator-surge",
@@ -27346,8 +27376,7 @@
         "name": "Predator Surge",
         "effects": [
           {
-            "type": "buff_property",
-            "scope": "all_ally_units",
+            "type": "buff_own_units_until_end_of_turn",
             "propertyId": "attack",
             "amount": 2
           },
@@ -27362,7 +27391,8 @@
             "amount": 1
           }
         ]
-      }
+      },
+      "faction": "brood"
     },
     {
       "id": "apex-culling-strike",
@@ -27395,7 +27425,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "brood"
     },
     {
       "id": "apex-trophy-lodge",
@@ -27415,7 +27446,7 @@
       "artworkDescription": "A crude fortified structure built from the bones and hides of slain megafauna, antlers and skulls mounted across every beam, reeking of dominance",
       "triggers": [
         {
-          "event": "on_any_unit_death",
+          "event": "onUnitDied",
           "conditions": [],
           "effects": [
             {
@@ -27426,7 +27457,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "brood"
     },
     {
       "id": "apex-maw-leaper",
@@ -27452,8 +27484,8 @@
           "effects": [
             {
               "type": "damage",
-              "target": "attacker",
-              "amount": 2
+              "amount": 2,
+              "scope": "target"
             },
             {
               "type": "gain_resource",
@@ -27463,7 +27495,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "brood"
     },
     {
       "id": "apex-hunger-call",
@@ -27492,7 +27525,8 @@
             "amount": 1
           }
         ]
-      }
+      },
+      "faction": "brood"
     },
     {
       "id": "sentry-hunter-drone",
@@ -27511,7 +27545,8 @@
         "ranged"
       ],
       "icon": "🎯",
-      "artworkDescription": "A sleek matte-black pursuit drone with twin rail-gun barrels angled forward, red targeting lasers scanning the dark"
+      "artworkDescription": "A sleek matte-black pursuit drone with twin rail-gun barrels angled forward, red targeting lasers scanning the dark",
+      "faction": "machine"
     },
     {
       "id": "sentry-bulwark-drone",
@@ -27533,17 +27568,17 @@
       "artworkDescription": "A massive hexagonal-shielded drone hovering low to the ground, layered blast-plates glowing with absorbed energy",
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
-              "type": "heal",
-              "scope": "all_ally_units",
+              "type": "heal_own_units",
               "amount": 2
             }
           ]
         }
-      ]
+      ],
+      "faction": "machine"
     },
     {
       "id": "sentry-shock-sentry",
@@ -27562,7 +27597,8 @@
         "retaliate"
       ],
       "icon": "⚡",
-      "artworkDescription": "A spindly bipedal combat bot crackling with coiled discharge coils, hunched in an aggressive stance"
+      "artworkDescription": "A spindly bipedal combat bot crackling with coiled discharge coils, hunched in an aggressive stance",
+      "faction": "machine"
     },
     {
       "id": "sentry-overwatch-drone",
@@ -27595,7 +27631,7 @@
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
+              "type": "modify_property",
               "scope": "target",
               "property": "attack",
               "amount": 1
@@ -27609,7 +27645,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "machine"
     },
     {
       "id": "sentry-blast-walker",
@@ -27631,17 +27668,17 @@
       "artworkDescription": "A four-legged walking artillery platform with concussive blast vents on each shoulder, surrounded by impact craters",
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 2
             }
           ]
         }
-      ]
+      ],
+      "faction": "machine"
     },
     {
       "id": "sentry-tactical-uplink",
@@ -27660,7 +27697,8 @@
             "amount": 2
           }
         ]
-      }
+      },
+      "faction": "machine"
     },
     {
       "id": "sentry-emp-strike",
@@ -27685,7 +27723,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "machine"
     },
     {
       "id": "sentry-repair-protocol",
@@ -27704,7 +27743,7 @@
             "amount": 4
           },
           {
-            "type": "buff_property",
+            "type": "modify_property",
             "scope": "target",
             "property": "armor",
             "amount": 1
@@ -27717,7 +27756,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "machine"
     },
     {
       "id": "sentry-deployment-bay",
@@ -27734,7 +27774,7 @@
       "artworkDescription": "A low armored hangar bay with blast doors yawning open, patrol drones queued in launch cradles beneath amber launch lights",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
@@ -27744,7 +27784,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "machine"
     },
     {
       "id": "sentry-caster",
@@ -27777,7 +27818,7 @@
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
+              "type": "modify_property",
               "scope": "target",
               "property": "armor",
               "amount": 1
@@ -27796,7 +27837,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "machine"
     },
     {
       "id": "sentry-interceptor-drone",
@@ -27817,19 +27859,25 @@
       ],
       "icon": "🚀",
       "artworkDescription": "A dart-shaped high-velocity intercept drone with twin forward missile pods, trailing exhaust as it locks on a distant target",
-      "triggers": [
-        {
-          "event": "on_play",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "damage",
-              "scope": "target",
-              "amount": 3
-            }
-          ]
+      "faction": "machine",
+      "onPlay": {
+        "id": "sentry-interceptor-drone-effect",
+        "name": "Play: Interceptor Drone",
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 3
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
         }
-      ]
+      }
     },
     {
       "id": "fort-crossbow-warden",
@@ -27847,7 +27895,8 @@
       ],
       "icon": "🏹",
       "artworkDescription": "A lean soldier in a green-brown gambeson, crossbow raised and eye narrowed along the bolt.",
-      "housingCost": 1
+      "housingCost": 1,
+      "faction": "hunks"
     },
     {
       "id": "fort-powder-runner",
@@ -27868,17 +27917,17 @@
       "housingCost": 1,
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "hunks"
     },
     {
       "id": "fort-garrison-pikeman",
@@ -27898,7 +27947,8 @@
       ],
       "icon": "🪖",
       "artworkDescription": "A disciplined soldier in half-plate, pike braced at the gate arch.",
-      "housingCost": 1
+      "housingCost": 1,
+      "faction": "hunks"
     },
     {
       "id": "fort-bombardier",
@@ -27932,13 +27982,13 @@
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 2
             }
           ]
         }
-      ]
+      ],
+      "faction": "hunks"
     },
     {
       "id": "fort-bastion-champion",
@@ -27961,7 +28011,7 @@
       "housingCost": 2,
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
@@ -27971,7 +28021,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "hunks"
     },
     {
       "id": "fort-iron-decree",
@@ -27985,8 +28036,7 @@
         "name": "Issue the Decree",
         "effects": [
           {
-            "type": "buff_property",
-            "scope": "all_ally_units",
+            "type": "buff_own_units_until_end_of_turn",
             "propertyId": "attack",
             "amount": 1
           },
@@ -27996,7 +28046,8 @@
             "amount": 1
           }
         ]
-      }
+      },
+      "faction": "hunks"
     },
     {
       "id": "fort-precision-bolt",
@@ -28022,7 +28073,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "hunks"
     },
     {
       "id": "fort-war-doctrine",
@@ -28036,24 +28088,22 @@
         "name": "Enforce Doctrine",
         "effects": [
           {
-            "type": "buff_property",
-            "scope": "all_ally_units",
+            "type": "buff_own_units_until_end_of_turn",
             "propertyId": "attack",
             "amount": 2
           },
           {
-            "type": "buff_property",
-            "scope": "all_ally_units",
+            "type": "buff_own_units_until_end_of_turn",
             "propertyId": "maxHp",
             "amount": 2
           },
           {
-            "type": "heal",
-            "scope": "all_ally_units",
+            "type": "heal_own_units",
             "amount": 2
           }
         ]
-      }
+      },
+      "faction": "hunks"
     },
     {
       "id": "fort-watchtower",
@@ -28070,7 +28120,7 @@
       "artworkDescription": "A narrow stone tower capped with a signal fire, overlooking the surrounding approaches.",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
@@ -28080,7 +28130,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "hunks"
     },
     {
       "id": "fort-drill-sergeant",
@@ -28112,15 +28163,15 @@
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
-              "scope": "all_ally_units",
+              "type": "buff_own_units_until_end_of_turn",
               "propertyId": "attack",
               "amount": 1
             }
           ],
           "choice": null
         }
-      ]
+      ],
+      "faction": "hunks"
     },
     {
       "id": "fort-shield-bearer",
@@ -28166,7 +28217,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "hunks"
     },
     {
       "id": "hold-dungeon-warden",
@@ -28184,7 +28236,8 @@
       ],
       "icon": "🔑",
       "artworkDescription": "A hunched jailer in rusted mail, keys clinking at his belt, standing before a torchlit iron door",
-      "housingCost": 1
+      "housingCost": 1,
+      "faction": "shadow"
     },
     {
       "id": "hold-bone-shackler",
@@ -28206,7 +28259,7 @@
       "housingCost": 1,
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
@@ -28215,7 +28268,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "shadow"
     },
     {
       "id": "hold-curse-whisperer",
@@ -28247,9 +28301,10 @@
           "conditions": [],
           "effects": [
             {
-              "type": "give_poison",
+              "type": "gain_resource",
               "scope": "target",
-              "amount": 2
+              "amount": 2,
+              "resourceId": "poison"
             }
           ],
           "choice": {
@@ -28261,7 +28316,7 @@
           }
         }
       ],
-      "triggers": []
+      "faction": "shadow"
     },
     {
       "id": "hold-iron-torturer",
@@ -28282,7 +28337,7 @@
       "artworkDescription": "A towering figure in soot-black plate, wielding a serrated iron wheel as a weapon",
       "housingCost": 2,
       "abilities": [],
-      "triggers": []
+      "faction": "shadow"
     },
     {
       "id": "hold-dungeon-lord",
@@ -28303,19 +28358,18 @@
       "artworkDescription": "A crowned warlord enthroned in shadow, rising from his obsidian seat to lead the assault personally",
       "housingCost": 2,
       "abilities": [],
-      "triggers": [
-        {
-          "event": "on_play",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "give_poison",
-              "scope": "all_opponent_units",
-              "amount": 1
-            }
-          ]
-        }
-      ]
+      "faction": "shadow",
+      "onPlay": {
+        "id": "hold-dungeon-lord-effect",
+        "name": "Play: Dungeon Lord",
+        "effects": [
+          {
+            "type": "afflict_enemy_units",
+            "amount": 1,
+            "resourceId": "poison"
+          }
+        ]
+      }
     },
     {
       "id": "hold-cursed-snare",
@@ -28345,7 +28399,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "shadow"
     },
     {
       "id": "hold-hex-bolt",
@@ -28364,9 +28419,10 @@
             "amount": 4
           },
           {
-            "type": "give_poison",
+            "type": "gain_resource",
             "scope": "target",
-            "amount": 2
+            "amount": 2,
+            "resourceId": "poison"
           }
         ],
         "choice": {
@@ -28376,7 +28432,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "shadow"
     },
     {
       "id": "hold-dungeon-collapse",
@@ -28390,12 +28447,12 @@
         "name": "Cave In",
         "effects": [
           {
-            "type": "damage",
-            "scope": "all_opponent_units",
+            "type": "damage_enemy_units",
             "amount": 3
           }
         ]
-      }
+      },
+      "faction": "shadow"
     },
     {
       "id": "hold-oubliette",
@@ -28412,7 +28469,7 @@
       "artworkDescription": "A squat stone pit-prison sunk into the dungeon floor, its iron grate sealed with a heavy padlock and curse-wards",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
@@ -28421,7 +28478,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "shadow"
     },
     {
       "id": "shadow-cutpurse",
@@ -28442,7 +28500,7 @@
       "housingCost": 1,
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
@@ -28451,7 +28509,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "shadow"
     },
     {
       "id": "shadow-toxin-courier",
@@ -28482,9 +28541,10 @@
           "conditions": [],
           "effects": [
             {
-              "type": "give_poison",
+              "type": "gain_resource",
               "scope": "target",
-              "amount": 1
+              "amount": 1,
+              "resourceId": "poison"
             }
           ],
           "choice": {
@@ -28495,7 +28555,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "shadow"
     },
     {
       "id": "shadow-rooftop-archer",
@@ -28513,7 +28574,8 @@
       ],
       "icon": "🏹",
       "artworkDescription": "A masked marksman perched on a chimney at dusk, silhouetted against a blood-red sky",
-      "housingCost": 1
+      "housingCost": 1,
+      "faction": "shadow"
     },
     {
       "id": "shadow-venomfang-duelist",
@@ -28534,17 +28596,19 @@
       "housingCost": 1,
       "triggers": [
         {
-          "event": "on_attack",
+          "event": "onDealCombatDamage",
           "conditions": [],
           "effects": [
             {
-              "type": "give_poison",
+              "type": "gain_resource",
               "scope": "target",
-              "amount": 2
+              "amount": 2,
+              "resourceId": "poison"
             }
           ]
         }
-      ]
+      ],
+      "faction": "shadow"
     },
     {
       "id": "shadow-umbral-blade",
@@ -28583,14 +28647,15 @@
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
+              "type": "modify_property",
               "scope": "self",
               "propertyId": "attack",
               "amount": 2
             }
           ]
         }
-      ]
+      ],
+      "faction": "shadow"
     },
     {
       "id": "shadow-wraith-herald",
@@ -28611,12 +28676,11 @@
       "housingCost": 2,
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 2
             }
           ]
@@ -28653,7 +28717,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "shadow"
     },
     {
       "id": "shadow-poison-dart",
@@ -28672,9 +28737,10 @@
             "amount": 2
           },
           {
-            "type": "give_poison",
+            "type": "gain_resource",
             "scope": "target",
-            "amount": 1
+            "amount": 1,
+            "resourceId": "poison"
           }
         ],
         "choice": {
@@ -28683,7 +28749,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "shadow"
     },
     {
       "id": "shadow-smoke-veil",
@@ -28697,11 +28764,11 @@
         "name": "Obscure",
         "effects": [
           {
-            "type": "tap",
-            "scope": "all_opponent_units"
+            "type": "tap_enemy_units"
           }
         ]
-      }
+      },
+      "faction": "shadow"
     },
     {
       "id": "shadow-marked-for-death",
@@ -28726,7 +28793,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "shadow"
     },
     {
       "id": "shadow-venom-cloud",
@@ -28740,17 +28808,17 @@
         "name": "Toxic Miasma",
         "effects": [
           {
-            "type": "damage",
-            "scope": "all_opponent_units",
+            "type": "damage_enemy_units",
             "amount": 2
           },
           {
-            "type": "give_poison",
-            "scope": "all_opponent_units",
-            "amount": 1
+            "type": "afflict_enemy_units",
+            "amount": 1,
+            "resourceId": "poison"
           }
         ]
-      }
+      },
+      "faction": "shadow"
     },
     {
       "id": "shadow-assassins-guildhall",
@@ -28767,18 +28835,18 @@
       "artworkDescription": "A fortified townhouse with no visible windows, its black door bearing only a dagger sigil",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
-              "scope": "all_ally_units",
+              "type": "buff_own_units_until_end_of_turn",
               "propertyId": "attack",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "shadow"
     },
     {
       "id": "shadow-poison-workshop",
@@ -28795,17 +28863,18 @@
       "artworkDescription": "A cellar laboratory lit by sickly green lanterns, shelves lined with oozing specimens and bubbling vials",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
-              "type": "give_poison",
-              "scope": "all_opponent_units",
-              "amount": 1
+              "type": "afflict_enemy_units",
+              "amount": 1,
+              "resourceId": "poison"
             }
           ]
         }
-      ]
+      ],
+      "faction": "shadow"
     },
     {
       "id": "shadow-venomed-gauntlet",
@@ -28814,18 +28883,19 @@
       "playCost": 2,
       "icon": "🧤",
       "artworkDescription": "A black leather gauntlet with hollow fingertips that seep amber toxin on contact",
-      "attachCondition": {
-        "controller": "self",
-        "objectType": "unit"
-      },
-      "modifiers": [
+      "faction": "shadow",
+      "slots": [
+        "body"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
         {
           "propertyId": "attack",
           "amount": 1
-        },
-        {
-          "tag": "retaliate"
         }
+      ],
+      "attachTags": [
+        "retaliate"
       ]
     },
     {
@@ -28843,7 +28913,8 @@
       ],
       "icon": "💨",
       "artworkDescription": "A wiry scout sprinting through a howling gale, hair and cloak streaming horizontal in the wind",
-      "housingCost": 1
+      "housingCost": 1,
+      "faction": "conclave"
     },
     {
       "id": "storm-thunder-warden",
@@ -28861,7 +28932,8 @@
       ],
       "icon": "🛡️",
       "artworkDescription": "A stout warrior in lightning-scorched plate armor, shield raised against crackling arcs of electricity",
-      "housingCost": 1
+      "housingCost": 1,
+      "faction": "conclave"
     },
     {
       "id": "storm-cloud-reaper",
@@ -28882,17 +28954,17 @@
       "housingCost": 1,
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "storm-squall-berserker",
@@ -28910,7 +28982,8 @@
       ],
       "icon": "⚡",
       "artworkDescription": "A towering warrior consumed by a living tempest, twin axes crackling with chained lightning that leaps between foes on each swing",
-      "housingCost": 2
+      "housingCost": 2,
+      "faction": "conclave"
     },
     {
       "id": "storm-cyclone-herald",
@@ -28942,15 +29015,15 @@
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
-              "scope": "all_ally_units",
+              "type": "buff_own_units_until_end_of_turn",
               "propertyId": "attack",
               "amount": 1
             }
           ],
           "choice": null
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "storm-lightning-lash",
@@ -28976,7 +29049,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "conclave"
     },
     {
       "id": "storm-thunderclap",
@@ -28990,12 +29064,12 @@
         "name": "Thunderclap Wave",
         "effects": [
           {
-            "type": "damage",
-            "scope": "all_opponent_units",
+            "type": "damage_enemy_units",
             "amount": 2
           }
         ]
-      }
+      },
+      "faction": "conclave"
     },
     {
       "id": "storm-arc-infusion",
@@ -29009,7 +29083,7 @@
         "name": "Infuse",
         "effects": [
           {
-            "type": "buff_property",
+            "type": "modify_property",
             "scope": "target",
             "propertyId": "attack",
             "amount": 2
@@ -29026,7 +29100,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "conclave"
     },
     {
       "id": "storm-tempest-bastion",
@@ -29043,17 +29118,17 @@
       "artworkDescription": "A fortified storm tower bristling with lightning rods that continuously discharge arcs onto the surrounding battlefield",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "storm-fog-wraith",
@@ -29073,17 +29148,17 @@
       "housingCost": 1,
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
-              "type": "heal",
-              "scope": "all_ally_units",
+              "type": "heal_own_units",
               "amount": 2
             }
           ]
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "storm-gale-dancer",
@@ -29122,7 +29197,8 @@
           ],
           "choice": null
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "brood-pheromone-spreader",
@@ -29142,20 +29218,18 @@
       "icon": "🫧",
       "artworkDescription": "A translucent grub that leaks chemical signals, drawing swarm-mates into frenzied cohesion",
       "housingCost": 1,
-      "triggers": [
-        {
-          "event": "onPlay",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "buff_property",
-              "scope": "all_ally_units",
-              "propertyId": "attack",
-              "amount": 1
-            }
-          ]
-        }
-      ]
+      "faction": "brood",
+      "onPlay": {
+        "id": "brood-pheromone-spreader-effect",
+        "name": "Play: Pheromone Spreader",
+        "effects": [
+          {
+            "type": "buff_own_units_until_end_of_turn",
+            "propertyId": "attack",
+            "amount": 1
+          }
+        ]
+      }
     },
     {
       "id": "brood-spore-caster",
@@ -29188,18 +29262,18 @@
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 1
             },
             {
-              "type": "give_poison",
-              "scope": "all_opponent_units",
-              "amount": 1
+              "type": "afflict_enemy_units",
+              "amount": 1,
+              "resourceId": "poison"
             }
           ]
         }
-      ]
+      ],
+      "faction": "brood"
     },
     {
       "id": "brood-carapace-brute",
@@ -29219,7 +29293,8 @@
       ],
       "icon": "🪳",
       "artworkDescription": "A thick-shelled warrior whose layered chitin deflects blade and bolt alike, planted in the vanguard",
-      "housingCost": 1
+      "housingCost": 1,
+      "faction": "brood"
     },
     {
       "id": "brood-acid-bombardier",
@@ -29270,7 +29345,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "brood"
     },
     {
       "id": "brood-molt-ravager",
@@ -29313,7 +29389,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "brood"
     },
     {
       "id": "brood-acid-deluge",
@@ -29327,18 +29404,17 @@
         "name": "Cast Acid Deluge",
         "effects": [
           {
-            "type": "damage",
-            "scope": "all_opponent_units",
+            "type": "damage_enemy_units",
             "amount": 2
           },
           {
-            "type": "modify_property",
-            "scope": "all_opponent_units",
+            "type": "modify_property_enemy_units",
             "propertyId": "armor",
             "amount": -1
           }
         ]
-      }
+      },
+      "faction": "brood"
     },
     {
       "id": "brood-frenzy-pheromone",
@@ -29352,13 +29428,13 @@
         "name": "Cast Frenzy Pheromone",
         "effects": [
           {
-            "type": "buff_property",
-            "scope": "all_ally_units",
+            "type": "buff_own_units_until_end_of_turn",
             "propertyId": "attack",
             "amount": 2
           }
         ]
-      }
+      },
+      "faction": "brood"
     },
     {
       "id": "brood-larval-flood",
@@ -29396,7 +29472,8 @@
             "amount": 1
           }
         ]
-      }
+      },
+      "faction": "brood"
     },
     {
       "id": "brood-pheromone-throne",
@@ -29413,18 +29490,18 @@
       "artworkDescription": "A pulsating organic spire that broadcasts the queen's will across the battlefield, sharpening every soldier's instincts",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
-              "scope": "all_ally_units",
+              "type": "buff_own_units_until_end_of_turn",
               "propertyId": "attack",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "brood"
     },
     {
       "id": "warbond-oath-shield",
@@ -29448,7 +29525,7 @@
       "abilities": [],
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
@@ -29459,7 +29536,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "raiders"
     },
     {
       "id": "warbond-fury-brand",
@@ -29482,17 +29560,17 @@
       "abilities": [],
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 2
             }
           ]
         }
-      ]
+      ],
+      "faction": "raiders"
     },
     {
       "id": "warbond-arrow-sworn",
@@ -29546,7 +29624,7 @@
           }
         }
       ],
-      "triggers": []
+      "faction": "raiders"
     },
     {
       "id": "warbond-blood-sworn",
@@ -29594,7 +29672,7 @@
           }
         }
       ],
-      "triggers": []
+      "faction": "raiders"
     },
     {
       "id": "warbond-sunder-lord",
@@ -29634,8 +29712,7 @@
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 3
             },
             {
@@ -29647,20 +29724,19 @@
           ]
         }
       ],
-      "triggers": [
-        {
-          "event": "on_play",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "glory",
-              "amount": 3
-            }
-          ]
-        }
-      ]
+      "faction": "raiders",
+      "onPlay": {
+        "id": "warbond-sunder-lord-effect",
+        "name": "Play: Sunder Lord",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "glory",
+            "amount": 3
+          }
+        ]
+      }
     },
     {
       "id": "warbond-forge-shrine",
@@ -29679,18 +29755,18 @@
       "abilities": [],
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
-              "scope": "all_ally_units",
+              "type": "buff_own_units_until_end_of_turn",
               "propertyId": "attack",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "raiders"
     },
     {
       "id": "warbond-oath-of-fury",
@@ -29704,7 +29780,7 @@
         "name": "Fury Oath",
         "effects": [
           {
-            "type": "buff_property",
+            "type": "modify_property",
             "scope": "target",
             "propertyId": "attack",
             "amount": 3
@@ -29723,7 +29799,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "raiders"
     },
     {
       "id": "warbond-bond-unbroken",
@@ -29737,8 +29814,7 @@
         "name": "Unbreakable Bond",
         "effects": [
           {
-            "type": "heal",
-            "scope": "all_ally_units",
+            "type": "heal_own_units",
             "amount": 3
           },
           {
@@ -29747,7 +29823,8 @@
             "amount": 1
           }
         ]
-      }
+      },
+      "faction": "raiders"
     },
     {
       "id": "warbond-skull-oath",
@@ -29778,7 +29855,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "raiders"
     },
     {
       "id": "alchemists-bomb-lobber",
@@ -29801,17 +29879,17 @@
       "artworkDescription": "A grinning goblin-like alchemist with a bandolier of smoking black bombs, winding up a throw",
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 2
             }
           ]
         }
-      ]
+      ],
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-poison-brewer",
@@ -29849,9 +29927,10 @@
           "conditions": [],
           "effects": [
             {
-              "type": "give_poison",
+              "type": "gain_resource",
               "scope": "target",
-              "amount": 2
+              "amount": 2,
+              "resourceId": "poison"
             }
           ],
           "choice": {
@@ -29862,7 +29941,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-volatile-courier",
@@ -29883,17 +29963,17 @@
       "artworkDescription": "A frantic alchemist sprinting across the battlefield carrying a crate of unstable explosives",
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_units",
+              "type": "damage_all_units",
               "amount": 3
             }
           ]
         }
-      ]
+      ],
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-fume-sentinel",
@@ -29915,17 +29995,19 @@
       "artworkDescription": "A stout alchemist soldier encased in a sealed brass pressure suit, venting toxic vapours through exhaust pipes",
       "triggers": [
         {
-          "event": "on_attacked",
+          "event": "onDamaged",
           "conditions": [],
           "effects": [
             {
-              "type": "give_poison",
+              "type": "gain_resource",
               "scope": "target",
-              "amount": 1
+              "amount": 1,
+              "resourceId": "poison"
             }
           ]
         }
-      ]
+      ],
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-grand-mutant",
@@ -29982,7 +30064,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-chain-detonation",
@@ -29996,12 +30079,12 @@
         "name": "Detonate Chain",
         "effects": [
           {
-            "type": "damage",
-            "scope": "all_opponent_units",
+            "type": "damage_enemy_units",
             "amount": 3
           }
         ]
-      }
+      },
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-restoration-tonic",
@@ -30027,7 +30110,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-plague-vial",
@@ -30041,9 +30125,10 @@
         "name": "Spread Plague",
         "effects": [
           {
-            "type": "give_poison",
+            "type": "gain_resource",
             "scope": "target",
-            "amount": 3
+            "amount": 3,
+            "resourceId": "poison"
           },
           {
             "type": "damage",
@@ -30058,7 +30143,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-blast-furnace",
@@ -30094,8 +30180,7 @@
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 2
             },
             {
@@ -30106,7 +30191,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-apprentice-bomber",
@@ -30128,17 +30214,17 @@
       "artworkDescription": "A wide-eyed young alchemist clutching a single oversized vial, looking terrified and exhilarated in equal measure",
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "alchemists"
     },
     {
       "id": "alchemists-catalytic-injector",
@@ -30195,7 +30281,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "alchemists"
     },
     {
       "id": "conclave-ley-initiate",
@@ -30216,7 +30303,7 @@
       "housingCost": 1,
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
@@ -30227,7 +30314,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "conclave-glyph-warden",
@@ -30259,7 +30347,7 @@
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
+              "type": "modify_property",
               "scope": "target",
               "propertyId": "armor",
               "amount": 1
@@ -30273,7 +30361,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "conclave-chain-binder",
@@ -30328,7 +30417,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "conclave-ley-channeler",
@@ -30366,8 +30456,7 @@
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 2
             }
           ]
@@ -30386,7 +30475,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "conclave-grand-arbiter",
@@ -30424,8 +30514,7 @@
           "conditions": [],
           "effects": [
             {
-              "type": "heal",
-              "scope": "all_ally_units",
+              "type": "heal_own_units",
               "amount": 2
             },
             {
@@ -30448,7 +30537,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "conclave-ley-pulse",
@@ -30462,8 +30552,7 @@
         "name": "Pulse the Ley Line",
         "effects": [
           {
-            "type": "damage",
-            "scope": "all_opponent_units",
+            "type": "damage_enemy_units",
             "amount": 1
           },
           {
@@ -30473,7 +30562,8 @@
             "amount": 1
           }
         ]
-      }
+      },
+      "faction": "conclave"
     },
     {
       "id": "conclave-mending-sigil",
@@ -30499,7 +30589,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "conclave"
     },
     {
       "id": "conclave-mind-shatter",
@@ -30518,7 +30609,7 @@
             "amount": 3
           },
           {
-            "type": "buff_property",
+            "type": "modify_property",
             "scope": "target",
             "propertyId": "attack",
             "amount": -2
@@ -30531,7 +30622,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "conclave"
     },
     {
       "id": "conclave-sanctum-of-accord",
@@ -30549,12 +30641,11 @@
       "artworkDescription": "A domed chamber of white marble veined with glowing blue channels, where conclave delegates sit in ringed tiers beneath a swirling arcane orrery",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
-              "type": "heal",
-              "scope": "all_ally_units",
+              "type": "heal_own_units",
               "amount": 1
             },
             {
@@ -30565,7 +30656,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "conclave-veil-dancer",
@@ -30587,7 +30679,7 @@
       "housingCost": 1,
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
@@ -30596,7 +30688,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "conclave-rift-sentinel",
@@ -30646,7 +30739,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "raiders-hook-runner",
@@ -30666,21 +30760,20 @@
       ],
       "icon": "🪝",
       "artworkDescription": "A lean raider sprinting across a gangplank, a boarding hook in one hand and a short blade in the other",
-      "triggers": [
-        {
-          "event": "onPlay",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "glory",
-              "amount": 1
-            }
-          ]
-        }
-      ],
-      "abilities": []
+      "abilities": [],
+      "faction": "raiders",
+      "onPlay": {
+        "id": "raiders-hook-runner-effect",
+        "name": "Play: Hook Runner",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "glory",
+            "amount": 1
+          }
+        ]
+      }
     },
     {
       "id": "raiders-crow-archer",
@@ -30702,7 +30795,7 @@
       "icon": "🏹",
       "artworkDescription": "A wiry raider perched on a crow's nest, loosing black-feathered arrows into enemy ranks below",
       "abilities": [],
-      "triggers": []
+      "faction": "raiders"
     },
     {
       "id": "raiders-venom-slicer",
@@ -30734,9 +30827,10 @@
           "conditions": [],
           "effects": [
             {
-              "type": "give_poison",
+              "type": "gain_resource",
               "scope": "target",
-              "amount": 2
+              "amount": 2,
+              "resourceId": "poison"
             }
           ],
           "choice": {
@@ -30747,7 +30841,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "raiders"
     },
     {
       "id": "raiders-loot-hauler",
@@ -30791,7 +30886,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "raiders"
     },
     {
       "id": "raiders-dread-captain",
@@ -30811,26 +30907,6 @@
       ],
       "icon": "⚓",
       "artworkDescription": "A salt-weathered captain in a stolen admiral's coat, boarding hook in hand, leading the charge onto enemy decks",
-      "triggers": [
-        {
-          "event": "onPlay",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "buff_tag_until_end_of_turn",
-              "tag": "raider",
-              "propertyId": "attack",
-              "amount": 1
-            },
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "glory",
-              "amount": 2
-            }
-          ]
-        }
-      ],
       "abilities": [
         {
           "id": "dread-captain-board",
@@ -30860,7 +30936,26 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "raiders",
+      "onPlay": {
+        "id": "raiders-dread-captain-effect",
+        "name": "Play: Dread Captain",
+        "effects": [
+          {
+            "type": "buff_tag_until_end_of_turn",
+            "tag": "raider",
+            "propertyId": "attack",
+            "amount": 1
+          },
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "glory",
+            "amount": 2
+          }
+        ]
+      }
     },
     {
       "id": "raiders-plunder-torch",
@@ -30874,12 +30969,12 @@
         "name": "Torch Effect",
         "effects": [
           {
-            "type": "damage",
-            "scope": "all_opponent_units",
+            "type": "damage_enemy_units",
             "amount": 2
           }
         ]
-      }
+      },
+      "faction": "raiders"
     },
     {
       "id": "raiders-golden-wound",
@@ -30911,7 +31006,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "raiders"
     },
     {
       "id": "raiders-chain-drag",
@@ -30941,7 +31037,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "raiders"
     },
     {
       "id": "raiders-longship-dock",
@@ -30958,7 +31055,7 @@
       "artworkDescription": "A rough-hewn dock on a rocky shore with a creak of longships moored and ready to launch at any tide",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
@@ -30988,8 +31085,7 @@
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 1
             },
             {
@@ -30999,7 +31095,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "raiders"
     },
     {
       "id": "raiders-cutthroat",
@@ -31032,7 +31129,8 @@
           ]
         }
       ],
-      "abilities": []
+      "abilities": [],
+      "faction": "raiders"
     },
     {
       "id": "raiders-siege-breaker",
@@ -31078,7 +31176,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "raiders"
     },
     {
       "id": "undead-bonelord",
@@ -31101,18 +31200,19 @@
       "artworkDescription": "A hulking colossus assembled from the bones of dozens of fallen warriors, crowned with a massive ribcage pauldron and wielding a femur club the size of a war axe",
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
-              "type": "add_resource",
+              "type": "gain_resource",
               "scope": "player",
               "resourceId": "corpses",
               "amount": 3
             }
           ]
         }
-      ]
+      ],
+      "faction": "undead"
     },
     {
       "id": "undead-grave-stalker",
@@ -31157,7 +31257,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "undead"
     },
     {
       "id": "undead-rot-shield",
@@ -31180,18 +31281,19 @@
       "artworkDescription": "A broad-shouldered skeleton braced behind a tower shield fashioned from overlapping ribcages and coffin lids, its eye sockets glowing a dull amber",
       "triggers": [
         {
-          "event": "on_damaged",
+          "event": "onDamaged",
           "conditions": [],
           "effects": [
             {
-              "type": "add_resource",
+              "type": "gain_resource",
               "scope": "player",
               "resourceId": "corpses",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "undead"
     },
     {
       "id": "undead-soul-puppet",
@@ -31210,20 +31312,19 @@
       "housingCost": 1,
       "icon": "🪆",
       "artworkDescription": "A small ragged corpse animated by a single tethered soul-thread, jerking along on stiff limbs with glassy vacant eyes",
-      "triggers": [
-        {
-          "event": "on_play",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "add_resource",
-              "scope": "player",
-              "resourceId": "corpses",
-              "amount": 1
-            }
-          ]
-        }
-      ]
+      "faction": "undead",
+      "onPlay": {
+        "id": "undead-soul-puppet-effect",
+        "name": "Play: Soul Puppet",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "corpses",
+            "amount": 1
+          }
+        ]
+      }
     },
     {
       "id": "undead-lich-sovereign",
@@ -31280,18 +31381,19 @@
       ],
       "triggers": [
         {
-          "event": "on_ally_death",
+          "event": "onUnitDied",
           "conditions": [],
           "effects": [
             {
-              "type": "add_resource",
+              "type": "gain_resource",
               "scope": "player",
               "resourceId": "corpses",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "undead"
     },
     {
       "id": "undead-necrotic-surge",
@@ -31310,8 +31412,7 @@
             "amount": 3
           },
           {
-            "type": "heal",
-            "scope": "all_ally_units",
+            "type": "heal_own_units",
             "amount": 1
           }
         ],
@@ -31322,7 +31423,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "undead"
     },
     {
       "id": "undead-corpse-explosion",
@@ -31336,12 +31438,12 @@
         "name": "Corpse Explosion Effect",
         "effects": [
           {
-            "type": "damage",
-            "scope": "all_opponent_units",
+            "type": "damage_enemy_units",
             "amount": 3
           }
         ]
-      }
+      },
+      "faction": "undead"
     },
     {
       "id": "undead-dark-mending",
@@ -31355,18 +31457,18 @@
         "name": "Dark Mending Effect",
         "effects": [
           {
-            "type": "heal",
-            "scope": "all_ally_units",
+            "type": "heal_own_units",
             "amount": 3
           },
           {
-            "type": "add_resource",
+            "type": "gain_resource",
             "scope": "player",
             "resourceId": "dp",
             "amount": 1
           }
         ]
-      }
+      },
+      "faction": "undead"
     },
     {
       "id": "undead-charnel-spire",
@@ -31383,12 +31485,11 @@
       "artworkDescription": "A jagged tower of fused bones and mortar, its apex crowned with a skull-lantern that emits a pale deathly radiance over the battlefield, emboldening all undead in its glow",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
-              "scope": "all_ally_units",
+              "type": "buff_own_units_until_end_of_turn",
               "propertyId": "attack",
               "amount": 1
             }
@@ -31413,13 +31514,13 @@
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 2
             }
           ]
         }
-      ]
+      ],
+      "faction": "undead"
     },
     {
       "id": "undead-ossified-brute",
@@ -31470,7 +31571,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "undead"
     },
     {
       "id": "undead-specter-knight",
@@ -31492,7 +31594,7 @@
       "artworkDescription": "A translucent armored phantom that flickers in and out of visibility, lunging forward with a spectral lance that passes through physical armor",
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
@@ -31500,14 +31602,15 @@
               "amount": 1
             },
             {
-              "type": "add_resource",
+              "type": "gain_resource",
               "scope": "player",
               "resourceId": "dp",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "undead"
     },
     {
       "id": "machine-clockwork-grunt",
@@ -31524,7 +31627,8 @@
       ],
       "icon": "⚙️",
       "artworkDescription": "A compact brass automaton with a single oversized fist, belching steam with every stomping step",
-      "housingCost": 1
+      "housingCost": 1,
+      "faction": "machine"
     },
     {
       "id": "machine-ironclad-sentinel",
@@ -31546,17 +31650,17 @@
       "housingCost": 1,
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
-              "type": "heal",
-              "scope": "all_ally_units",
+              "type": "heal_own_units",
               "amount": 2
             }
           ]
         }
-      ]
+      ],
+      "faction": "machine"
     },
     {
       "id": "machine-gear-reaper",
@@ -31575,7 +31679,8 @@
       ],
       "icon": "⚔️",
       "artworkDescription": "A spinning war machine with saw-blade arms that carve through enemy ranks in a shower of sparks",
-      "housingCost": 2
+      "housingCost": 2,
+      "faction": "machine"
     },
     {
       "id": "machine-piston-bombardier",
@@ -31609,13 +31714,13 @@
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 2
             }
           ]
         }
-      ]
+      ],
+      "faction": "machine"
     },
     {
       "id": "machine-coilspring-skirmisher",
@@ -31633,7 +31738,8 @@
       ],
       "icon": "🔩",
       "artworkDescription": "A wiry mechanical scout with coiled spring legs, launching counter-strikes with a snap of compressed steel",
-      "housingCost": 1
+      "housingCost": 1,
+      "faction": "machine"
     },
     {
       "id": "machine-scrap-volley",
@@ -31647,12 +31753,12 @@
         "name": "Spray Shrapnel",
         "effects": [
           {
-            "type": "damage",
-            "scope": "all_opponent_units",
+            "type": "damage_enemy_units",
             "amount": 2
           }
         ]
-      }
+      },
+      "faction": "machine"
     },
     {
       "id": "machine-emergency-protocols",
@@ -31682,7 +31788,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "machine"
     },
     {
       "id": "machine-overclock-directive",
@@ -31696,7 +31803,7 @@
         "name": "Push to Limit",
         "effects": [
           {
-            "type": "buff_property",
+            "type": "modify_property",
             "scope": "target",
             "propertyId": "attack",
             "amount": 3
@@ -31713,7 +31820,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "machine"
     },
     {
       "id": "machine-armaments-foundry",
@@ -31730,18 +31838,18 @@
       "artworkDescription": "A smoke-belching forge complex where mechanical soldiers roll off assembly lines, weapons glowing fresh from the smelter",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
-              "scope": "all_ally_units",
+              "type": "buff_own_units_until_end_of_turn",
               "propertyId": "attack",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "machine"
     },
     {
       "id": "machine-pressure-venter",
@@ -31761,17 +31869,17 @@
       "housingCost": 1,
       "triggers": [
         {
-          "event": "on_damage_taken",
+          "event": "onDamaged",
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "machine"
     },
     {
       "id": "machine-warden-automaton",
@@ -31816,7 +31924,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "machine"
     },
     {
       "id": "hunks-pit-brawler",
@@ -31837,7 +31946,7 @@
       "housingCost": 1,
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
@@ -31847,7 +31956,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "hunks"
     },
     {
       "id": "hunks-grappler",
@@ -31891,7 +32001,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "hunks"
     },
     {
       "id": "hunks-colossus",
@@ -31912,19 +32023,17 @@
       "icon": "🗿",
       "artworkDescription": "A titanic Hunk whose shadow swallows an entire street, fists like boulders, breathing through his nose",
       "housingCost": 2,
-      "triggers": [
-        {
-          "event": "on_play",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "damage",
-              "scope": "all_opponent_units",
-              "amount": 2
-            }
-          ]
-        }
-      ]
+      "faction": "hunks",
+      "onPlay": {
+        "id": "hunks-colossus-effect",
+        "name": "Play: The Colossus",
+        "effects": [
+          {
+            "type": "damage_enemy_units",
+            "amount": 2
+          }
+        ]
+      }
     },
     {
       "id": "hunks-bruiser-champion",
@@ -31974,7 +32083,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "hunks"
     },
     {
       "id": "hunks-slag-stomper",
@@ -31996,7 +32106,7 @@
       "housingCost": 1,
       "triggers": [
         {
-          "event": "on_attack",
+          "event": "onDealCombatDamage",
           "conditions": [],
           "effects": [
             {
@@ -32006,7 +32116,8 @@
             }
           ]
         }
-      ]
+      ],
+      "faction": "hunks"
     },
     {
       "id": "hunks-battle-cry",
@@ -32020,8 +32131,7 @@
         "name": "Unleash Battle Cry",
         "effects": [
           {
-            "type": "buff_property",
-            "scope": "all_ally_units",
+            "type": "buff_own_units_until_end_of_turn",
             "propertyId": "attack",
             "amount": 2
           },
@@ -32030,7 +32140,8 @@
             "amount": 1
           }
         ]
-      }
+      },
+      "faction": "hunks"
     },
     {
       "id": "hunks-quake-stomp",
@@ -32044,12 +32155,12 @@
         "name": "Unleash Quake Stomp",
         "effects": [
           {
-            "type": "damage",
-            "scope": "all_opponent_units",
+            "type": "damage_enemy_units",
             "amount": 3
           }
         ]
-      }
+      },
+      "faction": "hunks"
     },
     {
       "id": "hunks-crowd-charge",
@@ -32068,8 +32179,7 @@
             "amount": 5
           },
           {
-            "type": "buff_property",
-            "scope": "all_ally_units",
+            "type": "buff_own_units_until_end_of_turn",
             "propertyId": "attack",
             "amount": 1
           }
@@ -32080,7 +32190,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "hunks"
     },
     {
       "id": "hunks-fighting-pit",
@@ -32100,18 +32211,18 @@
       "artworkDescription": "A sawdust ring surrounded by roaring crowds, torchlit at night, iron shackles bolted to the posts",
       "triggers": [
         {
-          "event": "on_ally_unit_death",
+          "event": "onUnitDied",
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
-              "scope": "all_ally_units",
+              "type": "buff_own_units_until_end_of_turn",
               "propertyId": "attack",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "hunks"
     },
     {
       "id": "hunks-pile-driver",
@@ -32161,7 +32272,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "hunks"
     },
     {
       "id": "hunks-rage-bender",
@@ -32182,18 +32294,19 @@
       "housingCost": 1,
       "triggers": [
         {
-          "event": "on_damaged",
+          "event": "onDamaged",
           "conditions": [],
           "effects": [
             {
-              "type": "buff_property",
+              "type": "modify_property",
               "scope": "self",
               "propertyId": "attack",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "hunks"
     },
     {
       "id": "arcane-void-stalker",
@@ -32210,7 +32323,8 @@
       ],
       "icon": "👁️",
       "artworkDescription": "A flickering silhouette of compressed void energy, two luminous eyes staring from within a rift seam",
-      "housingCost": 1
+      "housingCost": 1,
+      "faction": "conclave"
     },
     {
       "id": "arcane-rift-channeler",
@@ -32228,18 +32342,17 @@
       "icon": "🌀",
       "artworkDescription": "A robed figure whose hands are submerged wrist-deep into a crackling violet dimensional rift",
       "housingCost": 1,
-      "triggers": [
-        {
-          "event": "on_play",
-          "conditions": [],
-          "effects": [
-            {
-              "type": "draw_cards",
-              "amount": 1
-            }
-          ]
-        }
-      ]
+      "faction": "conclave",
+      "onPlay": {
+        "id": "arcane-rift-channeler-effect",
+        "name": "Play: Rift Channeler",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ]
+      }
     },
     {
       "id": "arcane-mana-elemental",
@@ -32257,18 +32370,19 @@
       "housingCost": 1,
       "triggers": [
         {
-          "event": "on_death",
+          "event": "onDeath",
           "conditions": [],
           "effects": [
             {
-              "type": "add_resource",
+              "type": "gain_resource",
               "resourceId": "mana",
               "amount": 2,
               "scope": "player"
             }
           ]
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "arcane-void-wraith",
@@ -32286,7 +32400,8 @@
       ],
       "icon": "🕳️",
       "artworkDescription": "A spectral form woven from collapsed void rift threads, trailing tendrils of inverted light",
-      "housingCost": 1
+      "housingCost": 1,
+      "faction": "conclave"
     },
     {
       "id": "arcane-prism-guardian",
@@ -32332,7 +32447,8 @@
             "max": 1
           }
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "arcane-nexus-colossus",
@@ -32353,17 +32469,17 @@
       "housingCost": 2,
       "triggers": [
         {
-          "event": "on_attack",
+          "event": "onDealCombatDamage",
           "conditions": [],
           "effects": [
             {
-              "type": "damage",
-              "scope": "all_opponent_units",
+              "type": "damage_enemy_units",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "arcane-void-rupture",
@@ -32377,12 +32493,12 @@
         "name": "Deal 2 damage to all opponent units",
         "effects": [
           {
-            "type": "damage",
-            "scope": "all_opponent_units",
+            "type": "damage_enemy_units",
             "amount": 2
           }
         ]
-      }
+      },
+      "faction": "conclave"
     },
     {
       "id": "arcane-temporal-surge",
@@ -32400,7 +32516,7 @@
             "scope": "target"
           },
           {
-            "type": "buff_property",
+            "type": "modify_property",
             "scope": "target",
             "propertyId": "attack",
             "amount": 2
@@ -32413,7 +32529,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "faction": "conclave"
     },
     {
       "id": "arcane-mana-siphon",
@@ -32427,7 +32544,7 @@
         "name": "Drain 2 mana from opponent, gain 2 mana",
         "effects": [
           {
-            "type": "add_resource",
+            "type": "gain_resource",
             "resourceId": "mana",
             "amount": 2,
             "scope": "player"
@@ -32439,7 +32556,8 @@
             "scope": "opponent"
           }
         ]
-      }
+      },
+      "faction": "conclave"
     },
     {
       "id": "arcane-annihilation-wave",
@@ -32453,12 +32571,12 @@
         "name": "Deal 4 damage to all opponent units",
         "effects": [
           {
-            "type": "damage",
-            "scope": "all_opponent_units",
+            "type": "damage_enemy_units",
             "amount": 4
           }
         ]
-      }
+      },
+      "faction": "conclave"
     },
     {
       "id": "arcane-rift-gate",
@@ -32475,18 +32593,19 @@
       "artworkDescription": "A standing archway of carved void-stone that hums at its keystone with a permanent dimensional rift held open by rune-chains",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
-              "type": "add_resource",
+              "type": "gain_resource",
               "resourceId": "mana",
               "amount": 1,
               "scope": "player"
             }
           ]
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "arcane-mana-forge",
@@ -32503,23 +32622,23 @@
       "artworkDescription": "A squat basalt tower lined with rune-etched conduits that siphon ambient arcane energy and crystallise it into usable mana charges",
       "triggers": [
         {
-          "event": "on_turn_start",
+          "event": "onTurnStart",
           "conditions": [],
           "effects": [
             {
-              "type": "add_resource",
+              "type": "gain_resource",
               "resourceId": "mana",
               "amount": 2,
               "scope": "player"
             },
             {
-              "type": "heal",
-              "scope": "all_ally_units",
+              "type": "heal_own_units",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "faction": "conclave"
     },
     {
       "id": "arcane-void-mantle",
@@ -32528,18 +32647,19 @@
       "playCost": 2,
       "icon": "🌌",
       "artworkDescription": "A cloak woven from compressed void-thread that bends incoming strikes around its wearer and lends unnatural speed to counterattacks",
-      "attachCondition": {
-        "controller": "self",
-        "objectType": "unit"
-      },
-      "modifiers": [
+      "faction": "conclave",
+      "slots": [
+        "body"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
         {
           "propertyId": "armor",
           "amount": 1
-        },
-        {
-          "tag": "retaliate"
         }
+      ],
+      "attachTags": [
+        "retaliate"
       ]
     }
   ],
@@ -33444,6 +33564,8 @@
       "id": "bloodfangs-wrath",
       "faction": "raiders",
       "name": "Bloodfang's Wrath",
+      "hq": "town-hall",
+      "hero": "bloodfang",
       "cards": {
         "town-hall": 1,
         "bloodfang": 1,

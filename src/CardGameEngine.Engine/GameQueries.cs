@@ -140,12 +140,18 @@ public static class GameQueries
     /// (playCost, e.g. Peasant) or multi-resource (playCosts, e.g. Soldier's gold+training).
     /// Hero-lineage cards are always eligible regardless of play cost: most heroes enter via
     /// the lobby/deck-builder hero picker (no playCost at all, e.g. ax-01), not from hand, but
-    /// still need to be selectable in a custom deck's card pool (task 1421). Mirrors the
-    /// frontend's isDeckEligible (frontend/src/utils/deckEligibility.ts, task 1421 follow-up
-    /// to PR #36) so both sides agree on what "deck-eligible" means.
+    /// still need to be selectable in a custom deck's card pool (task 1421). Headquarters-
+    /// lineage cards are exempt the same way (task 1604): MatchService's own "reserve copy"
+    /// path (task 906) already lets a player carry a spare HQ card in their deck's card list,
+    /// but ValidateDeck rejected every HQ card outright since it has no play cost either —
+    /// discovered when 4 precon decks that carry their own HQ as a reserve copy
+    /// (town-merchant, raiders-warbond, machine-sentry, conclave-storm) failed to simulate.
+    /// Mirrors the frontend's isDeckEligible (frontend/src/utils/deckEligibility.ts, task 1421
+    /// follow-up to PR #36) so both sides agree on what "deck-eligible" means.
     /// </summary>
     public static bool IsDeckEligible(GameDefinition definition, CardDefinition cardDef) =>
         IsObjectTypeOrSubtype(definition, cardDef.ObjectType, "hero")
+        || IsObjectTypeOrSubtype(definition, cardDef.ObjectType, "headquarters")
         || cardDef.PlayCost != null || cardDef.PlayCosts != null;
 
     /// <summary>
