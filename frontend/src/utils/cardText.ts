@@ -54,6 +54,10 @@ export function explainCost(c: CostDto): string {
       const n = c.amount ?? 1;
       return `Sacrifice ${n} unit${n > 1 ? 's' : ''} you control`;
     }
+    case 'sacrifice_equipment': {
+      const n = c.amount ?? 1;
+      return `Sacrifice ${n} equipped hero item${n > 1 ? 's' : ''}`;
+    }
     case 'crew': {
       const n = c.amount ?? 1;
       const who = c.tag ? c.tag.charAt(0).toUpperCase() + c.tag.slice(1) : 'unit';
@@ -229,6 +233,7 @@ export function formatPlayCosts(def: PlayCostFields): string | null {
   const parts = Object.entries(resolvedPlayCosts(def)).map(([resId, amount]) => `${amount}${resIcon(resId)}`);
   for (const extra of def.playCostsExtra ?? []) {
     if (extra.type === 'sacrifice_units') parts.push(`Sac ${extra.amount ?? 1}`);
+    if (extra.type === 'sacrifice_equipment') parts.push(`Sac ${extra.amount ?? 1} Gear`);
   }
   return parts.length > 0 ? parts.join(' ') : null;
 }

@@ -118,10 +118,32 @@ public static class DefaultHandlers
                 }
             });
 
+        // Sacrifice N of the player's own hero-attached equipment (an unequip-and-destroy
+        // cost, e.g. the War Machine HQ paying with a scavenged weapon/module). Mirrors
+        // sacrifice_units but preys on gear attached to a hero rather than battlefield bodies.
+        s.Costs.Register("sacrifice_equipment",
+            canPay: ctx => HeroEquippedItems(ctx.Game, ctx.Player.Id).Count() >= (ctx.Cost.Amount ?? 1),
+            pay: ctx =>
+            {
+                var victims = HeroEquippedItems(ctx.Game, ctx.Player.Id).Take(ctx.Cost.Amount ?? 1).ToList();
+                foreach (var victim in victims)
+                {
+                    ctx.Game.Log.Add($"{victim.Name} is stripped from your hero and sacrificed to pay for {ctx.Object.Name}.");
+                    s.Mutator.DestroyObject(ctx.Game, victim);
+                }
+            });
+
         static int GetResource(CostContext ctx) =>
             ctx.Cost.Scope == "player"
                 ? ctx.Player.Resources.GetValueOrDefault(ctx.Cost.ResourceId ?? "")
                 : ctx.Object.Resources.GetValueOrDefault(ctx.Cost.ResourceId ?? "");
+
+        static IEnumerable<ObjectInstance> HeroEquippedItems(GameInstance game, string playerId) =>
+            GameQueries.BattlefieldObjects(game, playerId)
+                .Where(o => o.AttachedToId != null
+                    && GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, "equipment")
+                    && game.Objects.Any(h => h.Id == o.AttachedToId
+                        && GameQueries.IsObjectTypeOrSubtype(game, h.ObjectType, "hero")));
     }
 
     // ------------------------------------------------------------------ effects
