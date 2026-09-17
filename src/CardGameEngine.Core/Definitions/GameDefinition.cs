@@ -26,6 +26,11 @@ public class PreconDeckDefinition
 {
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";
+    // Canonical faction id (task 1524): several precon decks can belong to one real faction
+    // (e.g. "raiders" covers Blackrock Raiders, Warbond Raiders, and Bloodfang's Wrath), so
+    // the deck-builder faction filter groups by this instead of by deck id. Empty = the deck
+    // is its own faction (fallback keeps older definitions working).
+    public string Faction { get; set; } = "";
     public string Description { get; set; } = "";
     public string Hq { get; set; } = "";   // default headquarters card id
     public string Hero { get; set; } = ""; // default hero card id
@@ -141,6 +146,11 @@ public class CardDefinition
     public Dictionary<string, int>? EquipmentSlots { get; set; } // on heroes: slot id -> capacity
     public int? HousingCost { get; set; }     // living space this unit occupies while on the battlefield
     public int? HousingProvided { get; set; } // living space this card supplies while on the battlefield
+    // Canonical faction id (task 1604) this card belongs to, independent of whether it's
+    // included in any precon deck's Cards list — the deck-builder faction filter groups by
+    // this so a bulk card-expansion PR doesn't need to touch any precon's curated 60-card
+    // pool just to make its new cards filterable. Null = unaffiliated.
+    public string? Faction { get; set; }
 }
 
 public class AttachModifierDefinition
@@ -154,6 +164,7 @@ public class TriggerDefinition
     // "onKill"                    - this card destroyed an enemy in combat
     // "onDestroyBuilding"         - this card destroyed an enemy building in combat
     // "onFriendlyDamageHqOrHero"  - any friendly card damaged an enemy hero or HQ in combat
+    // "onDamaged"                 - this card took combat damage from an enemy card
     // "onTurnStart"               - at the start of its controller's turn
     public string Event { get; set; } = "";
     public bool OncePerTurn { get; set; }
@@ -183,7 +194,7 @@ public class CostDefinition
 
 public class ConditionDefinition
 {
-    public string Type { get; set; } = ""; // "not_tapped", "resource_gte", "has_tag", "is_phase"
+    public string Type { get; set; } = ""; // "not_tapped", "resource_gte", "has_tag", "is_phase", "controls_tagged"
     public string? ResourceId { get; set; }
     public int? Amount { get; set; }
     public string? Tag { get; set; }
@@ -230,6 +241,9 @@ public class EffectDefinition
     public bool IgnoreHousing { get; set; } // for summon: bypass the housing-capacity check (e.g. Muster)
     public string? Line { get; set; } // AoE effects: only units on this battlefield line ("front"/"back")
     public int? MaxHp { get; set; }   // AoE effects: only units with effective maxHp at or below this
+    // direct_damage: when set, multiplies Amount by how many objects the acting player
+    // controls with this tag (e.g. Coordinated Barrage scaling by siege buildings held).
+    public string? PerTaggedBuilding { get; set; }
 }
 
 public class PlayTimingDefinition

@@ -27,6 +27,16 @@ public class TriggerService
                     Fire(game, obj, "onTurnStart");
                 break;
 
+            case GameEventTypes.CardPlayed:
+                // A card's data-driven "on play" effect belongs here (triggers[].event ==
+                // "onPlay"), separate from the AbilityDefinition.OnPlay field CardPlayService
+                // resolves synchronously for targeted play effects — task 1604 found 24 cards
+                // (3 of PR #52's new ones, 21 pre-existing) whose play effect only exists as
+                // an "onPlay" trigger, which nothing fired before this case existed.
+                if (evt.Target != null)
+                    Fire(game, evt.Target, "onPlay");
+                break;
+
             case GameEventTypes.UnitKilled:
                 // Source = killer, Target = victim
                 if (evt.Source != null && !evt.Source.IsDestroyed)
@@ -57,6 +67,10 @@ public class TriggerService
 
                 // Venom-style: attacker's own on-damage triggers, victim passed as target
                 FireWithAttachments(game, evt.Source, "onDealCombatDamage", evt.Target);
+
+                // The victim's own reaction to being hit (Rage Bender, Pressure Venter, Rot
+                // Shield) — Source (the attacker) is passed as the trigger's event target.
+                FireWithAttachments(game, evt.Target, "onDamaged", evt.Source);
 
                 bool hqOrHero = GameQueries.IsObjectTypeOrSubtype(game, evt.Target.ObjectType, "headquarters")
                     || GameQueries.IsObjectTypeOrSubtype(game, evt.Target.ObjectType, "hero");

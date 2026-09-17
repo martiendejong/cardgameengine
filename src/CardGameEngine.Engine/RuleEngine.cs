@@ -170,11 +170,19 @@ public class RuleEngine
                 // A type the player never had counts as gone, but at least one listed
                 // type must have existed — supports heroless campaign starts while an
                 // HQ-less scripted enemy can't lose this way at all.
+                //
+                // Only objects that have actually entered play count here — an un-destroyed
+                // reserve HQ/hero card still sitting in the deck or hand (task 906/908: many
+                // factions' precon decks carry a spare hero as a comeback piece) is not "still
+                // in play", so it must not keep this condition from ever firing (task 1419: a
+                // player who has lost their on-board headquarters and hero never actually lost
+                // the match because an unplayed reserve card technically kept the type alive).
                 bool hadAny = false;
                 bool allDestroyed = endCond.Targets.All(targetType =>
                 {
                     var playerObjects = game.Objects.Where(o =>
                         o.OwnerId == player.Id &&
+                        o.ZoneId != "deck" && o.ZoneId != "hand" &&
                         GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, targetType)).ToList();
                     if (playerObjects.Count == 0) return true;
                     hadAny = true;
@@ -202,14 +210,25 @@ public class RuleEngine
             }
         }
 
-        var losers = game.Players.Where(p => p.IsLoser).ToList();
-        if (losers.Count > 0)
+        // FFA ring: the game ends only when one player remains standing.
+        // For 2-player games this behaves identically to before (1 loser → 1 winner).
+        // For 3+ players, elimination logs a message and the ring closes for future turns;
+        // the game continues until one survivor remains.
+        var newlyEliminated = game.Players.Where(p => p.IsLoser).ToList();
+        foreach (var loser in newlyEliminated.Where(p => !game.Log.Any(l => l.Contains(p.Name + " has been eliminated"))))
+            game.Log.Add($"{loser.Name} has been eliminated!");
+
+        var survivors = game.Players.Where(p => !p.IsLoser).ToList();
+        if (survivors.Count == 1)
         {
-            foreach (var winner in game.Players.Where(p => !p.IsLoser))
-            {
-                winner.IsWinner = true;
-                game.Log.Add($"{winner.Name} wins!");
-            }
+            survivors[0].IsWinner = true;
+            game.Log.Add($"{survivors[0].Name} wins!");
+            game.State = GameState.GameEnded;
+        }
+        else if (survivors.Count == 0)
+        {
+            // Simultaneous mutual destruction — edge case
+            game.Log.Add("Draw — no survivors!");
             game.State = GameState.GameEnded;
         }
     }

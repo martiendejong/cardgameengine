@@ -41,6 +41,10 @@ public static class DefaultHandlers
             GameQueries.IsObjectTypeOrSubtype(ctx.Game, o.ObjectType, "hero")));
         c.Register("controls_no_tagged", ctx => !GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
             .Any(o => o.Tags.Contains(ctx.Condition.Tag ?? "")));
+        // Positive counterpart of controls_no_tagged — e.g. gate a worker's free gold on
+        // actually owning a mine (tag "resource-node") rather than any battlefield presence.
+        c.Register("controls_tagged", ctx => GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
+            .Any(o => o.Tags.Contains(ctx.Condition.Tag ?? "")));
         // Infiltration state: gates a spy's abilities to inside/outside a building
         c.Register("is_attached", ctx => ctx.Object.AttachedToId != null);
         c.Register("not_attached", ctx => ctx.Object.AttachedToId == null);
@@ -385,7 +389,10 @@ public static class DefaultHandlers
         e.Register("direct_damage", ctx =>
         {
             var obj = ctx.ResolveScope("target");
-            if (obj != null) m.ApplyDirectDamage(ctx.Game, obj, ctx.Effect.Amount ?? 0, ctx.Source);
+            var amount = ctx.Effect.Amount ?? 0;
+            if (ctx.Effect.PerTaggedBuilding is { } tag)
+                amount *= GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id).Count(o => o.Tags.Contains(tag));
+            if (obj != null) m.ApplyDirectDamage(ctx.Game, obj, amount, ctx.Source);
         });
 
         e.Register("draw_cards", ctx =>
@@ -451,6 +458,17 @@ public static class DefaultHandlers
             foreach (var obj in GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
                          .Where(o => o.Tags.Contains(ctx.Effect.Tag ?? "")).ToList())
                 m.GainEntityResource(ctx.Game, obj, resId, amount);
+        });
+
+        // Mass heal for cards that patch up every friendly building/tag at once (Fortify,
+        // Emergency Repair) — mirrors gain_resource_all_tagged's tag enumeration; "self"/
+        // "target"/"host" scope alone (ResolveScope) can't reach more than one object.
+        e.Register("heal_all_tagged", ctx =>
+        {
+            var amount = ctx.Effect.Amount ?? 0;
+            foreach (var obj in GameQueries.BattlefieldObjects(ctx.Game, ctx.Player.Id)
+                         .Where(o => o.Tags.Contains(ctx.Effect.Tag ?? "")).ToList())
+                m.Heal(ctx.Game, obj, amount);
         });
 
         // A spy leaves your battlefield and burrows under an enemy building
@@ -657,9 +675,75 @@ public static class DefaultHandlers
                 m.GainEntityResource(ctx.Game, victim, ctx.Effect.ResourceId ?? "poison", ctx.Effect.Amount ?? 1);
         });
 
+        // Rally: every unit the caster controls gains +Amount PropertyId until end of turn
+        // (mirrors buff_tag_until_end_of_turn but with no tag filter — a "pump the whole
+        // board" effect rather than one restricted to units sharing a tag).
+        e.Register("buff_own_units_until_end_of_turn", ctx =>
+        {
+            var propId = ctx.Effect.PropertyId ?? "attack";
+            var amount = ctx.Effect.Amount ?? 1;
+            foreach (var obj in OwnUnits(ctx))
+            {
+                m.AddModifier(ctx.Game, obj, propId, amount, "endOfTurn");
+                ctx.Game.Log.Add($"{obj.Name} gains +{amount} {propId} until end of turn.");
+            }
+        });
+
+        // Mass heal for every unit the caster controls (mirrors heal_all_tagged with no
+        // tag filter).
+        e.Register("heal_own_units", ctx =>
+        {
+            var amount = ctx.Effect.Amount ?? 0;
+            foreach (var obj in OwnUnits(ctx))
+                m.Heal(ctx.Game, obj, amount);
+        });
+
+        // Siege-style board debuff: permanently modify a property on every enemy unit (the
+        // permanent counterpart of damage_enemy_units).
+        e.Register("modify_property_enemy_units", ctx =>
+        {
+            var propId = ctx.Effect.PropertyId ?? "attack";
+            var amount = ctx.Effect.Amount ?? 0;
+            foreach (var obj in EnemyUnits(ctx))
+                m.ModifyProperty(ctx.Game, obj, propId, amount);
+        });
+
+        // Control spell: tap every enemy unit.
+        e.Register("tap_enemy_units", ctx =>
+        {
+            foreach (var obj in EnemyUnits(ctx))
+                m.Tap(ctx.Game, obj);
+        });
+
+        // Symmetric board-wide nova: every unit on the battlefield, both sides, takes
+        // Amount damage reduced by Armor (a self-destructing bomb's on-death blast).
+        e.Register("damage_all_units", ctx =>
+        {
+            foreach (var victim in EnemyUnits(ctx).Concat(OwnUnits(ctx)).ToList())
+            {
+                var dmg = Math.Max(0, (ctx.Effect.Amount ?? 0) - GameQueries.GetEffectiveProperty(ctx.Game, victim, "armor"));
+                if (dmg <= 0) continue;
+                m.ApplyDamage(ctx.Game, victim, dmg, ctx.Source);
+                if (victim.IsDestroyed)
+                    s.Bus.Publish(ctx.Game, new GameEvent { Type = GameEventTypes.UnitKilled, Source = ctx.Source, Target = victim });
+            }
+        });
+
         static List<ObjectInstance> EnemyUnits(EffectContext ctx) =>
             ctx.Game.Objects.Where(o =>
                 o.ControllerId != ctx.Player.Id
+                && !o.IsDestroyed
+                && o.ZoneId == "battlefield"
+                && o.AttachedToId == null
+                && GameQueries.IsObjectTypeOrSubtype(ctx.Game, o.ObjectType, "unit")
+                && (ctx.Effect.Line == null || o.Line == ctx.Effect.Line)
+                && (ctx.Effect.MaxHp == null ||
+                    GameQueries.GetEffectiveProperty(ctx.Game, o, "maxHp") <= ctx.Effect.MaxHp))
+            .ToList();
+
+        static List<ObjectInstance> OwnUnits(EffectContext ctx) =>
+            ctx.Game.Objects.Where(o =>
+                o.ControllerId == ctx.Player.Id
                 && !o.IsDestroyed
                 && o.ZoneId == "battlefield"
                 && o.AttachedToId == null

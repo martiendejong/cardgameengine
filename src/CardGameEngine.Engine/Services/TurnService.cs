@@ -37,8 +37,9 @@ public class TurnService
         }
         else
         {
-            var currentPlayerIdx = game.Players.FindIndex(p => p.Id == game.ActivePlayerId);
-            var nextPlayer = game.Players[(currentPlayerIdx + 1) % game.Players.Count];
+            // Skip eliminated players — the ring closes dynamically.
+            var nextPlayer = GameQueries.GetNextActivePlayer(game, game.ActivePlayerId);
+            if (nextPlayer == null) return; // game already ended (CheckEndConditions fired)
             game.ActivePlayerId = nextPlayer.Id;
             game.TurnNumber++;
             game.FiredOncePerTurn.Clear();

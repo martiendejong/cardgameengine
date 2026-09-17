@@ -56,8 +56,14 @@ public class TargetingService
     /// </summary>
     public List<string> GetAttackTargets(GameInstance game, ObjectInstance attacker)
     {
+        // Ring-FFA: a unit may only attack units controlled by its ring-neighbors.
+        // For a 2-player game the single opponent IS the only neighbor — behavior unchanged.
+        var neighborIds = GameQueries.GetNeighbors(game, attacker.ControllerId)
+            .Select(p => p.Id)
+            .ToHashSet();
+
         var enemies = game.Objects
-            .Where(o => o.ControllerId != attacker.ControllerId
+            .Where(o => neighborIds.Contains(o.ControllerId)
                 && !o.IsDestroyed
                 && o.ZoneId == "battlefield"
                 && o.AttachedToId == null)

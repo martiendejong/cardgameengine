@@ -18,8 +18,17 @@ public class BotService
 
     public BotService(RuleEngine engine) => _engine = engine;
 
-    /// <summary>Plays for as long as the active player is a bot. Safe against loops.</summary>
-    public void PlayBotTurns(GameInstance game)
+    /// <summary>Plays for as long as the active player is a bot. Safe against loops. Used for simulations.</summary>
+    public void PlayBotTurns(GameInstance game) =>
+        PlayBotTurnsAsync(game, () => Task.CompletedTask).GetAwaiter().GetResult();
+
+    /// <summary>
+    /// Plays for as long as the active player is a bot.
+    /// After every action, <paramref name="afterAction"/> is called so the caller
+    /// can broadcast state and add a think-time delay before the next move.
+    /// Safe against loops.
+    /// </summary>
+    public async Task PlayBotTurnsAsync(GameInstance game, Func<Task> afterAction)
     {
         int safety = 0;
         while (game.State != GameState.GameEnded && safety++ < 300)
@@ -30,6 +39,7 @@ public class BotService
                 var reactor = game.Players.FirstOrDefault(p => p.Id == game.ReactionPlayerId);
                 if (reactor is not { IsBot: true }) break;
                 _engine.ExecuteAction(game, reactor.Id, new ActionRequest { Type = "pass" });
+                await afterAction();
                 continue;
             }
 
@@ -44,12 +54,14 @@ public class BotService
             if (request == null)
             {
                 _engine.EndPhase(game, bot.Id);
+                await afterAction();
                 continue;
             }
 
             var (ok, _) = _engine.ExecuteAction(game, bot.Id, request);
             if (!ok)
                 _engine.EndPhase(game, bot.Id); // never get stuck on a misjudged action
+            await afterAction();
         }
     }
 

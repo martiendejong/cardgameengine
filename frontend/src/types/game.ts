@@ -231,6 +231,9 @@ export interface CardDefinitionDto {
   artworkDescription?: string | null;
   housingCost?: number | null;
   housingProvided?: number | null;
+  // Canonical faction id (task 1604) this card belongs to, independent of precon deck
+  // membership — see PreconDeckDto.faction. Absent = unaffiliated.
+  faction?: string | null;
 }
 
 export interface DeckRulesDto {
@@ -245,6 +248,9 @@ export interface DeckRulesDto {
 export interface PreconDeckDto {
   id: string;
   name: string;
+  // Canonical faction id (task 1524) — multiple precon decks share one real faction; the
+  // deck-builder faction filter groups by this. Empty/absent = deck id is its own faction.
+  faction?: string;
   description: string;
   hq: string;
   hero: string;

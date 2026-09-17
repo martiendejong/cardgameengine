@@ -96,6 +96,11 @@ The engine distinguishes three economic value kinds:
 - **Gold Mine — Building — Mine — Unlimited deck copies.** Cost **0 Gold**, Construction **0** (enters completed). **Gold reserves: 5.**
 - **Harvest: Tap a Worker you control → remove 1 Gold from this Mine and gain 1 Gold.** The **mine does not tap**; the Worker does — multiple Workers can harvest the same mine in one turn. At 0/5 it can't be harvested (exhausted-mine disposal left open).
 - **Worker** keyword: may be tapped to perform Worker actions (harvesting etc.).
+- **Hunk's own "Work" ability (Tap → gain 1 Gold) is gated on this rule too** (task 1411,
+  balance fix): it now requires controlling a mine (tag `resource-node`, e.g. Gold Mine)
+  via a `controls_tagged` condition — previously it was condition-free and produced Gold
+  every turn with no mine at all, bypassing the mine-gated economy entirely. The Hunks
+  faction's default deck gained **3× Gold Mine** so it keeps a working economy.
 
 ### 2.6 Bag of Gold
 - **Treasure/Resource card. Cost 0. Deck limit 4.** "Gain **3 Gold**, then discard this card." Generic — any deck may include it.

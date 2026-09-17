@@ -6,14 +6,19 @@ namespace CardGameEngine.Engine;
 /// <summary>Read-only helpers over game state. No mutations, no events.</summary>
 public static class GameQueries
 {
-    public static bool IsObjectTypeOrSubtype(GameInstance game, string objectType, string targetType)
+    public static bool IsObjectTypeOrSubtype(GameInstance game, string objectType, string targetType) =>
+        IsObjectTypeOrSubtype(game.Definition, objectType, targetType);
+
+    /// <summary>Same type-hierarchy walk as the GameInstance overload, for call sites that only
+    /// have the static GameDefinition (no live match) — e.g. deck-eligibility checks.</summary>
+    public static bool IsObjectTypeOrSubtype(GameDefinition definition, string objectType, string targetType)
     {
         if (objectType == targetType) return true;
-        var typeDef = game.Definition.ObjectTypes.FirstOrDefault(t => t.Id == objectType);
+        var typeDef = definition.ObjectTypes.FirstOrDefault(t => t.Id == objectType);
         while (typeDef?.ParentType != null)
         {
             if (typeDef.ParentType == targetType) return true;
-            typeDef = game.Definition.ObjectTypes.FirstOrDefault(t => t.Id == typeDef.ParentType);
+            typeDef = definition.ObjectTypes.FirstOrDefault(t => t.Id == typeDef.ParentType);
         }
         return false;
     }
@@ -47,8 +52,46 @@ public static class GameQueries
             o.OwnerId == playerId && !o.IsDestroyed && o.ZoneId == "battlefield" &&
             IsObjectTypeOrSubtype(game, o.ObjectType, "hero"));
 
+    /// <summary>
+    /// Returns the ring-neighbors of a player: the closest alive players to the left and right.
+    /// The ring closes dynamically as players are eliminated.
+    /// Returns 1 entry when only 2 survive (both directions point to the same player).
+    /// Returns empty when the player is eliminated or is the last survivor.
+    /// </summary>
+    public static List<PlayerInstance> GetNeighbors(GameInstance game, string playerId)
+    {
+        var alive = game.Players.Where(p => !p.IsLoser).ToList();
+        if (alive.Count <= 1) return new List<PlayerInstance>();
+
+        var idx = alive.FindIndex(p => p.Id == playerId);
+        if (idx < 0) return new List<PlayerInstance>(); // caller is eliminated
+
+        var rightIdx = (idx + 1) % alive.Count;
+        var leftIdx  = (idx - 1 + alive.Count) % alive.Count;
+
+        var result = new List<PlayerInstance> { alive[rightIdx] };
+        if (leftIdx != rightIdx) result.Add(alive[leftIdx]);
+        return result;
+    }
+
+    /// <summary>
+    /// Walks the full player list (preserving ring seat order) from currentPlayerId
+    /// and returns the next player who has not been eliminated.
+    /// </summary>
+    public static PlayerInstance? GetNextActivePlayer(GameInstance game, string currentPlayerId)
+    {
+        var idx = game.Players.FindIndex(p => p.Id == currentPlayerId);
+        for (int i = 1; i <= game.Players.Count; i++)
+        {
+            var candidate = game.Players[(idx + i) % game.Players.Count];
+            if (!candidate.IsLoser) return candidate;
+        }
+        return null; // everyone eliminated — game should have already ended
+    }
+
+    /// <summary>Backward-compat: first ring neighbor (right neighbor in seat order).</summary>
     public static PlayerInstance? GetOpponent(GameInstance game, PlayerInstance player) =>
-        game.Players.FirstOrDefault(p => p.Id != player.Id);
+        GetNeighbors(game, player.Id).FirstOrDefault();
 
     public static IEnumerable<ObjectInstance> BattlefieldObjects(GameInstance game, string? controllerId = null) =>
         game.Objects.Where(o =>
@@ -92,8 +135,24 @@ public static class GameQueries
         return new Dictionary<string, int>();
     }
 
-    public static bool IsDeckEligible(CardDefinition cardDef) =>
-        cardDef.PlayCost != null || cardDef.PlayCosts != null;
+    /// <summary>
+    /// A card belongs in deck-builder pools when it has any play cost — single-resource
+    /// (playCost, e.g. Peasant) or multi-resource (playCosts, e.g. Soldier's gold+training).
+    /// Hero-lineage cards are always eligible regardless of play cost: most heroes enter via
+    /// the lobby/deck-builder hero picker (no playCost at all, e.g. ax-01), not from hand, but
+    /// still need to be selectable in a custom deck's card pool (task 1421). Headquarters-
+    /// lineage cards are exempt the same way (task 1604): MatchService's own "reserve copy"
+    /// path (task 906) already lets a player carry a spare HQ card in their deck's card list,
+    /// but ValidateDeck rejected every HQ card outright since it has no play cost either —
+    /// discovered when 4 precon decks that carry their own HQ as a reserve copy
+    /// (town-merchant, raiders-warbond, machine-sentry, conclave-storm) failed to simulate.
+    /// Mirrors the frontend's isDeckEligible (frontend/src/utils/deckEligibility.ts, task 1421
+    /// follow-up to PR #36) so both sides agree on what "deck-eligible" means.
+    /// </summary>
+    public static bool IsDeckEligible(GameDefinition definition, CardDefinition cardDef) =>
+        IsObjectTypeOrSubtype(definition, cardDef.ObjectType, "hero")
+        || IsObjectTypeOrSubtype(definition, cardDef.ObjectType, "headquarters")
+        || cardDef.PlayCost != null || cardDef.PlayCosts != null;
 
     /// <summary>
     /// Validates a deck's card ids/counts against a game definition's card pool and, for
@@ -114,7 +173,7 @@ public static class GameQueries
             var cardDef = definition.Cards.FirstOrDefault(c => c.Id == cardId);
             if (cardDef == null)
                 return $"unknown card '{cardId}'";
-            if (!isAdmin && !IsDeckEligible(cardDef))
+            if (!isAdmin && !IsDeckEligible(definition, cardDef))
                 return $"card '{cardDef.Name}' is not deck-eligible";
         }
 

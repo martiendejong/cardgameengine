@@ -47,6 +47,12 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
+    // The deployed app shares maendeleo.martiendejong.nl with other ASP.NET Identity apps
+    // (IAM at /auth sets ".AspNetCore.Identity.Application" with path=/). Browsers send both
+    // same-name cookies and ASP.NET's request-cookie parsing keeps the last one, so the
+    // domain-wide cookie shadows ours: login succeeds but every authenticated call is 401.
+    // A unique cookie name sidesteps the clash entirely.
+    options.Cookie.Name = "TownWars.Auth";
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.Lax;
     options.ExpireTimeSpan = TimeSpan.FromDays(14);

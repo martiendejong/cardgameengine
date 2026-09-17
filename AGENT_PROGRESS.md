@@ -477,3 +477,336 @@ LobbyPage's admin-pool list literally prints "· free" for them. LobbyPage's tog
 deck-clamp also uses a raw `playCost` null-check instead of the shared `isDeckEligible`
 helper, so it silently drops playCosts-only HQs from a deck when leaving admin mode.
 Also covering landing-pad (War Machine HQ), the other reported gap.
+
+## 2026-09-04 — task 1421
+Done: confirmed all 27 heroes (incl. ax-01) already exist in game.json with valid
+stats/tags/abilities (prior session, task 908/PR #10) and the frontend deck-builder pool
+already shows them (PR #36, merged just before this session). Found the real remaining
+gap: `GameQueries.IsDeckEligible` (C#) had no hero exemption, so `ValidateDeck` — called
+by both `DeckService.SaveDeck` (My Decks) and `MatchService.CreateMatch` (Lobby) — still
+rejected ax-01 and 22 other no-playCost heroes the instant a player put one in a custom
+deck's card list, even though the frontend now displays them as addable. PR #37 mirrors
+the frontend's hero exemption into the server validator via the existing
+`IsObjectTypeOrSubtype` type-hierarchy walk (added a `GameDefinition` overload so
+`IsDeckEligible` doesn't need a live `GameInstance`).
+Verified: `dotnet build` clean, 0 warnings/errors. Throwaway harness deserializing the
+real game.json and calling the real engine functions confirmed: all 27 heroes now report
+`IsDeckEligible == true` (including the 4 that already worked via ascension/succession
+play costs — no regression); `ValidateDeck(isAdmin:false)` accepts a realistic 60-card
+custom deck containing ax-01; a non-hero, no-cost control card is still correctly
+rejected (fix didn't over-widen eligibility); a full `RuleEngine.ExecuteSetup` match with
+ax-01 as the chosen hero places it on the battlefield with attack=3/currentHp=12/armor=1
+and its Overdrive ability intact.
+Left: nothing — awaiting human eyeball in the live deck builder / a match.
+
+## 2026-09-04 — task 1411
+Done: Hunk's "Work" ability (Tap → gain 1 Gold) was condition-free, letting a lone Hunk
+print Gold every turn with no mine at all — bypassing the mine-gated economy Gold Mine's
+own `harvest` ability already implements (design-spec.md §2.5). Added a new engine
+condition `controls_tagged` (positive counterpart of the existing `controls_no_tagged`)
+and put it on Work requiring the player control a `resource-node`-tagged entity (Gold
+Mine today, any future mine automatically). `frontend/src/utils/cardText.ts` renders it
+as "Requires you control a Resource Node" so the card text/tooltip stays consistent with
+the rule (Done-when item). The Hunks faction's default deck had **0** Gold Mine copies
+(its whole "put every Hunk to work" identity ran on the now-gated free gold) — added 3x
+Gold Mine (matching Town's existing count) so the faction keeps a working economy.
+design-spec.md §2.5 updated with a short note. Repair and every other Hunk ability,
+and all 8 other factions, untouched (none of them run Hunk cards).
+Verified: `dotnet build` clean (0 warnings/errors); `npm run build` (tsc -b + vite)
+clean. No test project exists in this repo — matched the established verification
+convention (see task 974/887 entries above): a throwaway RuleEngine harness (real
+`AbilityService`/`ObjectFactory`, no mocks) confirmed Work is rejected with reason
+"Condition not met: controls_tagged" and 0 gold gained while no mine is controlled,
+succeeds and grants exactly 1 gold + taps the Hunk once a Gold Mine is controlled,
+an opponent's mine does NOT satisfy the condition, Repair keeps 0 conditions
+unchanged, the updated Hunks deck (47 cards) passes `GameQueries.ValidateDeck`, and
+Gold Mine's own Harvest ability is unregressed (5→4 reserves, +1 gold, taps the
+Worker). Also ran real bot-vs-bot `/api/simulate` matches (dotnet run, live server)
+before/after the change: Hunks' win rate vs Town/Raiders was already 0% on
+unmodified master (a pre-existing bot-AI weakness, not something this change caused
+or worsened — game logs confirm bots on both branches place Gold Mine and use
+Harvest/Work correctly to generate gold once the mine exists, so the deck is not a
+dead combo, just weak in this bot's hands against these two matchups specifically).
+Left: the Hunks faction's 0% simulated win rate vs Town/Raiders is a separate,
+pre-existing bot-AI/deck-power issue outside this task's scope — filed as JengoWork
+task 1499 rather than folded into this PR.
+
+## 2026-09-04 — task 1426
+Done: added 20 new cards (mix of units/buildings/spells, ~12/3/5 per faction) to each of
+the 8 non-town factions (raiders/machine/conclave/undead/brood/shadow/alchemists/hunks) in
+definitions/town-tcg/game.json — 160 new cards total, data-only. Every card matches its
+faction's existing resource economy (flat gold for raiders/shadow/hunks; playCosts energy/
+mana/corpses/biomass/reagents for machine/conclave/undead/brood/alchemists) and reuses only
+already-registered tags/effects/costs/conditions (no new engine mechanics). Each faction's
+precon deck (`decks[x].cards`, used both as the bot/quick-play deck AND as the source the
+deckbuilder's Faction filter reads card membership from) was already at or within 16 of the
+60-card maxDeckSize cap, so the 20 new card ids were added there too (count 1 each) with a
+mechanical, proportional trim (existing count>1 entries decremented round-robin, highest
+first) freeing exactly enough room — every faction's precon deck still sums to exactly 60.
+Verified: `dotnet build` clean, 0 warnings/errors. A static Python check cross-referenced
+every effect/cost/condition type and resourceId used by all 426 cards (160 new + 266
+existing) against the actual registered vocabulary in DefaultHandlers.cs — 0 errors. Ran
+the real API server and used the built-in `/api/simulate` bot-vs-bot endpoint (exactly the
+tool the repo already ships for balance testing) for every faction's full new-card-inclusive
+precon deck: 8 faction-vs-town runs + 8 faction-vs-faction round-robin runs @ 30 games each,
+plus a further 8 faction-vs-town runs @ 60 games — 1000+ bot-played games total, zero server
+errors/exceptions, confirming every new card's JSON parses and its effects/abilities resolve
+correctly under real bot play (not just static validation). Also captured full game logs for
+8-game samples per faction and confirmed a good fraction of each faction's new cards appear
+by name in actual play (log only retains the *last* game per `/api/simulate` call, so this
+undercounts real coverage — the 1000+-game zero-error result is the stronger signal).
+Balance check: several faction match-ups showed lopsided bot win-rates (e.g. conclave 0%
+vs undead, undead 100% vs brood, brood 0% vs shadow) — before concluding this was caused by
+the new cards, re-ran the identical match-ups against the *unmodified* (git-stashed) game.json
+as a controlled baseline: every one of these skews was already present, at essentially
+identical win/loss/draw counts, before this task's changes (e.g. conclave vs undead was
+0/29/1 baseline and 0/29/1 after). This is a pre-existing bot-AI/game-balance characteristic
+unrelated to card content, out of this task's scope ("Buiten scope: nieuwe game-mechanieken")
+— confirmed the 20-per-faction addition does not introduce or worsen relative imbalance.
+Faction-filter/deckbuilder selectability verified by direct inspection (not a live browser
+pass, matching task 908's precedent for a data-only game.json change): `DeckBuilderPanel.tsx`
+derives a card's faction purely from `Object.keys(precon.cards)` membership, which is now
+confirmed to include exactly the 20 new ids per faction; `isDeckEligible` (playCost present)
+is satisfied by every new card, same mechanism task 972/1072 already validated live.
+Left: nothing agent-doable. A human visual pass in the deckbuilder UI (per the task's own
+"How to test") and the pre-existing cross-faction bot-AI balance skew (separate, larger scope)
+are both left for review/a future task.
+
+## 2026-09-04 — task 1426 (review round)
+Reviewed PR #35 and found the branch's own last commit (f749a06, "remove 160 orphaned WIP
+cards from previous agent run") had corrupted the entire game.json: it round-tripped the
+file through a tool matching PowerShell's `ConvertTo-Json`/`Set-Content` default behavior on
+this host (re-serialized into PowerShell's own JSON style — 4-space padded, UTF-8 BOM — and
+mojibake-corrupted every non-ASCII character it touched). All 426 cards' `icon` fields, 8
+cards' `artworkDescription` fields, and one deck's `description` em-dash were turned into
+garbage Latin-1-supplement byte sequences (e.g. town-hall's icon: U+1F3DB U+FE0F →
+`ðŸ›ï¸`). Confirmed via a full recursive scan for
+Latin-1-supplement-range characters (435 hits pre-fix, 0 post-fix) and confirmed every
+non-flavor (gameplay-affecting) field was byte-identical before/after — the corruption was
+purely cosmetic (icons/flavor text) but total in scope (every card).
+Fixed by rebuilding every surviving card's data from commit 74ef4a6 (the last known-clean
+version — confirmed byte-identical to pre-task master for all 266 original card ids, and
+mechanically identical to the corrupted version for all 426 surviving ids), re-serialized
+in the repo's canonical dotnet `System.Text.Json` style (2-space indent, escaped unicode,
+no BOM) matching every other file in the repo.
+Also merged master (task 1411's Hunk gold-mine gate, task 1050/hero-deck-eligible — neither
+touched by this PR otherwise): applied the same `controls_tagged` condition to `hunk`'s Work
+ability and added `gold-mine: 3` to the Hunks precon deck, trimming 3 more copies from the
+already-tied-at-4 entries (house/reinforced-walls/spear, round-robin highest-first, same
+technique this task's own commits already used) to stay at the 60-card cap.
+Verified: `dotnet build` clean, 0 errors. Full write-up:
+`jengo-knowledge-private/knowledge/powershell-convertto-json-mojibake-corrupts-entire-file-1426.md`.
+Left: nothing agent-doable — same human visual-pass caveat as above.
+
+## 2026-09-04 — task 1419
+Done: root cause was `RuleEngine.CheckEndConditions`' `all_destroyed` scan counting a
+player's owned objects of the target type (headquarters/hero) with no zone filter — a
+reserve HQ/hero card still sitting undrawn in the deck (task 906/908: town/raiders/undead
+precon decks all carry one) or in hand kept the condition permanently unmet, even after the
+player's actual battlefield HQ + hero were both destroyed. Detection and hub broadcast were
+already wired correctly (`ExecuteAction`/`EndPhase`/`ResolveChoice` all call
+`CheckEndConditions` after every mutation, `GameHub.BroadcastStateUpdate` already pushes to
+every registered connection) — the only change is excluding `ZoneId == "deck"`/`"hand"`
+objects from the "does the player still have one" scan, so only in-play (battlefield) or
+destroyed-from-play (discard) copies count. No change to the loss condition itself (still
+`headquarters`+`hero`, still `all_destroyed`). Added `tests/CardGameEngine.Engine.Tests`
+(this repo had no test project at all) with 4 xUnit tests driving a real match through
+`RuleEngine.ExecuteSetup`/`CheckEndConditions` and `StateProjector.Build` for both viewer
+perspectives — no mocks. PR #38.
+Verified: `dotnet build` on the full solution clean (0 warnings/errors). New tests: 3/4 fail
+on the pre-fix code (proving the repro), 4/4 pass after the fix. Live `dotnet run` +
+`/api/simulate` (real bot-vs-bot matches through the same `MatchService`/`BotService`/
+`RuleEngine` production path): pre-fix, town-vs-raiders and undead-vs-town both hit 30/30
+draws (every game ran to the 60-turn safety cap, ~78-79 avg turns — the exact
+"speler blijft hangen" symptom); post-fix, same matchups: 0-1/30 draws, ~20-23 avg turns.
+Broader post-fix sweep across 5 more faction pairs (including factions with no reserve
+heroes at all): 0 draws in all of them.
+Left: nothing agent-doable. Balance (e.g. machine vs conclave running 20-0 in the sweep
+above) is explicitly out of scope per the task's own note.
+
+## 2026-09-04 — task 1419 (review round, AGENT_PROGRESS.md restore)
+Done: reviewed PR #38 (task 1419) - the RuleEngine end-condition fix itself is correct and
+well tested (independently rebuilt clean, xUnit 4/4 pass on master, GameHub/BotService
+broadcast wiring traced end-to-end and confirmed sound). Separately found that the PR's
+own final commit had deleted the AGENT_PROGRESS.md entries for tasks 1421, 1411, 1426, and
+1426 (review round) instead of appending after them - the branch was current with master
+when it started, so this was a straight editing mistake, not a stale-branch merge
+artifact. Restored all four entries verbatim from commit 901d8db (the last point they were
+intact) in their original chronological position, ahead of the 1419 entry.
+Verified: diff against the merge of 901d8db's tail + current file is a pure addition (120
+lines, 0 removals) - no other content touched.
+Left: nothing.
+
+## 2026-09-04 — task 1511 (Grand Merchant Guild deck)
+PR #42 added the `town-merchant` deck for this task (and 8 sibling decks) but it was
+completely unplayable: `ValidateDeck` rejected the HQ card outright, and every new card's
+abilities used wrong JSON keys (`resource`/`property` instead of `resourceId`/`propertyId`),
+so `gain_resource`/`modify_property` effects null-crashed the engine or silently no-opped.
+PR #42 merged (by Martien) mid-session, before this fix could land on that branch, so this
+is a follow-up PR on a fresh branch off master rather than a push to #42's branch.
+Fixed for `town-merchant` specifically: HQ/hero moved out of the `cards` pool into the
+deck's `hq`/`hero` fields (all 9 new decks shared this bug, fixed for all 9 since it's one
+shared file); renamed `resource`→`resourceId` (191 instances on current master, all 9
+decks) and `property`→`propertyId` (24 instances) engine-wide; then, scoped to just this
+deck's 24 cards: wrapped 5 spell cards' orphaned top-level `effects` in a real `onPlay`
+block (they were silently inert — no `Effects` property exists on `CardDefinition`), added
+`choice`/`scope:target` to 2 units' damage abilities that had no real targeting, converted 3
+`buff_tag_until_end_of_turn`+`property:cost_discount` effects (not a real stat) to the actual
+`cost_discount` effect type, and gave 3 equipment cards `slots`/`attachTo` (missing entirely,
+so they could never attach) — `merch-wealthy-armor` also moved from a broken ability to the
+standard declarative `attachModifiers`.
+Verified: `dotnet build` clean, 0 errors/warnings; `dotnet test` 4/4 pass (the
+`CardGameEngine.Engine.Tests` project landed on master since PR #42 branched). Ran the real
+engine via `/api/simulate` (not a mock) — 495 bot-vs-bot games total across two passes,
+`town-merchant` vs all 9 factions — zero engine errors after the fix (vs. immediate crash
+before). Win rates are low (0–8%, heavy on draws), but a `town`-vs-`raiders` baseline came
+back 100% draws too — this repo's bot AI is broadly stalemate-prone regardless of deck (see
+task 1499), not a `town-merchant`-specific regression; left as a follow-up, matching how
+task 1510 treated the same class of issue.
+Left: same bug classes (missing HQ/hero split, `resource`/`property` typos) likely affect
+the other 8 decks in PR #42 too — only fixed engine-wide for the 2 crash-causing key
+renames; each sibling deck's own card-specific structural issues (missing choice/onPlay/
+slots, same as this deck had) are still that task's own scope to verify, not fixed here.
+
+## 2026-09-04 — task 1508
+Plan: task 1508 asks for the Hunks "Fortress Eternal" deck (`hunks-fortress`, cards
+prefixed `fort-`). Its HQ-can't-start-a-match bug is already fixed by PR #44's
+engine-wide HQ/hero-split + resourceId/propertyId rename. Auditing `fort-`'s own 24
+cards the same way PR #44 audited `merch-`'s: 9 cards use `"triggers":[{"event":"onPlay"}]`,
+which `TriggerService` never fires (no `CardPlayed` case) — dead code, same silent-no-op
+class of bug as PR #44's orphaned-`effects` fix. 3 of those 9 are equipment with no
+`slots`/`attachTo` at all (can never attach). 5 more cards use `heal`/`modify_property`
+with `scope:"player"+tag:"building"` intending a mass building-heal/buff, but
+`EffectContext.ResolveScope()` only understands self/target/host scopes — this pattern is
+unique to `fort-` (grepped 0 hits elsewhere), so it's a fresh authoring bug, not a known
+established (if ugly) convention.
+
+Done: fixed all 24 `fort-` cards' remaining defects (the HQ-can't-start-a-match crash was
+already fixed engine-wide by PR #44). Engine-wide additions (both reusable by every deck,
+matching PR #44's "shared mechanism" precedent): a new `heal_all_tagged` effect handler
+(mirrors `gain_resource_all_tagged`) so mass building-heal effects actually work instead of
+silently healing whichever object happened to be `Source`; and a new `"opponent"` scope in
+`EffectContext.ResolveScope()` resolving to the opponent's HQ object — every "siege" building
+across all 9 new precon decks used `scope:"opponent"` for its per-turn `direct_damage`, which
+previously resolved to `Source` (the building/spell itself) via the same "unrecognized scope
+falls to the default case" bug. `fort-`-scoped content fixes: converted 6 cards' dead
+`triggers:[{event:onPlay}]` to real top-level `onPlay` blocks; gave 3 equipment cards
+`slots`/`attachTo`/`attachModifiers` (Engineer's Kit kept its per-turn growth trigger, now on
+`onTurnStart` — the one trigger event that actually fires for an attached object — instead of
+the dead `onPlay`); converted Fortify's `modify_property`+fake `"duration"` field to the real
+`buff_tag_until_end_of_turn` effect; gave Siege Engineer's "Emplace Artillery" a real
+`choice`(`objectType:"building"`, `requireUnderConstruction:true`) mirroring `master-builder`/
+`handy-hunk`'s working convention, instead of a dead `scope:"player"+tag` that always resolved
+to the ability's own non-building source; gave Breach Stopper a real `choice`
+(`controller:"opponent"`, `tag:"soldier"`) instead of a dead `scope:"opponent"+tag` freeze;
+and added a real `"building"` tag to all 8 `fort-` building cards (previously nothing in the
+whole file used `"building"` as a tag — only as an `objectType` — so the `heal_all_tagged`/
+`buff_tag_until_end_of_turn` fixes above had nothing to match without it).
+Verified: `dotnet build` clean, 0 errors/warnings. `dotnet test` 9/9 pass — the pre-existing
+4 plus 5 new `FortressEternalDeckTests` that drive the real engine (`RuleEngine`, no bot, no
+mocks) through each fixed mechanism directly: Mason's onPlay growth gain, Fortify's
+heal-all-buildings + armor buff, Siege Barrage hitting the opponent's HQ specifically (not
+itself), Siege Harness actually attaching with its stat bonuses applying, Breach Stopper
+freezing a chosen enemy soldier. Direct unit tests were necessary here because the bot AI
+doesn't reliably choose to play cheap units/equipment/situational spells, so bot-vs-bot win
+rate alone couldn't prove any one of these fixes fires. Also ran the real engine via
+`/api/simulate`: 340 bot-vs-bot games, `hunks-fortress` vs all 17 other decks (17 matchups x
+20 games) — zero engine errors throughout.
+Left: Emplace Artillery's new choice targeting is mechanically correct but has no valid
+target within this deck alone (none of fort-'s own buildings ever set `constructionRequirement`,
+so none enter play "under construction") — left as-is rather than adding a construction-time
+mechanic to a card's stats, which would be a balance change beyond this task's bug-fix scope.
+
+## 2026-09-05 — task 1508 (round 2, PR #45 review fix)
+Done: fixed the one remaining CHANGES REQUESTED item — the hero's "Coordinated Barrage"
+ability (`fort-siege-commander`) paired a no-op `gain_resource_all_tagged` (`amount:0`) with
+a `direct_damage` effect carrying a `perTaggedBuilding` field `EffectDefinition` never
+declared, so it was silently dropped by JSON deserialization and the ability always dealt a
+flat 2 damage regardless of siege buildings controlled. Added
+`EffectDefinition.PerTaggedBuilding`; `direct_damage`'s handler now multiplies `Amount` by the
+caster's own tagged-object count when it's set (same tag-enumeration pattern as
+`heal_all_tagged`/`gain_resource_all_tagged`). Dropped the no-op companion effect from the
+card data per the reviewer's own suggestion.
+Verified: `dotnet build` clean, 0 warnings/errors. `dotnet test` 10/10 pass — added
+`Coordinated_barrage_scales_damage_by_siege_buildings_controlled_via_perTaggedBuilding`,
+which drives the real engine through `ActivateAbility` with 2 siege-tagged buildings on the
+battlefield and asserts the opponent HQ takes 4 damage (2 base × 2 buildings), not the old
+flat 2.
+Left: nothing — this closes the CHANGES REQUESTED review on PR #45.
+
+## 2026-09-05 — task 1499
+Done: diagnosed and fixed Hunks' near-0% simulated win rate vs fast decks (Raiders, Shadow).
+Turn-by-turn `/api/simulate` logs showed the Hunks bot doing nothing but spam free 1-atk/2-hp
+Hunks turn after turn — never playing a single card from hand, including 0-cost ones — because
+Hunk Stronghold (the default Hunks HQ) is the only headquarters in the game with no direct
+resource-generation ability. Every other faction HQ grants a resource for a bare tap (Town
+Hall's Collect Taxes, Arcane Nexus's Channel, Graveyard's Exhume, Thieves' Guild's Extort,
+Laboratory's Distill), and even Hunks' own alternate HQ (Hunk Village's Barn Raising) already
+has one — only the default Grow Community produced a body with zero resource. That forced the
+whole deck's early economy to depend on drawing one of 5 zero-cost bootstrap cards out of ~58.
+Fix (PR #48): Grow Community now also grants 1 gold alongside its existing free Hunk summon,
+matched to Hunk Village's Barn Raising amount (not Town Hall's stronger Collect Taxes, since
+Hunk Stronghold's summon is already a repeatable free body Town's paid Recruit Peasant lacks).
+Change is isolated to hunk-stronghold's own card data — no shared engine/bot code touched.
+Also fixed one unrelated stale test (`FortressEternalDeckTests`) broken by today's separate
+armor-cap rebalance commit (a94ef85, direct push, no PR) — noted explicitly as a drive-by.
+Verified: `dotnet build` clean (0 warnings/errors), `dotnet test` 11/11 pass (added
+`Grow_community_now_also_grants_1_gold_giving_hunk_stronghold_a_bootstrap_economy`, which
+drives the real engine through `ActivateAbility` and asserts the gold lands alongside the
+summon). Fresh 30-game `/api/simulate` batches, before (current master, post armor-cap) vs
+after (this fix): Hunks vs Town 43.3%→53.3%, vs Raiders 6.7%→10.0%, vs Machine 50.0%→70.0%,
+vs Conclave 80.0%→96.7%, vs Undead 43.3%→36.7%, vs Brood 93.3%→96.7%, vs Shadow 3.3%→16.7%,
+vs Alchemists 80.0%→76.7% (small Undead/Alchemists dips are within 30-game sampling noise).
+Control pairs with no Hunks involved (Town vs Raiders, Machine vs Conclave, Undead vs Brood,
+Shadow vs Alchemists) are structurally unaffected since the change never touches shared code.
+Left: Raiders (10%) and Shadow (16.7%) are still below parity — logs show the bot still
+spends gold somewhat randomly (e.g. equipping a soon-to-die 1-atk Hunk instead of building a
+tower) rather than prioritizing defense against fast aggro. That's a bot-decision-quality gap
+in the shared `BotService`, not a Hunks-specific one; fixing it risks shifting every other
+faction's win rate too and is out of this task's scope given the Done-when bar (both
+matchups now non-trivial, not 0/30) is met.
+
+## 2026-09-11 — task 1604 (PR #52 QA: 196 new cards across 18 factions)
+Done: PR #52's 196 new cards were all completely orphaned (no precon deck referenced them,
+so the deck-builder faction filter never showed any of them) and ~140 used a hallucinated
+schema (snake_case effect types like `give_poison`/`buff_property`/`add_resource`, scopes
+like `all_opponent_units`) the engine never registered, so most abilities silently no-op'd.
+Fixed: renamed every hallucinated effect/scope to real vocabulary, added 5 small new engine
+effect handlers for genuinely-missing "whole board" mechanics (`buff_own_units_until_end_of_turn`,
+`heal_own_units`, `modify_property_enemy_units`, `tap_enemy_units`, `damage_all_units`), and
+gave each of the 196 new cards an explicit `CardDefinition.Faction` tag (mirrored into the
+frontend DTO + `DeckBuilderPanel`'s faction filter) instead of requiring precon-deck
+membership, so a bulk card-expansion never again needs to touch any precon's curated pool.
+Also found and fixed, via an 18-deck bot-vs-bot `/api/simulate` sweep (all pre-existing,
+none introduced by PR #52 — confirmed against the pre-PR-52 commit): (1) `TriggerService`
+never fired a `"onPlay"` trigger event at all (only `CardDefinition.OnPlay` did) — 24 cards
+(3 of PR #52's new ones, 21 pre-existing across 6 other decks) declared their play effect
+that way and it silently never ran; added a `CardPlayed` case that fires it. (2) `IsDeckEligible`
+rejected every headquarters-type card, even though MatchService's own "reserve copy" pattern
+(task 906) requires a deck to be able to carry a spare HQ — broke match creation for 4 precon
+decks (town-merchant, raiders-warbond, machine-sentry, conclave-storm); added a headquarters
+exemption mirroring the existing hero one, in both `GameQueries.IsDeckEligible` and the
+frontend's `isDeckEligible`. (3) The "Bloodfang's Wrath" meta deck (bloodfangs-wrath) declared
+no `hq`/`hero` fields at all despite carrying reserve copies of both in its card list, so
+`SetupService.PlaceStartingCard(game, null, ...)` crashed instantly on match creation —
+pointed its `hq`/`hero` fields at its own existing reserve cards (`town-hall`/`bloodfang`).
+Verified: `dotnet build` clean (0 warnings/errors), `dotnet test` 25/25 pass (10 new tests in
+`CardExpansion1604Tests`, covering the onPlay-trigger fix, 3 of the 5 new effect handlers via
+real PR #52 cards, the headquarters deck-eligibility fix for all 4 affected decks, and the
+Bloodfang's Wrath setup crash). `npm run build` (frontend, tsc+vite) clean. Live `/api/simulate`
+bot-vs-bot sweep across all 18 decks pairwise (17 matchups × 10 games = 170 games): 0 crashes,
+0 errors (was 6 failures — 5×400 + 1×500 crash — before these fixes).
+Left: nothing known. The 196 new cards themselves are still orphaned from every precon deck's
+starting 60-card pool by design (that's what the new `faction` tag + deck-builder filter is
+for) — a human wanting them in an actual precon's curated pool is a separate balance/curation
+decision, not a bug.
+
+## 2026-09-11 — task 1604 watchdog pass (PR #55 drift fix)
+Done: a concurrent session had already opened PR #55 for the fix above and posted evidence
+to ClickUp. Independently re-verified the fix holds (build clean, 25/25 tests, frontend build
+clean, live 19-deck bot-vs-bot sweep 0 errors, 0 duplicate card IDs, all 196 new cards carry
+the faction tag, 0 hallucinated schema strings remain).
+Verified: the branch was behind master (PR #54, session-expired-401 fix, landed after this
+branch was created) — merged origin/master in (clean, no conflicts), rebuilt and retested
+(clean, 25/25), pushed. PR #55 is now MERGEABLE/CLEAN.
+Left: status left at `review` — no reviewer has looked at PR #55 yet, watchdog did not merge.

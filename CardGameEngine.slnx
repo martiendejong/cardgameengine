@@ -4,4 +4,7 @@
     <Project Path="src/CardGameEngine.Core/CardGameEngine.Core.csproj" />
     <Project Path="src/CardGameEngine.Engine/CardGameEngine.Engine.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CardGameEngine.Engine.Tests/CardGameEngine.Engine.Tests.csproj" />
+  </Folder>
 </Solution>

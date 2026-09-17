@@ -191,11 +191,17 @@ export function DeckBuilderPanel({
   }, [heroId, heroCards]);
 
   // Pool: the whole deck-eligible catalog, or (campaign) only cards the player owns.
+  // Heroes have no playCost (picked via heroOptions, not purchased) and some HQ subtypes
+  // (e.g. hive-hq with playCosts:{}) also lack one — include both via the type hierarchy.
   const eligibleCards = useMemo(() => {
     const all = gameDef.cards ?? [];
     if (ownedCounts) return all.filter(c => (ownedCounts[c.id] ?? 0) > 0);
-    return all.filter(isDeckEligible);
-  }, [gameDef, ownedCounts]);
+    return all.filter(c =>
+      isDeckEligible(c)
+      || isOrExtends(c.objectType, 'hero', objectTypes)
+      || isOrExtends(c.objectType, 'headquarters', objectTypes)
+    );
+  }, [gameDef, ownedCounts, objectTypes]);
 
   const typeOptions = useMemo(() => {
     const typeNames: Record<string, string> = {};
@@ -206,30 +212,50 @@ export function DeckBuilderPanel({
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [eligibleCards, objectTypes]);
 
-  // A card's faction = every preconstructed deck whose cards/hqOptions/heroOptions list
-  // includes its id. A card can belong to zero decks (unaffiliated) or several.
+  // A card's faction = the canonical faction of every preconstructed deck whose
+  // cards/hqOptions/heroOptions list includes its id (task 1524: multiple precon decks —
+  // e.g. Blackrock Raiders and Warbond Raiders — share one real faction), PLUS the card's
+  // own declared faction if any (task 1604: a bulk card-expansion doesn't have to touch any
+  // precon's curated, already-60-card pool just to make its new cards filterable). A card
+  // can belong to zero factions (unaffiliated) or several.
   const cardFactions = useMemo(() => {
     const map: Record<string, string[]> = {};
     for (const precon of gameDef.decks ?? []) {
+      const faction = precon.faction || precon.id;
       const memberIds = new Set<string>([
         ...Object.keys(precon.cards ?? {}),
         ...(precon.hqOptions ?? []),
         ...(precon.heroOptions ?? []),
       ]);
       for (const id of memberIds) {
-        (map[id] ??= []).push(precon.id);
+        const factions = (map[id] ??= []);
+        if (!factions.includes(faction)) factions.push(faction);
       }
+    }
+    for (const c of gameDef.cards ?? []) {
+      if (!c.faction) continue;
+      const factions = (map[c.id] ??= []);
+      if (!factions.includes(c.faction)) factions.push(c.faction);
     }
     return map;
   }, [gameDef]);
 
-  const factionOptions = useMemo(
-    () => [
-      ...(gameDef.decks ?? []).map(d => ({ id: d.id, name: d.name })),
+  // One option per real faction (not per precon deck). The faction's display name is the
+  // base deck's name (the deck whose id equals the faction id, e.g. "raiders" -> Blackrock
+  // Raiders); decks without a faction field fall back to being their own option.
+  const factionOptions = useMemo(() => {
+    const labels = new Map<string, string>();
+    for (const d of gameDef.decks ?? []) {
+      const faction = d.faction || d.id;
+      if (!labels.has(faction) || d.id === faction) {
+        labels.set(faction, d.id === faction ? d.name : faction);
+      }
+    }
+    return [
+      ...Array.from(labels, ([id, name]) => ({ id, name })),
       { id: UNAFFILIATED_FACTION, name: 'Unaffiliated' },
-    ],
-    [gameDef],
-  );
+    ];
+  }, [gameDef]);
 
   const unitTypeOptions = useMemo(() => {
     const present = new Set<string>();
@@ -249,7 +275,7 @@ export function DeckBuilderPanel({
     const maxCost = maxCostFilter.trim() === '' ? null : Number(maxCostFilter);
     return eligibleCards
       .filter(c => !filter || c.name.toLowerCase().includes(filter))
-      .filter(c => !typeFilter || c.objectType === typeFilter)
+      .filter(c => !typeFilter || isOrExtends(c.objectType, typeFilter, objectTypes))
       .filter(c => {
         if (!factionFilter) return true;
         const factions = cardFactions[c.id] ?? [];
