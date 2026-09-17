@@ -9,6 +9,7 @@ import {
 } from '../types/game';
 import { BASE } from '../config';
 import { isDeckEligible } from '../utils/deckEligibility';
+import { formatPlayCosts } from '../utils/cardText';
 
 interface LobbyPageProps {
   onMatchCreated: (matchId: string, seat: string) => void;
@@ -213,7 +214,7 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
         let total = 0;
         for (const [cardId, count] of Object.entries(p.deck)) {
           const card = fullDef.cards.find(c => c.id === cardId);
-          if (!card || card.playCost === null || card.playCost === undefined) continue;
+          if (!card || !isDeckEligible(card)) continue;
           const clamped = Math.min(count, deckRules.maxCopies, deckRules.maxDeckSize - total);
           if (clamped <= 0) continue;
           deck[cardId] = clamped;
@@ -426,9 +427,7 @@ export function LobbyPage({ onMatchCreated, onOpenCampaign, onOpenDecks, canUseA
                           </span>
                           <span className="pool-card-meta">
                             {typeLabel(card.objectType)}
-                            {card.playCost !== null && card.playCost !== undefined
-                              ? ` · ${card.playCost}g`
-                              : ' · free'}
+                            {formatPlayCosts(card) ? ` · ${formatPlayCosts(card)}` : ' · free'}
                             {statsSummary(card) ? ` · ${statsSummary(card)}` : ''}
                           </span>
                           {(card.abilities?.length > 0 || card.onPlay) && (

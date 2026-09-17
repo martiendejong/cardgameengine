@@ -343,6 +343,8 @@ export function DeckBuilderPanel({
                     isSelectedTarget={false}
                     playCost={def.playCost}
                     playCostResource={def.playCostResource}
+                    playCosts={def.playCosts}
+                    playCostsExtra={def.playCostsExtra}
                     onAction={() => {}}
                     onSelectTarget={() => {}}
                     onInspect={() => setInspectId(id)}
@@ -430,6 +432,8 @@ export function DeckBuilderPanel({
                   isSelectedTarget={false}
                   playCost={card.playCost}
                   playCostResource={card.playCostResource}
+                  playCosts={card.playCosts}
+                  playCostsExtra={card.playCostsExtra}
                   onAction={() => {}}
                   onSelectTarget={() => {}}
                   onInspect={() => setInspectId(card.id)}

@@ -87,6 +87,8 @@ export function PlayerArea({
               isSelectedTarget={false}
               playCost={cardDefs[card.definitionId]?.playCost}
               playCostResource={cardDefs[card.definitionId]?.playCostResource}
+              playCosts={cardDefs[card.definitionId]?.playCosts}
+              playCostsExtra={cardDefs[card.definitionId]?.playCostsExtra}
               animClass={cardAnims[card.id]}
               onAction={onAction}
               onSelectTarget={onSelectTarget}
@@ -166,6 +168,8 @@ export function PlayerArea({
                     isSelectedTarget={selectedTargets.includes(card.id)}
                     playCost={cardDefs[card.definitionId]?.playCost}
                     playCostResource={cardDefs[card.definitionId]?.playCostResource}
+                    playCosts={cardDefs[card.definitionId]?.playCosts}
+                    playCostsExtra={cardDefs[card.definitionId]?.playCostsExtra}
                     animClass={cardAnims[card.id]}
                     onAction={onAction}
                     onSelectTarget={onSelectTarget}
