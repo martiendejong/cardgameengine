@@ -810,3 +810,26 @@ Verified: the branch was behind master (PR #54, session-expired-401 fix, landed 
 branch was created) — merged origin/master in (clean, no conflicts), rebuilt and retested
 (clean, 25/25), pushed. PR #55 is now MERGEABLE/CLEAN.
 Left: status left at `review` — no reviewer has looked at PR #55 yet, watchdog did not merge.
+
+## 2026-09-17 — task 3375
+Done: reused and finished an abandoned WIP (from placeholder PR #34, closed by Martien as
+"no code changes" and re-filed as this task) that surfaces `playCosts`/`playCostsExtra` in
+`CardView`/`CardDetailModal`/`LobbyPage`/`DeckBuilderPanel`/`PlayerArea` via new
+`formatPlayCosts`/`playCostsTip` helpers, so Raider Camp/Arcane Nexus/Graveyard/The Hive show
+real cost badges instead of "free"; Lobby's admin-toggle deck clamp now uses `isDeckEligible`
+instead of a raw `playCost` check. Added the War Machine HQ's own cost: a new
+`sacrifice_equipment` cost type (`DefaultHandlers.cs`, mirrors `sacrifice_units` but destroys a
+hero-attached object) — `landing-pad` now costs 3 energy + sacrifice 1 equipped hero item
+instead of a flat 6 gold (proposed reading/numbers per Martien's task-1327 note, correctable at
+playtest). PR #56.
+Verified: `dotnet build` + `dotnet test` (25/25) + `npm run build` (tsc -b + vite) all clean. A
+throwaway xUnit harness (not committed) drove `RuleEngine.ExecuteAction("playCard")` for all 5
+HQs through the real engine — each pays/drains correctly and rejects cleanly with zero side
+effects when underpaid; landing-pad's sacrifice specifically ignores equipment attached to a
+non-hero unit. Real Playwright run against live `dotnet run` (port 5011) + `vite` (port 5183)
+dev servers: registered+confirmed+logged in a fresh account, Lobby pool shows real badges for
+all 5 HQs (none print "free"), started a real vs-Computer match (Raiders) and confirmed both
+the hand card and the detail modal show "5💰 2🏆" for Raider Camp with the correct tooltip.
+Zero console errors throughout.
+Left: nothing agent-doable — the cost numbers (esp. landing-pad's) are flagged as a proposed
+balance, correctable at a live playtest per the task's own technical notes.
