@@ -833,3 +833,16 @@ the hand card and the detail modal show "5💰 2🏆" for Raider Camp with the c
 Zero console errors throughout.
 Left: nothing agent-doable — the cost numbers (esp. landing-pad's) are flagged as a proposed
 balance, correctable at a live playtest per the task's own technical notes.
+
+## 2026-09-17 — task 3375 round 2 (PR #56 review fix)
+Done: fixed the review-blocking bug — `HeroEquippedItems` (`DefaultHandlers.cs`) only matched
+`objectType == "equipment"`, but War Machine module items (plasma-cannon, missile-launcher,
+etc.) are `objectType == "module"`, a sibling type under `card`, not a subtype of `equipment`.
+Since only `equipment`/`module` cards ever populate `AttachedToId` (the only types with a
+`slot`/`slots` field), dropped the hardcoded type filter entirely — being attached to a hero is
+itself sufficient evidence, and any future attachable type is covered automatically.
+Verified: `dotnet build` + `dotnet test` (25/25) + `npm run build` clean. Throwaway xUnit test
+(not committed) reproduced the reviewer's exact scenario (equip plasma-cannon on AX-01, play
+landing-pad from hand) — failed with "Cannot pay cost: sacrifice_equipment" before the fix,
+passed after (energy drains 3, +2 from landing-pad's own onPlay bonus; module destroyed).
+Left: nothing agent-doable. Same live-playtest caveat on the cost numbers as round 1.
