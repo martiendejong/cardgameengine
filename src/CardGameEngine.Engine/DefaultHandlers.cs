@@ -138,10 +138,12 @@ public static class DefaultHandlers
                 ? ctx.Player.Resources.GetValueOrDefault(ctx.Cost.ResourceId ?? "")
                 : ctx.Object.Resources.GetValueOrDefault(ctx.Cost.ResourceId ?? "");
 
+        // Any battlefield object attached to a hero counts as "equipped" — attaching is only
+        // ever possible for cards with a slot/slots (equipment, module, and any future
+        // attachable type), so the type doesn't need to be enumerated here.
         static IEnumerable<ObjectInstance> HeroEquippedItems(GameInstance game, string playerId) =>
             GameQueries.BattlefieldObjects(game, playerId)
                 .Where(o => o.AttachedToId != null
-                    && GameQueries.IsObjectTypeOrSubtype(game, o.ObjectType, "equipment")
                     && game.Objects.Any(h => h.Id == o.AttachedToId
                         && GameQueries.IsObjectTypeOrSubtype(game, h.ObjectType, "hero")));
     }
