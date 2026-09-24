@@ -800,3 +800,8 @@ Verified: the branch was behind master (PR #54, session-expired-401 fix, landed 
 branch was created) — merged origin/master in (clean, no conflicts), rebuilt and retested
 (clean, 25/25), pushed. PR #55 is now MERGEABLE/CLEAN.
 Left: status left at `review` — no reviewer has looked at PR #55 yet, watchdog did not merge.
+
+## 2026-09-24 — task 3953 (Shadow faction batch 1)
+Done: WIP — adding a batch of faction-exclusive Shadow cards (own HQ + hero + third precon, since `shadow` and `shadow-stranglehold` are both at the 60-card deck maximum).
+Verified: not yet.
+Left: everything; see the PR body for the plan.
