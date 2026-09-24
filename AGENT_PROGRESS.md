@@ -800,3 +800,7 @@ Verified: the branch was behind master (PR #54, session-expired-401 fix, landed 
 branch was created) — merged origin/master in (clean, no conflicts), rebuilt and retested
 (clean, 25/25), pushed. PR #55 is now MERGEABLE/CLEAN.
 Left: status left at `review` — no reviewer has looked at PR #55 yet, watchdog did not merge.
+
+## 2026-09-24 — task 3950 (in progress)
+Plan: batch 1 of the Conclave expansion toward 200 (55 -> ~87): equipment and buildings first (the thinnest
+categories), then units and spells, all `"faction": "conclave"`, new `runecraft-*` sub-theme + precon deck.
