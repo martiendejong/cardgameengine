@@ -801,6 +801,10 @@ branch was created) — merged origin/master in (clean, no conflicts), rebuilt a
 (clean, 25/25), pushed. PR #55 is now MERGEABLE/CLEAN.
 Left: status left at `review` — no reviewer has looked at PR #55 yet, watchdog did not merge.
 
-## 2026-09-24 — task 3952 (WIP)
-Plan: Brood batch 1, 40 -> 73 faction-exclusive cards (HQ + hero + 12 buildings + 11 units + 8 spells) in a new
-`brood-incubation` precon (the 60-card `brood` deck is at the deck maximum), each driven through the real RuleEngine.
+## 2026-09-24 — task 3952
+Done: Brood batch 1, 40 -> 73 faction-exclusive cards (HQ + hero + 12 buildings + 11 units + 8 spells), all in a new 60-card
+`brood-incubation` precon (`brood` and `brood-apex` are already at the deck maximum). PR #60. Biomass-only pricing, banked
+with `gain_bank_resource` into the Hive HQ (a player-scoped `gain_resource` biomass never reaches the bank that pays costs).
+Verified: build 0 warnings; `dotnet test` 110/110 (was 25); 13 mutations each caught by the intended test; 400 bot games via
+`/api/simulate`, 0 errors; all 31 non-HQ/hero cards cast in 200 in-process bot games (>= 8 casts each).
+Left: 127 short of 200 -> task 4122 (batch 2). Pre-batch Brood cards have dead abilities, gold prices and the wrong biomass pool -> task 4121.

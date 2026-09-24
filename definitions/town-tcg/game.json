@@ -29504,6 +29504,1125 @@
       "faction": "brood"
     },
     {
+      "id": "brood-incubation-hive",
+      "name": "Incubation Hive",
+      "objectType": "hive-hq",
+      "playCosts": {
+        "biomass": 5
+      },
+      "properties": {
+        "currentHp": 11,
+        "maxHp": 11,
+        "armor": 1
+      },
+      "resourceCapacities": {
+        "biomass": 14
+      },
+      "resources": {
+        "biomass": 3
+      },
+      "housingProvided": 6,
+      "tags": [
+        "hive"
+      ],
+      "icon": "🥚",
+      "artworkDescription": "A domed mound of wet chitin, its walls studded with translucent egg sacs that pulse in slow, patient rhythm",
+      "abilities": [
+        {
+          "id": "incubation-ferment",
+          "name": "Ferment",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "biomass",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "incubation-hatch",
+          "name": "Hatch Brood",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "onPlay": {
+        "id": "incubation-hive-start",
+        "name": "A Larva squirms out of the first egg sac",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "larva"
+          }
+        ]
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-matriarch-vess",
+      "name": "Matriarch Vess",
+      "objectType": "hero",
+      "properties": {
+        "attack": 3,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 1
+      },
+      "tags": [],
+      "icon": "👑",
+      "artworkDescription": "A scarred brood-mother in a crown of fused mandibles, licking the wounds of her swarm as she drives it onward",
+      "abilities": [
+        {
+          "id": "vess-molt",
+          "name": "Shared Molt",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal_own_units",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "vess-lash",
+          "name": "Barbed Lash",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 1
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-warren",
+      "name": "Brood Warren",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 3
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [],
+      "housingProvided": 5,
+      "icon": "🕳️",
+      "artworkDescription": "A honeycomb of packed-earth burrows where the swarm sleeps shoulder to shoulder",
+      "faction": "brood"
+    },
+    {
+      "id": "brood-mending-cocoon",
+      "name": "Mending Cocoon",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 3
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "🧬",
+      "artworkDescription": "A translucent silk cocoon bathing the swarm in a warm, knitting fluid",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal_own_units",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-spore-vent",
+      "name": "Spore Vent",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 4
+      },
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "☁️",
+      "artworkDescription": "A fleshy chimney breathing out slow clouds of rot-spores that settle in enemy lungs",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "afflict_enemy_units",
+              "resourceId": "poison",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-acid-moat",
+      "name": "Acid Moat",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 4
+      },
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "tags": [
+        "fortification"
+      ],
+      "icon": "🧪",
+      "artworkDescription": "A ring of bubbling caustic slime around the nest, hissing at anything that touches the wall",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-gestation-vat",
+      "name": "Gestation Vat",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 4
+      },
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "⚗️",
+      "artworkDescription": "A steaming vat of nutrient slurry that forces a fresh clutch to hatch overnight",
+      "abilities": [
+        {
+          "id": "vat-accelerate",
+          "name": "Accelerate Hatching",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "cost_discount",
+              "resourceId": "biomass",
+              "amount": 2,
+              "tag": "organic"
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-bile-tower",
+      "name": "Bile Tower",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 5
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [],
+      "icon": "🏯",
+      "artworkDescription": "A spire of hardened resin fed by a bile-gland at its base, lobbing corrosive globs at the enemy stronghold",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "opponent",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-chitin-forge",
+      "name": "Chitin Forge",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 5
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "tags": [],
+      "icon": "🛡️",
+      "artworkDescription": "A humming gland-forge that lays a fresh coat of hardening chitin over every carapace in the swarm",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_own_units_until_end_of_turn",
+              "propertyId": "armor",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-siege-gland",
+      "name": "Siege Gland",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 5
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [],
+      "icon": "💧",
+      "artworkDescription": "A bloated acid sac on a stalk, straining to spit a lance of corrosive bile across the field",
+      "abilities": [
+        {
+          "id": "siege-gland-spit",
+          "name": "Corrosive Spit",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-corrosive-bog",
+      "name": "Corrosive Bog",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 5
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [],
+      "icon": "🟤",
+      "artworkDescription": "A stagnant pool of digestive enzymes that seeps under the enemy line and eats their armor away",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property_enemy_units",
+              "propertyId": "armor",
+              "amount": -1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-stinging-thicket",
+      "name": "Stinging Thicket",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 6
+      },
+      "properties": {
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "🌵",
+      "artworkDescription": "A knot of barbed vines that lashes out and pins whatever holds the enemy front line",
+      "abilities": [
+        {
+          "id": "thicket-sting",
+          "name": "Pin Down",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap_enemy_units",
+              "line": "front"
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-neural-node",
+      "name": "Neural Node",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 6
+      },
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "🧠",
+      "artworkDescription": "A throbbing ganglion buried in the nest that feeds the swarm one clear thought each dawn",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-womb-of-return",
+      "name": "Womb of Return",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 7
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [],
+      "icon": "🫀",
+      "artworkDescription": "A dark chamber where a fallen matriarch is rebuilt, sinew by sinew, from the nest's own flesh",
+      "abilities": [
+        {
+          "id": "womb-rebirth",
+          "name": "Rebirth",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "own_hero_destroyed"
+            }
+          ],
+          "effects": [
+            {
+              "type": "revive_hero"
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-carrion-crawler",
+      "name": "Carrion Crawler",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 2
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "🦗",
+      "artworkDescription": "A many-legged scavenger that gorges on whatever it fells and carries the meat back to the hive",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-venomfang-skitterer",
+      "name": "Venomfang Skitterer",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 2
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "🕷️",
+      "artworkDescription": "A twitchy needle-legged thing whose every bite leaves a slow, spreading venom behind",
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "target",
+              "resourceId": "poison",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-hive-scout",
+      "name": "Hive Scout",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 2
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "👁️",
+      "artworkDescription": "A wide-eyed forager sent ahead of the swarm, whose stolen glimpses arrive as fresh instinct back at the nest",
+      "onPlay": {
+        "id": "brood-hive-scout-effect",
+        "name": "Play: Hive Scout",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ]
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-nectar-drone",
+      "name": "Nectar Drone",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 2
+      },
+      "properties": {
+        "attack": 0,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "🐝",
+      "artworkDescription": "A swollen, harmless drone that wanders the nest milking the walls for rich biomass nectar",
+      "abilities": [
+        {
+          "id": "nectar-drone-milk",
+          "name": "Milk the Walls",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "biomass",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-shell-tender",
+      "name": "Shell Tender",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 3
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "🐚",
+      "artworkDescription": "A gentle armored worker that paints a glossy layer of resin over a packmate's carapace before every fight",
+      "abilities": [
+        {
+          "id": "shell-tender-glaze",
+          "name": "Resin Glaze",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-wall-gnawer",
+      "name": "Wall Gnawer",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 3
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "🪱",
+      "artworkDescription": "A beetle with chisel jaws that eats through timber and mortar alike and hauls the wreck home as food",
+      "bonusAttackVsBuildings": 3,
+      "triggers": [
+        {
+          "event": "onDestroyBuilding",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-plague-bearer",
+      "name": "Plague Bearer",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 3
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "🦠",
+      "artworkDescription": "A bloated carrier whose ruptured hide releases a choking cloud of blight over the whole enemy line",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "afflict_enemy_units",
+              "resourceId": "poison",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-frenzied-rusher",
+      "name": "Frenzied Rusher",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 3
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "🐺",
+      "artworkDescription": "A blood-crazed runner that never stops after a kill, already sprinting toward the next throat",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "untap",
+              "scope": "self"
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-acid-blood-brute",
+      "name": "Acid-Blood Brute",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 4
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 2,
+      "icon": "🦬",
+      "artworkDescription": "A hulking beast with caustic ichor for blood, spraying searing gore over anything that dares wound it",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-bulwark-beetle",
+      "name": "Bulwark Beetle",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 4
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "tags": [
+        "organic",
+        "blocking"
+      ],
+      "housingCost": 2,
+      "icon": "🪲",
+      "artworkDescription": "A boulder-backed beetle that plants itself in the path of the enemy and dares them to go around",
+      "faction": "brood"
+    },
+    {
+      "id": "brood-gorging-horror",
+      "name": "Gorging Horror",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 5
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 2,
+      "icon": "👹",
+      "artworkDescription": "A ravenous mass of muscle that grows heavier and meaner with every meal the swarm feeds it",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property",
+              "scope": "self",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-carrion-call",
+      "name": "Carrion Call",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 2
+      },
+      "icon": "📯",
+      "artworkDescription": "A deep, wet shriek that summons scavengers and pays the caller in fresh biomass",
+      "onPlay": {
+        "id": "brood-carrion-call-effect",
+        "name": "Carrion Call",
+        "effects": [
+          {
+            "type": "gain_bank_resource",
+            "resourceId": "biomass",
+            "amount": 3
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ]
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-adrenal-rush",
+      "name": "Adrenal Rush",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 2
+      },
+      "icon": "💉",
+      "artworkDescription": "A jolt of raw adrenaline that snaps a spent packmate back onto its feet, snarling for more",
+      "onPlay": {
+        "id": "brood-adrenal-rush-effect",
+        "name": "Adrenal Rush",
+        "effects": [
+          {
+            "type": "untap",
+            "scope": "target"
+          },
+          {
+            "type": "buff_target_until_end_of_turn",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": 2
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-necrotic-spores",
+      "name": "Necrotic Spores",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 3
+      },
+      "icon": "🍄",
+      "artworkDescription": "A hissing burst of black spores that settles in every wound on the enemy side of the field",
+      "onPlay": {
+        "id": "brood-necrotic-spores-effect",
+        "name": "Necrotic Spores",
+        "effects": [
+          {
+            "type": "afflict_enemy_units",
+            "resourceId": "poison",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-paralytic-venom",
+      "name": "Paralytic Venom",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 3
+      },
+      "icon": "🧊",
+      "artworkDescription": "A single, perfectly placed sting that locks a victim's muscles solid for a full turn",
+      "onPlay": {
+        "id": "brood-paralytic-venom-effect",
+        "name": "Paralytic Venom",
+        "effects": [
+          {
+            "type": "freeze",
+            "scope": "target"
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-regrowth",
+      "name": "Regrowth",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 3
+      },
+      "icon": "🌱",
+      "artworkDescription": "Torn flesh knits over torn flesh as the whole swarm sheds its wounds in a single shuddering molt",
+      "onPlay": {
+        "id": "brood-regrowth-effect",
+        "name": "Regrowth",
+        "effects": [
+          {
+            "type": "heal_own_units",
+            "amount": 3
+          }
+        ]
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-mind-rend",
+      "name": "Mind Rend",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 3
+      },
+      "icon": "💢",
+      "artworkDescription": "The hive-mind lashes out through the swarm's thousand eyes and tears a stray thought from the enemy commander",
+      "onPlay": {
+        "id": "brood-mind-rend-effect",
+        "name": "Mind Rend",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "amount": 1
+          },
+          {
+            "type": "discard_cards",
+            "amount": 1
+          }
+        ]
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-swarm-strike",
+      "name": "Swarm Strike",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 3
+      },
+      "icon": "🗡️",
+      "artworkDescription": "Every mouth in the swarm lunges for the same throat at once; the bigger the swarm, the deeper the bite",
+      "onPlay": {
+        "id": "brood-swarm-strike-effect",
+        "name": "Swarm Strike",
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 1,
+            "perTaggedBuilding": "organic"
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-devouring-swarm",
+      "name": "Devouring Swarm",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 4
+      },
+      "icon": "🐛",
+      "artworkDescription": "A tide of gnashing larvae pours over the enemy front line and strips it to the bone",
+      "onPlay": {
+        "id": "brood-devouring-swarm-effect",
+        "name": "Devouring Swarm",
+        "effects": [
+          {
+            "type": "damage_enemy_units",
+            "amount": 3,
+            "line": "front"
+          }
+        ]
+      },
+      "faction": "brood"
+    },
+    {
       "id": "warbond-oath-shield",
       "name": "Oath Shield",
       "objectType": "unit",
@@ -33441,6 +34560,53 @@
       ],
       "heroOptions": [
         "apex-brood-empress"
+      ]
+    },
+    {
+      "id": "brood-incubation",
+      "faction": "brood",
+      "name": "Incubation Swarm",
+      "description": "Breed a wide, biomass-fed swarm out of the Incubation Hive: nectar drones fuel the nest, buildings poison, pin and strip the enemy line, and Matriarch Vess keeps the whole brood healed and hunting.",
+      "hq": "brood-incubation-hive",
+      "hero": "brood-matriarch-vess",
+      "cards": {
+        "brood-carrion-crawler": 3,
+        "brood-venomfang-skitterer": 4,
+        "brood-hive-scout": 3,
+        "brood-nectar-drone": 3,
+        "brood-shell-tender": 2,
+        "brood-wall-gnawer": 3,
+        "brood-plague-bearer": 2,
+        "brood-frenzied-rusher": 3,
+        "brood-acid-blood-brute": 2,
+        "brood-bulwark-beetle": 2,
+        "brood-gorging-horror": 3,
+        "brood-warren": 4,
+        "brood-mending-cocoon": 1,
+        "brood-spore-vent": 2,
+        "brood-acid-moat": 2,
+        "brood-gestation-vat": 1,
+        "brood-bile-tower": 1,
+        "brood-chitin-forge": 1,
+        "brood-siege-gland": 1,
+        "brood-corrosive-bog": 1,
+        "brood-stinging-thicket": 1,
+        "brood-neural-node": 1,
+        "brood-womb-of-return": 1,
+        "brood-carrion-call": 3,
+        "brood-adrenal-rush": 1,
+        "brood-necrotic-spores": 2,
+        "brood-paralytic-venom": 2,
+        "brood-regrowth": 1,
+        "brood-mind-rend": 1,
+        "brood-swarm-strike": 2,
+        "brood-devouring-swarm": 1
+      },
+      "hqOptions": [
+        "brood-incubation-hive"
+      ],
+      "heroOptions": [
+        "brood-matriarch-vess"
       ]
     },
     {
