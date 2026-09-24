@@ -802,6 +802,14 @@ branch was created) — merged origin/master in (clean, no conflicts), rebuilt a
 Left: status left at `review` — no reviewer has looked at PR #55 yet, watchdog did not merge.
 
 ## 2026-09-24 — task 3949 (Machine faction card expansion, batch 1)
-Done: in progress — draft PR opened, cards + tests + precon deck to follow.
-Verified: not verified yet.
-Left: implementation.
+Done: PR #57 adds 32 role-distinct faction-exclusive Machine cards (42 -> 74; module 5->11, unit 19->28,
+building 7->12, spell 10->18, caster 1->3, plus a new HQ and hero) and a new precon deck `machine-assembly`
+(60 cards, own Assembly Hub HQ + Foreman F-7 hero) so none are orphaned. Every card is energy-priced (Machine has no
+gold income) and uses only registered effects/triggers. Also fixed a latent engine bug the new Data Mine card exposed:
+`discard_cards` scope self could pick the spell being cast (it is still in hand while it resolves).
+Verified: `dotnet build` clean, `dotnet test` 71/71 (was 25): 46 new tests in MachineExpansion3949Tests (schema/key lint,
+deck wiring, role-distinctness fingerprint, one real-RuleEngine behaviour test per card, bot-vs-bot smoke). Five
+deliberate mutations (dropped choice, wrong scope, `property` key typo, orphaned card, cloned role) were all caught.
+Bot sweep, new deck vs all 20 precons, 20 games each (400 games): 0 errors/crashes, all 30 non-HQ/hero new cards cast.
+Left: 2 pre-existing findings are NOT fixed here (out of scope): 33/66 pre-batch Machine cards have silently dead abilities
+and 64/66 are gold-priced -> follow-up task 4100. Batches 2..n (74 -> 200) continue as new machine-* precon decks.

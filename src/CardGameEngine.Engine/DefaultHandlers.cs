@@ -417,8 +417,11 @@ public static class DefaultHandlers
             var count = ctx.Effect.Amount ?? 1;
             for (int i = 0; i < count; i++)
             {
+                // A spell stays in its owner's hand until its effects finish resolving, so a
+                // self-discard (Data Mine) must never pick the spell that is being cast.
                 var hand = ctx.Game.Objects
-                    .Where(o => o.OwnerId == target.Id && o.ZoneId == "hand" && !o.IsDestroyed)
+                    .Where(o => o.OwnerId == target.Id && o.ZoneId == "hand" && !o.IsDestroyed
+                        && o.Id != ctx.Source?.Id)
                     .ToList();
                 if (hand.Count == 0)
                 {
