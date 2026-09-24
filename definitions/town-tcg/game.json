@@ -28899,6 +28899,1405 @@
       ]
     },
     {
+      "id": "shadow-undercity-exchange",
+      "name": "Undercity Exchange",
+      "objectType": "headquarters",
+      "properties": {
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 1
+      },
+      "resourceCapacities": {
+        "intel": 8
+      },
+      "housingProvided": 6,
+      "tags": [],
+      "icon": "🏦",
+      "artworkDescription": "A bank vault dug out beneath a fish market, where every coin has two owners and one of them is not asking questions",
+      "abilities": [
+        {
+          "id": "exchange-skim",
+          "name": "Skim the Till",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            },
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "onPlay": {
+        "id": "undercity-exchange-start",
+        "name": "A Footpad slips out of the vault door",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "footpad"
+          }
+        ]
+      },
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-guildmistress-vesper",
+      "name": "Guildmistress Vesper",
+      "objectType": "hero",
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [],
+      "icon": "🗝️",
+      "artworkDescription": "A soft-spoken broker in grey silk who never raises her voice, because she never has to",
+      "abilities": [
+        {
+          "id": "vesper-spin-web",
+          "name": "Spin the Web",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "intel",
+              "amount": 2
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "vesper-silent-kill",
+          "name": "Silent Kill",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 3
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1,
+            "maxPropertyId": "currentHp",
+            "maxPropertyValue": 3
+          }
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-vault-cracker",
+      "name": "Vault Cracker",
+      "objectType": "spy-unit",
+      "playCosts": {
+        "gold": 3,
+        "intel": 1
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "resources": {
+        "intel": 1
+      },
+      "resourceCapacities": {
+        "intel": 4
+      },
+      "housingCost": 1,
+      "tags": [
+        "spy"
+      ],
+      "icon": "🔐",
+      "artworkDescription": "A patient safe-breaker who slips inside a building, sits in the dark and turns the tumblers one night at a time",
+      "abilities": [
+        {
+          "id": "vault-cracker-infiltrate",
+          "name": "Infiltrate",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "not_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "infiltrate"
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
+        },
+        {
+          "id": "vault-cracker-crack",
+          "name": "Crack the Safe",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "intel",
+              "amount": 2
+            }
+          ],
+          "conditions": [
+            {
+              "type": "is_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "steal_resource",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-sapper",
+      "name": "Sapper",
+      "objectType": "spy-unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "spy"
+      ],
+      "icon": "⛏️",
+      "artworkDescription": "Chews through a foundation with a hand pick, one quiet scrape after another, until the wall forgets what it was holding up",
+      "abilities": [
+        {
+          "id": "sapper-infiltrate",
+          "name": "Infiltrate",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "not_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "infiltrate"
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
+        },
+        {
+          "id": "sapper-undermine",
+          "name": "Undermine",
+          "costs": [],
+          "conditions": [
+            {
+              "type": "is_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "host",
+              "amount": 1
+            }
+          ],
+          "usesPerTurn": 1
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-leak-artist",
+      "name": "Leak Artist",
+      "objectType": "spy-unit",
+      "playCosts": {
+        "gold": 3,
+        "intel": 1
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "resources": {
+        "intel": 1
+      },
+      "resourceCapacities": {
+        "intel": 4
+      },
+      "housingCost": 1,
+      "tags": [
+        "spy"
+      ],
+      "icon": "📨",
+      "artworkDescription": "Copies every ledger, order and love letter in the building and sells the duplicates to anyone who pays",
+      "abilities": [
+        {
+          "id": "leak-artist-infiltrate",
+          "name": "Infiltrate",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "not_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "infiltrate"
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
+        },
+        {
+          "id": "leak-artist-leak",
+          "name": "Leak the Plans",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "intel",
+              "amount": 3
+            }
+          ],
+          "conditions": [
+            {
+              "type": "is_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-blight-agent",
+      "name": "Blight Agent",
+      "objectType": "spy-unit",
+      "playCosts": {
+        "gold": 4,
+        "intel": 2
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "resources": {
+        "intel": 1
+      },
+      "resourceCapacities": {
+        "intel": 4
+      },
+      "housingCost": 1,
+      "tags": [
+        "spy"
+      ],
+      "icon": "☣️",
+      "artworkDescription": "Tips a vial into the enemy's well and is three streets away before the first cough",
+      "abilities": [
+        {
+          "id": "blight-agent-infiltrate",
+          "name": "Infiltrate",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "not_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "infiltrate"
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
+        },
+        {
+          "id": "blight-agent-taint",
+          "name": "Taint the Wells",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "intel",
+              "amount": 2
+            }
+          ],
+          "conditions": [
+            {
+              "type": "is_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "afflict_enemy_units",
+              "resourceId": "poison",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-guild-pickpocket",
+      "name": "Guild Pickpocket",
+      "objectType": "unit",
+      "playCost": 2,
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "👛",
+      "artworkDescription": "Lifts a purse in the time it takes to say excuse me, and always says excuse me",
+      "abilities": [
+        {
+          "id": "pickpocket-lift",
+          "name": "Lift a Purse",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "steal_resource",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-bounty-hunter",
+      "name": "Bounty Hunter",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier",
+        "mercenary"
+      ],
+      "icon": "🎯",
+      "artworkDescription": "Carries a folded list of names and a pencil, and crosses them out with unnecessary enthusiasm",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-rooftop-sniper",
+      "name": "Rooftop Sniper",
+      "objectType": "unit",
+      "playCosts": {
+        "gold": 4,
+        "intel": 1
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "icon": "🔭",
+      "artworkDescription": "Lies on a chimney stack for two days for one clean shot at whoever gives the orders",
+      "abilities": [
+        {
+          "id": "sniper-take-the-shot",
+          "name": "Take the Shot",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "hero",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-blackmailer",
+      "name": "Blackmailer",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "✉️",
+      "artworkDescription": "Knows exactly which letter to slide under which door, and how long to wait before knocking",
+      "onPlay": {
+        "id": "blackmailer-leverage",
+        "name": "Leverage",
+        "effects": [
+          {
+            "type": "discard_cards",
+            "amount": 1
+          }
+        ]
+      },
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-trapwire-bodyguard",
+      "name": "Trapwire Bodyguard",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "housingCost": 2,
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "icon": "💣",
+      "artworkDescription": "Every button, cufflink and coat pocket on this man is wired to something unpleasant",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-safecracker",
+      "name": "Safecracker",
+      "objectType": "unit",
+      "playCost": 4,
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier",
+        "raider"
+      ],
+      "bonusAttackVsBuildings": 2,
+      "icon": "🧰",
+      "artworkDescription": "Treats a locked vault as an insult and a locked strongbox as a personal challenge, and drills first",
+      "triggers": [
+        {
+          "event": "onDestroyBuilding",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-fixer",
+      "name": "The Fixer",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "📜",
+      "artworkDescription": "Has a cousin at the docks, a friend at the bank and a forged permit for anything you were about to ask",
+      "abilities": [
+        {
+          "id": "fixer-forged-papers",
+          "name": "Forged Papers",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "cost_discount",
+              "resourceId": "gold",
+              "amount": 2,
+              "tag": "spy"
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-alley-thug",
+      "name": "Alley Thug",
+      "objectType": "unit",
+      "playCost": 3,
+      "properties": {
+        "attack": 3,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "housingCost": 1,
+      "tags": [
+        "soldier"
+      ],
+      "icon": "🥊",
+      "artworkDescription": "Hired by the hour, paid by the bruise, and never once asked what the job was for",
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-poisoned-stiletto",
+      "name": "Poisoned Stiletto",
+      "objectType": "equipment",
+      "playCost": 2,
+      "icon": "🗡️",
+      "artworkDescription": "A needle-thin blade whose groove is packed with something that does its work long after the wound is closed",
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "target",
+              "resourceId": "poison",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-garrote-wire",
+      "name": "Garrote Wire",
+      "objectType": "equipment",
+      "playCost": 3,
+      "icon": "〰️",
+      "artworkDescription": "Two wooden grips and a length of braided wire, best used from behind and very quietly",
+      "slots": [
+        "mainHand",
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 2
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-watchmans-cowl",
+      "name": "Watchman's Cowl",
+      "objectType": "equipment",
+      "playCost": 2,
+      "icon": "🧣",
+      "artworkDescription": "A heavy hood that turns any lurker into a lantern-less sentinel who sees everything that walks past",
+      "slots": [
+        "head"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "attachTags": [
+        "guard"
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-tenement-flophouse",
+      "name": "Tenement Flophouse",
+      "objectType": "building",
+      "playCost": 3,
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 0
+      },
+      "housingProvided": 4,
+      "tags": [],
+      "icon": "🏚️",
+      "artworkDescription": "Forty beds, one landlord who asks nothing, and a cellar door that is always unlocked",
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-counting-room",
+      "name": "Counting Room",
+      "objectType": "building",
+      "playCost": 4,
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "tags": [],
+      "icon": "🧮",
+      "artworkDescription": "A windowless back office where two sets of books are kept and only one of them is ever shown",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-listening-post",
+      "name": "Listening Post",
+      "objectType": "building",
+      "playCost": 2,
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "👂",
+      "artworkDescription": "A tin ear-trumpet in a bakery wall, connected to every conversation in the room next door",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "intel",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-thieves-den",
+      "name": "Thieves' Den",
+      "objectType": "building",
+      "playCost": 4,
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "🕯️",
+      "artworkDescription": "A candlelit cellar where the newest recruits learn to walk quietly and the oldest ones teach them to steal",
+      "abilities": [
+        {
+          "id": "thieves-den-recruit",
+          "name": "Recruit a Footpad",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "footpad"
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-barred-warehouse",
+      "name": "Barred Warehouse",
+      "objectType": "building",
+      "playCost": 4,
+      "properties": {
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 2
+      },
+      "tags": [
+        "fortification"
+      ],
+      "icon": "🛢️",
+      "artworkDescription": "A windowless brick warehouse with iron bars on the doors, and two men on the roof who do not blink",
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-back-alley-clinic",
+      "name": "Back-Alley Clinic",
+      "objectType": "building",
+      "playCost": 3,
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "⚕️",
+      "artworkDescription": "A surgeon with a reputation for discretion and a bottle of something strong for the patient",
+      "abilities": [
+        {
+          "id": "clinic-patch-up",
+          "name": "Patch Up",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal_own_units",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-protection-racket",
+      "name": "Protection Racket",
+      "objectType": "building",
+      "playCost": 3,
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "🤝",
+      "artworkDescription": "Every shopkeeper on the street pays a small weekly fee for the privilege of nothing happening to them",
+      "triggers": [
+        {
+          "event": "onFriendlyDamageHqOrHero",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ],
+          "oncePerTurn": true
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-carrion-broker",
+      "name": "Carrion Broker",
+      "objectType": "building",
+      "playCost": 3,
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "💀",
+      "artworkDescription": "Buys the belongings of the recently departed, no questions asked and no receipts kept",
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 1
+            }
+          ],
+          "oncePerTurn": true
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-guild-archive",
+      "name": "Guild Archive",
+      "objectType": "building",
+      "playCost": 3,
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "🗄️",
+      "artworkDescription": "Rows of unmarked drawers holding a name, a debt and a secret for nearly everyone who matters in the city",
+      "abilities": [
+        {
+          "id": "archive-pull-file",
+          "name": "Pull a File",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "gold",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-whisper-campaign",
+      "name": "Whisper Campaign",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "🗣️",
+      "artworkDescription": "By nightfall every soldier in the enemy camp has heard a different reason not to trust the one beside him",
+      "onPlay": {
+        "id": "whisper-campaign-effect",
+        "name": "Sow Doubt",
+        "effects": [
+          {
+            "type": "modify_property_enemy_units",
+            "propertyId": "attack",
+            "amount": -1
+          }
+        ]
+      },
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-cutthroat-contract",
+      "name": "Cutthroat Contract",
+      "objectType": "spell",
+      "playCosts": {
+        "gold": 3,
+        "intel": 1
+      },
+      "icon": "📝",
+      "artworkDescription": "A single sheet with a name at the top and a fee at the bottom, and nothing in between worth reading",
+      "onPlay": {
+        "id": "cutthroat-contract-effect",
+        "name": "Fulfil the Contract",
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 5
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-insider-deal",
+      "name": "Insider Deal",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "🎲",
+      "artworkDescription": "A whispered tip, a handshake and a discount on whatever you buy next",
+      "onPlay": {
+        "id": "insider-deal-effect",
+        "name": "Cut a Deal",
+        "effects": [
+          {
+            "type": "cost_discount",
+            "resourceId": "gold",
+            "amount": 2
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ]
+      },
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-smash-and-grab",
+      "name": "Smash and Grab",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "💥",
+      "artworkDescription": "Through the window, across the counter, and out the back before the bell stops ringing",
+      "onPlay": {
+        "id": "smash-and-grab-effect",
+        "name": "Loot the Till",
+        "effects": [
+          {
+            "type": "drain_resource",
+            "amount": 3
+          }
+        ]
+      },
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-hamstring",
+      "name": "Hamstring",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "🦵",
+      "artworkDescription": "One cut behind the knee, and the bravest man in the line is suddenly very interested in sitting down",
+      "onPlay": {
+        "id": "hamstring-effect",
+        "name": "Cripple",
+        "effects": [
+          {
+            "type": "modify_property",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": -2
+          },
+          {
+            "type": "tap",
+            "scope": "target"
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-cook-the-books",
+      "name": "Cook the Books",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "📒",
+      "artworkDescription": "Move a column here, forget a column there, and the guild is three gold richer than it was a minute ago",
+      "onPlay": {
+        "id": "cook-the-books-effect",
+        "name": "Creative Accounting",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "gold",
+            "amount": 3
+          },
+          {
+            "type": "gain_bank_resource",
+            "resourceId": "intel",
+            "amount": 1
+          }
+        ]
+      },
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-night-raid",
+      "name": "Night Raid",
+      "objectType": "spell",
+      "playCost": 3,
+      "icon": "🌃",
+      "artworkDescription": "The signal is a single shuttered lantern, and every blade in the guild hits the street at once",
+      "onPlay": {
+        "id": "night-raid-effect",
+        "name": "All Blades Out",
+        "effects": [
+          {
+            "type": "buff_own_units_until_end_of_turn",
+            "propertyId": "attack",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-call-in-favours",
+      "name": "Call in Favours",
+      "objectType": "spell",
+      "playCost": 4,
+      "icon": "📞",
+      "artworkDescription": "Two phone calls, one old debt and a back door left unlatched, and the muscle arrives before the kettle boils",
+      "onPlay": {
+        "id": "call-in-favours-effect",
+        "name": "Hire the Muscle",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "footpad"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "footpad"
+          }
+        ]
+      },
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-trapdoor",
+      "name": "Trapdoor",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "🚪",
+      "artworkDescription": "The floor in front of the desk is not a floor, and whoever walks toward the desk finds out too late",
+      "isSecret": true,
+      "triggers": [
+        {
+          "event": "onEnemyAttack",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-venomed-needle",
+      "name": "Venomed Needle",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "💉",
+      "artworkDescription": "A pin in the lining of the coat, and a poison that takes its time about it",
+      "isSecret": true,
+      "triggers": [
+        {
+          "event": "onEnemyAttack",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "target",
+              "resourceId": "poison",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-powder-keg",
+      "name": "Powder Keg",
+      "objectType": "spell",
+      "playCost": 2,
+      "icon": "🧨",
+      "artworkDescription": "Three barrels under the floorboards of the hall, and a very short fuse for anyone who comes calling on the boss",
+      "isSecret": true,
+      "triggers": [
+        {
+          "event": "onEnemyAttack",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage_enemy_units",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "faction": "shadow"
+    },
+    {
+      "id": "shadow-sleight-of-hand",
+      "name": "Sleight of Hand",
+      "objectType": "spell",
+      "playCost": 1,
+      "icon": "🃏",
+      "artworkDescription": "The attacker's dagger is in his left hand, then it is in yours, and then it is nowhere at all",
+      "timing": "reaction",
+      "reactionTo": [
+        "attackDeclared"
+      ],
+      "onPlay": {
+        "id": "sleight-of-hand-effect",
+        "name": "Disarm",
+        "effects": [
+          {
+            "type": "buff_target_until_end_of_turn",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": -3
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "shadow"
+    },
+    {
       "id": "storm-gale-striker",
       "name": "Gale Striker",
       "objectType": "unit",
@@ -33480,6 +34879,58 @@
       ],
       "heroOptions": [
         "hold-grand-spymaster"
+      ]
+    },
+    {
+      "id": "shadow-undercity",
+      "faction": "shadow",
+      "name": "Undercity Exchange",
+      "description": "Run the guild out of a bank vault beneath the fish market: spies burrow into enemy buildings and crack them from inside, secrets and reactions punish anyone who swings at the boss, and every gold coin skimmed off the enemy pays for the next contract.",
+      "hq": "shadow-undercity-exchange",
+      "hero": "shadow-guildmistress-vesper",
+      "cards": {
+        "shadow-vault-cracker": 2,
+        "shadow-sapper": 2,
+        "shadow-leak-artist": 1,
+        "shadow-blight-agent": 1,
+        "shadow-guild-pickpocket": 4,
+        "shadow-bounty-hunter": 2,
+        "shadow-rooftop-sniper": 1,
+        "shadow-blackmailer": 2,
+        "shadow-trapwire-bodyguard": 2,
+        "shadow-safecracker": 2,
+        "shadow-fixer": 1,
+        "shadow-alley-thug": 4,
+        "shadow-poisoned-stiletto": 2,
+        "shadow-garrote-wire": 1,
+        "shadow-watchmans-cowl": 1,
+        "shadow-tenement-flophouse": 2,
+        "shadow-counting-room": 1,
+        "shadow-listening-post": 3,
+        "shadow-thieves-den": 1,
+        "shadow-barred-warehouse": 1,
+        "shadow-back-alley-clinic": 1,
+        "shadow-protection-racket": 1,
+        "shadow-carrion-broker": 1,
+        "shadow-guild-archive": 1,
+        "shadow-whisper-campaign": 1,
+        "shadow-cutthroat-contract": 2,
+        "shadow-insider-deal": 2,
+        "shadow-smash-and-grab": 2,
+        "shadow-hamstring": 2,
+        "shadow-cook-the-books": 3,
+        "shadow-night-raid": 1,
+        "shadow-call-in-favours": 2,
+        "shadow-trapdoor": 2,
+        "shadow-venomed-needle": 1,
+        "shadow-powder-keg": 1,
+        "shadow-sleight-of-hand": 1
+      },
+      "hqOptions": [
+        "shadow-undercity-exchange"
+      ],
+      "heroOptions": [
+        "shadow-guildmistress-vesper"
       ]
     },
     {
