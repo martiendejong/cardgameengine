@@ -446,7 +446,7 @@ public class ShadowExpansion3953Tests
             if (e.Line != null && !lines.Contains(e.Line)) problems.Add($"{where}: unknown line '{e.Line}'");
             if (e.Type == "gain_resource" && e.ResourceId == null) problems.Add($"{where}: gain_resource without resourceId");
             // gain_resource scope player writes player.Resources; an entity-scoped resource there is a pool nothing
-            // reads (the pre-batch Shadow cards put Intel there: 27 effects that bank into the void).
+            // reads (13 pre-batch Shadow cards put Intel there: 17 effects that bank into the void).
             if (e.Type == "gain_resource" && e.Scope == "player" && e.ResourceId != null && !playerResources.Contains(e.ResourceId))
                 problems.Add($"{where}: gain_resource scope player names entity resource '{e.ResourceId}' (use gain_bank_resource or scope self)");
             if (e.Type == "gain_bank_resource" && (e.ResourceId == null || !entityResources.Contains(e.ResourceId)))
@@ -530,7 +530,7 @@ public class ShadowExpansion3953Tests
     public void Spell_effects_live_where_the_engine_actually_runs_them()
     {
         // CardPlayService only ever resolves a spell's OnPlay; an "abilities" block on a spell card in
-        // hand is unreachable (that is why 9 pre-batch Shadow spells do nothing when cast). Secrets are the
+        // hand is unreachable (that is why 6 pre-batch Shadow spells do nothing when cast). Secrets are the
         // one exception: face-down, they carry triggers on the enemy's attack instead of an onPlay.
         foreach (var c in NewCards.Where(c => c.ObjectType == "spell"))
         {

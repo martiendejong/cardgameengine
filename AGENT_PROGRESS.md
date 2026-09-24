@@ -802,6 +802,6 @@ branch was created) — merged origin/master in (clean, no conflicts), rebuilt a
 Left: status left at `review` — no reviewer has looked at PR #55 yet, watchdog did not merge.
 
 ## 2026-09-24 — task 3953 (Shadow faction batch 1)
-Done: WIP — adding a batch of faction-exclusive Shadow cards (own HQ + hero + third precon, since `shadow` and `shadow-stranglehold` are both at the 60-card deck maximum).
-Verified: not yet.
-Left: everything; see the PR body for the plan.
+Done: PR #61 - 38 new `faction: shadow` cards (Undercity Exchange HQ, Guildmistress Vesper hero, 4 spy-units, 8 units, 3 equipment, 9 buildings, 12 spells) in a NEW 60-card precon `shadow-undercity`, because `shadow` and `shadow-stranglehold` are both at the 60-card deck maximum. Shadow-exclusive count 42 -> 80. Priced in gold (player pool, what the Exchange skims) and intel (HQ bank, cap 8).
+Verified: dotnet test 115/115 (90 new), 20/20 mutations caught, 400 bot games 0 errors (172W 209L 19D), 37 of 38 cards seen firing in bot play (the reaction spell can only be exercised by a real-engine test, the bot always passes).
+Left: batch 2 is task 4130; the pre-batch Shadow repair (16 Intel-priced cards in the base deck are uncastable, 14 of 42 cards no-op) is task 4129.
