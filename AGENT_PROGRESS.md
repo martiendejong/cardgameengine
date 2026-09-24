@@ -801,6 +801,14 @@ branch was created) — merged origin/master in (clean, no conflicts), rebuilt a
 (clean, 25/25), pushed. PR #55 is now MERGEABLE/CLEAN.
 Left: status left at `review` — no reviewer has looked at PR #55 yet, watchdog did not merge.
 
-## 2026-09-24 — task 3950 (in progress)
-Plan: batch 1 of the Conclave expansion toward 200 (55 -> ~87): equipment and buildings first (the thinnest
-categories), then units and spells, all `"faction": "conclave"`, new `runecraft-*` sub-theme + precon deck.
+## 2026-09-24 — task 3950
+Done: batch 1 of the Conclave expansion, 55 -> 87 faction-exclusive cards (equipment 3 -> 13, buildings 8 -> 15,
+units 25 -> 31, spells 19 -> 25, plus a new HQ, hero and one caster), all `"faction": "conclave"`, as a new `rune-*`
+sub-theme wired into a new 60-card precon `conclave-runecraft`. Priced in mana (paid from the HQ bank) because the
+Conclave HQs produce mana and no gold. PR #59.
+Verified: dotnet build 0 warnings/errors; dotnet test 91/91 (66 new in ConclaveExpansion3950Tests: raw-JSON key lint,
+engine vocabulary lint, deck wiring/legality, role fingerprints vs the 55 old cards, and one real-engine behaviour
+test per card). 10 mutations of game.json each caught by the intended tests. Real API bot-vs-bot, runecraft vs all 20
+precons x 20 games: 0 crashes, every new card except the reaction-only Disjunction was cast (bots always pass in
+reaction windows).
+Left: pre-batch Conclave cards have dead abilities and gold pricing, filed as task 4120; 113 cards still to reach 200.

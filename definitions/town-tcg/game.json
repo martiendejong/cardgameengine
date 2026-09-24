@@ -32661,6 +32661,1062 @@
       "attachTags": [
         "retaliate"
       ]
+    },
+    {
+      "id": "rune-forge-sanctum",
+      "name": "Rune Forge Sanctum",
+      "objectType": "nexus",
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "resources": {
+        "mana": 5
+      },
+      "resourceCapacities": {
+        "mana": 12
+      },
+      "housingProvided": 4,
+      "tags": [
+        "nexus-core"
+      ],
+      "icon": "🔨",
+      "artworkDescription": "A vaulted forge-cathedral where glowing runes are hammered onto steel, its anvils ringing with stored leyline power",
+      "faction": "conclave",
+      "abilities": [
+        {
+          "id": "rune-forge-channel",
+          "name": "Channel the Forge",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-runemaster",
+      "name": "Runemaster Ilvane",
+      "objectType": "caster-hero",
+      "properties": {
+        "attack": 3,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "resources": {
+        "mana": 2
+      },
+      "resourceCapacities": {
+        "mana": 6
+      },
+      "tags": [
+        "caster"
+      ],
+      "icon": "📜",
+      "artworkDescription": "A soot-stained artificer-mage with rune-etched gauntlets, one hand shaping glowing sigils in the air",
+      "faction": "conclave",
+      "abilities": [
+        {
+          "id": "runemaster-meditate",
+          "name": "Meditate on the Runes",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "runemaster-barrier",
+          "name": "Runic Barrier",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_own_units_until_end_of_turn",
+              "propertyId": "armor",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-warding-circlet",
+      "name": "Warding Circlet",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 2
+      },
+      "icon": "👑",
+      "faction": "conclave",
+      "artworkDescription": "A silver circlet whose inlaid runes knit its wearer's wounds shut a little more each dawn",
+      "slots": [
+        "head"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "host",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-thorned-vestments",
+      "name": "Thorned Vestments",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 3
+      },
+      "icon": "🧥",
+      "faction": "conclave",
+      "artworkDescription": "Robes stitched with barbed glyphs that lash back at whoever dares strike the wearer",
+      "slots": [
+        "body"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-siphon-blade",
+      "name": "Siphon Blade",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 3
+      },
+      "icon": "🗡️",
+      "faction": "conclave",
+      "artworkDescription": "A rune-carved blade that drinks a measure of life from every wound it opens and pours it into the wielder",
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "host",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-farsight-lance",
+      "name": "Farsight Lance",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 3
+      },
+      "icon": "🏹",
+      "faction": "conclave",
+      "artworkDescription": "A slender lance tipped with a scrying lens that lets its bearer strike targets far behind the front line",
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "attachTags": [
+        "ranged"
+      ]
+    },
+    {
+      "id": "rune-aegis-tome",
+      "name": "Aegis Tome",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 2
+      },
+      "icon": "📘",
+      "faction": "conclave",
+      "artworkDescription": "A heavy warded grimoire held open like a shield, its pages drawing every enemy's eye to the bearer",
+      "slots": [
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "attachTags": [
+        "guard"
+      ]
+    },
+    {
+      "id": "rune-soulbinder-sigil",
+      "name": "Soulbinder Sigil",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 2
+      },
+      "icon": "🔯",
+      "faction": "conclave",
+      "artworkDescription": "A branded sigil that catches the last spark of every foe its bearer fells and feeds it to the forge",
+      "slots": [
+        "mutation"
+      ],
+      "attachTo": "chooseCharacter",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-chronal-band",
+      "name": "Chronal Band",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 4
+      },
+      "icon": "⌛",
+      "faction": "conclave",
+      "artworkDescription": "A brass band of counter-rotating runes that winds its bearer's body back a heartbeat, ready to act again",
+      "slots": [
+        "mutation"
+      ],
+      "attachTo": "chooseCharacter",
+      "abilities": [
+        {
+          "id": "chronal-band-rewind",
+          "name": "Rewind Time",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "is_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "untap",
+              "scope": "host"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-frostbrand",
+      "name": "Frostbrand",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 3
+      },
+      "icon": "❄️",
+      "faction": "conclave",
+      "artworkDescription": "A blade rimed with permanent frost whose every hit leaves the wound locked in ice",
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-sweeping-staff",
+      "name": "Sweeping Staff",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 4
+      },
+      "icon": "🪄",
+      "faction": "conclave",
+      "artworkDescription": "A two-handed staff whose crescent of rune-light sweeps through an entire rank in a single swing",
+      "slots": [
+        "mainHand",
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 2
+        }
+      ],
+      "attachTags": [
+        "splash"
+      ]
+    },
+    {
+      "id": "rune-scholars-monocle",
+      "name": "Scholar's Monocle",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 5
+      },
+      "icon": "🧐",
+      "faction": "conclave",
+      "duration": 3,
+      "artworkDescription": "A rune-ground monocle that reads forgotten lore at a glance, but whose enchantment fades after a few nights' study",
+      "slots": [
+        "head"
+      ],
+      "attachTo": "chooseCharacter",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-leyline-siphon",
+      "name": "Leyline Siphon",
+      "objectType": "building",
+      "playCosts": {
+        "mana": 3
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "housingProvided": 0,
+      "icon": "🌀",
+      "artworkDescription": "A spiralling copper pylon driven into the ground to draw raw leyline power straight into the nexus",
+      "faction": "conclave",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-warded-bulwark",
+      "name": "Warded Bulwark",
+      "objectType": "building",
+      "playCosts": {
+        "mana": 4
+      },
+      "properties": {
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 3
+      },
+      "housingProvided": 0,
+      "tags": [
+        "fortification"
+      ],
+      "icon": "🛡️",
+      "artworkDescription": "A squat bastion of rune-hardened stone whose shimmering ward forces every siege to break it first",
+      "faction": "conclave"
+    },
+    {
+      "id": "rune-obelisk-of-silence",
+      "name": "Obelisk of Silence",
+      "objectType": "building",
+      "playCosts": {
+        "mana": 4
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingProvided": 0,
+      "icon": "🗿",
+      "artworkDescription": "A black obelisk that emits a pulse of dead quiet, leaving every enemy warrior briefly deaf, dizzy and unable to hold a guard",
+      "faction": "conclave",
+      "abilities": [
+        {
+          "id": "obelisk-silence",
+          "name": "Pulse of Silence",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap_enemy_units"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-runic-workshop",
+      "name": "Runic Workshop",
+      "objectType": "building",
+      "playCosts": {
+        "mana": 3
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "housingProvided": 0,
+      "icon": "🛠️",
+      "artworkDescription": "A cluttered workshop of half-inscribed tablets where prepared stencils let the next spell be cast for less",
+      "faction": "conclave",
+      "abilities": [
+        {
+          "id": "workshop-inscribe",
+          "name": "Prepare Stencils",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "cost_discount",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-eldritch-orrery",
+      "name": "Eldritch Orrery",
+      "objectType": "building",
+      "playCosts": {
+        "mana": 5
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingProvided": 0,
+      "icon": "🪐",
+      "artworkDescription": "A brass orrery of impossible orbits that drips a slow, patient curse onto the enemy stronghold every turn",
+      "faction": "conclave",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "opponent",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-banner-hall",
+      "name": "Banner Hall",
+      "objectType": "building",
+      "playCosts": {
+        "mana": 4
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingProvided": 2,
+      "icon": "🏰",
+      "artworkDescription": "A barracks-hall hung with rune-woven banners that kindle a war-glow in every unit marching out beneath them",
+      "faction": "conclave",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_own_units_until_end_of_turn",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-scribe-archive",
+      "name": "Scribe Archive",
+      "objectType": "building",
+      "playCosts": {
+        "mana": 4
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingProvided": 4,
+      "icon": "📚",
+      "artworkDescription": "A lodging-house of cell-like scriptoria where tireless scribes copy spell after spell for the war effort",
+      "faction": "conclave",
+      "abilities": [
+        {
+          "id": "archive-transcribe",
+          "name": "Transcribe",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-hexblade-duelist",
+      "name": "Hexblade Duelist",
+      "objectType": "unit",
+      "playCosts": {
+        "mana": 3
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "⚔️",
+      "faction": "conclave",
+      "artworkDescription": "A lean fencer whose hexed rapier writes a fresh spell into her memory with every opponent she drops",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-frost-effigy",
+      "name": "Frost Effigy",
+      "objectType": "unit",
+      "playCosts": {
+        "mana": 3
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "housingCost": 1,
+      "icon": "🧊",
+      "faction": "conclave",
+      "artworkDescription": "A rune-carved ice statue that flash-freezes whatever creature is foolish enough to strike it",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-tribute-collector",
+      "name": "Tribute Collector",
+      "objectType": "unit",
+      "playCosts": {
+        "mana": 2
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "💰",
+      "faction": "conclave",
+      "artworkDescription": "A ledger-wielding tax mage who siphons a little mana from the enemy's suffering every time a wall or commander is struck",
+      "triggers": [
+        {
+          "event": "onFriendlyDamageHqOrHero",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-grave-reader",
+      "name": "Grave Reader",
+      "objectType": "unit",
+      "playCosts": {
+        "mana": 2
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "📖",
+      "faction": "conclave",
+      "artworkDescription": "A pale scholar who reads the last thoughts of the fallen on either side of the field and banks the residue as mana",
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-breach-mage",
+      "name": "Breach Mage",
+      "objectType": "unit",
+      "playCosts": {
+        "mana": 4
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 2,
+      "bonusAttackVsBuildings": 3,
+      "icon": "💥",
+      "faction": "conclave",
+      "artworkDescription": "A siege-mage whose shattering cantrips peel apart stonework, and who salvages the raw mana from every wall brought down",
+      "triggers": [
+        {
+          "event": "onDestroyBuilding",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-hexstalker",
+      "name": "Hexstalker",
+      "objectType": "unit",
+      "playCosts": {
+        "mana": 3
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "housingCost": 1,
+      "icon": "🎯",
+      "faction": "conclave",
+      "artworkDescription": "A hooded marksman whose hex-tipped bolts leave the wounded weaker and more hesitant with every hit",
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "attack",
+              "amount": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-disenchanter",
+      "name": "Disenchanter",
+      "objectType": "caster",
+      "playCosts": {
+        "mana": 3
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "caster"
+      ],
+      "housingCost": 1,
+      "resources": {
+        "mana": 2
+      },
+      "resourceCapacities": {
+        "mana": 3
+      },
+      "icon": "🧹",
+      "faction": "conclave",
+      "artworkDescription": "A wand-wielding unraveller who strips enchanted gear and mutations off enemy champions with a single unpicked thread",
+      "abilities": [
+        {
+          "id": "disenchanter-dispel",
+          "name": "Dispel Enchantment",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1,
+            "attachmentsOnly": true
+          },
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-disjunction",
+      "name": "Disjunction",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 2
+      },
+      "timing": "reaction",
+      "reactionTo": [
+        "abilityActivated"
+      ],
+      "icon": "✂️",
+      "faction": "conclave",
+      "artworkDescription": "A single snapped thread of light that severs an enemy's ability the moment it is invoked",
+      "onPlay": {
+        "id": "disjunction-cast",
+        "name": "Sever the ability",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "cancel_ability"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rune-mass-ward",
+      "name": "Mass Ward",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 3
+      },
+      "timing": "both",
+      "reactionTo": [
+        "attackDeclared"
+      ],
+      "icon": "🌐",
+      "faction": "conclave",
+      "artworkDescription": "A dome of overlapping glyphs that drops over the whole army in the instant before a blow lands",
+      "onPlay": {
+        "id": "mass-ward-cast",
+        "name": "Ward the army",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "buff_own_units_until_end_of_turn",
+            "propertyId": "armor",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "rune-return-of-the-archon",
+      "name": "Return of the Archon",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 5
+      },
+      "icon": "🌟",
+      "faction": "conclave",
+      "artworkDescription": "A rite that pulls a fallen champion back from the dark, gasping and rune-lit, to stand again",
+      "onPlay": {
+        "id": "return-archon-cast",
+        "name": "Recall the fallen hero",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "revive_hero"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rune-sapping-hex",
+      "name": "Sapping Hex",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 4
+      },
+      "icon": "🕸️",
+      "faction": "conclave",
+      "artworkDescription": "A creeping web of lethargy runes that saps a little strength from every enemy warrior at once, permanently",
+      "onPlay": {
+        "id": "sapping-hex-cast",
+        "name": "Sap the enemy line",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "modify_property_enemy_units",
+            "propertyId": "attack",
+            "amount": -1
+          }
+        ]
+      }
+    },
+    {
+      "id": "rune-wordbreaker",
+      "name": "Wordbreaker",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 2
+      },
+      "icon": "💢",
+      "faction": "conclave",
+      "artworkDescription": "A single hissed syllable that unravels an already-wounded enemy warrior on the spot",
+      "onPlay": {
+        "id": "wordbreaker-cast",
+        "name": "Finish a wounded unit",
+        "costs": [],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1,
+          "maxPropertyId": "currentHp",
+          "maxPropertyValue": 3
+        },
+        "effects": [
+          {
+            "type": "destroy",
+            "scope": "target"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rune-conflux-ritual",
+      "name": "Conflux Ritual",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 1
+      },
+      "icon": "🔮",
+      "faction": "conclave",
+      "artworkDescription": "A quick circle of chalk and candles that funnels a burst of stray leyline energy into the nexus",
+      "onPlay": {
+        "id": "conflux-ritual-cast",
+        "name": "Draw down the leylines",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "gain_bank_resource",
+            "resourceId": "mana",
+            "amount": 3
+          }
+        ]
+      }
     }
   ],
   "decks": [
@@ -33584,6 +34640,52 @@
         "fireball": 4,
         "hold-assassination-order": 4,
         "house": 4
+      }
+    },
+    {
+      "id": "conclave-runecraft",
+      "faction": "conclave",
+      "name": "Runecraft Ascendancy",
+      "description": "Conclave artificers hammer runes onto wargear and warded strongholds: equip your champions, out-ramp the enemy's nexus and grind them down with tempo tricks.",
+      "hq": "rune-forge-sanctum",
+      "hero": "rune-runemaster",
+      "hqOptions": [
+        "rune-forge-sanctum"
+      ],
+      "heroOptions": [
+        "rune-runemaster"
+      ],
+      "cards": {
+        "rune-warding-circlet": 2,
+        "rune-thorned-vestments": 2,
+        "rune-siphon-blade": 2,
+        "rune-farsight-lance": 2,
+        "rune-aegis-tome": 2,
+        "rune-soulbinder-sigil": 2,
+        "rune-chronal-band": 1,
+        "rune-frostbrand": 2,
+        "rune-sweeping-staff": 1,
+        "rune-scholars-monocle": 1,
+        "rune-leyline-siphon": 3,
+        "rune-warded-bulwark": 2,
+        "rune-obelisk-of-silence": 1,
+        "rune-runic-workshop": 2,
+        "rune-eldritch-orrery": 1,
+        "rune-banner-hall": 1,
+        "rune-scribe-archive": 3,
+        "rune-hexblade-duelist": 2,
+        "rune-frost-effigy": 2,
+        "rune-tribute-collector": 2,
+        "rune-grave-reader": 2,
+        "rune-breach-mage": 1,
+        "rune-hexstalker": 2,
+        "rune-disenchanter": 2,
+        "rune-disjunction": 3,
+        "rune-mass-ward": 3,
+        "rune-return-of-the-archon": 1,
+        "rune-sapping-hex": 3,
+        "rune-wordbreaker": 4,
+        "rune-conflux-ritual": 3
       }
     }
   ],
