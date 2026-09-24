@@ -800,3 +800,8 @@ Verified: the branch was behind master (PR #54, session-expired-401 fix, landed 
 branch was created) — merged origin/master in (clean, no conflicts), rebuilt and retested
 (clean, 25/25), pushed. PR #55 is now MERGEABLE/CLEAN.
 Left: status left at `review` — no reviewer has looked at PR #55 yet, watchdog did not merge.
+
+## 2026-09-24 — task 3951 (Undead faction card expansion, batch 1)
+Done: (in progress) 32 role-distinct faction-exclusive Undead cards (42 -> 74) plus a new precon deck `undead-legion`.
+Verified: not yet — draft PR opened first so the work is discoverable; evidence lands in this entry before review.
+Left: everything below the plan is being implemented now.
