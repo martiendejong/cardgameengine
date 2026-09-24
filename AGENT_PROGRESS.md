@@ -800,3 +800,7 @@ Verified: the branch was behind master (PR #54, session-expired-401 fix, landed 
 branch was created) — merged origin/master in (clean, no conflicts), rebuilt and retested
 (clean, 25/25), pushed. PR #55 is now MERGEABLE/CLEAN.
 Left: status left at `review` — no reviewer has looked at PR #55 yet, watchdog did not merge.
+
+## 2026-09-24 — task 3952 (WIP)
+Plan: Brood batch 1, 40 -> 73 faction-exclusive cards (HQ + hero + 12 buildings + 11 units + 8 spells) in a new
+`brood-incubation` precon (the 60-card `brood` deck is at the deck maximum), each driven through the real RuleEngine.
