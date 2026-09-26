@@ -884,3 +884,11 @@ test per card). 10 mutations of game.json each caught by the intended tests. Rea
 precons x 20 games: 0 crashes, every new card except the reaction-only Disjunction was cast (bots always pass in
 reaction windows).
 Left: pre-batch Conclave cards have dead abilities and gold pricing, filed as task 4120; 113 cards still to reach 200.
+
+## 2026-09-24 — task 3952
+Done: Brood batch 1, 40 -> 73 faction-exclusive cards (HQ + hero + 12 buildings + 11 units + 8 spells), all in a new 60-card
+`brood-incubation` precon (`brood` and `brood-apex` are already at the deck maximum). PR #60. Biomass-only pricing, banked
+with `gain_bank_resource` into the Hive HQ (a player-scoped `gain_resource` biomass never reaches the bank that pays costs).
+Verified: build 0 warnings; `dotnet test` 110/110 (was 25); 13 mutations each caught by the intended test; 400 bot games via
+`/api/simulate`, 0 errors; all 31 non-HQ/hero cards cast in 200 in-process bot games (>= 8 casts each).
+Left: 127 short of 200 -> task 4122 (batch 2). Pre-batch Brood cards have dead abilities, gold prices and the wrong biomass pool -> task 4121.
