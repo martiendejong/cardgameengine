@@ -872,3 +872,15 @@ unregistered effect/condition, gold price, wrong resource pool) were all caught.
 precons, 20 each): 0 exceptions, all 32 cards seen in play; new deck wins 80% (field spans 5%-98%, see PR).
 Left: pre-existing 42 Undead cards are all gold-priced with no gold source and ~20 have dead abilities -> follow-up task 4105.
 Batches 2..n (74 -> 200) continue as new undead-* precon decks.
+
+## 2026-09-24 — task 3950
+Done: batch 1 of the Conclave expansion, 55 -> 87 faction-exclusive cards (equipment 3 -> 13, buildings 8 -> 15,
+units 25 -> 31, spells 19 -> 25, plus a new HQ, hero and one caster), all `"faction": "conclave"`, as a new `rune-*`
+sub-theme wired into a new 60-card precon `conclave-runecraft`. Priced in mana (paid from the HQ bank) because the
+Conclave HQs produce mana and no gold. PR #59.
+Verified: dotnet build 0 warnings/errors; dotnet test 91/91 (66 new in ConclaveExpansion3950Tests: raw-JSON key lint,
+engine vocabulary lint, deck wiring/legality, role fingerprints vs the 55 old cards, and one real-engine behaviour
+test per card). 10 mutations of game.json each caught by the intended tests. Real API bot-vs-bot, runecraft vs all 20
+precons x 20 games: 0 crashes, every new card except the reaction-only Disjunction was cast (bots always pass in
+reaction windows).
+Left: pre-batch Conclave cards have dead abilities and gold pricing, filed as task 4120; 113 cards still to reach 200.
