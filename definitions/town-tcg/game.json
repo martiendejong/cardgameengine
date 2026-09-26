@@ -1419,7 +1419,15 @@
       "id": "landing-pad",
       "name": "Landing Pad",
       "objectType": "headquarters",
-      "playCost": 6,
+      "playCosts": {
+        "energy": 3
+      },
+      "playCostsExtra": [
+        {
+          "type": "sacrifice_equipment",
+          "amount": 1
+        }
+      ],
       "properties": {
         "currentHp": 10,
         "maxHp": 10,
@@ -31613,6 +31621,1245 @@
       "faction": "undead"
     },
     {
+      "id": "undead-bone-citadel",
+      "name": "Bone Citadel",
+      "objectType": "graveyard-hq",
+      "properties": {
+        "currentHp": 11,
+        "maxHp": 11,
+        "armor": 2
+      },
+      "resources": {
+        "corpses": 3
+      },
+      "resourceCapacities": {
+        "corpses": 10
+      },
+      "housingProvided": 8,
+      "tags": [
+        "boneyard"
+      ],
+      "icon": "🏰",
+      "artworkDescription": "A fortress raised from the fused ribcages of a fallen army, its gate a screaming skull",
+      "abilities": [
+        {
+          "id": "bone-citadel-exhume",
+          "name": "Exhume",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "corpses",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "bone-citadel-ossify",
+          "name": "Ossify",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "corpses",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "usesPerTurn": 1,
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "oncePerTurn": true,
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-grave-regent",
+      "name": "Vael, Grave Regent",
+      "objectType": "necromancer-hero",
+      "properties": {
+        "attack": 3,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "resourceCapacities": {
+        "dp": 6
+      },
+      "icon": "👑",
+      "artworkDescription": "A crowned revenant in rusted plate who commands the dead as a general commands a levy",
+      "abilities": [
+        {
+          "id": "grave-regent-command",
+          "name": "Regent's Command",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "dp",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_own_units_until_end_of_turn",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "dp",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "dp",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-carrion-ghoul",
+      "name": "Carrion Ghoul",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 2
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🧟",
+      "artworkDescription": "A stooped scavenger that gnaws every corpse it fells down to the last usable bone",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "corpses",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-cairn-sentinel",
+      "name": "Cairn Sentinel",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🪦",
+      "artworkDescription": "A grave-marker golem of stacked stones that spills a skeleton from its ruined chest when it falls",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-pyre-zealot",
+      "name": "Pyre Zealot",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🔥",
+      "artworkDescription": "A hollow cultist wrapped in oil-soaked shrouds who lives only to be lit",
+      "abilities": [
+        {
+          "id": "pyre-zealot-immolate",
+          "name": "Immolate",
+          "costs": [
+            {
+              "type": "sacrifice"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 4
+            },
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-barrow-sentinel",
+      "name": "Barrow Sentinel",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 4
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "guard",
+        "retaliate",
+        "undead"
+      ],
+      "housingCost": 2,
+      "icon": "🛡️",
+      "artworkDescription": "A barrow-king's honor guard in green-crusted mail; whoever cuts it down is dragged into the mound's chill",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-grave-vulture",
+      "name": "Grave Vulture",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 2
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "ranged",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🦅",
+      "artworkDescription": "A bald, rib-thin carrion bird that circles wherever an enemy stronghold is bleeding",
+      "triggers": [
+        {
+          "event": "onFriendlyDamageHqOrHero",
+          "oncePerTurn": true,
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-marrow-leech",
+      "name": "Marrow Leech",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🪱",
+      "artworkDescription": "A bloated, lamprey-mouthed thing that mends itself with every mouthful of living marrow",
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-ravenous-revenant",
+      "name": "Ravenous Revenant",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 4
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 2,
+      "icon": "💀",
+      "artworkDescription": "A starved dead knight that sheds its fatigue with each kill and lunges straight at the next throat",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "untap",
+              "scope": "self"
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-withering-shade",
+      "name": "Withering Shade",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 2
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🌑",
+      "artworkDescription": "A thin shadow whose every touch leaves a limb a little weaker than before",
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "attack",
+              "amount": -1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-grave-broker",
+      "name": "Grave Broker",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 2
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "💼",
+      "artworkDescription": "A gaunt undertaker who haggles with the dead and always secures the next body at a discount",
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "cost_discount",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-bone-drover",
+      "name": "Bone Drover",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 5
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 2,
+      "icon": "🦴",
+      "artworkDescription": "A skeletal herdsman who arrives already driving a pair of rattling skeletons before him",
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-hexbolt-acolyte",
+      "name": "Hexbolt Acolyte",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 4
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "ranged",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🔮",
+      "artworkDescription": "A cowled adept who threads hexes past every bodyguard straight to the enemy commander",
+      "abilities": [
+        {
+          "id": "hexbolt-acolyte-hexbolt",
+          "name": "Hexbolt",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "hero",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-dirge-bearer",
+      "name": "Dirge Bearer",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🔔",
+      "artworkDescription": "A pallbearer tolling a cracked funeral bell whose tune stirs every dead soldier to fight harder",
+      "abilities": [
+        {
+          "id": "dirge-bearer-dirge",
+          "name": "Grave Dirge",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "undead",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-thorn-ossuary",
+      "name": "Thorn Ossuary",
+      "objectType": "building",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 3
+      },
+      "housingProvided": 2,
+      "icon": "🧱",
+      "artworkDescription": "A wall of interlocked bones bristling with rib-spikes that skewer whoever dares to strike it",
+      "tags": [
+        "fortification"
+      ],
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-miasma-well",
+      "name": "Miasma Well",
+      "objectType": "building",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "housingProvided": 2,
+      "icon": "🧪",
+      "artworkDescription": "A capped charnel well whose green vapors seep across the field and into every enemy lung",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "afflict_enemy_units",
+              "resourceId": "poison",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-bone-cradle",
+      "name": "Bone Cradle",
+      "objectType": "building",
+      "playCosts": {
+        "corpses": 4
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingProvided": 4,
+      "icon": "🛏️",
+      "artworkDescription": "A vast nest of knitted bones where the wounded dead are rocked slowly back to strength",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal_own_units",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-cursed-archive",
+      "name": "Cursed Archive",
+      "objectType": "building",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "housingProvided": 2,
+      "icon": "📜",
+      "artworkDescription": "A crypt library whose whispering scrolls trade forbidden lore for a little of the archive itself",
+      "abilities": [
+        {
+          "id": "cursed-archive-consult",
+          "name": "Consult the Dead",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            },
+            {
+              "type": "direct_damage",
+              "scope": "self",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-sepulchral-shrine",
+      "name": "Sepulchral Shrine",
+      "objectType": "shrine-type",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingProvided": 2,
+      "icon": "⛩️",
+      "artworkDescription": "A black-stone shrine that pulls a fallen commander back from the grave, and a skeleton with them",
+      "abilities": [
+        {
+          "id": "sepulchral-shrine-begin-rite",
+          "name": "Rite of Return",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "own_hero_destroyed"
+            },
+            {
+              "type": "resource_lte",
+              "resourceId": "ritual",
+              "amount": 0
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_resource",
+              "scope": "self",
+              "resourceId": "ritual",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [
+            {
+              "type": "resource_gte",
+              "resourceId": "ritual",
+              "amount": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "ritual",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "event": "onTurnStart",
+          "conditions": [
+            {
+              "type": "resource_gte",
+              "resourceId": "ritual",
+              "amount": 2
+            }
+          ],
+          "effects": [
+            {
+              "type": "revive_hero"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            },
+            {
+              "type": "set_resource",
+              "scope": "self",
+              "resourceId": "ritual",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-skeletal-warband",
+      "name": "Skeletal Warband",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 4
+      },
+      "icon": "☠️",
+      "artworkDescription": "Three skeletons claw out of the earth at once, weapons still rusted to their fists",
+      "onPlay": {
+        "id": "undead-skeletal-warband-effect",
+        "name": "Cast: Skeletal Warband",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "skeleton"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "skeleton"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "skeleton"
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-grave-hush",
+      "name": "Grave Hush",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 3
+      },
+      "icon": "🤐",
+      "artworkDescription": "A silence settles over the battlefield and every living soldier forgets how to move",
+      "onPlay": {
+        "id": "undead-grave-hush-effect",
+        "name": "Cast: Grave Hush",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "tap_enemy_units"
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-cascade-of-bone",
+      "name": "Cascade of Bone",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 3
+      },
+      "icon": "💥",
+      "artworkDescription": "The whole field erupts in flying bone shards; friend and foe alike are shredded, and the dead are only fuel",
+      "onPlay": {
+        "id": "undead-cascade-of-bone-effect",
+        "name": "Cast: Cascade of Bone",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "damage_all_units",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-unquiet-grave",
+      "name": "Unquiet Grave",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 2
+      },
+      "icon": "⚰️",
+      "artworkDescription": "A soldier who has already fought is wrenched out of exhaustion and thrown back into the fray",
+      "onPlay": {
+        "id": "undead-unquiet-grave-effect",
+        "name": "Cast: Unquiet Grave",
+        "costs": [],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "tag": "undead",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "untap",
+            "scope": "target"
+          },
+          {
+            "type": "buff_target_until_end_of_turn",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-spirit-ward",
+      "name": "Spirit Ward",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 3
+      },
+      "icon": "👻",
+      "artworkDescription": "A chorus of trapped spirits shrieks a hostile incantation apart before its last syllable",
+      "timing": "reaction",
+      "reactionTo": [
+        "spellCast"
+      ],
+      "onPlay": {
+        "id": "undead-spirit-ward-effect",
+        "name": "Counter target spell",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "counter_spell"
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-plague-snare",
+      "name": "Plague Snare",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 2
+      },
+      "icon": "🪤",
+      "artworkDescription": "A buried snare of rotting sinew; whoever attacks the commander is soaked in grave-fever",
+      "isSecret": true,
+      "triggers": [
+        {
+          "event": "onEnemyAttack",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "target",
+              "resourceId": "poison",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-blood-pact",
+      "name": "Blood Pact",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 1
+      },
+      "icon": "🩸",
+      "artworkDescription": "The commander opens a vein to the dead and is repaid in power and in forgotten knowledge",
+      "onPlay": {
+        "id": "undead-blood-pact-effect",
+        "name": "Cast: Blood Pact",
+        "costs": [],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "hero",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 2
+          },
+          {
+            "type": "draw_cards",
+            "amount": 2
+          },
+          {
+            "type": "gain_resource",
+            "scope": "target",
+            "resourceId": "dp",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-crumbling-curse",
+      "name": "Crumbling Curse",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 3
+      },
+      "icon": "🏚️",
+      "artworkDescription": "Mortar turns to dust and stone to sand as the curse eats through an enemy structure",
+      "onPlay": {
+        "id": "undead-crumbling-curse-effect",
+        "name": "Cast: Crumbling Curse",
+        "costs": [],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "building",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 5
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-mend-the-crypt",
+      "name": "Mend the Crypt",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 2
+      },
+      "icon": "🩹",
+      "artworkDescription": "Bone knits back over broken stone and the walls of the necropolis close their wounds",
+      "onPlay": {
+        "id": "undead-mend-the-crypt-effect",
+        "name": "Cast: Mend the Crypt",
+        "costs": [],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "building",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "heal",
+            "scope": "target",
+            "amount": 6
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-soulreaper-scythe",
+      "name": "Soulreaper Scythe",
+      "objectType": "equipment",
+      "playCosts": {
+        "corpses": 2
+      },
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "icon": "🌾",
+      "artworkDescription": "A rusted scythe that drinks the life of whatever it fells and pours it back into its bearer",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "host",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-wraithmail",
+      "name": "Wraithmail",
+      "objectType": "equipment",
+      "playCosts": {
+        "corpses": 3
+      },
+      "slots": [
+        "body"
+      ],
+      "attachTo": "chooseCharacter",
+      "icon": "🥷",
+      "artworkDescription": "A shirt of spectral chain that leaves plague-sores on every hand that strikes its wearer",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "target",
+              "resourceId": "poison",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-coffin-lid-bulwark",
+      "name": "Coffin-Lid Bulwark",
+      "objectType": "equipment",
+      "playCosts": {
+        "corpses": 2
+      },
+      "slots": [
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "icon": "🚪",
+      "artworkDescription": "A nailed coffin lid carried as a shield; no enemy can look past whoever bears it",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "attachTags": [
+        "blocking"
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-phylactery-shard",
+      "name": "Phylactery Shard",
+      "objectType": "equipment",
+      "playCosts": {
+        "corpses": 2
+      },
+      "slots": [
+        "head"
+      ],
+      "attachTo": "chooseCharacter",
+      "icon": "💎",
+      "artworkDescription": "A sliver of a lich's soul-gem; shatter it and its stored vitality floods the wearer",
+      "attachModifiers": [
+        {
+          "propertyId": "maxHp",
+          "amount": 2
+        }
+      ],
+      "abilities": [
+        {
+          "id": "phylactery-shard-shatter",
+          "name": "Shatter",
+          "costs": [
+            {
+              "type": "sacrifice"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "host",
+              "amount": 6
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
       "id": "machine-clockwork-grunt",
       "name": "Clockwork Grunt",
       "objectType": "unit",
@@ -31922,6 +33169,1094 @@
             "objectType": "unit",
             "min": 1,
             "max": 1
+          }
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-assembly-hub",
+      "name": "Assembly Hub",
+      "objectType": "headquarters",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 2
+      },
+      "housingProvided": 5,
+      "icon": "🦾",
+      "artworkDescription": "A sprawling automated assembly floor: conveyor gantries feed a wall of fabrication arms that never stop moving",
+      "abilities": [
+        {
+          "id": "assembly-hub-recharge",
+          "name": "Recharge",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "assembly-hub-queue",
+          "name": "Assembly Queue",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "onPlay": {
+        "id": "assembly-hub-start",
+        "name": "Residual charge in the capacitors",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "energy",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-foreman-f7",
+      "name": "Foreman Unit F-7",
+      "objectType": "hero",
+      "properties": {
+        "attack": 2,
+        "currentHp": 12,
+        "maxHp": 12,
+        "armor": 1
+      },
+      "resources": {
+        "ap": 0
+      },
+      "equipmentSlots": {
+        "arm": 1,
+        "core": 1,
+        "utility": 3
+      },
+      "icon": "👷",
+      "artworkDescription": "A stocky supervisory robot in a hard-hat chassis, three tool-arms folded over its chest and a status lamp blinking amber",
+      "abilities": [
+        {
+          "id": "foreman-f7-directive",
+          "name": "Assembly Directive",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_own_units_until_end_of_turn",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "foreman-f7-requisition",
+          "name": "Requisition",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-suppression-autocannon",
+      "name": "Suppression Autocannon",
+      "objectType": "module",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "slot": "arm",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "icon": "🔫",
+      "artworkDescription": "A belt-fed autocannon on a gyro mount, hosing the enemy vanguard with a continuous stream of tracer fire",
+      "abilities": [
+        {
+          "id": "suppression-autocannon-fire",
+          "name": "Suppressing Fire",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 1
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage_enemy_units",
+              "amount": 2,
+              "line": "front"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-cryo-lance",
+      "name": "Cryo Lance",
+      "objectType": "module",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "slot": "arm",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "icon": "🧊",
+      "artworkDescription": "A frost-rimed lance on an arm mount, its tip venting liquid nitrogen that flash-freezes whatever it touches",
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-reactive-plating",
+      "name": "Reactive Plating",
+      "objectType": "module",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "slot": "utility",
+      "icon": "🧱",
+      "artworkDescription": "Overlapping armor tiles studded with shaped charges that punch outward the instant something strikes the chassis",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-salvage-hook",
+      "name": "Salvage Hook",
+      "objectType": "module",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "slot": "utility",
+      "icon": "🪝",
+      "artworkDescription": "A magnetic grapple winch that reels wreckage back to the chassis to be stripped for power cells",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-nanite-weave",
+      "name": "Nanite Weave",
+      "objectType": "module",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "slot": "utility",
+      "icon": "🧬",
+      "artworkDescription": "A shimmering under-layer of self-assembling nanites that knits torn plating shut between battles",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "host",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-overdrive-governor",
+      "name": "Overdrive Governor",
+      "objectType": "module",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "slot": "core",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "icon": "🎛️",
+      "artworkDescription": "A brass-and-ceramic governor housing with its safety cage cut open, dials pinned deep in the red",
+      "abilities": [
+        {
+          "id": "overdrive-governor-override",
+          "name": "Governor Override",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "host",
+              "propertyId": "attack",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-scrap-collector",
+      "name": "Scrap Collector",
+      "objectType": "unit",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "worker"
+      ],
+      "housingCost": 1,
+      "icon": "🧲",
+      "artworkDescription": "A patchwork salvage bot with a magnet-tipped crane arm, trailing a cart already heaped with twisted plating",
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-shield-drone",
+      "name": "Shield Drone",
+      "objectType": "unit",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "worker"
+      ],
+      "housingCost": 1,
+      "icon": "🛡️",
+      "artworkDescription": "A dinner-plate drone hovering beside its charge, a translucent energy screen flickering across its underside",
+      "abilities": [
+        {
+          "id": "shield-drone-projector",
+          "name": "Projector Field",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-repair-swarm",
+      "name": "Repair Swarm",
+      "objectType": "unit",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [],
+      "housingCost": 1,
+      "icon": "🐝",
+      "artworkDescription": "A humming cloud of coin-sized repair bots that drifts over damaged machines and welds them back together",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal_own_units",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-jammer-bot",
+      "name": "Jammer Bot",
+      "objectType": "unit",
+      "playCost": 1,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 2,
+        "currentHp": 1,
+        "maxHp": 1,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "📡",
+      "artworkDescription": "A stripped-down chassis wired to a wideband jamming charge that fries every enemy machine's comms the instant it dies",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap_enemy_units"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-recon-skimmer",
+      "name": "Recon Skimmer",
+      "objectType": "unit",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "housingCost": 1,
+      "icon": "🛸",
+      "artworkDescription": "A low-slung hover-scout skimming just above the dirt, its sensor mast sweeping back data to the assembly line",
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-breacher-tank",
+      "name": "Breacher Tank",
+      "objectType": "unit",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "siege"
+      ],
+      "housingCost": 2,
+      "bonusAttackVsBuildings": 3,
+      "icon": "🚜",
+      "artworkDescription": "A squat tracked demolition tank with a ram-plow blade and a stubby breaching cannon built to crack fortifications",
+      "triggers": [
+        {
+          "event": "onDestroyBuilding",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-static-lattice-drone",
+      "name": "Static Lattice Drone",
+      "objectType": "unit",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "🕸️",
+      "artworkDescription": "A spindly drone wrapped in a web of exposed capacitor coils that lash out with a numbing static discharge",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-salvage-titan",
+      "name": "Salvage Titan",
+      "objectType": "unit",
+      "playCost": 6,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 5,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "housingCost": 3,
+      "icon": "🦿",
+      "artworkDescription": "A hulking bipedal hauler bolted together from a dozen wrecks, its reactor casing still humming with stolen charge",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-overclocked-runner",
+      "name": "Overclocked Runner",
+      "objectType": "unit",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 4,
+        "currentHp": 1,
+        "maxHp": 1,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "🏃",
+      "artworkDescription": "A skeletal sprinter chassis with its governor ripped out, servos screaming as it blurs across the battlefield",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "untap",
+              "scope": "self"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-habitat-stack",
+      "name": "Habitat Stack",
+      "objectType": "building",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 0
+      },
+      "housingProvided": 4,
+      "icon": "🏢",
+      "artworkDescription": "A tower of stacked charging cradles where idle drones dock, each bay lit by a single green standby lamp",
+      "faction": "machine"
+    },
+    {
+      "id": "machine-tesla-pylon",
+      "name": "Tesla Pylon",
+      "objectType": "building",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "tags": [
+        "fortification"
+      ],
+      "housingProvided": 1,
+      "icon": "⚡",
+      "artworkDescription": "A squat armored pylon crowned with a crackling coil, arcing lightning at anything that dares strike the base",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-perimeter-scanner",
+      "name": "Perimeter Scanner",
+      "objectType": "building",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "icon": "📡",
+      "artworkDescription": "A rotating radar mast on a reinforced blockhouse, sweeping every wall and vent for anything that should not be there",
+      "abilities": [
+        {
+          "id": "perimeter-scanner-sweep",
+          "name": "Deep Scan",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage_infiltrators",
+              "scope": "target",
+              "amount": 3
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-orbital-uplink",
+      "name": "Orbital Uplink",
+      "objectType": "building",
+      "playCost": 6,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "icon": "🛰️",
+      "artworkDescription": "A dish array locked onto a satellite far overhead, painting the enemy stronghold for a slow, patient orbital lance",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "opponent",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-railgun-emplacement",
+      "name": "Railgun Emplacement",
+      "objectType": "building",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "icon": "🔭",
+      "artworkDescription": "A sandbagged gun pit built around a kilometre-long magnetic rail, its capacitor bank whining as it charges a shot",
+      "abilities": [
+        {
+          "id": "railgun-emplacement-fire",
+          "name": "Railgun Shot",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-credit-siphon",
+      "name": "Credit Siphon",
+      "objectType": "spell",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "icon": "💸",
+      "artworkDescription": "A fibre-optic tap clamped onto the enemy treasury line, silently draining their coffers into a machine account",
+      "onPlay": {
+        "id": "machine-credit-siphon-effect",
+        "name": "Credit Siphon",
+        "effects": [
+          {
+            "type": "steal_resource",
+            "resourceId": "gold",
+            "amount": 3
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-cascade-failure",
+      "name": "Cascade Failure",
+      "objectType": "spell",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "icon": "☢️",
+      "artworkDescription": "Every reactor on the field runs critical at once, a ring of white-hot arc discharge sweeping out in all directions",
+      "onPlay": {
+        "id": "machine-cascade-failure-effect",
+        "name": "Cascade Failure",
+        "effects": [
+          {
+            "type": "damage_all_units",
+            "amount": 3
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-mass-repair",
+      "name": "Mass Repair",
+      "objectType": "spell",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "icon": "🛠️",
+      "artworkDescription": "A wave of repair nanites floods the whole formation, sealing fractures and re-seating loose plating in seconds",
+      "onPlay": {
+        "id": "machine-mass-repair-effect",
+        "name": "Mass Repair",
+        "effects": [
+          {
+            "type": "heal_own_units",
+            "amount": 3
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-signal-jammer",
+      "name": "Signal Jammer",
+      "objectType": "spell",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "icon": "📵",
+      "artworkDescription": "A wideband jamming burst washes over the enemy line, and every unit freezes mid-stride with its comms dead",
+      "onPlay": {
+        "id": "machine-signal-jammer-effect",
+        "name": "Signal Jammer",
+        "effects": [
+          {
+            "type": "tap_enemy_units"
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-viral-payload",
+      "name": "Viral Payload",
+      "objectType": "spell",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "icon": "🦠",
+      "artworkDescription": "A packet of hostile firmware broadcast across the enemy network, corroding actuators and eating through wiring",
+      "onPlay": {
+        "id": "machine-viral-payload-effect",
+        "name": "Viral Payload",
+        "effects": [
+          {
+            "type": "afflict_enemy_units",
+            "resourceId": "poison",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-data-mine",
+      "name": "Data Mine",
+      "objectType": "spell",
+      "playCost": 1,
+      "playCostResource": "energy",
+      "icon": "⛏️",
+      "artworkDescription": "A quick dig through the archive stacks: pull two records, then shred whichever one is dead weight",
+      "onPlay": {
+        "id": "machine-data-mine-effect",
+        "name": "Data Mine",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "amount": 2
+          },
+          {
+            "type": "discard_cards",
+            "scope": "self",
+            "amount": 1
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-demolition-charge",
+      "name": "Demolition Charge",
+      "objectType": "spell",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "icon": "🧨",
+      "artworkDescription": "A remote-detonated shaped charge planted against a load-bearing wall, folding a whole structure in on itself",
+      "onPlay": {
+        "id": "machine-demolition-charge-effect",
+        "name": "Demolition Charge",
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 6
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "building",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-hot-swap",
+      "name": "Hot Swap",
+      "objectType": "spell",
+      "playCost": 1,
+      "playCostResource": "energy",
+      "icon": "🔄",
+      "artworkDescription": "A technician yanks a spent power cell and slams in a fresh one, and the machine lurches back to life mid-action",
+      "onPlay": {
+        "id": "machine-hot-swap-effect",
+        "name": "Hot Swap",
+        "effects": [
+          {
+            "type": "untap",
+            "scope": "target"
+          },
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "energy",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "character",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-logic-core",
+      "name": "Logic Core Processor",
+      "objectType": "caster",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 2,
+      "icon": "🧠",
+      "artworkDescription": "A brain-in-a-jar command processor on a treaded cradle, broadcasting corrupted firmware over the enemy network",
+      "abilities": [
+        {
+          "id": "logic-core-corrupt",
+          "name": "Corrupt Firmware",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property_enemy_units",
+              "propertyId": "attack",
+              "amount": -1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-purge-caster",
+      "name": "Purge Protocol Unit",
+      "objectType": "caster",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 2,
+      "icon": "🧹",
+      "artworkDescription": "A pale-plated sanitation-class command unit with a wide-bore emitter, built to scour weak machines from the field",
+      "abilities": [
+        {
+          "id": "purge-caster-purge",
+          "name": "Purge Protocol",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1,
+            "maxPropertyId": "maxHp",
+            "maxPropertyValue": 2
           }
         }
       ],
@@ -34385,6 +36720,53 @@
       ]
     },
     {
+      "id": "machine-assembly",
+      "faction": "machine",
+      "name": "Assembly Line Protocol",
+      "description": "Mass-produce cheap energy-powered drones from the Assembly Hub. Scrap feeds the furnace, jammer bots stall the enemy line, and the Foreman keeps the line rallied.",
+      "hq": "machine-assembly-hub",
+      "hero": "machine-foreman-f7",
+      "cards": {
+        "machine-scrap-collector": 3,
+        "machine-shield-drone": 2,
+        "machine-repair-swarm": 2,
+        "machine-jammer-bot": 4,
+        "machine-recon-skimmer": 3,
+        "machine-breacher-tank": 2,
+        "machine-static-lattice-drone": 3,
+        "machine-salvage-titan": 2,
+        "machine-overclocked-runner": 3,
+        "machine-habitat-stack": 4,
+        "machine-tesla-pylon": 2,
+        "machine-perimeter-scanner": 1,
+        "machine-orbital-uplink": 1,
+        "machine-railgun-emplacement": 2,
+        "machine-credit-siphon": 1,
+        "machine-cascade-failure": 1,
+        "machine-mass-repair": 1,
+        "machine-signal-jammer": 1,
+        "machine-viral-payload": 2,
+        "machine-data-mine": 2,
+        "machine-demolition-charge": 2,
+        "machine-hot-swap": 1,
+        "energy-cell": 4,
+        "machine-suppression-autocannon": 1,
+        "machine-cryo-lance": 2,
+        "machine-reactive-plating": 1,
+        "machine-salvage-hook": 1,
+        "machine-nanite-weave": 1,
+        "machine-overdrive-governor": 1,
+        "machine-logic-core": 2,
+        "machine-purge-caster": 2
+      },
+      "hqOptions": [
+        "machine-assembly-hub"
+      ],
+      "heroOptions": [
+        "machine-foreman-f7"
+      ]
+    },
+    {
       "id": "conclave-storm",
       "faction": "conclave",
       "name": "Aether Storm Circle",
@@ -34458,6 +36840,56 @@
       ],
       "heroOptions": [
         "plague-lord"
+      ]
+    },
+    {
+      "id": "undead-legion",
+      "faction": "undead",
+      "name": "The Grave Regent's Legion",
+      "description": "Every kill feeds the Citadel. Carrion ghouls bank corpses, sentinels leave skeletons behind, and the Regent turns a winning trade into a rallying cry.",
+      "hq": "undead-bone-citadel",
+      "hero": "undead-grave-regent",
+      "cards": {
+        "undead-carrion-ghoul": 3,
+        "undead-cairn-sentinel": 3,
+        "undead-pyre-zealot": 2,
+        "undead-barrow-sentinel": 2,
+        "undead-grave-vulture": 2,
+        "undead-marrow-leech": 2,
+        "undead-ravenous-revenant": 2,
+        "undead-withering-shade": 2,
+        "undead-grave-broker": 2,
+        "undead-bone-drover": 2,
+        "undead-hexbolt-acolyte": 2,
+        "undead-dirge-bearer": 2,
+        "undead-thorn-ossuary": 2,
+        "undead-miasma-well": 1,
+        "undead-bone-cradle": 2,
+        "undead-cursed-archive": 1,
+        "undead-sepulchral-shrine": 1,
+        "undead-soulreaper-scythe": 1,
+        "undead-wraithmail": 1,
+        "undead-coffin-lid-bulwark": 1,
+        "undead-phylactery-shard": 1,
+        "undead-skeletal-warband": 2,
+        "undead-grave-hush": 1,
+        "undead-cascade-of-bone": 1,
+        "undead-unquiet-grave": 2,
+        "undead-spirit-ward": 1,
+        "undead-plague-snare": 1,
+        "undead-blood-pact": 2,
+        "undead-crumbling-curse": 1,
+        "undead-mend-the-crypt": 1,
+        "skeleton": 4,
+        "shambling-corpse": 3,
+        "whispers-from-the-crypt": 2,
+        "plague-zombie": 2
+      },
+      "hqOptions": [
+        "undead-bone-citadel"
+      ],
+      "heroOptions": [
+        "undead-grave-regent"
       ]
     },
     {
