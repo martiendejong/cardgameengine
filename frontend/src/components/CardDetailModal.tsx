@@ -3,7 +3,7 @@ import { ObjectStateDto, CardDefinitionDto, AvailableAction } from '../types/gam
 import { DeckControl } from './CardView';
 import {
   explainCost, explainCondition, explainChoice, explainEffect, explainTrigger,
-  STAT_TIPS, TAG_TIPS, TYPE_TIPS, STATUS_TIPS, playCostTip, slotTip,
+  STAT_TIPS, TAG_TIPS, TYPE_TIPS, STATUS_TIPS, formatPlayCosts, playCostsTip, slotTip,
   HOUSING_COST_TIP, HOUSING_PROVIDED_TIP,
 } from '../utils/cardText';
 import { CARD_ART_LARGE as CARD_ART, cardFrameLarge as cardBg } from '../assets/cardArt';
@@ -118,9 +118,9 @@ export function CardDetailModal({ card, def, attachments, nameOf, actions, onAct
         <div className="detail-header">
           <h2 className="detail-name">{card.name}</h2>
           <div className="detail-header-meta">
-            {def?.playCost !== null && def?.playCost !== undefined && (
-              <span className="tip detail-cost" data-tip={playCostTip(def.playCost, def.playCostResource ?? 'gold')}>
-                {def.playCost} <img src={def.playCostResource === 'energy' ? STAT_ICONS.ap : STAT_ICONS.gold} className="detail-stat-icon" alt="" />
+            {def && formatPlayCosts(def) && (
+              <span className="tip detail-cost" data-tip={playCostsTip(def)}>
+                {formatPlayCosts(def)}
               </span>
             )}
             {def?.slot && (
