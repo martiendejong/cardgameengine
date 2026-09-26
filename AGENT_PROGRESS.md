@@ -892,3 +892,8 @@ with `gain_bank_resource` into the Hive HQ (a player-scoped `gain_resource` biom
 Verified: build 0 warnings; `dotnet test` 110/110 (was 25); 13 mutations each caught by the intended test; 400 bot games via
 `/api/simulate`, 0 errors; all 31 non-HQ/hero cards cast in 200 in-process bot games (>= 8 casts each).
 Left: 127 short of 200 -> task 4122 (batch 2). Pre-batch Brood cards have dead abilities, gold prices and the wrong biomass pool -> task 4121.
+
+## 2026-09-24 — task 3953 (Shadow faction batch 1)
+Done: PR #61 - 38 new `faction: shadow` cards (Undercity Exchange HQ, Guildmistress Vesper hero, 4 spy-units, 8 units, 3 equipment, 9 buildings, 12 spells) in a NEW 60-card precon `shadow-undercity`, because `shadow` and `shadow-stranglehold` are both at the 60-card deck maximum. Shadow-exclusive count 42 -> 80. Priced in gold (player pool, what the Exchange skims) and intel (HQ bank, cap 8).
+Verified: dotnet test 115/115 (90 new), 20/20 mutations caught, 400 bot games 0 errors (172W 209L 19D), 37 of 38 cards seen firing in bot play (the reaction spell can only be exercised by a real-engine test, the bot always passes).
+Left: batch 2 is task 4130; the pre-batch Shadow repair (16 Intel-priced cards in the base deck are uncastable, 14 of 42 cards no-op) is task 4129.
