@@ -468,6 +468,16 @@ activation the same turn is blocked by the tap; AP correctly accrues +1/turn and
 4-AP activation spends exactly 3, leaving 1 AP unspent (6 Skeletons total, no over-spend).
 Left: nothing — awaiting live playtest.
 
+## 2026-09-04 — task 1327 (round 2, testing failed)
+Plan: PR #30 shipped correct backend costs (Raider Camp gold+glory, Arcane Nexus 10 mana,
+Graveyard corpses+sacrifice, The Hive sacrifice-5), but "i dont see the changes" is real:
+CardView/CardDetailModal/LobbyPage only ever render `def.playCost` (singular) — any HQ
+whose cost lives solely in `playCosts`/`playCostsExtra` shows NO cost badge at all, and
+LobbyPage's admin-pool list literally prints "· free" for them. LobbyPage's toggleAdmin
+deck-clamp also uses a raw `playCost` null-check instead of the shared `isDeckEligible`
+helper, so it silently drops playCosts-only HQs from a deck when leaving admin mode.
+Also covering landing-pad (War Machine HQ), the other reported gap.
+
 ## 2026-09-04 — task 1421
 Done: confirmed all 27 heroes (incl. ax-01) already exist in game.json with valid
 stats/tags/abilities (prior session, task 908/PR #10) and the frontend deck-builder pool
@@ -800,6 +810,88 @@ Verified: the branch was behind master (PR #54, session-expired-401 fix, landed 
 branch was created) — merged origin/master in (clean, no conflicts), rebuilt and retested
 (clean, 25/25), pushed. PR #55 is now MERGEABLE/CLEAN.
 Left: status left at `review` — no reviewer has looked at PR #55 yet, watchdog did not merge.
+
+## 2026-09-17 — task 3375
+Done: reused and finished an abandoned WIP (from placeholder PR #34, closed by Martien as
+"no code changes" and re-filed as this task) that surfaces `playCosts`/`playCostsExtra` in
+`CardView`/`CardDetailModal`/`LobbyPage`/`DeckBuilderPanel`/`PlayerArea` via new
+`formatPlayCosts`/`playCostsTip` helpers, so Raider Camp/Arcane Nexus/Graveyard/The Hive show
+real cost badges instead of "free"; Lobby's admin-toggle deck clamp now uses `isDeckEligible`
+instead of a raw `playCost` check. Added the War Machine HQ's own cost: a new
+`sacrifice_equipment` cost type (`DefaultHandlers.cs`, mirrors `sacrifice_units` but destroys a
+hero-attached object) — `landing-pad` now costs 3 energy + sacrifice 1 equipped hero item
+instead of a flat 6 gold (proposed reading/numbers per Martien's task-1327 note, correctable at
+playtest). PR #56.
+Verified: `dotnet build` + `dotnet test` (25/25) + `npm run build` (tsc -b + vite) all clean. A
+throwaway xUnit harness (not committed) drove `RuleEngine.ExecuteAction("playCard")` for all 5
+HQs through the real engine — each pays/drains correctly and rejects cleanly with zero side
+effects when underpaid; landing-pad's sacrifice specifically ignores equipment attached to a
+non-hero unit. Real Playwright run against live `dotnet run` (port 5011) + `vite` (port 5183)
+dev servers: registered+confirmed+logged in a fresh account, Lobby pool shows real badges for
+all 5 HQs (none print "free"), started a real vs-Computer match (Raiders) and confirmed both
+the hand card and the detail modal show "5💰 2🏆" for Raider Camp with the correct tooltip.
+Zero console errors throughout.
+Left: nothing agent-doable — the cost numbers (esp. landing-pad's) are flagged as a proposed
+balance, correctable at a live playtest per the task's own technical notes.
+
+## 2026-09-17 — task 3375 round 2 (PR #56 review fix)
+Done: fixed the review-blocking bug — `HeroEquippedItems` (`DefaultHandlers.cs`) only matched
+`objectType == "equipment"`, but War Machine module items (plasma-cannon, missile-launcher,
+etc.) are `objectType == "module"`, a sibling type under `card`, not a subtype of `equipment`.
+Since only `equipment`/`module` cards ever populate `AttachedToId` (the only types with a
+`slot`/`slots` field), dropped the hardcoded type filter entirely — being attached to a hero is
+itself sufficient evidence, and any future attachable type is covered automatically.
+Verified: `dotnet build` + `dotnet test` (25/25) + `npm run build` clean. Throwaway xUnit test
+(not committed) reproduced the reviewer's exact scenario (equip plasma-cannon on AX-01, play
+landing-pad from hand) — failed with "Cannot pay cost: sacrifice_equipment" before the fix,
+passed after (energy drains 3, +2 from landing-pad's own onPlay bonus; module destroyed).
+Left: nothing agent-doable. Same live-playtest caveat on the cost numbers as round 1.
+
+## 2026-09-24 — task 3949 (Machine faction card expansion, batch 1)
+Done: PR #57 adds 32 role-distinct faction-exclusive Machine cards (42 -> 74; module 5->11, unit 19->28,
+building 7->12, spell 10->18, caster 1->3, plus a new HQ and hero) and a new precon deck `machine-assembly`
+(60 cards, own Assembly Hub HQ + Foreman F-7 hero) so none are orphaned. Every card is energy-priced (Machine has no
+gold income) and uses only registered effects/triggers. Also fixed a latent engine bug the new Data Mine card exposed:
+`discard_cards` scope self could pick the spell being cast (it is still in hand while it resolves).
+Verified: `dotnet build` clean, `dotnet test` 71/71 (was 25): 46 new tests in MachineExpansion3949Tests (schema/key lint,
+deck wiring, role-distinctness fingerprint, one real-RuleEngine behaviour test per card, bot-vs-bot smoke). Five
+deliberate mutations (dropped choice, wrong scope, `property` key typo, orphaned card, cloned role) were all caught.
+Bot sweep, new deck vs all 20 precons, 20 games each (400 games): 0 errors/crashes, all 30 non-HQ/hero new cards cast.
+Left: 2 pre-existing findings are NOT fixed here (out of scope): 33/66 pre-batch Machine cards have silently dead abilities
+and 64/66 are gold-priced -> follow-up task 4100. Batches 2..n (74 -> 200) continue as new machine-* precon decks.
+
+## 2026-09-24 — task 3951 (Undead faction card expansion, batch 1)
+Done: PR #58 adds 32 role-distinct faction-exclusive Undead cards (42 -> 74: HQ + hero, units 24->36, buildings 7->12,
+spells 11->20, plus 4 equipment) and a new precon deck `undead-legion` (60 cards, own Bone Citadel HQ + Grave Regent hero) so none
+are orphaned. Every card is priced in corpses (Undead has no gold income; corpses are paid from the Citadel bank) and uses only
+registered effects/triggers/costs/conditions. Data only: no engine change was needed.
+Verified: `dotnet build` clean (0 warnings), `dotnet test` 75/75 (was 25): 50 new tests in UndeadExpansion3951Tests (schema/key
+lint, vocabulary incl. conditions, deck wiring, role-distinctness fingerprint vs the whole existing Undead roster, one real-RuleEngine
+behaviour test per card). Nine deliberate mutations (typo'd key, dropped choice, orphaned card, cloned role, unfired event,
+unregistered effect/condition, gold price, wrong resource pool) were all caught. Bot sweep 380 games (new deck vs the other 19
+precons, 20 each): 0 exceptions, all 32 cards seen in play; new deck wins 80% (field spans 5%-98%, see PR).
+Left: pre-existing 42 Undead cards are all gold-priced with no gold source and ~20 have dead abilities -> follow-up task 4105.
+Batches 2..n (74 -> 200) continue as new undead-* precon decks.
+
+## 2026-09-24 — task 3950
+Done: batch 1 of the Conclave expansion, 55 -> 87 faction-exclusive cards (equipment 3 -> 13, buildings 8 -> 15,
+units 25 -> 31, spells 19 -> 25, plus a new HQ, hero and one caster), all `"faction": "conclave"`, as a new `rune-*`
+sub-theme wired into a new 60-card precon `conclave-runecraft`. Priced in mana (paid from the HQ bank) because the
+Conclave HQs produce mana and no gold. PR #59.
+Verified: dotnet build 0 warnings/errors; dotnet test 91/91 (66 new in ConclaveExpansion3950Tests: raw-JSON key lint,
+engine vocabulary lint, deck wiring/legality, role fingerprints vs the 55 old cards, and one real-engine behaviour
+test per card). 10 mutations of game.json each caught by the intended tests. Real API bot-vs-bot, runecraft vs all 20
+precons x 20 games: 0 crashes, every new card except the reaction-only Disjunction was cast (bots always pass in
+reaction windows).
+Left: pre-batch Conclave cards have dead abilities and gold pricing, filed as task 4120; 113 cards still to reach 200.
+
+## 2026-09-24 — task 3952
+Done: Brood batch 1, 40 -> 73 faction-exclusive cards (HQ + hero + 12 buildings + 11 units + 8 spells), all in a new 60-card
+`brood-incubation` precon (`brood` and `brood-apex` are already at the deck maximum). PR #60. Biomass-only pricing, banked
+with `gain_bank_resource` into the Hive HQ (a player-scoped `gain_resource` biomass never reaches the bank that pays costs).
+Verified: build 0 warnings; `dotnet test` 110/110 (was 25); 13 mutations each caught by the intended test; 400 bot games via
+`/api/simulate`, 0 errors; all 31 non-HQ/hero cards cast in 200 in-process bot games (>= 8 casts each).
+Left: 127 short of 200 -> task 4122 (batch 2). Pre-batch Brood cards have dead abilities, gold prices and the wrong biomass pool -> task 4121.
 
 ## 2026-09-24 — task 3953 (Shadow faction batch 1)
 Done: PR #61 - 38 new `faction: shadow` cards (Undercity Exchange HQ, Guildmistress Vesper hero, 4 spy-units, 8 units, 3 equipment, 9 buildings, 12 spells) in a NEW 60-card precon `shadow-undercity`, because `shadow` and `shadow-stranglehold` are both at the 60-card deck maximum. Shadow-exclusive count 42 -> 80. Priced in gold (player pool, what the Exchange skims) and intel (HQ bank, cap 8).

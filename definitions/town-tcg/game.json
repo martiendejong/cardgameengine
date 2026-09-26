@@ -1419,7 +1419,15 @@
       "id": "landing-pad",
       "name": "Landing Pad",
       "objectType": "headquarters",
-      "playCost": 6,
+      "playCosts": {
+        "energy": 3
+      },
+      "playCostsExtra": [
+        {
+          "type": "sacrifice_equipment",
+          "amount": 1
+        }
+      ],
       "properties": {
         "currentHp": 10,
         "maxHp": 10,
@@ -30903,6 +30911,1125 @@
       "faction": "brood"
     },
     {
+      "id": "brood-incubation-hive",
+      "name": "Incubation Hive",
+      "objectType": "hive-hq",
+      "playCosts": {
+        "biomass": 5
+      },
+      "properties": {
+        "currentHp": 11,
+        "maxHp": 11,
+        "armor": 1
+      },
+      "resourceCapacities": {
+        "biomass": 14
+      },
+      "resources": {
+        "biomass": 3
+      },
+      "housingProvided": 6,
+      "tags": [
+        "hive"
+      ],
+      "icon": "🥚",
+      "artworkDescription": "A domed mound of wet chitin, its walls studded with translucent egg sacs that pulse in slow, patient rhythm",
+      "abilities": [
+        {
+          "id": "incubation-ferment",
+          "name": "Ferment",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "biomass",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "incubation-hatch",
+          "name": "Hatch Brood",
+          "costs": [
+            {
+              "type": "tap"
+            },
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "larva"
+            },
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "onPlay": {
+        "id": "incubation-hive-start",
+        "name": "A Larva squirms out of the first egg sac",
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "larva"
+          }
+        ]
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-matriarch-vess",
+      "name": "Matriarch Vess",
+      "objectType": "hero",
+      "properties": {
+        "attack": 3,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 1
+      },
+      "tags": [],
+      "icon": "👑",
+      "artworkDescription": "A scarred brood-mother in a crown of fused mandibles, licking the wounds of her swarm as she drives it onward",
+      "abilities": [
+        {
+          "id": "vess-molt",
+          "name": "Shared Molt",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal_own_units",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "vess-lash",
+          "name": "Barbed Lash",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 1
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-warren",
+      "name": "Brood Warren",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 3
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [],
+      "housingProvided": 5,
+      "icon": "🕳️",
+      "artworkDescription": "A honeycomb of packed-earth burrows where the swarm sleeps shoulder to shoulder",
+      "faction": "brood"
+    },
+    {
+      "id": "brood-mending-cocoon",
+      "name": "Mending Cocoon",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 3
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "🧬",
+      "artworkDescription": "A translucent silk cocoon bathing the swarm in a warm, knitting fluid",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal_own_units",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-spore-vent",
+      "name": "Spore Vent",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 4
+      },
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "☁️",
+      "artworkDescription": "A fleshy chimney breathing out slow clouds of rot-spores that settle in enemy lungs",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "afflict_enemy_units",
+              "resourceId": "poison",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-acid-moat",
+      "name": "Acid Moat",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 4
+      },
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "tags": [
+        "fortification"
+      ],
+      "icon": "🧪",
+      "artworkDescription": "A ring of bubbling caustic slime around the nest, hissing at anything that touches the wall",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-gestation-vat",
+      "name": "Gestation Vat",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 4
+      },
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "⚗️",
+      "artworkDescription": "A steaming vat of nutrient slurry that forces a fresh clutch to hatch overnight",
+      "abilities": [
+        {
+          "id": "vat-accelerate",
+          "name": "Accelerate Hatching",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "cost_discount",
+              "resourceId": "biomass",
+              "amount": 2,
+              "tag": "organic"
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-bile-tower",
+      "name": "Bile Tower",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 5
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [],
+      "icon": "🏯",
+      "artworkDescription": "A spire of hardened resin fed by a bile-gland at its base, lobbing corrosive globs at the enemy stronghold",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "opponent",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-chitin-forge",
+      "name": "Chitin Forge",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 5
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "tags": [],
+      "icon": "🛡️",
+      "artworkDescription": "A humming gland-forge that lays a fresh coat of hardening chitin over every carapace in the swarm",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_own_units_until_end_of_turn",
+              "propertyId": "armor",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-siege-gland",
+      "name": "Siege Gland",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 5
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [],
+      "icon": "💧",
+      "artworkDescription": "A bloated acid sac on a stalk, straining to spit a lance of corrosive bile across the field",
+      "abilities": [
+        {
+          "id": "siege-gland-spit",
+          "name": "Corrosive Spit",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-corrosive-bog",
+      "name": "Corrosive Bog",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 5
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [],
+      "icon": "🟤",
+      "artworkDescription": "A stagnant pool of digestive enzymes that seeps under the enemy line and eats their armor away",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property_enemy_units",
+              "propertyId": "armor",
+              "amount": -1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-stinging-thicket",
+      "name": "Stinging Thicket",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 6
+      },
+      "properties": {
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "🌵",
+      "artworkDescription": "A knot of barbed vines that lashes out and pins whatever holds the enemy front line",
+      "abilities": [
+        {
+          "id": "thicket-sting",
+          "name": "Pin Down",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap_enemy_units",
+              "line": "front"
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-neural-node",
+      "name": "Neural Node",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 6
+      },
+      "properties": {
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [],
+      "icon": "🧠",
+      "artworkDescription": "A throbbing ganglion buried in the nest that feeds the swarm one clear thought each dawn",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-womb-of-return",
+      "name": "Womb of Return",
+      "objectType": "building",
+      "playCosts": {
+        "biomass": 7
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [],
+      "icon": "🫀",
+      "artworkDescription": "A dark chamber where a fallen matriarch is rebuilt, sinew by sinew, from the nest's own flesh",
+      "abilities": [
+        {
+          "id": "womb-rebirth",
+          "name": "Rebirth",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "own_hero_destroyed"
+            }
+          ],
+          "effects": [
+            {
+              "type": "revive_hero"
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-carrion-crawler",
+      "name": "Carrion Crawler",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 2
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "🦗",
+      "artworkDescription": "A many-legged scavenger that gorges on whatever it fells and carries the meat back to the hive",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-venomfang-skitterer",
+      "name": "Venomfang Skitterer",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 2
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "🕷️",
+      "artworkDescription": "A twitchy needle-legged thing whose every bite leaves a slow, spreading venom behind",
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "target",
+              "resourceId": "poison",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-hive-scout",
+      "name": "Hive Scout",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 2
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "👁️",
+      "artworkDescription": "A wide-eyed forager sent ahead of the swarm, whose stolen glimpses arrive as fresh instinct back at the nest",
+      "onPlay": {
+        "id": "brood-hive-scout-effect",
+        "name": "Play: Hive Scout",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ]
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-nectar-drone",
+      "name": "Nectar Drone",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 2
+      },
+      "properties": {
+        "attack": 0,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "🐝",
+      "artworkDescription": "A swollen, harmless drone that wanders the nest milking the walls for rich biomass nectar",
+      "abilities": [
+        {
+          "id": "nectar-drone-milk",
+          "name": "Milk the Walls",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "biomass",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-shell-tender",
+      "name": "Shell Tender",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 3
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "🐚",
+      "artworkDescription": "A gentle armored worker that paints a glossy layer of resin over a packmate's carapace before every fight",
+      "abilities": [
+        {
+          "id": "shell-tender-glaze",
+          "name": "Resin Glaze",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-wall-gnawer",
+      "name": "Wall Gnawer",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 3
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "🪱",
+      "artworkDescription": "A beetle with chisel jaws that eats through timber and mortar alike and hauls the wreck home as food",
+      "bonusAttackVsBuildings": 3,
+      "triggers": [
+        {
+          "event": "onDestroyBuilding",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "biomass",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-plague-bearer",
+      "name": "Plague Bearer",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 3
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "🦠",
+      "artworkDescription": "A bloated carrier whose ruptured hide releases a choking cloud of blight over the whole enemy line",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "afflict_enemy_units",
+              "resourceId": "poison",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-frenzied-rusher",
+      "name": "Frenzied Rusher",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 3
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 1,
+      "icon": "🐺",
+      "artworkDescription": "A blood-crazed runner that never stops after a kill, already sprinting toward the next throat",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "untap",
+              "scope": "self"
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-acid-blood-brute",
+      "name": "Acid-Blood Brute",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 4
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 2,
+      "icon": "🦬",
+      "artworkDescription": "A hulking beast with caustic ichor for blood, spraying searing gore over anything that dares wound it",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-bulwark-beetle",
+      "name": "Bulwark Beetle",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 4
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "tags": [
+        "organic",
+        "blocking"
+      ],
+      "housingCost": 2,
+      "icon": "🪲",
+      "artworkDescription": "A boulder-backed beetle that plants itself in the path of the enemy and dares them to go around",
+      "faction": "brood"
+    },
+    {
+      "id": "brood-gorging-horror",
+      "name": "Gorging Horror",
+      "objectType": "unit",
+      "playCosts": {
+        "biomass": 5
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "organic"
+      ],
+      "housingCost": 2,
+      "icon": "👹",
+      "artworkDescription": "A ravenous mass of muscle that grows heavier and meaner with every meal the swarm feeds it",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property",
+              "scope": "self",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "brood"
+    },
+    {
+      "id": "brood-carrion-call",
+      "name": "Carrion Call",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 2
+      },
+      "icon": "📯",
+      "artworkDescription": "A deep, wet shriek that summons scavengers and pays the caller in fresh biomass",
+      "onPlay": {
+        "id": "brood-carrion-call-effect",
+        "name": "Carrion Call",
+        "effects": [
+          {
+            "type": "gain_bank_resource",
+            "resourceId": "biomass",
+            "amount": 3
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ]
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-adrenal-rush",
+      "name": "Adrenal Rush",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 2
+      },
+      "icon": "💉",
+      "artworkDescription": "A jolt of raw adrenaline that snaps a spent packmate back onto its feet, snarling for more",
+      "onPlay": {
+        "id": "brood-adrenal-rush-effect",
+        "name": "Adrenal Rush",
+        "effects": [
+          {
+            "type": "untap",
+            "scope": "target"
+          },
+          {
+            "type": "buff_target_until_end_of_turn",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": 2
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-necrotic-spores",
+      "name": "Necrotic Spores",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 3
+      },
+      "icon": "🍄",
+      "artworkDescription": "A hissing burst of black spores that settles in every wound on the enemy side of the field",
+      "onPlay": {
+        "id": "brood-necrotic-spores-effect",
+        "name": "Necrotic Spores",
+        "effects": [
+          {
+            "type": "afflict_enemy_units",
+            "resourceId": "poison",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-paralytic-venom",
+      "name": "Paralytic Venom",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 3
+      },
+      "icon": "🧊",
+      "artworkDescription": "A single, perfectly placed sting that locks a victim's muscles solid for a full turn",
+      "onPlay": {
+        "id": "brood-paralytic-venom-effect",
+        "name": "Paralytic Venom",
+        "effects": [
+          {
+            "type": "freeze",
+            "scope": "target"
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-regrowth",
+      "name": "Regrowth",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 3
+      },
+      "icon": "🌱",
+      "artworkDescription": "Torn flesh knits over torn flesh as the whole swarm sheds its wounds in a single shuddering molt",
+      "onPlay": {
+        "id": "brood-regrowth-effect",
+        "name": "Regrowth",
+        "effects": [
+          {
+            "type": "heal_own_units",
+            "amount": 3
+          }
+        ]
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-mind-rend",
+      "name": "Mind Rend",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 3
+      },
+      "icon": "💢",
+      "artworkDescription": "The hive-mind lashes out through the swarm's thousand eyes and tears a stray thought from the enemy commander",
+      "onPlay": {
+        "id": "brood-mind-rend-effect",
+        "name": "Mind Rend",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "amount": 1
+          },
+          {
+            "type": "discard_cards",
+            "amount": 1
+          }
+        ]
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-swarm-strike",
+      "name": "Swarm Strike",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 3
+      },
+      "icon": "🗡️",
+      "artworkDescription": "Every mouth in the swarm lunges for the same throat at once; the bigger the swarm, the deeper the bite",
+      "onPlay": {
+        "id": "brood-swarm-strike-effect",
+        "name": "Swarm Strike",
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 1,
+            "perTaggedBuilding": "organic"
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "brood"
+    },
+    {
+      "id": "brood-devouring-swarm",
+      "name": "Devouring Swarm",
+      "objectType": "spell",
+      "playCosts": {
+        "biomass": 4
+      },
+      "icon": "🐛",
+      "artworkDescription": "A tide of gnashing larvae pours over the enemy front line and strips it to the bone",
+      "onPlay": {
+        "id": "brood-devouring-swarm-effect",
+        "name": "Devouring Swarm",
+        "effects": [
+          {
+            "type": "damage_enemy_units",
+            "amount": 3,
+            "line": "front"
+          }
+        ]
+      },
+      "faction": "brood"
+    },
+    {
       "id": "warbond-oath-shield",
       "name": "Oath Shield",
       "objectType": "unit",
@@ -33012,6 +34139,1245 @@
       "faction": "undead"
     },
     {
+      "id": "undead-bone-citadel",
+      "name": "Bone Citadel",
+      "objectType": "graveyard-hq",
+      "properties": {
+        "currentHp": 11,
+        "maxHp": 11,
+        "armor": 2
+      },
+      "resources": {
+        "corpses": 3
+      },
+      "resourceCapacities": {
+        "corpses": 10
+      },
+      "housingProvided": 8,
+      "tags": [
+        "boneyard"
+      ],
+      "icon": "🏰",
+      "artworkDescription": "A fortress raised from the fused ribcages of a fallen army, its gate a screaming skull",
+      "abilities": [
+        {
+          "id": "bone-citadel-exhume",
+          "name": "Exhume",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "corpses",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "bone-citadel-ossify",
+          "name": "Ossify",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "corpses",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "usesPerTurn": 1,
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "oncePerTurn": true,
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-grave-regent",
+      "name": "Vael, Grave Regent",
+      "objectType": "necromancer-hero",
+      "properties": {
+        "attack": 3,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "resourceCapacities": {
+        "dp": 6
+      },
+      "icon": "👑",
+      "artworkDescription": "A crowned revenant in rusted plate who commands the dead as a general commands a levy",
+      "abilities": [
+        {
+          "id": "grave-regent-command",
+          "name": "Regent's Command",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "dp",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_own_units_until_end_of_turn",
+              "propertyId": "attack",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "dp",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "dp",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-carrion-ghoul",
+      "name": "Carrion Ghoul",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 2
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🧟",
+      "artworkDescription": "A stooped scavenger that gnaws every corpse it fells down to the last usable bone",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "corpses",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-cairn-sentinel",
+      "name": "Cairn Sentinel",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🪦",
+      "artworkDescription": "A grave-marker golem of stacked stones that spills a skeleton from its ruined chest when it falls",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-pyre-zealot",
+      "name": "Pyre Zealot",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🔥",
+      "artworkDescription": "A hollow cultist wrapped in oil-soaked shrouds who lives only to be lit",
+      "abilities": [
+        {
+          "id": "pyre-zealot-immolate",
+          "name": "Immolate",
+          "costs": [
+            {
+              "type": "sacrifice"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 4
+            },
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-barrow-sentinel",
+      "name": "Barrow Sentinel",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 4
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "guard",
+        "retaliate",
+        "undead"
+      ],
+      "housingCost": 2,
+      "icon": "🛡️",
+      "artworkDescription": "A barrow-king's honor guard in green-crusted mail; whoever cuts it down is dragged into the mound's chill",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-grave-vulture",
+      "name": "Grave Vulture",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 2
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "ranged",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🦅",
+      "artworkDescription": "A bald, rib-thin carrion bird that circles wherever an enemy stronghold is bleeding",
+      "triggers": [
+        {
+          "event": "onFriendlyDamageHqOrHero",
+          "oncePerTurn": true,
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-marrow-leech",
+      "name": "Marrow Leech",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🪱",
+      "artworkDescription": "A bloated, lamprey-mouthed thing that mends itself with every mouthful of living marrow",
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "self",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-ravenous-revenant",
+      "name": "Ravenous Revenant",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 4
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 2,
+      "icon": "💀",
+      "artworkDescription": "A starved dead knight that sheds its fatigue with each kill and lunges straight at the next throat",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "untap",
+              "scope": "self"
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-withering-shade",
+      "name": "Withering Shade",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 2
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🌑",
+      "artworkDescription": "A thin shadow whose every touch leaves a limb a little weaker than before",
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "attack",
+              "amount": -1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-grave-broker",
+      "name": "Grave Broker",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 2
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "💼",
+      "artworkDescription": "A gaunt undertaker who haggles with the dead and always secures the next body at a discount",
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "cost_discount",
+              "resourceId": "corpses",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-bone-drover",
+      "name": "Bone Drover",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 5
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 2,
+      "icon": "🦴",
+      "artworkDescription": "A skeletal herdsman who arrives already driving a pair of rattling skeletons before him",
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-hexbolt-acolyte",
+      "name": "Hexbolt Acolyte",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 4
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "ranged",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🔮",
+      "artworkDescription": "A cowled adept who threads hexes past every bodyguard straight to the enemy commander",
+      "abilities": [
+        {
+          "id": "hexbolt-acolyte-hexbolt",
+          "name": "Hexbolt",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "hero",
+            "min": 1,
+            "max": 1
+          },
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-dirge-bearer",
+      "name": "Dirge Bearer",
+      "objectType": "unit",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "undead"
+      ],
+      "housingCost": 1,
+      "icon": "🔔",
+      "artworkDescription": "A pallbearer tolling a cracked funeral bell whose tune stirs every dead soldier to fight harder",
+      "abilities": [
+        {
+          "id": "dirge-bearer-dirge",
+          "name": "Grave Dirge",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_tag_until_end_of_turn",
+              "tag": "undead",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-thorn-ossuary",
+      "name": "Thorn Ossuary",
+      "objectType": "building",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 3
+      },
+      "housingProvided": 2,
+      "icon": "🧱",
+      "artworkDescription": "A wall of interlocked bones bristling with rib-spikes that skewer whoever dares to strike it",
+      "tags": [
+        "fortification"
+      ],
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-miasma-well",
+      "name": "Miasma Well",
+      "objectType": "building",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "housingProvided": 2,
+      "icon": "🧪",
+      "artworkDescription": "A capped charnel well whose green vapors seep across the field and into every enemy lung",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "afflict_enemy_units",
+              "resourceId": "poison",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-bone-cradle",
+      "name": "Bone Cradle",
+      "objectType": "building",
+      "playCosts": {
+        "corpses": 4
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingProvided": 4,
+      "icon": "🛏️",
+      "artworkDescription": "A vast nest of knitted bones where the wounded dead are rocked slowly back to strength",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal_own_units",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-cursed-archive",
+      "name": "Cursed Archive",
+      "objectType": "building",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "housingProvided": 2,
+      "icon": "📜",
+      "artworkDescription": "A crypt library whose whispering scrolls trade forbidden lore for a little of the archive itself",
+      "abilities": [
+        {
+          "id": "cursed-archive-consult",
+          "name": "Consult the Dead",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            },
+            {
+              "type": "direct_damage",
+              "scope": "self",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-sepulchral-shrine",
+      "name": "Sepulchral Shrine",
+      "objectType": "shrine-type",
+      "playCosts": {
+        "corpses": 3
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingProvided": 2,
+      "icon": "⛩️",
+      "artworkDescription": "A black-stone shrine that pulls a fallen commander back from the grave, and a skeleton with them",
+      "abilities": [
+        {
+          "id": "sepulchral-shrine-begin-rite",
+          "name": "Rite of Return",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "own_hero_destroyed"
+            },
+            {
+              "type": "resource_lte",
+              "resourceId": "ritual",
+              "amount": 0
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_resource",
+              "scope": "self",
+              "resourceId": "ritual",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [
+            {
+              "type": "resource_gte",
+              "resourceId": "ritual",
+              "amount": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "ritual",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "event": "onTurnStart",
+          "conditions": [
+            {
+              "type": "resource_gte",
+              "resourceId": "ritual",
+              "amount": 2
+            }
+          ],
+          "effects": [
+            {
+              "type": "revive_hero"
+            },
+            {
+              "type": "summon",
+              "scope": "player",
+              "cardId": "skeleton"
+            },
+            {
+              "type": "set_resource",
+              "scope": "self",
+              "resourceId": "ritual",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-skeletal-warband",
+      "name": "Skeletal Warband",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 4
+      },
+      "icon": "☠️",
+      "artworkDescription": "Three skeletons claw out of the earth at once, weapons still rusted to their fists",
+      "onPlay": {
+        "id": "undead-skeletal-warband-effect",
+        "name": "Cast: Skeletal Warband",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "skeleton"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "skeleton"
+          },
+          {
+            "type": "summon",
+            "scope": "player",
+            "cardId": "skeleton"
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-grave-hush",
+      "name": "Grave Hush",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 3
+      },
+      "icon": "🤐",
+      "artworkDescription": "A silence settles over the battlefield and every living soldier forgets how to move",
+      "onPlay": {
+        "id": "undead-grave-hush-effect",
+        "name": "Cast: Grave Hush",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "tap_enemy_units"
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-cascade-of-bone",
+      "name": "Cascade of Bone",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 3
+      },
+      "icon": "💥",
+      "artworkDescription": "The whole field erupts in flying bone shards; friend and foe alike are shredded, and the dead are only fuel",
+      "onPlay": {
+        "id": "undead-cascade-of-bone-effect",
+        "name": "Cast: Cascade of Bone",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "damage_all_units",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-unquiet-grave",
+      "name": "Unquiet Grave",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 2
+      },
+      "icon": "⚰️",
+      "artworkDescription": "A soldier who has already fought is wrenched out of exhaustion and thrown back into the fray",
+      "onPlay": {
+        "id": "undead-unquiet-grave-effect",
+        "name": "Cast: Unquiet Grave",
+        "costs": [],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "tag": "undead",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "untap",
+            "scope": "target"
+          },
+          {
+            "type": "buff_target_until_end_of_turn",
+            "scope": "target",
+            "propertyId": "attack",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-spirit-ward",
+      "name": "Spirit Ward",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 3
+      },
+      "icon": "👻",
+      "artworkDescription": "A chorus of trapped spirits shrieks a hostile incantation apart before its last syllable",
+      "timing": "reaction",
+      "reactionTo": [
+        "spellCast"
+      ],
+      "onPlay": {
+        "id": "undead-spirit-ward-effect",
+        "name": "Counter target spell",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "counter_spell"
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-plague-snare",
+      "name": "Plague Snare",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 2
+      },
+      "icon": "🪤",
+      "artworkDescription": "A buried snare of rotting sinew; whoever attacks the commander is soaked in grave-fever",
+      "isSecret": true,
+      "triggers": [
+        {
+          "event": "onEnemyAttack",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "target",
+              "resourceId": "poison",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-blood-pact",
+      "name": "Blood Pact",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 1
+      },
+      "icon": "🩸",
+      "artworkDescription": "The commander opens a vein to the dead and is repaid in power and in forgotten knowledge",
+      "onPlay": {
+        "id": "undead-blood-pact-effect",
+        "name": "Cast: Blood Pact",
+        "costs": [],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "hero",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 2
+          },
+          {
+            "type": "draw_cards",
+            "amount": 2
+          },
+          {
+            "type": "gain_resource",
+            "scope": "target",
+            "resourceId": "dp",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-crumbling-curse",
+      "name": "Crumbling Curse",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 3
+      },
+      "icon": "🏚️",
+      "artworkDescription": "Mortar turns to dust and stone to sand as the curse eats through an enemy structure",
+      "onPlay": {
+        "id": "undead-crumbling-curse-effect",
+        "name": "Cast: Crumbling Curse",
+        "costs": [],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "building",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "damage",
+            "scope": "target",
+            "amount": 5
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-mend-the-crypt",
+      "name": "Mend the Crypt",
+      "objectType": "spell",
+      "playCosts": {
+        "corpses": 2
+      },
+      "icon": "🩹",
+      "artworkDescription": "Bone knits back over broken stone and the walls of the necropolis close their wounds",
+      "onPlay": {
+        "id": "undead-mend-the-crypt-effect",
+        "name": "Cast: Mend the Crypt",
+        "costs": [],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "building",
+          "min": 1,
+          "max": 1
+        },
+        "effects": [
+          {
+            "type": "heal",
+            "scope": "target",
+            "amount": 6
+          }
+        ]
+      },
+      "faction": "undead"
+    },
+    {
+      "id": "undead-soulreaper-scythe",
+      "name": "Soulreaper Scythe",
+      "objectType": "equipment",
+      "playCosts": {
+        "corpses": 2
+      },
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "icon": "🌾",
+      "artworkDescription": "A rusted scythe that drinks the life of whatever it fells and pours it back into its bearer",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "host",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-wraithmail",
+      "name": "Wraithmail",
+      "objectType": "equipment",
+      "playCosts": {
+        "corpses": 3
+      },
+      "slots": [
+        "body"
+      ],
+      "attachTo": "chooseCharacter",
+      "icon": "🥷",
+      "artworkDescription": "A shirt of spectral chain that leaves plague-sores on every hand that strikes its wearer",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "target",
+              "resourceId": "poison",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-coffin-lid-bulwark",
+      "name": "Coffin-Lid Bulwark",
+      "objectType": "equipment",
+      "playCosts": {
+        "corpses": 2
+      },
+      "slots": [
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "icon": "🚪",
+      "artworkDescription": "A nailed coffin lid carried as a shield; no enemy can look past whoever bears it",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "attachTags": [
+        "blocking"
+      ],
+      "faction": "undead"
+    },
+    {
+      "id": "undead-phylactery-shard",
+      "name": "Phylactery Shard",
+      "objectType": "equipment",
+      "playCosts": {
+        "corpses": 2
+      },
+      "slots": [
+        "head"
+      ],
+      "attachTo": "chooseCharacter",
+      "icon": "💎",
+      "artworkDescription": "A sliver of a lich's soul-gem; shatter it and its stored vitality floods the wearer",
+      "attachModifiers": [
+        {
+          "propertyId": "maxHp",
+          "amount": 2
+        }
+      ],
+      "abilities": [
+        {
+          "id": "phylactery-shard-shatter",
+          "name": "Shatter",
+          "costs": [
+            {
+              "type": "sacrifice"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "host",
+              "amount": 6
+            }
+          ]
+        }
+      ],
+      "faction": "undead"
+    },
+    {
       "id": "machine-clockwork-grunt",
       "name": "Clockwork Grunt",
       "objectType": "unit",
@@ -33321,6 +35687,1094 @@
             "objectType": "unit",
             "min": 1,
             "max": 1
+          }
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-assembly-hub",
+      "name": "Assembly Hub",
+      "objectType": "headquarters",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 2
+      },
+      "housingProvided": 5,
+      "icon": "🦾",
+      "artworkDescription": "A sprawling automated assembly floor: conveyor gantries feed a wall of fabrication arms that never stop moving",
+      "abilities": [
+        {
+          "id": "assembly-hub-recharge",
+          "name": "Recharge",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "assembly-hub-queue",
+          "name": "Assembly Queue",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "onPlay": {
+        "id": "assembly-hub-start",
+        "name": "Residual charge in the capacitors",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "energy",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-foreman-f7",
+      "name": "Foreman Unit F-7",
+      "objectType": "hero",
+      "properties": {
+        "attack": 2,
+        "currentHp": 12,
+        "maxHp": 12,
+        "armor": 1
+      },
+      "resources": {
+        "ap": 0
+      },
+      "equipmentSlots": {
+        "arm": 1,
+        "core": 1,
+        "utility": 3
+      },
+      "icon": "👷",
+      "artworkDescription": "A stocky supervisory robot in a hard-hat chassis, three tool-arms folded over its chest and a status lamp blinking amber",
+      "abilities": [
+        {
+          "id": "foreman-f7-directive",
+          "name": "Assembly Directive",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_own_units_until_end_of_turn",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "foreman-f7-requisition",
+          "name": "Requisition",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-suppression-autocannon",
+      "name": "Suppression Autocannon",
+      "objectType": "module",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "slot": "arm",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "icon": "🔫",
+      "artworkDescription": "A belt-fed autocannon on a gyro mount, hosing the enemy vanguard with a continuous stream of tracer fire",
+      "abilities": [
+        {
+          "id": "suppression-autocannon-fire",
+          "name": "Suppressing Fire",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 1
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage_enemy_units",
+              "amount": 2,
+              "line": "front"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-cryo-lance",
+      "name": "Cryo Lance",
+      "objectType": "module",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "slot": "arm",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "icon": "🧊",
+      "artworkDescription": "A frost-rimed lance on an arm mount, its tip venting liquid nitrogen that flash-freezes whatever it touches",
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-reactive-plating",
+      "name": "Reactive Plating",
+      "objectType": "module",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "slot": "utility",
+      "icon": "🧱",
+      "artworkDescription": "Overlapping armor tiles studded with shaped charges that punch outward the instant something strikes the chassis",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-salvage-hook",
+      "name": "Salvage Hook",
+      "objectType": "module",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "slot": "utility",
+      "icon": "🪝",
+      "artworkDescription": "A magnetic grapple winch that reels wreckage back to the chassis to be stripped for power cells",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-nanite-weave",
+      "name": "Nanite Weave",
+      "objectType": "module",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "slot": "utility",
+      "icon": "🧬",
+      "artworkDescription": "A shimmering under-layer of self-assembling nanites that knits torn plating shut between battles",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "host",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-overdrive-governor",
+      "name": "Overdrive Governor",
+      "objectType": "module",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "slot": "core",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "icon": "🎛️",
+      "artworkDescription": "A brass-and-ceramic governor housing with its safety cage cut open, dials pinned deep in the red",
+      "abilities": [
+        {
+          "id": "overdrive-governor-override",
+          "name": "Governor Override",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "host",
+              "propertyId": "attack",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-scrap-collector",
+      "name": "Scrap Collector",
+      "objectType": "unit",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "worker"
+      ],
+      "housingCost": 1,
+      "icon": "🧲",
+      "artworkDescription": "A patchwork salvage bot with a magnet-tipped crane arm, trailing a cart already heaped with twisted plating",
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-shield-drone",
+      "name": "Shield Drone",
+      "objectType": "unit",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "worker"
+      ],
+      "housingCost": 1,
+      "icon": "🛡️",
+      "artworkDescription": "A dinner-plate drone hovering beside its charge, a translucent energy screen flickering across its underside",
+      "abilities": [
+        {
+          "id": "shield-drone-projector",
+          "name": "Projector Field",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-repair-swarm",
+      "name": "Repair Swarm",
+      "objectType": "unit",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [],
+      "housingCost": 1,
+      "icon": "🐝",
+      "artworkDescription": "A humming cloud of coin-sized repair bots that drifts over damaged machines and welds them back together",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal_own_units",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-jammer-bot",
+      "name": "Jammer Bot",
+      "objectType": "unit",
+      "playCost": 1,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 2,
+        "currentHp": 1,
+        "maxHp": 1,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "📡",
+      "artworkDescription": "A stripped-down chassis wired to a wideband jamming charge that fries every enemy machine's comms the instant it dies",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap_enemy_units"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-recon-skimmer",
+      "name": "Recon Skimmer",
+      "objectType": "unit",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "housingCost": 1,
+      "icon": "🛸",
+      "artworkDescription": "A low-slung hover-scout skimming just above the dirt, its sensor mast sweeping back data to the assembly line",
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-breacher-tank",
+      "name": "Breacher Tank",
+      "objectType": "unit",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "siege"
+      ],
+      "housingCost": 2,
+      "bonusAttackVsBuildings": 3,
+      "icon": "🚜",
+      "artworkDescription": "A squat tracked demolition tank with a ram-plow blade and a stubby breaching cannon built to crack fortifications",
+      "triggers": [
+        {
+          "event": "onDestroyBuilding",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-static-lattice-drone",
+      "name": "Static Lattice Drone",
+      "objectType": "unit",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "🕸️",
+      "artworkDescription": "A spindly drone wrapped in a web of exposed capacitor coils that lash out with a numbing static discharge",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-salvage-titan",
+      "name": "Salvage Titan",
+      "objectType": "unit",
+      "playCost": 6,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 5,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "housingCost": 3,
+      "icon": "🦿",
+      "artworkDescription": "A hulking bipedal hauler bolted together from a dozen wrecks, its reactor casing still humming with stolen charge",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-overclocked-runner",
+      "name": "Overclocked Runner",
+      "objectType": "unit",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 4,
+        "currentHp": 1,
+        "maxHp": 1,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "🏃",
+      "artworkDescription": "A skeletal sprinter chassis with its governor ripped out, servos screaming as it blurs across the battlefield",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "untap",
+              "scope": "self"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-habitat-stack",
+      "name": "Habitat Stack",
+      "objectType": "building",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 0
+      },
+      "housingProvided": 4,
+      "icon": "🏢",
+      "artworkDescription": "A tower of stacked charging cradles where idle drones dock, each bay lit by a single green standby lamp",
+      "faction": "machine"
+    },
+    {
+      "id": "machine-tesla-pylon",
+      "name": "Tesla Pylon",
+      "objectType": "building",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "tags": [
+        "fortification"
+      ],
+      "housingProvided": 1,
+      "icon": "⚡",
+      "artworkDescription": "A squat armored pylon crowned with a crackling coil, arcing lightning at anything that dares strike the base",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-perimeter-scanner",
+      "name": "Perimeter Scanner",
+      "objectType": "building",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "icon": "📡",
+      "artworkDescription": "A rotating radar mast on a reinforced blockhouse, sweeping every wall and vent for anything that should not be there",
+      "abilities": [
+        {
+          "id": "perimeter-scanner-sweep",
+          "name": "Deep Scan",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage_infiltrators",
+              "scope": "target",
+              "amount": 3
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-orbital-uplink",
+      "name": "Orbital Uplink",
+      "objectType": "building",
+      "playCost": 6,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "icon": "🛰️",
+      "artworkDescription": "A dish array locked onto a satellite far overhead, painting the enemy stronghold for a slow, patient orbital lance",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "opponent",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-railgun-emplacement",
+      "name": "Railgun Emplacement",
+      "objectType": "building",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "icon": "🔭",
+      "artworkDescription": "A sandbagged gun pit built around a kilometre-long magnetic rail, its capacitor bank whining as it charges a shot",
+      "abilities": [
+        {
+          "id": "railgun-emplacement-fire",
+          "name": "Railgun Shot",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-credit-siphon",
+      "name": "Credit Siphon",
+      "objectType": "spell",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "icon": "💸",
+      "artworkDescription": "A fibre-optic tap clamped onto the enemy treasury line, silently draining their coffers into a machine account",
+      "onPlay": {
+        "id": "machine-credit-siphon-effect",
+        "name": "Credit Siphon",
+        "effects": [
+          {
+            "type": "steal_resource",
+            "resourceId": "gold",
+            "amount": 3
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-cascade-failure",
+      "name": "Cascade Failure",
+      "objectType": "spell",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "icon": "☢️",
+      "artworkDescription": "Every reactor on the field runs critical at once, a ring of white-hot arc discharge sweeping out in all directions",
+      "onPlay": {
+        "id": "machine-cascade-failure-effect",
+        "name": "Cascade Failure",
+        "effects": [
+          {
+            "type": "damage_all_units",
+            "amount": 3
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-mass-repair",
+      "name": "Mass Repair",
+      "objectType": "spell",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "icon": "🛠️",
+      "artworkDescription": "A wave of repair nanites floods the whole formation, sealing fractures and re-seating loose plating in seconds",
+      "onPlay": {
+        "id": "machine-mass-repair-effect",
+        "name": "Mass Repair",
+        "effects": [
+          {
+            "type": "heal_own_units",
+            "amount": 3
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-signal-jammer",
+      "name": "Signal Jammer",
+      "objectType": "spell",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "icon": "📵",
+      "artworkDescription": "A wideband jamming burst washes over the enemy line, and every unit freezes mid-stride with its comms dead",
+      "onPlay": {
+        "id": "machine-signal-jammer-effect",
+        "name": "Signal Jammer",
+        "effects": [
+          {
+            "type": "tap_enemy_units"
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-viral-payload",
+      "name": "Viral Payload",
+      "objectType": "spell",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "icon": "🦠",
+      "artworkDescription": "A packet of hostile firmware broadcast across the enemy network, corroding actuators and eating through wiring",
+      "onPlay": {
+        "id": "machine-viral-payload-effect",
+        "name": "Viral Payload",
+        "effects": [
+          {
+            "type": "afflict_enemy_units",
+            "resourceId": "poison",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-data-mine",
+      "name": "Data Mine",
+      "objectType": "spell",
+      "playCost": 1,
+      "playCostResource": "energy",
+      "icon": "⛏️",
+      "artworkDescription": "A quick dig through the archive stacks: pull two records, then shred whichever one is dead weight",
+      "onPlay": {
+        "id": "machine-data-mine-effect",
+        "name": "Data Mine",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "amount": 2
+          },
+          {
+            "type": "discard_cards",
+            "scope": "self",
+            "amount": 1
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-demolition-charge",
+      "name": "Demolition Charge",
+      "objectType": "spell",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "icon": "🧨",
+      "artworkDescription": "A remote-detonated shaped charge planted against a load-bearing wall, folding a whole structure in on itself",
+      "onPlay": {
+        "id": "machine-demolition-charge-effect",
+        "name": "Demolition Charge",
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 6
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "building",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-hot-swap",
+      "name": "Hot Swap",
+      "objectType": "spell",
+      "playCost": 1,
+      "playCostResource": "energy",
+      "icon": "🔄",
+      "artworkDescription": "A technician yanks a spent power cell and slams in a fresh one, and the machine lurches back to life mid-action",
+      "onPlay": {
+        "id": "machine-hot-swap-effect",
+        "name": "Hot Swap",
+        "effects": [
+          {
+            "type": "untap",
+            "scope": "target"
+          },
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "energy",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "character",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-logic-core",
+      "name": "Logic Core Processor",
+      "objectType": "caster",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 2,
+      "icon": "🧠",
+      "artworkDescription": "A brain-in-a-jar command processor on a treaded cradle, broadcasting corrupted firmware over the enemy network",
+      "abilities": [
+        {
+          "id": "logic-core-corrupt",
+          "name": "Corrupt Firmware",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property_enemy_units",
+              "propertyId": "attack",
+              "amount": -1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-purge-caster",
+      "name": "Purge Protocol Unit",
+      "objectType": "caster",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 2,
+      "icon": "🧹",
+      "artworkDescription": "A pale-plated sanitation-class command unit with a wide-bore emitter, built to scour weak machines from the field",
+      "abilities": [
+        {
+          "id": "purge-caster-purge",
+          "name": "Purge Protocol",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1,
+            "maxPropertyId": "maxHp",
+            "maxPropertyValue": 2
           }
         }
       ],
@@ -34060,6 +37514,1062 @@
       "attachTags": [
         "retaliate"
       ]
+    },
+    {
+      "id": "rune-forge-sanctum",
+      "name": "Rune Forge Sanctum",
+      "objectType": "nexus",
+      "properties": {
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "resources": {
+        "mana": 5
+      },
+      "resourceCapacities": {
+        "mana": 12
+      },
+      "housingProvided": 4,
+      "tags": [
+        "nexus-core"
+      ],
+      "icon": "🔨",
+      "artworkDescription": "A vaulted forge-cathedral where glowing runes are hammered onto steel, its anvils ringing with stored leyline power",
+      "faction": "conclave",
+      "abilities": [
+        {
+          "id": "rune-forge-channel",
+          "name": "Channel the Forge",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-runemaster",
+      "name": "Runemaster Ilvane",
+      "objectType": "caster-hero",
+      "properties": {
+        "attack": 3,
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "resources": {
+        "mana": 2
+      },
+      "resourceCapacities": {
+        "mana": 6
+      },
+      "tags": [
+        "caster"
+      ],
+      "icon": "📜",
+      "artworkDescription": "A soot-stained artificer-mage with rune-etched gauntlets, one hand shaping glowing sigils in the air",
+      "faction": "conclave",
+      "abilities": [
+        {
+          "id": "runemaster-meditate",
+          "name": "Meditate on the Runes",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "runemaster-barrier",
+          "name": "Runic Barrier",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_own_units_until_end_of_turn",
+              "propertyId": "armor",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-warding-circlet",
+      "name": "Warding Circlet",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 2
+      },
+      "icon": "👑",
+      "faction": "conclave",
+      "artworkDescription": "A silver circlet whose inlaid runes knit its wearer's wounds shut a little more each dawn",
+      "slots": [
+        "head"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "host",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-thorned-vestments",
+      "name": "Thorned Vestments",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 3
+      },
+      "icon": "🧥",
+      "faction": "conclave",
+      "artworkDescription": "Robes stitched with barbed glyphs that lash back at whoever dares strike the wearer",
+      "slots": [
+        "body"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-siphon-blade",
+      "name": "Siphon Blade",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 3
+      },
+      "icon": "🗡️",
+      "faction": "conclave",
+      "artworkDescription": "A rune-carved blade that drinks a measure of life from every wound it opens and pours it into the wielder",
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "host",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-farsight-lance",
+      "name": "Farsight Lance",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 3
+      },
+      "icon": "🏹",
+      "faction": "conclave",
+      "artworkDescription": "A slender lance tipped with a scrying lens that lets its bearer strike targets far behind the front line",
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "attachTags": [
+        "ranged"
+      ]
+    },
+    {
+      "id": "rune-aegis-tome",
+      "name": "Aegis Tome",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 2
+      },
+      "icon": "📘",
+      "faction": "conclave",
+      "artworkDescription": "A heavy warded grimoire held open like a shield, its pages drawing every enemy's eye to the bearer",
+      "slots": [
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "armor",
+          "amount": 1
+        }
+      ],
+      "attachTags": [
+        "guard"
+      ]
+    },
+    {
+      "id": "rune-soulbinder-sigil",
+      "name": "Soulbinder Sigil",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 2
+      },
+      "icon": "🔯",
+      "faction": "conclave",
+      "artworkDescription": "A branded sigil that catches the last spark of every foe its bearer fells and feeds it to the forge",
+      "slots": [
+        "mutation"
+      ],
+      "attachTo": "chooseCharacter",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-chronal-band",
+      "name": "Chronal Band",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 4
+      },
+      "icon": "⌛",
+      "faction": "conclave",
+      "artworkDescription": "A brass band of counter-rotating runes that winds its bearer's body back a heartbeat, ready to act again",
+      "slots": [
+        "mutation"
+      ],
+      "attachTo": "chooseCharacter",
+      "abilities": [
+        {
+          "id": "chronal-band-rewind",
+          "name": "Rewind Time",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "is_attached"
+            }
+          ],
+          "effects": [
+            {
+              "type": "untap",
+              "scope": "host"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-frostbrand",
+      "name": "Frostbrand",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 3
+      },
+      "icon": "❄️",
+      "faction": "conclave",
+      "artworkDescription": "A blade rimed with permanent frost whose every hit leaves the wound locked in ice",
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-sweeping-staff",
+      "name": "Sweeping Staff",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 4
+      },
+      "icon": "🪄",
+      "faction": "conclave",
+      "artworkDescription": "A two-handed staff whose crescent of rune-light sweeps through an entire rank in a single swing",
+      "slots": [
+        "mainHand",
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 2
+        }
+      ],
+      "attachTags": [
+        "splash"
+      ]
+    },
+    {
+      "id": "rune-scholars-monocle",
+      "name": "Scholar's Monocle",
+      "objectType": "equipment",
+      "playCosts": {
+        "mana": 5
+      },
+      "icon": "🧐",
+      "faction": "conclave",
+      "duration": 3,
+      "artworkDescription": "A rune-ground monocle that reads forgotten lore at a glance, but whose enchantment fades after a few nights' study",
+      "slots": [
+        "head"
+      ],
+      "attachTo": "chooseCharacter",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-leyline-siphon",
+      "name": "Leyline Siphon",
+      "objectType": "building",
+      "playCosts": {
+        "mana": 3
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "housingProvided": 0,
+      "icon": "🌀",
+      "artworkDescription": "A spiralling copper pylon driven into the ground to draw raw leyline power straight into the nexus",
+      "faction": "conclave",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-warded-bulwark",
+      "name": "Warded Bulwark",
+      "objectType": "building",
+      "playCosts": {
+        "mana": 4
+      },
+      "properties": {
+        "currentHp": 9,
+        "maxHp": 9,
+        "armor": 3
+      },
+      "housingProvided": 0,
+      "tags": [
+        "fortification"
+      ],
+      "icon": "🛡️",
+      "artworkDescription": "A squat bastion of rune-hardened stone whose shimmering ward forces every siege to break it first",
+      "faction": "conclave"
+    },
+    {
+      "id": "rune-obelisk-of-silence",
+      "name": "Obelisk of Silence",
+      "objectType": "building",
+      "playCosts": {
+        "mana": 4
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingProvided": 0,
+      "icon": "🗿",
+      "artworkDescription": "A black obelisk that emits a pulse of dead quiet, leaving every enemy warrior briefly deaf, dizzy and unable to hold a guard",
+      "faction": "conclave",
+      "abilities": [
+        {
+          "id": "obelisk-silence",
+          "name": "Pulse of Silence",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap_enemy_units"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-runic-workshop",
+      "name": "Runic Workshop",
+      "objectType": "building",
+      "playCosts": {
+        "mana": 3
+      },
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "housingProvided": 0,
+      "icon": "🛠️",
+      "artworkDescription": "A cluttered workshop of half-inscribed tablets where prepared stencils let the next spell be cast for less",
+      "faction": "conclave",
+      "abilities": [
+        {
+          "id": "workshop-inscribe",
+          "name": "Prepare Stencils",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "cost_discount",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-eldritch-orrery",
+      "name": "Eldritch Orrery",
+      "objectType": "building",
+      "playCosts": {
+        "mana": 5
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingProvided": 0,
+      "icon": "🪐",
+      "artworkDescription": "A brass orrery of impossible orbits that drips a slow, patient curse onto the enemy stronghold every turn",
+      "faction": "conclave",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "opponent",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-banner-hall",
+      "name": "Banner Hall",
+      "objectType": "building",
+      "playCosts": {
+        "mana": 4
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingProvided": 2,
+      "icon": "🏰",
+      "artworkDescription": "A barracks-hall hung with rune-woven banners that kindle a war-glow in every unit marching out beneath them",
+      "faction": "conclave",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_own_units_until_end_of_turn",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-scribe-archive",
+      "name": "Scribe Archive",
+      "objectType": "building",
+      "playCosts": {
+        "mana": 4
+      },
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "housingProvided": 4,
+      "icon": "📚",
+      "artworkDescription": "A lodging-house of cell-like scriptoria where tireless scribes copy spell after spell for the war effort",
+      "faction": "conclave",
+      "abilities": [
+        {
+          "id": "archive-transcribe",
+          "name": "Transcribe",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-hexblade-duelist",
+      "name": "Hexblade Duelist",
+      "objectType": "unit",
+      "playCosts": {
+        "mana": 3
+      },
+      "properties": {
+        "attack": 3,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "⚔️",
+      "faction": "conclave",
+      "artworkDescription": "A lean fencer whose hexed rapier writes a fresh spell into her memory with every opponent she drops",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-frost-effigy",
+      "name": "Frost Effigy",
+      "objectType": "unit",
+      "playCosts": {
+        "mana": 3
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "housingCost": 1,
+      "icon": "🧊",
+      "faction": "conclave",
+      "artworkDescription": "A rune-carved ice statue that flash-freezes whatever creature is foolish enough to strike it",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-tribute-collector",
+      "name": "Tribute Collector",
+      "objectType": "unit",
+      "playCosts": {
+        "mana": 2
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "💰",
+      "faction": "conclave",
+      "artworkDescription": "A ledger-wielding tax mage who siphons a little mana from the enemy's suffering every time a wall or commander is struck",
+      "triggers": [
+        {
+          "event": "onFriendlyDamageHqOrHero",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-grave-reader",
+      "name": "Grave Reader",
+      "objectType": "unit",
+      "playCosts": {
+        "mana": 2
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "📖",
+      "faction": "conclave",
+      "artworkDescription": "A pale scholar who reads the last thoughts of the fallen on either side of the field and banks the residue as mana",
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-breach-mage",
+      "name": "Breach Mage",
+      "objectType": "unit",
+      "playCosts": {
+        "mana": 4
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 2,
+      "bonusAttackVsBuildings": 3,
+      "icon": "💥",
+      "faction": "conclave",
+      "artworkDescription": "A siege-mage whose shattering cantrips peel apart stonework, and who salvages the raw mana from every wall brought down",
+      "triggers": [
+        {
+          "event": "onDestroyBuilding",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_bank_resource",
+              "resourceId": "mana",
+              "amount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-hexstalker",
+      "name": "Hexstalker",
+      "objectType": "unit",
+      "playCosts": {
+        "mana": 3
+      },
+      "properties": {
+        "attack": 2,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "housingCost": 1,
+      "icon": "🎯",
+      "faction": "conclave",
+      "artworkDescription": "A hooded marksman whose hex-tipped bolts leave the wounded weaker and more hesitant with every hit",
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property",
+              "scope": "target",
+              "propertyId": "attack",
+              "amount": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-disenchanter",
+      "name": "Disenchanter",
+      "objectType": "caster",
+      "playCosts": {
+        "mana": 3
+      },
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "caster"
+      ],
+      "housingCost": 1,
+      "resources": {
+        "mana": 2
+      },
+      "resourceCapacities": {
+        "mana": 3
+      },
+      "icon": "🧹",
+      "faction": "conclave",
+      "artworkDescription": "A wand-wielding unraveller who strips enchanted gear and mutations off enemy champions with a single unpicked thread",
+      "abilities": [
+        {
+          "id": "disenchanter-dispel",
+          "name": "Dispel Enchantment",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "min": 1,
+            "max": 1,
+            "attachmentsOnly": true
+          },
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "self",
+              "resourceId": "mana",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rune-disjunction",
+      "name": "Disjunction",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 2
+      },
+      "timing": "reaction",
+      "reactionTo": [
+        "abilityActivated"
+      ],
+      "icon": "✂️",
+      "faction": "conclave",
+      "artworkDescription": "A single snapped thread of light that severs an enemy's ability the moment it is invoked",
+      "onPlay": {
+        "id": "disjunction-cast",
+        "name": "Sever the ability",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "cancel_ability"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rune-mass-ward",
+      "name": "Mass Ward",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 3
+      },
+      "timing": "both",
+      "reactionTo": [
+        "attackDeclared"
+      ],
+      "icon": "🌐",
+      "faction": "conclave",
+      "artworkDescription": "A dome of overlapping glyphs that drops over the whole army in the instant before a blow lands",
+      "onPlay": {
+        "id": "mass-ward-cast",
+        "name": "Ward the army",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "buff_own_units_until_end_of_turn",
+            "propertyId": "armor",
+            "amount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "rune-return-of-the-archon",
+      "name": "Return of the Archon",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 5
+      },
+      "icon": "🌟",
+      "faction": "conclave",
+      "artworkDescription": "A rite that pulls a fallen champion back from the dark, gasping and rune-lit, to stand again",
+      "onPlay": {
+        "id": "return-archon-cast",
+        "name": "Recall the fallen hero",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "revive_hero"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rune-sapping-hex",
+      "name": "Sapping Hex",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 4
+      },
+      "icon": "🕸️",
+      "faction": "conclave",
+      "artworkDescription": "A creeping web of lethargy runes that saps a little strength from every enemy warrior at once, permanently",
+      "onPlay": {
+        "id": "sapping-hex-cast",
+        "name": "Sap the enemy line",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "modify_property_enemy_units",
+            "propertyId": "attack",
+            "amount": -1
+          }
+        ]
+      }
+    },
+    {
+      "id": "rune-wordbreaker",
+      "name": "Wordbreaker",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 2
+      },
+      "icon": "💢",
+      "faction": "conclave",
+      "artworkDescription": "A single hissed syllable that unravels an already-wounded enemy warrior on the spot",
+      "onPlay": {
+        "id": "wordbreaker-cast",
+        "name": "Finish a wounded unit",
+        "costs": [],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1,
+          "maxPropertyId": "currentHp",
+          "maxPropertyValue": 3
+        },
+        "effects": [
+          {
+            "type": "destroy",
+            "scope": "target"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rune-conflux-ritual",
+      "name": "Conflux Ritual",
+      "objectType": "spell",
+      "playCosts": {
+        "mana": 1
+      },
+      "icon": "🔮",
+      "faction": "conclave",
+      "artworkDescription": "A quick circle of chalk and candles that funnels a burst of stray leyline energy into the nexus",
+      "onPlay": {
+        "id": "conflux-ritual-cast",
+        "name": "Draw down the leylines",
+        "costs": [],
+        "conditions": [],
+        "effects": [
+          {
+            "type": "gain_bank_resource",
+            "resourceId": "mana",
+            "amount": 3
+          }
+        ]
+      }
     }
   ],
   "decks": [
@@ -34728,6 +39238,53 @@
       ]
     },
     {
+      "id": "machine-assembly",
+      "faction": "machine",
+      "name": "Assembly Line Protocol",
+      "description": "Mass-produce cheap energy-powered drones from the Assembly Hub. Scrap feeds the furnace, jammer bots stall the enemy line, and the Foreman keeps the line rallied.",
+      "hq": "machine-assembly-hub",
+      "hero": "machine-foreman-f7",
+      "cards": {
+        "machine-scrap-collector": 3,
+        "machine-shield-drone": 2,
+        "machine-repair-swarm": 2,
+        "machine-jammer-bot": 4,
+        "machine-recon-skimmer": 3,
+        "machine-breacher-tank": 2,
+        "machine-static-lattice-drone": 3,
+        "machine-salvage-titan": 2,
+        "machine-overclocked-runner": 3,
+        "machine-habitat-stack": 4,
+        "machine-tesla-pylon": 2,
+        "machine-perimeter-scanner": 1,
+        "machine-orbital-uplink": 1,
+        "machine-railgun-emplacement": 2,
+        "machine-credit-siphon": 1,
+        "machine-cascade-failure": 1,
+        "machine-mass-repair": 1,
+        "machine-signal-jammer": 1,
+        "machine-viral-payload": 2,
+        "machine-data-mine": 2,
+        "machine-demolition-charge": 2,
+        "machine-hot-swap": 1,
+        "energy-cell": 4,
+        "machine-suppression-autocannon": 1,
+        "machine-cryo-lance": 2,
+        "machine-reactive-plating": 1,
+        "machine-salvage-hook": 1,
+        "machine-nanite-weave": 1,
+        "machine-overdrive-governor": 1,
+        "machine-logic-core": 2,
+        "machine-purge-caster": 2
+      },
+      "hqOptions": [
+        "machine-assembly-hub"
+      ],
+      "heroOptions": [
+        "machine-foreman-f7"
+      ]
+    },
+    {
       "id": "conclave-storm",
       "faction": "conclave",
       "name": "Aether Storm Circle",
@@ -34804,6 +39361,56 @@
       ]
     },
     {
+      "id": "undead-legion",
+      "faction": "undead",
+      "name": "The Grave Regent's Legion",
+      "description": "Every kill feeds the Citadel. Carrion ghouls bank corpses, sentinels leave skeletons behind, and the Regent turns a winning trade into a rallying cry.",
+      "hq": "undead-bone-citadel",
+      "hero": "undead-grave-regent",
+      "cards": {
+        "undead-carrion-ghoul": 3,
+        "undead-cairn-sentinel": 3,
+        "undead-pyre-zealot": 2,
+        "undead-barrow-sentinel": 2,
+        "undead-grave-vulture": 2,
+        "undead-marrow-leech": 2,
+        "undead-ravenous-revenant": 2,
+        "undead-withering-shade": 2,
+        "undead-grave-broker": 2,
+        "undead-bone-drover": 2,
+        "undead-hexbolt-acolyte": 2,
+        "undead-dirge-bearer": 2,
+        "undead-thorn-ossuary": 2,
+        "undead-miasma-well": 1,
+        "undead-bone-cradle": 2,
+        "undead-cursed-archive": 1,
+        "undead-sepulchral-shrine": 1,
+        "undead-soulreaper-scythe": 1,
+        "undead-wraithmail": 1,
+        "undead-coffin-lid-bulwark": 1,
+        "undead-phylactery-shard": 1,
+        "undead-skeletal-warband": 2,
+        "undead-grave-hush": 1,
+        "undead-cascade-of-bone": 1,
+        "undead-unquiet-grave": 2,
+        "undead-spirit-ward": 1,
+        "undead-plague-snare": 1,
+        "undead-blood-pact": 2,
+        "undead-crumbling-curse": 1,
+        "undead-mend-the-crypt": 1,
+        "skeleton": 4,
+        "shambling-corpse": 3,
+        "whispers-from-the-crypt": 2,
+        "plague-zombie": 2
+      },
+      "hqOptions": [
+        "undead-bone-citadel"
+      ],
+      "heroOptions": [
+        "undead-grave-regent"
+      ]
+    },
+    {
       "id": "brood-apex",
       "faction": "brood",
       "name": "Apex Biomass Hive",
@@ -34840,6 +39447,53 @@
       ],
       "heroOptions": [
         "apex-brood-empress"
+      ]
+    },
+    {
+      "id": "brood-incubation",
+      "faction": "brood",
+      "name": "Incubation Swarm",
+      "description": "Breed a wide, biomass-fed swarm out of the Incubation Hive: nectar drones fuel the nest, buildings poison, pin and strip the enemy line, and Matriarch Vess keeps the whole brood healed and hunting.",
+      "hq": "brood-incubation-hive",
+      "hero": "brood-matriarch-vess",
+      "cards": {
+        "brood-carrion-crawler": 3,
+        "brood-venomfang-skitterer": 4,
+        "brood-hive-scout": 3,
+        "brood-nectar-drone": 3,
+        "brood-shell-tender": 2,
+        "brood-wall-gnawer": 3,
+        "brood-plague-bearer": 2,
+        "brood-frenzied-rusher": 3,
+        "brood-acid-blood-brute": 2,
+        "brood-bulwark-beetle": 2,
+        "brood-gorging-horror": 3,
+        "brood-warren": 4,
+        "brood-mending-cocoon": 1,
+        "brood-spore-vent": 2,
+        "brood-acid-moat": 2,
+        "brood-gestation-vat": 1,
+        "brood-bile-tower": 1,
+        "brood-chitin-forge": 1,
+        "brood-siege-gland": 1,
+        "brood-corrosive-bog": 1,
+        "brood-stinging-thicket": 1,
+        "brood-neural-node": 1,
+        "brood-womb-of-return": 1,
+        "brood-carrion-call": 3,
+        "brood-adrenal-rush": 1,
+        "brood-necrotic-spores": 2,
+        "brood-paralytic-venom": 2,
+        "brood-regrowth": 1,
+        "brood-mind-rend": 1,
+        "brood-swarm-strike": 2,
+        "brood-devouring-swarm": 1
+      },
+      "hqOptions": [
+        "brood-incubation-hive"
+      ],
+      "heroOptions": [
+        "brood-matriarch-vess"
       ]
     },
     {
@@ -35035,6 +39689,52 @@
         "fireball": 4,
         "hold-assassination-order": 4,
         "house": 4
+      }
+    },
+    {
+      "id": "conclave-runecraft",
+      "faction": "conclave",
+      "name": "Runecraft Ascendancy",
+      "description": "Conclave artificers hammer runes onto wargear and warded strongholds: equip your champions, out-ramp the enemy's nexus and grind them down with tempo tricks.",
+      "hq": "rune-forge-sanctum",
+      "hero": "rune-runemaster",
+      "hqOptions": [
+        "rune-forge-sanctum"
+      ],
+      "heroOptions": [
+        "rune-runemaster"
+      ],
+      "cards": {
+        "rune-warding-circlet": 2,
+        "rune-thorned-vestments": 2,
+        "rune-siphon-blade": 2,
+        "rune-farsight-lance": 2,
+        "rune-aegis-tome": 2,
+        "rune-soulbinder-sigil": 2,
+        "rune-chronal-band": 1,
+        "rune-frostbrand": 2,
+        "rune-sweeping-staff": 1,
+        "rune-scholars-monocle": 1,
+        "rune-leyline-siphon": 3,
+        "rune-warded-bulwark": 2,
+        "rune-obelisk-of-silence": 1,
+        "rune-runic-workshop": 2,
+        "rune-eldritch-orrery": 1,
+        "rune-banner-hall": 1,
+        "rune-scribe-archive": 3,
+        "rune-hexblade-duelist": 2,
+        "rune-frost-effigy": 2,
+        "rune-tribute-collector": 2,
+        "rune-grave-reader": 2,
+        "rune-breach-mage": 1,
+        "rune-hexstalker": 2,
+        "rune-disenchanter": 2,
+        "rune-disjunction": 3,
+        "rune-mass-ward": 3,
+        "rune-return-of-the-archon": 1,
+        "rune-sapping-hex": 3,
+        "rune-wordbreaker": 4,
+        "rune-conflux-ritual": 3
       }
     }
   ],
