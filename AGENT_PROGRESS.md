@@ -859,3 +859,16 @@ deliberate mutations (dropped choice, wrong scope, `property` key typo, orphaned
 Bot sweep, new deck vs all 20 precons, 20 games each (400 games): 0 errors/crashes, all 30 non-HQ/hero new cards cast.
 Left: 2 pre-existing findings are NOT fixed here (out of scope): 33/66 pre-batch Machine cards have silently dead abilities
 and 64/66 are gold-priced -> follow-up task 4100. Batches 2..n (74 -> 200) continue as new machine-* precon decks.
+
+## 2026-09-24 — task 3951 (Undead faction card expansion, batch 1)
+Done: PR #58 adds 32 role-distinct faction-exclusive Undead cards (42 -> 74: HQ + hero, units 24->36, buildings 7->12,
+spells 11->20, plus 4 equipment) and a new precon deck `undead-legion` (60 cards, own Bone Citadel HQ + Grave Regent hero) so none
+are orphaned. Every card is priced in corpses (Undead has no gold income; corpses are paid from the Citadel bank) and uses only
+registered effects/triggers/costs/conditions. Data only: no engine change was needed.
+Verified: `dotnet build` clean (0 warnings), `dotnet test` 75/75 (was 25): 50 new tests in UndeadExpansion3951Tests (schema/key
+lint, vocabulary incl. conditions, deck wiring, role-distinctness fingerprint vs the whole existing Undead roster, one real-RuleEngine
+behaviour test per card). Nine deliberate mutations (typo'd key, dropped choice, orphaned card, cloned role, unfired event,
+unregistered effect/condition, gold price, wrong resource pool) were all caught. Bot sweep 380 games (new deck vs the other 19
+precons, 20 each): 0 exceptions, all 32 cards seen in play; new deck wins 80% (field spans 5%-98%, see PR).
+Left: pre-existing 42 Undead cards are all gold-priced with no gold source and ~20 have dead abilities -> follow-up task 4105.
+Batches 2..n (74 -> 200) continue as new undead-* precon decks.
