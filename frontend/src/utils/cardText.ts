@@ -1,4 +1,4 @@
-import { CostDto, ConditionDto, EffectDto, ChoiceDefinition, TriggerDto } from '../types/game';
+import { CardDefinitionDto, CostDto, ConditionDto, EffectDto, ChoiceDefinition, TriggerDto } from '../types/game';
 
 // Turns definition JSON into readable rules text for the card inspector.
 
@@ -10,7 +10,23 @@ function resName(id?: string | null): string {
   if (id === 'energy') return 'Energy';
   if (id === 'ap') return 'AP';
   if (id === 'loot') return 'Loot Token';
+  if (id === 'mana') return 'Mana';
+  if (id === 'corpses') return 'Corpses';
+  if (id === 'glory') return 'Glory';
+  if (id === 'biomass') return 'Biomass';
   return id;
+}
+
+// Small emoji badge per flavor resource — used on the compact card cost badge, where
+// there's no room for the icon assets STAT_ICONS relies on.
+export function resIcon(id: string): string {
+  if (id === 'gold') return '💰';
+  if (id === 'energy') return '⚡';
+  if (id === 'mana') return '🔮';
+  if (id === 'corpses') return '💀';
+  if (id === 'glory') return '🏆';
+  if (id === 'biomass') return '🧬';
+  return '';
 }
 
 function propName(id?: string | null): string {
@@ -34,6 +50,14 @@ export function explainCost(c: CostDto): string {
         ? `Pay ${c.amount} ${resName(c.resourceId)}`
         : `Spend ${c.amount} ${resName(c.resourceId)} from this card`;
     case 'sacrifice': return 'Sacrifice this card';
+    case 'sacrifice_units': {
+      const n = c.amount ?? 1;
+      return `Sacrifice ${n} unit${n > 1 ? 's' : ''} you control`;
+    }
+    case 'sacrifice_equipment': {
+      const n = c.amount ?? 1;
+      return `Sacrifice ${n} equipped hero item${n > 1 ? 's' : ''}`;
+    }
     case 'crew': {
       const n = c.amount ?? 1;
       const who = c.tag ? c.tag.charAt(0).toUpperCase() + c.tag.slice(1) : 'unit';
@@ -192,8 +216,34 @@ export const LINE_TIP_FRONT =
 export const LINE_TIP_BACK =
   'Back Line — where all cards spawn. If your front line is empty, melee here can defensively strike the enemy front line, and your ranged cards can only hit the enemy front.';
 
-export function playCostTip(cost: number, resource: string): string {
-  return `Play cost — pay ${cost} ${resName(resource)} to play this card from your hand during your Main Phase.`;
+type PlayCostFields = Pick<CardDefinitionDto, 'playCost' | 'playCostResource' | 'playCosts' | 'playCostsExtra'>;
+
+// Multi-resource play cost as a single resource-id -> amount map (playCosts wins over the
+// legacy single-resource playCost, mirroring GameQueries.BasePlayCosts on the server —
+// otherwise a card priced purely via playCosts, e.g. Raider Camp, looks free everywhere).
+function resolvedPlayCosts(def: PlayCostFields): Record<string, number> {
+  if (def.playCosts && Object.keys(def.playCosts).length > 0) return def.playCosts;
+  if (def.playCost != null) return { [def.playCostResource ?? 'gold']: def.playCost };
+  return {};
+}
+
+// Compact cost badge for the small card view, e.g. "5💰" or "5💰 2🏆" or "Sac 5". Returns
+// null when the card has no play cost at all (not deck-eligible).
+export function formatPlayCosts(def: PlayCostFields): string | null {
+  const parts = Object.entries(resolvedPlayCosts(def)).map(([resId, amount]) => `${amount}${resIcon(resId)}`);
+  for (const extra of def.playCostsExtra ?? []) {
+    if (extra.type === 'sacrifice_units') parts.push(`Sac ${extra.amount ?? 1}`);
+    if (extra.type === 'sacrifice_equipment') parts.push(`Sac ${extra.amount ?? 1} Gear`);
+  }
+  return parts.length > 0 ? parts.join(' ') : null;
+}
+
+export function playCostsTip(def: PlayCostFields): string {
+  const resourceCosts = Object.entries(resolvedPlayCosts(def)).map(([resId, amount]) => `${amount} ${resName(resId)}`);
+  const extraCosts = (def.playCostsExtra ?? []).map(explainCost);
+  const all = [...resourceCosts, ...extraCosts];
+  if (all.length === 0) return 'Free — no play cost.';
+  return `Play cost — pay ${all.join(' + ')} to play this card from your hand during your Main Phase.`;
 }
 
 export function slotTip(slot: string): string {

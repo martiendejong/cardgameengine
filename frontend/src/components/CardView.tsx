@@ -1,6 +1,6 @@
 import React from 'react';
-import { ObjectStateDto, AvailableAction } from '../types/game';
-import { STAT_TIPS, TAG_TIPS, STATUS_TIPS, HOUSING_COST_TIP, HOUSING_PROVIDED_TIP } from '../utils/cardText';
+import { ObjectStateDto, AvailableAction, CostDto } from '../types/game';
+import { STAT_TIPS, TAG_TIPS, STATUS_TIPS, HOUSING_COST_TIP, HOUSING_PROVIDED_TIP, formatPlayCosts, playCostsTip } from '../utils/cardText';
 import { CARD_ART_SMALL as CARD_ART, cardFrameSmall as cardBg } from '../assets/cardArt';
 import icoAttack from '../assets/icons/icon-attack.png';
 import icoHitPoints from '../assets/icons/icon-hit-points.png';
@@ -39,6 +39,8 @@ interface CardViewProps {
   isSelectedTarget: boolean;
   playCost?: number | null;
   playCostResource?: string;
+  playCosts?: Record<string, number> | null;
+  playCostsExtra?: CostDto[] | null;
   animClass?: string;
   onAction: (action: AvailableAction, targetIds?: string[]) => void;
   onSelectTarget: (id: string) => void;
@@ -55,6 +57,8 @@ export function CardView({
   isSelectedTarget,
   playCost,
   playCostResource,
+  playCosts,
+  playCostsExtra,
   animClass,
   onAction,
   onSelectTarget,
@@ -97,9 +101,11 @@ export function CardView({
     return `linear-gradient(135deg, hsl(${hue1}, 45%, 22%), hsl(${hue2}, 55%, 14%))`;
   }
 
-  const costLabel = playCost != null
-    ? `${playCost}${playCostResource === 'energy' ? '⚡' : '💰'}`
-    : null;
+  // playCosts/playCostsExtra (multi-resource + sacrifice) win over the legacy single
+  // playCost — Raider Camp, Arcane Nexus, Graveyard and The Hive are priced this way and
+  // showed no cost badge at all before this checked playCosts too.
+  const costLabel = formatPlayCosts({ playCost, playCostResource, playCosts, playCostsExtra });
+  const costTip = playCostsTip({ playCost, playCostResource, playCosts, playCostsExtra });
 
   return (
     <div
@@ -118,7 +124,7 @@ export function CardView({
         else if (onInspect && card.definitionId !== 'hidden') onInspect(card.id);
       }}
     >
-      {costLabel && <span className="card-cost">{costLabel}</span>}
+      {costLabel && <span className="card-cost tip" data-tip={costTip}>{costLabel}</span>}
 
       {deckControl && (
         <button

@@ -214,6 +214,7 @@ export interface CardDefinitionDto {
   playCost?: number | null;
   playCostResource?: string;
   playCosts?: Record<string, number> | null;
+  playCostsExtra?: CostDto[] | null;
   deckLimit?: string | null;
   constructionRequirement?: number | null;
   slots?: string[] | null;

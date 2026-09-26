@@ -468,6 +468,16 @@ activation the same turn is blocked by the tap; AP correctly accrues +1/turn and
 4-AP activation spends exactly 3, leaving 1 AP unspent (6 Skeletons total, no over-spend).
 Left: nothing — awaiting live playtest.
 
+## 2026-09-04 — task 1327 (round 2, testing failed)
+Plan: PR #30 shipped correct backend costs (Raider Camp gold+glory, Arcane Nexus 10 mana,
+Graveyard corpses+sacrifice, The Hive sacrifice-5), but "i dont see the changes" is real:
+CardView/CardDetailModal/LobbyPage only ever render `def.playCost` (singular) — any HQ
+whose cost lives solely in `playCosts`/`playCostsExtra` shows NO cost badge at all, and
+LobbyPage's admin-pool list literally prints "· free" for them. LobbyPage's toggleAdmin
+deck-clamp also uses a raw `playCost` null-check instead of the shared `isDeckEligible`
+helper, so it silently drops playCosts-only HQs from a deck when leaving admin mode.
+Also covering landing-pad (War Machine HQ), the other reported gap.
+
 ## 2026-09-04 — task 1421
 Done: confirmed all 27 heroes (incl. ax-01) already exist in game.json with valid
 stats/tags/abilities (prior session, task 908/PR #10) and the frontend deck-builder pool
@@ -800,6 +810,42 @@ Verified: the branch was behind master (PR #54, session-expired-401 fix, landed 
 branch was created) — merged origin/master in (clean, no conflicts), rebuilt and retested
 (clean, 25/25), pushed. PR #55 is now MERGEABLE/CLEAN.
 Left: status left at `review` — no reviewer has looked at PR #55 yet, watchdog did not merge.
+
+## 2026-09-17 — task 3375
+Done: reused and finished an abandoned WIP (from placeholder PR #34, closed by Martien as
+"no code changes" and re-filed as this task) that surfaces `playCosts`/`playCostsExtra` in
+`CardView`/`CardDetailModal`/`LobbyPage`/`DeckBuilderPanel`/`PlayerArea` via new
+`formatPlayCosts`/`playCostsTip` helpers, so Raider Camp/Arcane Nexus/Graveyard/The Hive show
+real cost badges instead of "free"; Lobby's admin-toggle deck clamp now uses `isDeckEligible`
+instead of a raw `playCost` check. Added the War Machine HQ's own cost: a new
+`sacrifice_equipment` cost type (`DefaultHandlers.cs`, mirrors `sacrifice_units` but destroys a
+hero-attached object) — `landing-pad` now costs 3 energy + sacrifice 1 equipped hero item
+instead of a flat 6 gold (proposed reading/numbers per Martien's task-1327 note, correctable at
+playtest). PR #56.
+Verified: `dotnet build` + `dotnet test` (25/25) + `npm run build` (tsc -b + vite) all clean. A
+throwaway xUnit harness (not committed) drove `RuleEngine.ExecuteAction("playCard")` for all 5
+HQs through the real engine — each pays/drains correctly and rejects cleanly with zero side
+effects when underpaid; landing-pad's sacrifice specifically ignores equipment attached to a
+non-hero unit. Real Playwright run against live `dotnet run` (port 5011) + `vite` (port 5183)
+dev servers: registered+confirmed+logged in a fresh account, Lobby pool shows real badges for
+all 5 HQs (none print "free"), started a real vs-Computer match (Raiders) and confirmed both
+the hand card and the detail modal show "5💰 2🏆" for Raider Camp with the correct tooltip.
+Zero console errors throughout.
+Left: nothing agent-doable — the cost numbers (esp. landing-pad's) are flagged as a proposed
+balance, correctable at a live playtest per the task's own technical notes.
+
+## 2026-09-17 — task 3375 round 2 (PR #56 review fix)
+Done: fixed the review-blocking bug — `HeroEquippedItems` (`DefaultHandlers.cs`) only matched
+`objectType == "equipment"`, but War Machine module items (plasma-cannon, missile-launcher,
+etc.) are `objectType == "module"`, a sibling type under `card`, not a subtype of `equipment`.
+Since only `equipment`/`module` cards ever populate `AttachedToId` (the only types with a
+`slot`/`slots` field), dropped the hardcoded type filter entirely — being attached to a hero is
+itself sufficient evidence, and any future attachable type is covered automatically.
+Verified: `dotnet build` + `dotnet test` (25/25) + `npm run build` clean. Throwaway xUnit test
+(not committed) reproduced the reviewer's exact scenario (equip plasma-cannon on AX-01, play
+landing-pad from hand) — failed with "Cannot pay cost: sacrifice_equipment" before the fix,
+passed after (energy drains 3, +2 from landing-pad's own onPlay bonus; module destroyed).
+Left: nothing agent-doable. Same live-playtest caveat on the cost numbers as round 1.
 
 ## 2026-09-24 — task 3949 (Machine faction card expansion, batch 1)
 Done: PR #57 adds 32 role-distinct faction-exclusive Machine cards (42 -> 74; module 5->11, unit 19->28,

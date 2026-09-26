@@ -1419,7 +1419,15 @@
       "id": "landing-pad",
       "name": "Landing Pad",
       "objectType": "headquarters",
-      "playCost": 6,
+      "playCosts": {
+        "energy": 3
+      },
+      "playCostsExtra": [
+        {
+          "type": "sacrifice_equipment",
+          "amount": 1
+        }
+      ],
       "properties": {
         "currentHp": 10,
         "maxHp": 10,
