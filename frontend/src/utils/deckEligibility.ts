@@ -17,11 +17,17 @@ const HEADQUARTERS_OBJECT_TYPES = new Set([
 // pools when it has any play cost — single-resource (playCost, e.g. Peasant) or
 // multi-resource (playCosts, e.g. Soldier's gold+training). Filtering on playCost
 // alone silently hides every playCosts-priced card (task 972).
+//
 // Heroes are always eligible regardless of play cost (task 1406 follow-up), and so are
 // headquarters (task 1604 follow-up).
+//
+// playCosts must only be checked for presence, not non-emptiness: The Hive is priced
+// entirely via playCostsExtra (sacrifice 5 units, no resource cost at all) and carries
+// playCosts: {} for exactly that reason — requiring Object.keys(...).length > 0 here
+// silently dropped it from every deck-builder/lobby pool in the game (task 1327 round 2).
 export function isDeckEligible(card: CardDefinitionDto): boolean {
   return HERO_OBJECT_TYPES.has(card.objectType)
     || HEADQUARTERS_OBJECT_TYPES.has(card.objectType)
     || (card.playCost !== null && card.playCost !== undefined)
-    || !!(card.playCosts && Object.keys(card.playCosts).length > 0);
+    || (card.playCosts !== null && card.playCosts !== undefined);
 }
