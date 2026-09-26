@@ -31936,6 +31936,1094 @@
       "faction": "machine"
     },
     {
+      "id": "machine-assembly-hub",
+      "name": "Assembly Hub",
+      "objectType": "headquarters",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 10,
+        "maxHp": 10,
+        "armor": 2
+      },
+      "housingProvided": 5,
+      "icon": "🦾",
+      "artworkDescription": "A sprawling automated assembly floor: conveyor gantries feed a wall of fabrication arms that never stop moving",
+      "abilities": [
+        {
+          "id": "assembly-hub-recharge",
+          "name": "Recharge",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "assembly-hub-queue",
+          "name": "Assembly Queue",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "onPlay": {
+        "id": "assembly-hub-start",
+        "name": "Residual charge in the capacitors",
+        "effects": [
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "energy",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-foreman-f7",
+      "name": "Foreman Unit F-7",
+      "objectType": "hero",
+      "properties": {
+        "attack": 2,
+        "currentHp": 12,
+        "maxHp": 12,
+        "armor": 1
+      },
+      "resources": {
+        "ap": 0
+      },
+      "equipmentSlots": {
+        "arm": 1,
+        "core": 1,
+        "utility": 3
+      },
+      "icon": "👷",
+      "artworkDescription": "A stocky supervisory robot in a hard-hat chassis, three tool-arms folded over its chest and a status lamp blinking amber",
+      "abilities": [
+        {
+          "id": "foreman-f7-directive",
+          "name": "Assembly Directive",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 2
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_own_units_until_end_of_turn",
+              "propertyId": "attack",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "foreman-f7-requisition",
+          "name": "Requisition",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "self",
+              "resourceId": "ap",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            },
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-suppression-autocannon",
+      "name": "Suppression Autocannon",
+      "objectType": "module",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "slot": "arm",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "icon": "🔫",
+      "artworkDescription": "A belt-fed autocannon on a gyro mount, hosing the enemy vanguard with a continuous stream of tracer fire",
+      "abilities": [
+        {
+          "id": "suppression-autocannon-fire",
+          "name": "Suppressing Fire",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 1
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage_enemy_units",
+              "amount": 2,
+              "line": "front"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-cryo-lance",
+      "name": "Cryo Lance",
+      "objectType": "module",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "slot": "arm",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "icon": "🧊",
+      "artworkDescription": "A frost-rimed lance on an arm mount, its tip venting liquid nitrogen that flash-freezes whatever it touches",
+      "triggers": [
+        {
+          "event": "onDealCombatDamage",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-reactive-plating",
+      "name": "Reactive Plating",
+      "objectType": "module",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "slot": "utility",
+      "icon": "🧱",
+      "artworkDescription": "Overlapping armor tiles studded with shaped charges that punch outward the instant something strikes the chassis",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-salvage-hook",
+      "name": "Salvage Hook",
+      "objectType": "module",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "slot": "utility",
+      "icon": "🪝",
+      "artworkDescription": "A magnetic grapple winch that reels wreckage back to the chassis to be stripped for power cells",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-nanite-weave",
+      "name": "Nanite Weave",
+      "objectType": "module",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "slot": "utility",
+      "icon": "🧬",
+      "artworkDescription": "A shimmering under-layer of self-assembling nanites that knits torn plating shut between battles",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal",
+              "scope": "host",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-overdrive-governor",
+      "name": "Overdrive Governor",
+      "objectType": "module",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "slot": "core",
+      "attachModifiers": [
+        {
+          "propertyId": "attack",
+          "amount": 1
+        }
+      ],
+      "icon": "🎛️",
+      "artworkDescription": "A brass-and-ceramic governor housing with its safety cage cut open, dials pinned deep in the red",
+      "abilities": [
+        {
+          "id": "overdrive-governor-override",
+          "name": "Governor Override",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "host",
+              "propertyId": "attack",
+              "amount": 3
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-scrap-collector",
+      "name": "Scrap Collector",
+      "objectType": "unit",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "worker"
+      ],
+      "housingCost": 1,
+      "icon": "🧲",
+      "artworkDescription": "A patchwork salvage bot with a magnet-tipped crane arm, trailing a cart already heaped with twisted plating",
+      "triggers": [
+        {
+          "event": "onUnitDied",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-shield-drone",
+      "name": "Shield Drone",
+      "objectType": "unit",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 1,
+        "currentHp": 3,
+        "maxHp": 3,
+        "armor": 0
+      },
+      "tags": [
+        "worker"
+      ],
+      "housingCost": 1,
+      "icon": "🛡️",
+      "artworkDescription": "A dinner-plate drone hovering beside its charge, a translucent energy screen flickering across its underside",
+      "abilities": [
+        {
+          "id": "shield-drone-projector",
+          "name": "Projector Field",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "buff_target_until_end_of_turn",
+              "scope": "target",
+              "propertyId": "armor",
+              "amount": 2
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-repair-swarm",
+      "name": "Repair Swarm",
+      "objectType": "unit",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [],
+      "housingCost": 1,
+      "icon": "🐝",
+      "artworkDescription": "A humming cloud of coin-sized repair bots that drifts over damaged machines and welds them back together",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "heal_own_units",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-jammer-bot",
+      "name": "Jammer Bot",
+      "objectType": "unit",
+      "playCost": 1,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 2,
+        "currentHp": 1,
+        "maxHp": 1,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "📡",
+      "artworkDescription": "A stripped-down chassis wired to a wideband jamming charge that fries every enemy machine's comms the instant it dies",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "tap_enemy_units"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-recon-skimmer",
+      "name": "Recon Skimmer",
+      "objectType": "unit",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 2,
+        "currentHp": 2,
+        "maxHp": 2,
+        "armor": 0
+      },
+      "tags": [
+        "soldier",
+        "ranged"
+      ],
+      "housingCost": 1,
+      "icon": "🛸",
+      "artworkDescription": "A low-slung hover-scout skimming just above the dirt, its sensor mast sweeping back data to the assembly line",
+      "triggers": [
+        {
+          "event": "onPlay",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-breacher-tank",
+      "name": "Breacher Tank",
+      "objectType": "unit",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 3,
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "tags": [
+        "soldier",
+        "siege"
+      ],
+      "housingCost": 2,
+      "bonusAttackVsBuildings": 3,
+      "icon": "🚜",
+      "artworkDescription": "A squat tracked demolition tank with a ram-plow blade and a stubby breaching cannon built to crack fortifications",
+      "triggers": [
+        {
+          "event": "onDestroyBuilding",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-static-lattice-drone",
+      "name": "Static Lattice Drone",
+      "objectType": "unit",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 2,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "🕸️",
+      "artworkDescription": "A spindly drone wrapped in a web of exposed capacitor coils that lash out with a numbing static discharge",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "freeze",
+              "scope": "target"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-salvage-titan",
+      "name": "Salvage Titan",
+      "objectType": "unit",
+      "playCost": 6,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 5,
+        "currentHp": 8,
+        "maxHp": 8,
+        "armor": 2
+      },
+      "tags": [
+        "soldier",
+        "guard"
+      ],
+      "housingCost": 3,
+      "icon": "🦿",
+      "artworkDescription": "A hulking bipedal hauler bolted together from a dozen wrecks, its reactor casing still humming with stolen charge",
+      "triggers": [
+        {
+          "event": "onDeath",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "gain_resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 4
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-overclocked-runner",
+      "name": "Overclocked Runner",
+      "objectType": "unit",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 4,
+        "currentHp": 1,
+        "maxHp": 1,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 1,
+      "icon": "🏃",
+      "artworkDescription": "A skeletal sprinter chassis with its governor ripped out, servos screaming as it blurs across the battlefield",
+      "triggers": [
+        {
+          "event": "onKill",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "untap",
+              "scope": "self"
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-habitat-stack",
+      "name": "Habitat Stack",
+      "objectType": "building",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 0
+      },
+      "housingProvided": 4,
+      "icon": "🏢",
+      "artworkDescription": "A tower of stacked charging cradles where idle drones dock, each bay lit by a single green standby lamp",
+      "faction": "machine"
+    },
+    {
+      "id": "machine-tesla-pylon",
+      "name": "Tesla Pylon",
+      "objectType": "building",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 7,
+        "maxHp": 7,
+        "armor": 1
+      },
+      "tags": [
+        "fortification"
+      ],
+      "housingProvided": 1,
+      "icon": "⚡",
+      "artworkDescription": "A squat armored pylon crowned with a crackling coil, arcing lightning at anything that dares strike the base",
+      "triggers": [
+        {
+          "event": "onDamaged",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-perimeter-scanner",
+      "name": "Perimeter Scanner",
+      "objectType": "building",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 0
+      },
+      "icon": "📡",
+      "artworkDescription": "A rotating radar mast on a reinforced blockhouse, sweeping every wall and vent for anything that should not be there",
+      "abilities": [
+        {
+          "id": "perimeter-scanner-sweep",
+          "name": "Deep Scan",
+          "costs": [
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "damage_infiltrators",
+              "scope": "target",
+              "amount": 3
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-orbital-uplink",
+      "name": "Orbital Uplink",
+      "objectType": "building",
+      "playCost": 6,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 1
+      },
+      "icon": "🛰️",
+      "artworkDescription": "A dish array locked onto a satellite far overhead, painting the enemy stronghold for a slow, patient orbital lance",
+      "triggers": [
+        {
+          "event": "onTurnStart",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "opponent",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-railgun-emplacement",
+      "name": "Railgun Emplacement",
+      "objectType": "building",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "properties": {
+        "currentHp": 6,
+        "maxHp": 6,
+        "armor": 2
+      },
+      "icon": "🔭",
+      "artworkDescription": "A sandbagged gun pit built around a kilometre-long magnetic rail, its capacitor bank whining as it charges a shot",
+      "abilities": [
+        {
+          "id": "railgun-emplacement-fire",
+          "name": "Railgun Shot",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "direct_damage",
+              "scope": "target",
+              "amount": 3
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-credit-siphon",
+      "name": "Credit Siphon",
+      "objectType": "spell",
+      "playCost": 2,
+      "playCostResource": "energy",
+      "icon": "💸",
+      "artworkDescription": "A fibre-optic tap clamped onto the enemy treasury line, silently draining their coffers into a machine account",
+      "onPlay": {
+        "id": "machine-credit-siphon-effect",
+        "name": "Credit Siphon",
+        "effects": [
+          {
+            "type": "steal_resource",
+            "resourceId": "gold",
+            "amount": 3
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-cascade-failure",
+      "name": "Cascade Failure",
+      "objectType": "spell",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "icon": "☢️",
+      "artworkDescription": "Every reactor on the field runs critical at once, a ring of white-hot arc discharge sweeping out in all directions",
+      "onPlay": {
+        "id": "machine-cascade-failure-effect",
+        "name": "Cascade Failure",
+        "effects": [
+          {
+            "type": "damage_all_units",
+            "amount": 3
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-mass-repair",
+      "name": "Mass Repair",
+      "objectType": "spell",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "icon": "🛠️",
+      "artworkDescription": "A wave of repair nanites floods the whole formation, sealing fractures and re-seating loose plating in seconds",
+      "onPlay": {
+        "id": "machine-mass-repair-effect",
+        "name": "Mass Repair",
+        "effects": [
+          {
+            "type": "heal_own_units",
+            "amount": 3
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-signal-jammer",
+      "name": "Signal Jammer",
+      "objectType": "spell",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "icon": "📵",
+      "artworkDescription": "A wideband jamming burst washes over the enemy line, and every unit freezes mid-stride with its comms dead",
+      "onPlay": {
+        "id": "machine-signal-jammer-effect",
+        "name": "Signal Jammer",
+        "effects": [
+          {
+            "type": "tap_enemy_units"
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-viral-payload",
+      "name": "Viral Payload",
+      "objectType": "spell",
+      "playCost": 3,
+      "playCostResource": "energy",
+      "icon": "🦠",
+      "artworkDescription": "A packet of hostile firmware broadcast across the enemy network, corroding actuators and eating through wiring",
+      "onPlay": {
+        "id": "machine-viral-payload-effect",
+        "name": "Viral Payload",
+        "effects": [
+          {
+            "type": "afflict_enemy_units",
+            "resourceId": "poison",
+            "amount": 2
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-data-mine",
+      "name": "Data Mine",
+      "objectType": "spell",
+      "playCost": 1,
+      "playCostResource": "energy",
+      "icon": "⛏️",
+      "artworkDescription": "A quick dig through the archive stacks: pull two records, then shred whichever one is dead weight",
+      "onPlay": {
+        "id": "machine-data-mine-effect",
+        "name": "Data Mine",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "amount": 2
+          },
+          {
+            "type": "discard_cards",
+            "scope": "self",
+            "amount": 1
+          }
+        ]
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-demolition-charge",
+      "name": "Demolition Charge",
+      "objectType": "spell",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "icon": "🧨",
+      "artworkDescription": "A remote-detonated shaped charge planted against a load-bearing wall, folding a whole structure in on itself",
+      "onPlay": {
+        "id": "machine-demolition-charge-effect",
+        "name": "Demolition Charge",
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 6
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "building",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-hot-swap",
+      "name": "Hot Swap",
+      "objectType": "spell",
+      "playCost": 1,
+      "playCostResource": "energy",
+      "icon": "🔄",
+      "artworkDescription": "A technician yanks a spent power cell and slams in a fresh one, and the machine lurches back to life mid-action",
+      "onPlay": {
+        "id": "machine-hot-swap-effect",
+        "name": "Hot Swap",
+        "effects": [
+          {
+            "type": "untap",
+            "scope": "target"
+          },
+          {
+            "type": "gain_resource",
+            "scope": "player",
+            "resourceId": "energy",
+            "amount": 1
+          }
+        ],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "character",
+          "min": 1,
+          "max": 1
+        }
+      },
+      "faction": "machine"
+    },
+    {
+      "id": "machine-logic-core",
+      "name": "Logic Core Processor",
+      "objectType": "caster",
+      "playCost": 4,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 1,
+        "currentHp": 4,
+        "maxHp": 4,
+        "armor": 0
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 2,
+      "icon": "🧠",
+      "artworkDescription": "A brain-in-a-jar command processor on a treaded cradle, broadcasting corrupted firmware over the enemy network",
+      "abilities": [
+        {
+          "id": "logic-core-corrupt",
+          "name": "Corrupt Firmware",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 2
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_property_enemy_units",
+              "propertyId": "attack",
+              "amount": -1
+            }
+          ]
+        }
+      ],
+      "faction": "machine"
+    },
+    {
+      "id": "machine-purge-caster",
+      "name": "Purge Protocol Unit",
+      "objectType": "caster",
+      "playCost": 5,
+      "playCostResource": "energy",
+      "properties": {
+        "attack": 2,
+        "currentHp": 5,
+        "maxHp": 5,
+        "armor": 1
+      },
+      "tags": [
+        "soldier"
+      ],
+      "housingCost": 2,
+      "icon": "🧹",
+      "artworkDescription": "A pale-plated sanitation-class command unit with a wide-bore emitter, built to scour weak machines from the field",
+      "abilities": [
+        {
+          "id": "purge-caster-purge",
+          "name": "Purge Protocol",
+          "costs": [
+            {
+              "type": "resource",
+              "scope": "player",
+              "resourceId": "energy",
+              "amount": 3
+            },
+            {
+              "type": "tap"
+            }
+          ],
+          "conditions": [],
+          "effects": [
+            {
+              "type": "destroy",
+              "scope": "target"
+            }
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1,
+            "maxPropertyId": "maxHp",
+            "maxPropertyValue": 2
+          }
+        }
+      ],
+      "faction": "machine"
+    },
+    {
       "id": "hunks-pit-brawler",
       "name": "Pit Brawler",
       "objectType": "unit",
@@ -33334,6 +34422,53 @@
       ],
       "heroOptions": [
         "sentry-grid-commander"
+      ]
+    },
+    {
+      "id": "machine-assembly",
+      "faction": "machine",
+      "name": "Assembly Line Protocol",
+      "description": "Mass-produce cheap energy-powered drones from the Assembly Hub. Scrap feeds the furnace, jammer bots stall the enemy line, and the Foreman keeps the line rallied.",
+      "hq": "machine-assembly-hub",
+      "hero": "machine-foreman-f7",
+      "cards": {
+        "machine-scrap-collector": 3,
+        "machine-shield-drone": 2,
+        "machine-repair-swarm": 2,
+        "machine-jammer-bot": 4,
+        "machine-recon-skimmer": 3,
+        "machine-breacher-tank": 2,
+        "machine-static-lattice-drone": 3,
+        "machine-salvage-titan": 2,
+        "machine-overclocked-runner": 3,
+        "machine-habitat-stack": 4,
+        "machine-tesla-pylon": 2,
+        "machine-perimeter-scanner": 1,
+        "machine-orbital-uplink": 1,
+        "machine-railgun-emplacement": 2,
+        "machine-credit-siphon": 1,
+        "machine-cascade-failure": 1,
+        "machine-mass-repair": 1,
+        "machine-signal-jammer": 1,
+        "machine-viral-payload": 2,
+        "machine-data-mine": 2,
+        "machine-demolition-charge": 2,
+        "machine-hot-swap": 1,
+        "energy-cell": 4,
+        "machine-suppression-autocannon": 1,
+        "machine-cryo-lance": 2,
+        "machine-reactive-plating": 1,
+        "machine-salvage-hook": 1,
+        "machine-nanite-weave": 1,
+        "machine-overdrive-governor": 1,
+        "machine-logic-core": 2,
+        "machine-purge-caster": 2
+      },
+      "hqOptions": [
+        "machine-assembly-hub"
+      ],
+      "heroOptions": [
+        "machine-foreman-f7"
       ]
     },
     {
