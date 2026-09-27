@@ -304,6 +304,10 @@ public class ShadowExpansion3953Tests
 
     private static IEnumerable<CardDefinition> PlayableNewCards => NewCards.Where(c => c.Id != HqId && c.Id != HeroId);
 
+    // All 80 shadow cards (42 pre-batch + 38 this batch) — used by widened lint tests.
+    private static IEnumerable<CardDefinition> AllShadowCards =>
+        Definition.Cards.Where(c => c.Faction == "shadow");
+
     /// <summary>Playable from the main phase: everything except the reaction spell (which only answers an attack).</summary>
     public static IEnumerable<object[]> MainPhasePlayableCardIds =>
         NewCardIds.Where(id => id != HqId && id != HeroId && Card(id).Timing != "reaction").Select(id => new object[] { id });
@@ -504,8 +508,9 @@ public class ShadowExpansion3953Tests
         // heal/direct_damage/freeze... with scope "target" and no ability "choice" resolve a null
         // target and do nothing: the silent no-op that hit several of the pre-batch Shadow cards.
         // scope "host" only resolves while the spy is infiltrated, so it needs the is_attached gate.
+        // Widened to all 80 shadow cards (pre-batch + new batch) for task 4129.
         var problems = new List<string>();
-        foreach (var c in NewCards)
+        foreach (var c in AllShadowCards)
         {
             foreach (var (where, a) in Abilities(c))
                 foreach (var e in a.Effects)
@@ -532,7 +537,8 @@ public class ShadowExpansion3953Tests
         // CardPlayService only ever resolves a spell's OnPlay; an "abilities" block on a spell card in
         // hand is unreachable (that is why 6 pre-batch Shadow spells do nothing when cast). Secrets are the
         // one exception: face-down, they carry triggers on the enemy's attack instead of an onPlay.
-        foreach (var c in NewCards.Where(c => c.ObjectType == "spell"))
+        // Widened to all 80 shadow cards (pre-batch + new batch) for task 4129.
+        foreach (var c in AllShadowCards.Where(c => c.ObjectType == "spell"))
         {
             Assert.Empty(c.Abilities);
             if (c.IsSecret)
@@ -1576,5 +1582,127 @@ public class ShadowExpansion3953Tests
 
         Assert.Equal(7, Hp(defender)); // 4 - 3 = 1 instead of 4
         Assert.Equal(GameState.WaitingForAction, game.State);
+    }
+
+    // ------------------------------------------------------------------ task 4129 pre-batch regression fixes
+
+    [Fact]
+    public void Pre_batch_shadow_cards_are_priced_in_gold_only_no_intel_in_playCosts()
+    {
+        // The 42 pre-batch shadow cards lived in the base "shadow" deck whose HQ (thieves-guild)
+        // produces only gold. Intel is entity-scoped; paying intel from playCosts drains the HQ bank,
+        // but the base HQs never generate it, so all 16 intel-priced pre-batch cards were uncastable.
+        var preBatch = Definition.Cards.Where(c => c.Faction == "shadow" && !NewCardIds.Contains(c.Id)).ToList();
+        Assert.Equal(42, preBatch.Count);
+        var withIntel = preBatch.Where(c => GameQueries.BasePlayCosts(c).ContainsKey("intel")).ToList();
+        Assert.True(withIntel.Count == 0,
+            "pre-batch shadow cards with intel in playCosts: " + string.Join(", ", withIntel.Select(c => c.Id)));
+    }
+
+    [Fact]
+    public void Lockdown_freezes_a_target_enemy_unit_via_onPlay_now()
+    {
+        // shadow-lockdown had its effect only in abilities[] (never resolved for spells). After task
+        // 4129 it moves to onPlay with a choice, so casting it actually freezes the chosen unit.
+        var (game, engine, p1, p2) = CreateMatch();
+        var target = Body(game, p2, 2, 5);
+        var own = Body(game, p1, 1, 5);
+        var lockdown = InHand(game, "shadow-lockdown", p1);
+
+        var (wrong, _) = TryPlay(game, engine, p1, lockdown, own);
+        Assert.False(wrong); // only enemy units
+
+        lockdown = InHand(game, "shadow-lockdown", p1);
+        Play(game, engine, p1, lockdown, target);
+
+        Assert.True(target.IsTapped);
+        Assert.True(target.SkipNextUntap);
+    }
+
+    [Fact]
+    public void Venom_striker_poisons_with_targeted_damage_now_that_it_has_a_choice()
+    {
+        // venom-striker-poison-strike had scope:target damage with no choice, so it resolved null
+        // and did nothing. After task 4129 it has a choice and actually damages.
+        var (game, engine, p1, p2) = CreateMatch();
+        var striker = OnField(game, "shadow-venom-striker", p1);
+        var target = Body(game, p2, 1, 6); // no armor so damage lands
+        var hpBefore = Hp(target);
+
+        Use(game, engine, p1, striker, "venom-striker-poison-strike", target);
+
+        Assert.Equal(hpBefore - 4, Hp(target)); // 2 + 2 damage
+        Assert.True(striker.IsTapped);
+    }
+
+    [Fact]
+    public void Saboteur_demolishes_an_enemy_building_and_drains_its_resources()
+    {
+        // shadow-saboteur had no choice on its direct_damage target, so demolish did nothing.
+        // After task 4129 it has a building choice and can actually demolish.
+        var (game, engine, p1, p2) = CreateMatch();
+        var saboteur = OnField(game, "shadow-saboteur", p1);
+        var building = House(game, p2, 6);
+
+        Use(game, engine, p1, saboteur, "saboteur-demolish", building);
+
+        Assert.Equal(3, Hp(building)); // 3 direct_damage ignoring armor
+        Assert.True(saboteur.IsTapped);
+    }
+
+    [Fact]
+    public void Wraith_spy_deep_cover_spends_its_own_intel_bank_not_the_player_pool()
+    {
+        // wraith-spy-deep-cover cost was scope:player intel (entity resource in player pool = always
+        // 0, so it was free). After task 4129 it reads from the spy's own intel bank (scope:self).
+        // The ability spends 2 intel then regains 2 intel (net 0) and steals 3 gold.
+        var (game, engine, p1, p2) = CreateMatch();
+        var spy = OnField(game, "shadow-wraith-spy", p1);
+        SetGold(p2, 5);
+        SetGold(p1, 0);
+
+        // With only 1 intel the cost cannot be paid
+        spy.Resources["intel"] = 1;
+        var (blocked, _) = TryUse(game, engine, p1, spy, "wraith-spy-deep-cover");
+        Assert.False(blocked);
+
+        // With 2 intel the ability fires: spends 2 intel, gains 2 back (net 0), steals 3 gold
+        spy.Resources["intel"] = 2;
+        Use(game, engine, p1, spy, "wraith-spy-deep-cover");
+
+        Assert.Equal(3, Gold(p1)); // stole 3 gold from p2
+        Assert.Equal(2, Gold(p2));
+        Assert.Equal(2, spy.Resources.GetValueOrDefault("intel")); // net 0: paid 2, gained 2 back
+        Assert.True(spy.IsTapped);
+    }
+
+    [Fact]
+    public void Black_market_banks_intel_on_itself_and_fence_spends_it()
+    {
+        // black-market-fence cost was scope:player intel (0 always). trigger was gain_resource
+        // scope:player intel (wrote to player pool, which nothing reads for entity resources).
+        // After task 4129: trigger writes to building's own bank (gain_bank_resource scope:self),
+        // cost reads from its own bank (scope:self).
+        var (game, engine, p1, _) = CreateMatch();
+        var market = OnField(game, "shadow-black-market", p1);
+        market.Resources["intel"] = 0;
+        SetGold(p1, 0);
+
+        // Turn start banks 1 intel on the market itself
+        StartTurnOf(game, engine, p1);
+        Assert.Equal(1, market.Resources.GetValueOrDefault("intel"));
+
+        // Too little intel to fence (need 2)
+        var (broke, _) = TryUse(game, engine, p1, market, "black-market-fence");
+        Assert.False(broke);
+
+        // Bank a second intel manually, then fence
+        market.Resources["intel"] = 2;
+        var handBefore = HandCount(game, p1);
+        Use(game, engine, p1, market, "black-market-fence");
+
+        Assert.Equal(3, Gold(p1));
+        Assert.Equal(handBefore + 1, HandCount(game, p1));
+        Assert.Equal(0, market.Resources.GetValueOrDefault("intel"));
     }
 }

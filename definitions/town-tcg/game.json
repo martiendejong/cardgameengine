@@ -14917,8 +14917,7 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 2,
-        "intel": 1
+        "gold": 2
       },
       "housingCost": 1,
       "tags": [
@@ -14938,8 +14937,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 2
             },
@@ -14947,7 +14946,14 @@
               "type": "reveal",
               "scope": "target"
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "shadow"
@@ -14963,8 +14969,7 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 3,
-        "intel": 2
+        "gold": 3
       },
       "housingCost": 1,
       "tags": [
@@ -14988,12 +14993,19 @@
               "scope": "target"
             },
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 1
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "shadow"
@@ -15009,8 +15021,7 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 4,
-        "intel": 3
+        "gold": 4
       },
       "housingCost": 2,
       "tags": [
@@ -15028,7 +15039,7 @@
             },
             {
               "type": "resource",
-              "scope": "player",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 2
             }
@@ -15042,7 +15053,7 @@
             },
             {
               "type": "gain_resource",
-              "scope": "player",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 2
             }
@@ -15062,8 +15073,7 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 4,
-        "intel": 1
+        "gold": 4
       },
       "housingCost": 2,
       "tags": [
@@ -15094,7 +15104,14 @@
               "scope": "target",
               "amount": 4
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "shadow"
@@ -15140,7 +15157,14 @@
               "scope": "target",
               "amount": 2
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "shadow"
@@ -15181,12 +15205,19 @@
               "scope": "target"
             },
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 1
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "shadow"
@@ -15221,8 +15252,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 1
             },
@@ -15246,8 +15277,7 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 5,
-        "intel": 2
+        "gold": 5
       },
       "housingCost": 2,
       "tags": [
@@ -15267,8 +15297,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 3
             },
@@ -15291,8 +15321,7 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 3,
-        "intel": 1
+        "gold": 3
       },
       "housingProvided": 2,
       "icon": "🏚️",
@@ -15309,8 +15338,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 2
             }
@@ -15323,8 +15352,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 1
             }
@@ -15356,7 +15385,7 @@
             },
             {
               "type": "resource",
-              "scope": "player",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 2
             }
@@ -15383,7 +15412,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "scope": "player",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 1
             }
@@ -15402,8 +15431,7 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 3,
-        "intel": 2
+        "gold": 3
       },
       "housingProvided": 0,
       "icon": "📡",
@@ -15424,8 +15452,8 @@
               "scope": "target"
             },
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 2
             },
@@ -15433,7 +15461,14 @@
               "type": "draw_cards",
               "amount": 1
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "triggers": [
@@ -15442,8 +15477,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 1
             }
@@ -15462,8 +15497,7 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 4,
-        "intel": 1
+        "gold": 4
       },
       "housingProvided": 2,
       "icon": "📦",
@@ -15480,8 +15514,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 1
             },
@@ -15504,8 +15538,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 1
             }
@@ -15519,255 +15553,160 @@
       "name": "Extortion",
       "objectType": "spell",
       "playCosts": {
-        "gold": 2,
-        "intel": 2
+        "gold": 2
       },
       "icon": "💰",
       "artworkDescription": "A shadowy hand sliding a note across a table",
-      "abilities": [
-        {
-          "id": "extortion-cast",
-          "name": "Extort",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 2
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "intel",
-              "amount": 2
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "steal_resource",
-              "resourceId": "gold",
-              "amount": 4
-            }
-          ]
-        }
-      ],
-      "faction": "shadow"
+      "faction": "shadow",
+      "onPlay": {
+        "id": "extortion-cast",
+        "name": "Extort",
+        "effects": [
+          {
+            "type": "steal_resource",
+            "resourceId": "gold",
+            "amount": 4
+          }
+        ],
+        "conditions": []
+      }
     },
     {
       "id": "shadow-mind-wipe",
       "name": "Mind Wipe",
       "objectType": "spell",
       "playCosts": {
-        "gold": 3,
-        "intel": 3
+        "gold": 3
       },
       "icon": "🧠",
       "artworkDescription": "A gloved hand pressing a vial of gas to a target's face",
-      "abilities": [
-        {
-          "id": "mind-wipe-cast",
-          "name": "Wipe Memory",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 3
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "intel",
-              "amount": 3
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "discard_cards",
-              "amount": 3
-            },
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "intel",
-              "amount": 2
-            }
-          ]
-        }
-      ],
-      "faction": "shadow"
+      "faction": "shadow",
+      "onPlay": {
+        "id": "mind-wipe-cast",
+        "name": "Wipe Memory",
+        "effects": [
+          {
+            "type": "discard_cards",
+            "amount": 3
+          },
+          {
+            "type": "gain_bank_resource",
+            "scope": "self",
+            "resourceId": "intel",
+            "amount": 2
+          }
+        ],
+        "conditions": []
+      }
     },
     {
       "id": "shadow-lockdown",
       "name": "Lockdown",
       "objectType": "spell",
       "playCosts": {
-        "gold": 2,
-        "intel": 1
+        "gold": 2
       },
       "icon": "🔒",
       "artworkDescription": "Iron chains materializing from shadows to bind a target in place",
-      "abilities": [
-        {
-          "id": "lockdown-cast",
-          "name": "Freeze Target",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 2
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "intel",
-              "amount": 1
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "freeze",
-              "scope": "target"
-            }
-          ]
+      "faction": "shadow",
+      "onPlay": {
+        "id": "lockdown-cast",
+        "name": "Freeze Target",
+        "effects": [
+          {
+            "type": "freeze",
+            "scope": "target"
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
         }
-      ],
-      "faction": "shadow"
+      }
     },
     {
       "id": "shadow-counter-intel",
       "name": "Counter-Intel",
       "objectType": "spell",
       "playCosts": {
-        "gold": 2,
-        "intel": 2
+        "gold": 2
       },
       "icon": "🚫",
       "artworkDescription": "An agent throwing a dossier into flames",
-      "abilities": [
-        {
-          "id": "counter-intel-cast",
-          "name": "Neutralize",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 2
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "intel",
-              "amount": 2
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "counter_spell"
-            }
-          ]
-        }
-      ],
-      "faction": "shadow"
+      "faction": "shadow",
+      "onPlay": {
+        "id": "counter-intel-cast",
+        "name": "Neutralize",
+        "effects": [
+          {
+            "type": "counter_spell"
+          }
+        ],
+        "conditions": []
+      }
     },
     {
       "id": "shadow-shadow-walk",
       "name": "Shadow Walk",
       "objectType": "spell",
       "playCosts": {
-        "gold": 1,
-        "intel": 1
+        "gold": 1
       },
       "icon": "🌫️",
       "artworkDescription": "A figure dissolving into the floor's shadow",
-      "abilities": [
-        {
-          "id": "shadow-walk-cast",
-          "name": "Phase Through",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 1
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "intel",
-              "amount": 1
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "untap",
-              "scope": "self"
-            },
-            {
-              "type": "draw_cards",
-              "amount": 1
-            }
-          ]
-        }
-      ],
-      "faction": "shadow"
+      "faction": "shadow",
+      "onPlay": {
+        "id": "shadow-walk-cast",
+        "name": "Phase Through",
+        "effects": [
+          {
+            "type": "untap",
+            "scope": "self"
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ],
+        "conditions": []
+      }
     },
     {
       "id": "shadow-extraction",
       "name": "Extraction",
       "objectType": "spell",
       "playCosts": {
-        "gold": 3,
-        "intel": 2
+        "gold": 3
       },
       "icon": "🪂",
       "artworkDescription": "A rescue team rappelling from a rooftop",
-      "abilities": [
-        {
-          "id": "extraction-cast",
-          "name": "Extract Asset",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 3
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "intel",
-              "amount": 2
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "discard_cards",
-              "amount": 2
-            },
-            {
-              "type": "steal_resource",
-              "resourceId": "gold",
-              "amount": 2
-            },
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "intel",
-              "amount": 3
-            }
-          ]
-        }
-      ],
-      "faction": "shadow"
+      "faction": "shadow",
+      "onPlay": {
+        "id": "extraction-cast",
+        "name": "Extract Asset",
+        "effects": [
+          {
+            "type": "discard_cards",
+            "amount": 2
+          },
+          {
+            "type": "steal_resource",
+            "resourceId": "gold",
+            "amount": 2
+          },
+          {
+            "type": "gain_bank_resource",
+            "scope": "self",
+            "resourceId": "intel",
+            "amount": 3
+          }
+        ],
+        "conditions": []
+      }
     },
     {
       "id": "shadow-saboteur",
@@ -15780,8 +15719,7 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 3,
-        "intel": 1
+        "gold": 3
       },
       "housingCost": 1,
       "tags": [
@@ -15797,12 +15735,6 @@
           "costs": [
             {
               "type": "tap"
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "intel",
-              "amount": 2
             }
           ],
           "conditions": [],
@@ -15816,7 +15748,14 @@
               "type": "drain_resource",
               "amount": 2
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "shadow"
@@ -15832,8 +15771,7 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 3,
-        "intel": 2
+        "gold": 3
       },
       "housingCost": 1,
       "tags": [
@@ -15852,7 +15790,7 @@
             },
             {
               "type": "resource",
-              "scope": "player",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 3
             }
@@ -15870,7 +15808,7 @@
             },
             {
               "type": "gain_resource",
-              "scope": "player",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 2
             }
@@ -15884,7 +15822,7 @@
           "effects": [
             {
               "type": "gain_resource",
-              "scope": "player",
+              "scope": "self",
               "resourceId": "intel",
               "amount": 1
             }
@@ -28467,7 +28405,6 @@
       "name": "Oubliette",
       "objectType": "building",
       "playCost": 3,
-      "constructionRequirement": 2,
       "properties": {
         "currentHp": 7,
         "maxHp": 7
@@ -28481,8 +28418,7 @@
           "conditions": [],
           "effects": [
             {
-              "type": "tap",
-              "scope": "target"
+              "type": "tap_enemy_units"
             }
           ]
         }
@@ -28833,7 +28769,6 @@
       "name": "Assassins Guildhall",
       "objectType": "building",
       "playCost": 3,
-      "constructionRequirement": 2,
       "properties": {
         "currentHp": 6,
         "maxHp": 6
@@ -28861,7 +28796,6 @@
       "name": "Poison Workshop",
       "objectType": "building",
       "playCost": 4,
-      "constructionRequirement": 2,
       "properties": {
         "currentHp": 5,
         "maxHp": 5
