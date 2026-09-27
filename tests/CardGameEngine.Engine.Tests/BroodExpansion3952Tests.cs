@@ -268,6 +268,10 @@ public class BroodExpansion3952Tests
 
     private static IEnumerable<CardDefinition> NewCards => NewCardIds.Select(Card);
 
+    // All brood-faction cards + apex-* untagged cards in the brood-apex deck
+    private static IEnumerable<CardDefinition> AllBroodCards =>
+        Definition.Cards.Where(c => c.Faction == "brood" || c.Id.StartsWith("apex-"));
+
     private static IEnumerable<CardDefinition> PlayableNewCards => NewCards.Where(c => c.Id != HqId && c.Id != HeroId);
 
     public static IEnumerable<object[]> PlayableCardIds =>
@@ -429,7 +433,7 @@ public class BroodExpansion3952Tests
         // heal/direct_damage/freeze... with scope "target" and no ability "choice" resolve a null
         // target and do nothing: the silent no-op that hit several of the pre-batch Brood cards.
         var problems = new List<string>();
-        foreach (var c in NewCards)
+        foreach (var c in AllBroodCards)
         {
             foreach (var (where, a) in Abilities(c))
                 foreach (var e in a.Effects)
@@ -453,7 +457,7 @@ public class BroodExpansion3952Tests
     {
         // CardPlayService only ever resolves a spell's OnPlay; an "abilities" block on a spell card in
         // hand is unreachable (that is why several pre-batch Brood spells do nothing when cast).
-        foreach (var c in NewCards.Where(c => c.ObjectType == "spell"))
+        foreach (var c in AllBroodCards.Where(c => c.ObjectType == "spell"))
         {
             Assert.Empty(c.Abilities);
             Assert.NotNull(c.OnPlay);
@@ -546,8 +550,11 @@ public class BroodExpansion3952Tests
             var type = e.Type == "gain_resource" || e.Type == "gain_bank_resource" ? "gain_resource" : e.Type;
             var scope = e.Scope;
             if (type == "gain_resource" && (scope is null or "player" or "self")) scope = "own";
+            // Include amount for resource and damage effects so cards that differ only by scale are distinct
+            var amountStr = (type == "gain_resource" || type.Contains("damage") || type.Contains("heal") || type == "draw_cards")
+                ? e.Amount.ToString() : null;
             var parts = new[] { type, scope, e.ResourceId, e.PropertyId, e.CardId, e.Tag, e.Line,
-                e.PerTaggedBuilding == null ? null : "perTagged" };
+                amountStr, e.PerTaggedBuilding == null ? null : "perTagged" };
             return string.Join(":", parts.Where(x => !string.IsNullOrEmpty(x)));
         }
         static string Effects(IEnumerable<EffectDefinition> effects) =>
@@ -1265,6 +1272,91 @@ public class BroodExpansion3952Tests
         Assert.True(frail.IsDestroyed);
         Assert.Equal(5, Hp(back));
         Assert.Equal(5, Hp(mine));
+    }
+
+    // ------------------------------------------------------------------ pre-batch repair spot tests
+
+    [Fact]
+    public void All_brood_cards_are_priced_in_biomass_not_gold()
+    {
+        var hqLike = new HashSet<string> { "hive-hq", "hero" };
+        var problems = new List<string>();
+        foreach (var c in AllBroodCards)
+        {
+            if (hqLike.Contains(c.ObjectType)) continue;
+            var costs = GameQueries.BasePlayCosts(c);
+            if (costs.ContainsKey("gold")) problems.Add($"{c.Id} still priced in gold");
+        }
+        Assert.True(problems.Count == 0, string.Join("; ", problems));
+    }
+
+    [Fact]
+    public void Consume_destroys_a_chosen_enemy_unit_and_banks_biomass()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var consume = InHand(game, "brood-consume", p1);
+        var target = Body(game, p2, 2, 4);
+        var beforeBiomass = Biomass(game, p1);
+
+        Play(game, engine, p1, consume, target);
+
+        Assert.True(target.IsDestroyed);
+        Assert.Equal(beforeBiomass - 2 + 2, Biomass(game, p1)); // paid 2 biomass to cast, gained 2 biomass from effect
+        Assert.Equal("discard", consume.ZoneId);
+    }
+
+    [Fact]
+    public void Chitin_fortification_buffs_a_chosen_friendly_unit()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var spell = InHand(game, "brood-chitin-fortification", p1);
+        var friendly = Body(game, p1, 2, 4);
+        var hpBefore = Hp(friendly);
+
+        Play(game, engine, p1, spell, friendly);
+
+        Assert.True(Hp(friendly) > hpBefore); // currentHp +2
+        Assert.Equal("discard", spell.ZoneId);
+    }
+
+    [Fact]
+    public void Acid_spewer_damages_and_softens_armor_on_a_chosen_enemy()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var spewer = OnField(game, "brood-acid-spewer", p1);
+        var target = Body(game, p2, 2, 6); // no armor: acid-spit uses 'damage' type which is armor-reduced
+
+        Use(game, engine, p1, spewer, "acid-spit", target);
+
+        Assert.True(Hp(target) < 6); // took damage (2 piercing via damage effect)
+        Assert.True(spewer.IsTapped);
+    }
+
+    [Fact]
+    public void Scythe_hunter_lunges_at_a_chosen_enemy()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var hunter = OnField(game, "brood-scythe-hunter", p1);
+        var target = Body(game, p2, 2, 8);
+
+        Use(game, engine, p1, hunter, "scythe-lunge", target);
+
+        Assert.True(Hp(target) < 8); // took damage
+        Assert.True(hunter.IsTapped);
+    }
+
+    [Fact]
+    public void Flesh_weaver_heals_a_chosen_friendly_unit()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var weaver = OnField(game, "brood-flesh-weaver", p1);
+        var ally = Body(game, p1, 2, 4);
+        ally.Properties["currentHp"] = 2; // wounded
+
+        Use(game, engine, p1, weaver, "weave-flesh", ally);
+
+        Assert.True(Hp(ally) > 2); // healed
+        Assert.True(weaver.IsTapped);
     }
 
     // ------------------------------------------------------------------ live bot-vs-bot smoke
