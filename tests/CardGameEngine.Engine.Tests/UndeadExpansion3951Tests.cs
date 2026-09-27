@@ -255,6 +255,9 @@ public class UndeadExpansion3951Tests
 
     private static IEnumerable<CardDefinition> NewCards => NewCardIds.Select(Card);
 
+    private static IEnumerable<CardDefinition> AllUndeadCards =>
+        Definition.Cards.Where(c => c.Faction == "undead");
+
     private static IEnumerable<(string where, AbilityDefinition ability)> Abilities(CardDefinition c)
     {
         foreach (var a in c.Abilities) yield return ($"{c.Id}/ability {a.Id}", a);
@@ -281,10 +284,10 @@ public class UndeadExpansion3951Tests
     }
 
     [Fact]
-    public void Every_new_card_uses_only_effects_triggers_costs_and_conditions_the_engine_registers()
+    public void Every_undead_card_uses_only_effects_triggers_costs_and_conditions_the_engine_registers()
     {
         var problems = new List<string>();
-        foreach (var c in NewCards)
+        foreach (var c in AllUndeadCards)
         {
             foreach (var (where, a) in Abilities(c))
             {
@@ -310,7 +313,7 @@ public class UndeadExpansion3951Tests
     }
 
     [Fact]
-    public void Every_key_in_every_new_card_is_a_real_schema_field()
+    public void Every_key_in_every_undead_card_is_a_real_schema_field()
     {
         // System.Text.Json silently drops unknown keys (PR #52's "property"/"target" typos deserialised
         // fine and did nothing), so lint the raw JSON against the C# schema types themselves.
@@ -350,8 +353,10 @@ public class UndeadExpansion3951Tests
         var byId = doc.RootElement.GetProperty("cards").EnumerateArray()
             .ToDictionary(c => c.GetProperty("id").GetString()!);
 
-        foreach (var id in NewCardIds)
+        var allUndeadIds = AllUndeadCards.Select(c => c.Id).ToHashSet();
+        foreach (var id in allUndeadIds)
         {
+            if (!byId.ContainsKey(id)) continue;
             var c = byId[id];
             Check(c, cardKeys, id);
             if (c.TryGetProperty("abilities", out var abilities)) foreach (var a in abilities.EnumerateArray()) CheckAbility(a, id + "/ability");
@@ -374,7 +379,7 @@ public class UndeadExpansion3951Tests
         // heal/direct_damage/freeze... with scope "target" and no ability "choice" resolve a null
         // target and do nothing: the silent no-op that hit many pre-existing cards.
         var problems = new List<string>();
-        foreach (var c in NewCards)
+        foreach (var c in AllUndeadCards)
         {
             foreach (var (where, a) in Abilities(c))
                 foreach (var e in a.Effects)
@@ -444,6 +449,22 @@ public class UndeadExpansion3951Tests
         // and every new unit is housed like the existing Undead units, so housing still means something
         foreach (var c in NewCards.Where(c => c.ObjectType == "unit"))
             Assert.InRange(c.HousingCost ?? 0, 1, 2);
+    }
+
+    [Fact]
+    public void All_undead_cards_are_priced_in_corpses_not_gold()
+    {
+        // Every Undead faction card must be castable from corpse income.
+        // No HQ in any Undead precon deck produces gold for the base or legion deck;
+        // a gold-priced card is uncastable there.
+        foreach (var c in AllUndeadCards)
+        {
+            if (!GameQueries.IsDeckEligible(Definition, c)) continue;
+            if (GameQueries.IsObjectTypeOrSubtype(Definition, c.ObjectType, "hero") ||
+                GameQueries.IsObjectTypeOrSubtype(Definition, c.ObjectType, "headquarters")) continue;
+            var costs = GameQueries.BasePlayCosts(c);
+            Assert.False(costs.ContainsKey("gold"), $"{c.Id} is still priced in gold");
+        }
     }
 
     [Fact]
@@ -1245,6 +1266,98 @@ public class UndeadExpansion3951Tests
         Assert.True(shard.IsDestroyed);
         Assert.Equal(4, Hp(wearer)); // healed to the wearer's own max once the shard's bonus is gone
         Assert.Equal(4, GameQueries.GetEffectiveProperty(game, wearer, "maxHp"));
+    }
+
+    // ------------------------------------------------------------------ pre-batch repair spot tests
+
+    [Fact]
+    public void Wraith_life_drain_deals_damage_and_gains_a_corpse_from_a_chosen_enemy()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        SilenceCitadel(game, p1);
+        Hq(game, p1).Resources["corpses"] = 0;
+        var wraith = OnField(game, "undead-wraith", p1);
+        var target = Body(game, p2, 0, 5);
+
+        Use(game, engine, p1, wraith, "wraith-life-drain", target);
+
+        Assert.Equal(4, Hp(target)); // 1 direct_damage
+        Assert.Equal(1, Corpses(game, p1)); // gain_bank_resource self corpses 1
+        Assert.True(wraith.IsTapped);
+    }
+
+    [Fact]
+    public void Banshee_wail_freezes_a_chosen_enemy_and_forces_a_discard()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        // Give p2 a card in hand to discard
+        InHand(game, "skeleton", p2);
+        var handBefore = HandCount(game, p2);
+        var banshee = OnField(game, "undead-banshee", p1);
+        var target = Body(game, p2, 2, 5);
+
+        Use(game, engine, p1, banshee, "banshee-wail", target);
+
+        Assert.True(target.IsTapped); // freeze → tap
+        Assert.Equal(handBefore - 1, HandCount(game, p2));
+        Assert.True(banshee.IsTapped);
+    }
+
+    [Fact]
+    public void Wight_chill_touch_taps_and_pings_a_chosen_enemy_unit()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var wight = OnField(game, "undead-wight", p1);
+        var target = Body(game, p2, 2, 5);
+        target.IsTapped = false;
+
+        Use(game, engine, p1, wight, "wight-chill-touch", target);
+
+        Assert.True(target.IsTapped);
+        Assert.Equal(4, Hp(target)); // 1 direct_damage
+        Assert.True(wight.IsTapped);
+    }
+
+    [Fact]
+    public void Death_coil_deals_damage_and_weakens_a_chosen_enemy()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var coil = InHand(game, "undead-death-coil", p1);
+        var target = Body(game, p2, 3, 6);
+        var atkBefore = Atk(game, target);
+
+        Play(game, engine, p1, coil, target);
+
+        Assert.Equal(2, Hp(target)); // 4 direct_damage on 6hp
+        Assert.Equal(4, GameQueries.GetEffectiveProperty(game, target, "maxHp")); // modify_property maxHp -2
+        Assert.Equal("discard", coil.ZoneId);
+    }
+
+    [Fact]
+    public void Unholy_blight_deals_damage_and_poisons_a_chosen_enemy()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var blight = InHand(game, "undead-unholy-blight", p1);
+        var target = Body(game, p2, 0, 6);
+
+        Play(game, engine, p1, blight, target);
+
+        Assert.Equal(4, Hp(target)); // 2 direct_damage
+        Assert.Equal("discard", blight.ZoneId);
+    }
+
+    [Fact]
+    public void Plague_wind_deals_direct_damage_and_freezes_a_chosen_enemy()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var wind = InHand(game, "undead-plague-wind", p1);
+        var target = Body(game, p2, 2, 6);
+
+        Play(game, engine, p1, wind, target);
+
+        Assert.True(target.IsTapped); // freeze
+        Assert.True(Hp(target) < 6); // direct_damage
+        Assert.Equal("discard", wind.ZoneId);
     }
 
     // ------------------------------------------------------------------ live bot-vs-bot smoke

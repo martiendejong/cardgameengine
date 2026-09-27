@@ -13145,8 +13145,6 @@
         "maxHp": 3,
         "armor": 0
       },
-      "playCost": 2,
-      "housingCost": 1,
       "tags": [
         "soldier"
       ],
@@ -13169,15 +13167,25 @@
               "amount": 1
             },
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "corpses",
               "amount": 1
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 2
+      }
     },
     {
       "id": "undead-banshee",
@@ -13189,8 +13197,6 @@
         "maxHp": 4,
         "armor": 0
       },
-      "playCost": 3,
-      "housingCost": 1,
       "tags": [
         "ranged"
       ],
@@ -13215,7 +13221,14 @@
               "type": "freeze",
               "scope": "target"
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "triggers": [
@@ -13230,7 +13243,10 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 3
+      }
     },
     {
       "id": "undead-death-knight",
@@ -13243,10 +13259,8 @@
         "armor": 2
       },
       "playCosts": {
-        "gold": 4,
         "corpses": 2
       },
-      "housingCost": 2,
       "tags": [
         "soldier",
         "guard"
@@ -13276,12 +13290,19 @@
               "amount": 4
             },
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "corpses",
               "amount": 1
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "undead"
@@ -13296,8 +13317,6 @@
         "maxHp": 2,
         "armor": 0
       },
-      "playCost": 1,
-      "housingCost": 1,
       "tags": [
         "soldier"
       ],
@@ -13309,15 +13328,18 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "poison",
               "amount": 2
             }
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 1
+      }
     },
     {
       "id": "undead-bone-archer",
@@ -13329,8 +13351,6 @@
         "maxHp": 2,
         "armor": 0
       },
-      "playCost": 2,
-      "housingCost": 1,
       "tags": [
         "ranged",
         "archer"
@@ -13363,10 +13383,20 @@
               "type": "freeze",
               "scope": "target"
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 2
+      }
     },
     {
       "id": "undead-wight",
@@ -13379,10 +13409,8 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 3,
         "corpses": 1
       },
-      "housingCost": 1,
       "tags": [
         "soldier",
         "retaliate"
@@ -13409,7 +13437,14 @@
               "scope": "target",
               "amount": 1
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "undead"
@@ -13424,8 +13459,6 @@
         "maxHp": 2,
         "armor": 0
       },
-      "playCost": 1,
-      "housingCost": 1,
       "tags": [
         "worker"
       ],
@@ -13437,15 +13470,18 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "corpses",
               "amount": 2
             }
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 1
+      }
     },
     {
       "id": "undead-shadow-revenant",
@@ -13458,11 +13494,8 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 3,
-        "corpses": 2,
-        "dp": 1
+        "corpses": 2
       },
-      "housingCost": 2,
       "tags": [
         "soldier",
         "ranged"
@@ -13491,12 +13524,19 @@
               "scope": "target"
             },
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "corpses",
               "amount": 2
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "undead"
@@ -13510,7 +13550,6 @@
         "maxHp": 7,
         "armor": 2
       },
-      "playCost": 3,
       "housingProvided": 4,
       "icon": "🏚️",
       "artworkDescription": "A crumbling stone mausoleum with iron-barred doors",
@@ -13539,7 +13578,10 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 3
+      }
     },
     {
       "id": "undead-burial-grounds",
@@ -13550,7 +13592,6 @@
         "maxHp": 5,
         "armor": 1
       },
-      "playCost": 2,
       "housingProvided": 2,
       "icon": "⚰️",
       "artworkDescription": "A walled cemetery with freshly turned earth",
@@ -13566,8 +13607,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "corpses",
               "amount": 2
             }
@@ -13580,15 +13621,18 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "corpses",
               "amount": 1
             }
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 2
+      }
     },
     {
       "id": "undead-plague-pit",
@@ -13599,7 +13643,6 @@
         "maxHp": 4,
         "armor": 0
       },
-      "playCost": 3,
       "housingProvided": 2,
       "icon": "☣️",
       "artworkDescription": "A sunken mass grave oozing yellowish mist",
@@ -13615,8 +13658,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "poison",
               "amount": 3
             },
@@ -13625,10 +13668,20 @@
               "scope": "target",
               "amount": 2
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 3
+      }
     },
     {
       "id": "undead-ossuary",
@@ -13639,7 +13692,6 @@
         "maxHp": 6,
         "armor": 2
       },
-      "playCost": 4,
       "housingProvided": 3,
       "icon": "💀",
       "artworkDescription": "A cathedral-like structure whose walls are constructed entirely from neatly stacked skulls",
@@ -13655,21 +13707,24 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "corpses",
               "amount": 2
             },
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "dp",
               "amount": 1
             }
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 4
+      }
     },
     {
       "id": "undead-death-altar",
@@ -13681,7 +13736,6 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 4,
         "corpses": 2
       },
       "housingProvided": 2,
@@ -13705,8 +13759,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "dp",
               "amount": 3
             },
@@ -13723,213 +13777,174 @@
       "id": "undead-unholy-blight",
       "name": "Unholy Blight",
       "objectType": "spell",
-      "playCost": 2,
       "icon": "🟢",
       "artworkDescription": "A sickly green cloud erupts from the ground",
-      "abilities": [
-        {
-          "id": "unholy-blight-cast",
-          "name": "Cast Unholy Blight",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 2
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "direct_damage",
-              "scope": "target",
-              "amount": 2
-            },
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "poison",
-              "amount": 2
-            }
-          ]
+      "faction": "undead",
+      "onPlay": {
+        "id": "unholy-blight-cast",
+        "name": "Cast Unholy Blight",
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 2
+          },
+          {
+            "type": "gain_bank_resource",
+            "scope": "self",
+            "resourceId": "poison",
+            "amount": 2
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
         }
-      ],
-      "faction": "undead"
+      },
+      "playCosts": {
+        "corpses": 2
+      }
     },
     {
       "id": "undead-bone-shatter",
       "name": "Bone Shatter",
       "objectType": "spell",
-      "playCost": 3,
       "icon": "🦴",
       "artworkDescription": "Skeletal remains explode outward in a cone of razor-edged fragments",
-      "abilities": [
-        {
-          "id": "bone-shatter-cast",
-          "name": "Cast Bone Shatter",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 3
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "destroy",
-              "scope": "target"
-            },
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "corpses",
-              "amount": 1
-            }
-          ]
+      "faction": "undead",
+      "onPlay": {
+        "id": "bone-shatter-cast",
+        "name": "Cast Bone Shatter",
+        "effects": [
+          {
+            "type": "destroy",
+            "scope": "target"
+          },
+          {
+            "type": "gain_bank_resource",
+            "scope": "self",
+            "resourceId": "corpses",
+            "amount": 1
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
         }
-      ],
-      "faction": "undead"
+      },
+      "playCosts": {
+        "corpses": 3
+      }
     },
     {
       "id": "undead-death-coil",
       "name": "Death Coil",
       "objectType": "spell",
       "playCosts": {
-        "gold": 2,
-        "dp": 1
+        "corpses": 2
       },
       "icon": "🌀",
       "artworkDescription": "A coil of black necrotic energy spirals toward the target",
-      "abilities": [
-        {
-          "id": "death-coil-cast",
-          "name": "Cast Death Coil",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 2
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "dp",
-              "amount": 1
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "direct_damage",
-              "scope": "target",
-              "amount": 4
-            },
-            {
-              "type": "modify_property",
-              "scope": "target",
-              "propertyId": "maxHp",
-              "amount": -2
-            }
-          ]
+      "faction": "undead",
+      "onPlay": {
+        "id": "death-coil-cast",
+        "name": "Cast Death Coil",
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 4
+          },
+          {
+            "type": "modify_property",
+            "scope": "target",
+            "propertyId": "maxHp",
+            "amount": -2
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
         }
-      ],
-      "faction": "undead"
+      }
     },
     {
       "id": "undead-soul-harvest",
       "name": "Soul Harvest",
       "objectType": "spell",
       "playCosts": {
-        "gold": 3,
         "corpses": 2
       },
       "icon": "💜",
       "artworkDescription": "The lich extends skeletal hands as luminous soul-orbs rip free from nearby corpses",
-      "abilities": [
-        {
-          "id": "soul-harvest-cast",
-          "name": "Cast Soul Harvest",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 3
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "corpses",
-              "amount": 2
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "dp",
-              "amount": 3
-            },
-            {
-              "type": "draw_cards",
-              "amount": 2
-            }
-          ]
-        }
-      ],
-      "faction": "undead"
+      "faction": "undead",
+      "onPlay": {
+        "id": "soul-harvest-cast",
+        "name": "Cast Soul Harvest",
+        "effects": [
+          {
+            "type": "gain_bank_resource",
+            "scope": "self",
+            "resourceId": "dp",
+            "amount": 3
+          },
+          {
+            "type": "draw_cards",
+            "amount": 2
+          }
+        ],
+        "conditions": []
+      }
     },
     {
       "id": "undead-plague-wind",
       "name": "Plague Wind",
       "objectType": "spell",
       "playCosts": {
-        "gold": 4,
-        "poison": 2
+        "corpses": 4
       },
       "icon": "💨",
       "artworkDescription": "A foul gale carrying spores and pestilence sweeps across the battlefield",
-      "abilities": [
-        {
-          "id": "plague-wind-cast",
-          "name": "Cast Plague Wind",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 4
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "poison",
-              "amount": 2
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "direct_damage",
-              "scope": "target",
-              "amount": 3
-            },
-            {
-              "type": "discard_cards",
-              "amount": 2
-            },
-            {
-              "type": "freeze",
-              "scope": "target"
-            }
-          ]
+      "faction": "undead",
+      "onPlay": {
+        "id": "plague-wind-cast",
+        "name": "Cast Plague Wind",
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 3
+          },
+          {
+            "type": "discard_cards",
+            "amount": 2
+          },
+          {
+            "type": "freeze",
+            "scope": "target"
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
         }
-      ],
-      "faction": "undead"
+      }
     },
     {
       "id": "undead-gravekeeper",
@@ -13941,8 +13956,6 @@
         "maxHp": 4,
         "armor": 1
       },
-      "playCost": 3,
-      "housingCost": 1,
       "tags": [
         "worker",
         "builder"
@@ -13961,19 +13974,31 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "corpses",
               "amount": 2
             },
             {
               "type": "add_progress",
-              "amount": 1
+              "amount": 1,
+              "scope": "target"
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "building",
+            "requireUnderConstruction": true,
+            "min": 1,
+            "max": 1
+          }
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 3
+      }
     },
     {
       "id": "undead-lich-herald",
@@ -13986,10 +14011,8 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 3,
-        "dp": 1
+        "corpses": 3
       },
-      "housingCost": 2,
       "tags": [
         "soldier",
         "ranged"
@@ -14015,12 +14038,12 @@
           "effects": [
             {
               "type": "cost_discount",
-              "resourceId": "gold",
+              "resourceId": "corpses",
               "amount": 2
             },
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "corpses",
               "amount": 1
             }
@@ -14033,8 +14056,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "dp",
               "amount": 1
             }
@@ -25991,7 +26014,6 @@
       "id": "plague-bone-archer",
       "name": "Bone Archer",
       "objectType": "unit",
-      "playCost": 2,
       "properties": {
         "attack": 2,
         "currentHp": 2,
@@ -26002,16 +26024,18 @@
         "soldier",
         "ranged"
       ],
-      "housingCost": 1,
       "icon": "🏹",
       "artworkDescription": "A skeletal archer whose ribcage is bound together with strips of rotted leather, nocking an arrow tipped with a festering boil",
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 2
+      },
+      "housingCost": 1
     },
     {
       "id": "plague-festering-brute",
       "name": "Festering Brute",
       "objectType": "unit",
-      "playCost": 3,
       "properties": {
         "attack": 4,
         "currentHp": 4,
@@ -26022,7 +26046,6 @@
         "soldier",
         "splash"
       ],
-      "housingCost": 1,
       "icon": "🧟",
       "artworkDescription": "An enormous bloated corpse that swings wildly with decaying limbs, spraying infectious pus on nearby enemies with each blow",
       "triggers": [
@@ -26037,13 +26060,16 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 3
+      },
+      "housingCost": 1
     },
     {
       "id": "plague-miasma-wraith",
       "name": "Miasma Wraith",
       "objectType": "unit",
-      "playCost": 2,
       "properties": {
         "attack": 1,
         "currentHp": 3,
@@ -26053,7 +26079,6 @@
       "tags": [
         "soldier"
       ],
-      "housingCost": 1,
       "icon": "👻",
       "artworkDescription": "A translucent specter trailing a sickly green fog, its hollow eye sockets glowing with diseased light",
       "triggers": [
@@ -26068,13 +26093,16 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 2
+      },
+      "housingCost": 1
     },
     {
       "id": "plague-siege-catapult",
       "name": "Plague Catapult",
       "objectType": "unit",
-      "playCost": 4,
       "properties": {
         "attack": 3,
         "currentHp": 5,
@@ -26086,16 +26114,18 @@
         "siege",
         "ranged"
       ],
-      "housingCost": 2,
       "icon": "💣",
       "artworkDescription": "A rusted war catapult manned by skeletal crew, hurling rotted corpse-bombs packed with disease over enemy fortifications",
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 4
+      },
+      "housingCost": 2
     },
     {
       "id": "plague-rot-summoner",
       "name": "Rot Summoner",
       "objectType": "unit",
-      "playCost": 3,
       "properties": {
         "attack": 1,
         "currentHp": 4,
@@ -26105,7 +26135,6 @@
       "tags": [
         "soldier"
       ],
-      "housingCost": 1,
       "icon": "🧙",
       "artworkDescription": "A hunched plague-priest in tattered robes, gesturing over freshly dug earth to animate the dead below",
       "abilities": [
@@ -26122,19 +26151,21 @@
           "effects": [
             {
               "type": "summon",
-              "cardId": "plague-shambler",
-              "targetZone": "field"
+              "cardId": "plague-shambler"
             }
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 3
+      },
+      "housingCost": 1
     },
     {
       "id": "plague-necrotic-volley",
       "name": "Necrotic Volley",
       "objectType": "spell",
-      "playCost": 2,
       "icon": "🪶",
       "artworkDescription": "A barrage of bone-tipped arrows dipped in plague ichor arcing through a sickly amber sky",
       "onPlay": {
@@ -26152,13 +26183,15 @@
           }
         ]
       },
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 2
+      }
     },
     {
       "id": "plague-consume-the-fallen",
       "name": "Consume the Fallen",
       "objectType": "spell",
-      "playCost": 3,
       "icon": "🌑",
       "artworkDescription": "Shadowy tendrils tear apart a fallen warrior's corpse, drawing its dark essence into the necromancer's outstretched hands",
       "onPlay": {
@@ -26183,13 +26216,15 @@
           "max": 1
         }
       },
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 3
+      }
     },
     {
       "id": "plague-deathmark",
       "name": "Deathmark",
       "objectType": "spell",
-      "playCost": 1,
       "icon": "🩸",
       "artworkDescription": "A cursed brand of rotting flesh seared onto a target unit, marking it as prey for the undead horde",
       "onPlay": {
@@ -26217,13 +26252,15 @@
           "max": 1
         }
       },
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 1
+      }
     },
     {
       "id": "plague-charnel-pit",
       "name": "Charnel Pit",
       "objectType": "building",
-      "playCost": 3,
       "constructionRequirement": 2,
       "properties": {
         "currentHp": 7,
@@ -26244,13 +26281,15 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 3
+      }
     },
     {
       "id": "plague-venom-stalker",
       "name": "Venom Stalker",
       "objectType": "unit",
-      "playCost": 4,
       "properties": {
         "attack": 4,
         "currentHp": 5,
@@ -26261,7 +26300,6 @@
         "soldier",
         "retaliate"
       ],
-      "housingCost": 2,
       "icon": "🦂",
       "artworkDescription": "A long-limbed undead predator with hollow veins filled with black venom, stalking silently before striking with poisoned claws",
       "triggers": [
@@ -26277,13 +26315,16 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 4
+      },
+      "housingCost": 2
     },
     {
       "id": "plague-hollow-sovereign",
       "name": "Hollow Sovereign",
       "objectType": "unit",
-      "playCost": 5,
       "properties": {
         "attack": 4,
         "currentHp": 7,
@@ -26294,7 +26335,6 @@
         "soldier",
         "guard"
       ],
-      "housingCost": 2,
       "icon": "👑",
       "artworkDescription": "An ancient undead ruler clad in a crown of fused rib bones, its presence radiating an aura of accelerated decay that withers nearby foes",
       "triggers": [
@@ -26329,7 +26369,11 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 5
+      },
+      "housingCost": 2
     },
     {
       "id": "merch-debt-collector",
@@ -33709,7 +33753,6 @@
       "id": "undead-bonelord",
       "name": "Bonelord",
       "objectType": "unit",
-      "playCost": 5,
       "properties": {
         "attack": 5,
         "currentHp": 7,
@@ -33721,7 +33764,6 @@
         "guard",
         "cleave"
       ],
-      "housingCost": 2,
       "icon": "💀",
       "artworkDescription": "A hulking colossus assembled from the bones of dozens of fallen warriors, crowned with a massive ribcage pauldron and wielding a femur club the size of a war axe",
       "triggers": [
@@ -33730,21 +33772,23 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "corpses",
               "amount": 3
             }
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 5
+      }
     },
     {
       "id": "undead-grave-stalker",
       "name": "Grave Stalker",
       "objectType": "unit",
-      "playCost": 3,
       "properties": {
         "attack": 4,
         "currentHp": 3,
@@ -33755,7 +33799,6 @@
         "soldier",
         "siege"
       ],
-      "housingCost": 1,
       "icon": "🦂",
       "artworkDescription": "A sinuous undead predator with elongated limbs, moving on all fours through rubble and walls with unnatural ease, leaving a trail of grave dust",
       "abilities": [
@@ -33784,13 +33827,15 @@
           }
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 3
+      }
     },
     {
       "id": "undead-rot-shield",
       "name": "Rotshield Sentinel",
       "objectType": "unit",
-      "playCost": 2,
       "properties": {
         "attack": 1,
         "currentHp": 5,
@@ -33802,7 +33847,6 @@
         "guard",
         "blocking"
       ],
-      "housingCost": 1,
       "icon": "🛡️",
       "artworkDescription": "A broad-shouldered skeleton braced behind a tower shield fashioned from overlapping ribcages and coffin lids, its eye sockets glowing a dull amber",
       "triggers": [
@@ -33811,21 +33855,23 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "corpses",
               "amount": 1
             }
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 2
+      }
     },
     {
       "id": "undead-soul-puppet",
       "name": "Soul Puppet",
       "objectType": "unit",
-      "playCost": 1,
       "properties": {
         "attack": 2,
         "currentHp": 2,
@@ -33835,7 +33881,6 @@
       "tags": [
         "soldier"
       ],
-      "housingCost": 1,
       "icon": "🪆",
       "artworkDescription": "A small ragged corpse animated by a single tethered soul-thread, jerking along on stiff limbs with glassy vacant eyes",
       "faction": "undead",
@@ -33844,19 +33889,21 @@
         "name": "Play: Soul Puppet",
         "effects": [
           {
-            "type": "gain_resource",
-            "scope": "player",
+            "type": "gain_bank_resource",
+            "scope": "self",
             "resourceId": "corpses",
             "amount": 1
           }
         ]
+      },
+      "playCosts": {
+        "corpses": 1
       }
     },
     {
       "id": "undead-lich-sovereign",
       "name": "Lich Sovereign",
       "objectType": "unit",
-      "playCost": 6,
       "properties": {
         "attack": 4,
         "currentHp": 8,
@@ -33867,7 +33914,6 @@
         "soldier",
         "ranged"
       ],
-      "housingCost": 3,
       "icon": "🌑",
       "artworkDescription": "An ancient lich enthroned on a floating obsidian dais, robes fraying into shadow-tendrils, phylactery gem pulsing violet in its chest cavity",
       "abilities": [
@@ -33911,21 +33957,23 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "corpses",
               "amount": 1
             }
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 6
+      }
     },
     {
       "id": "undead-necrotic-surge",
       "name": "Necrotic Surge",
       "objectType": "spell",
-      "playCost": 2,
       "icon": "⚡",
       "artworkDescription": "A crackling bolt of sickly green necrotic energy arcs from skeletal fingertips, leaving scorch marks of decaying flesh on contact",
       "onPlay": {
@@ -33950,13 +33998,15 @@
           "max": 1
         }
       },
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 2
+      }
     },
     {
       "id": "undead-corpse-explosion",
       "name": "Corpse Explosion",
       "objectType": "spell",
-      "playCost": 4,
       "icon": "💥",
       "artworkDescription": "A bloated corpse detonates in a spectacular shower of gore and bone shards, spraying the entire enemy line with lethal fragments",
       "onPlay": {
@@ -33969,13 +34019,15 @@
           }
         ]
       },
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 4
+      }
     },
     {
       "id": "undead-dark-mending",
       "name": "Dark Mending",
       "objectType": "spell",
-      "playCost": 3,
       "icon": "🩸",
       "artworkDescription": "Tendrils of shadow-magic weave shattered bones back together and knit necrotic tissue, restoring the undead horde with stolen vitality",
       "onPlay": {
@@ -33987,20 +34039,22 @@
             "amount": 3
           },
           {
-            "type": "gain_resource",
-            "scope": "player",
+            "type": "gain_bank_resource",
+            "scope": "self",
             "resourceId": "dp",
             "amount": 1
           }
         ]
       },
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 3
+      }
     },
     {
       "id": "undead-charnel-spire",
       "name": "Charnel Spire",
       "objectType": "building",
-      "playCost": 4,
       "constructionRequirement": 3,
       "properties": {
         "currentHp": 8,
@@ -34046,13 +34100,15 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 4
+      }
     },
     {
       "id": "undead-ossified-brute",
       "name": "Ossified Brute",
       "objectType": "unit",
-      "playCost": 4,
       "properties": {
         "attack": 4,
         "currentHp": 6,
@@ -34063,7 +34119,6 @@
         "soldier",
         "cleave"
       ],
-      "housingCost": 2,
       "icon": "🦷",
       "artworkDescription": "A massive undead giant whose skin has been replaced entirely by interlocking plates of calcified bone, its fists the size of boulders",
       "abilities": [
@@ -34098,13 +34153,15 @@
           }
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 4
+      }
     },
     {
       "id": "undead-specter-knight",
       "name": "Specter Knight",
       "objectType": "unit",
-      "playCost": 3,
       "properties": {
         "attack": 3,
         "currentHp": 4,
@@ -34115,7 +34172,6 @@
         "soldier",
         "ranged"
       ],
-      "housingCost": 1,
       "icon": "🗡️",
       "artworkDescription": "A translucent armored phantom that flickers in and out of visibility, lunging forward with a spectral lance that passes through physical armor",
       "triggers": [
@@ -34128,15 +34184,18 @@
               "amount": 1
             },
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "dp",
               "amount": 1
             }
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "playCosts": {
+        "corpses": 3
+      }
     },
     {
       "id": "undead-bone-citadel",
@@ -34302,7 +34361,6 @@
         "soldier",
         "undead"
       ],
-      "housingCost": 1,
       "icon": "🧟",
       "artworkDescription": "A stooped scavenger that gnaws every corpse it fells down to the last usable bone",
       "triggers": [
@@ -34318,7 +34376,8 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "housingCost": 1
     },
     {
       "id": "undead-cairn-sentinel",
@@ -34337,7 +34396,6 @@
         "soldier",
         "undead"
       ],
-      "housingCost": 1,
       "icon": "🪦",
       "artworkDescription": "A grave-marker golem of stacked stones that spills a skeleton from its ruined chest when it falls",
       "triggers": [
@@ -34353,7 +34411,8 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "housingCost": 1
     },
     {
       "id": "undead-pyre-zealot",
@@ -34372,7 +34431,6 @@
         "soldier",
         "undead"
       ],
-      "housingCost": 1,
       "icon": "🔥",
       "artworkDescription": "A hollow cultist wrapped in oil-soaked shrouds who lives only to be lit",
       "abilities": [
@@ -34406,7 +34464,8 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "housingCost": 1
     },
     {
       "id": "undead-barrow-sentinel",
@@ -34427,7 +34486,6 @@
         "retaliate",
         "undead"
       ],
-      "housingCost": 2,
       "icon": "🛡️",
       "artworkDescription": "A barrow-king's honor guard in green-crusted mail; whoever cuts it down is dragged into the mound's chill",
       "triggers": [
@@ -34442,7 +34500,8 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "housingCost": 2
     },
     {
       "id": "undead-grave-vulture",
@@ -34461,7 +34520,6 @@
         "ranged",
         "undead"
       ],
-      "housingCost": 1,
       "icon": "🦅",
       "artworkDescription": "A bald, rib-thin carrion bird that circles wherever an enemy stronghold is bleeding",
       "triggers": [
@@ -34477,7 +34535,8 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "housingCost": 1
     },
     {
       "id": "undead-marrow-leech",
@@ -34496,7 +34555,6 @@
         "soldier",
         "undead"
       ],
-      "housingCost": 1,
       "icon": "🪱",
       "artworkDescription": "A bloated, lamprey-mouthed thing that mends itself with every mouthful of living marrow",
       "triggers": [
@@ -34512,7 +34570,8 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "housingCost": 1
     },
     {
       "id": "undead-ravenous-revenant",
@@ -34531,7 +34590,6 @@
         "soldier",
         "undead"
       ],
-      "housingCost": 2,
       "icon": "💀",
       "artworkDescription": "A starved dead knight that sheds its fatigue with each kill and lunges straight at the next throat",
       "triggers": [
@@ -34546,7 +34604,8 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "housingCost": 2
     },
     {
       "id": "undead-withering-shade",
@@ -34565,7 +34624,6 @@
         "soldier",
         "undead"
       ],
-      "housingCost": 1,
       "icon": "🌑",
       "artworkDescription": "A thin shadow whose every touch leaves a limb a little weaker than before",
       "triggers": [
@@ -34582,7 +34640,8 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "housingCost": 1
     },
     {
       "id": "undead-grave-broker",
@@ -34601,7 +34660,6 @@
         "soldier",
         "undead"
       ],
-      "housingCost": 1,
       "icon": "💼",
       "artworkDescription": "A gaunt undertaker who haggles with the dead and always secures the next body at a discount",
       "triggers": [
@@ -34617,7 +34675,8 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "housingCost": 1
     },
     {
       "id": "undead-bone-drover",
@@ -34636,7 +34695,6 @@
         "soldier",
         "undead"
       ],
-      "housingCost": 2,
       "icon": "🦴",
       "artworkDescription": "A skeletal herdsman who arrives already driving a pair of rattling skeletons before him",
       "triggers": [
@@ -34657,7 +34715,8 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "housingCost": 2
     },
     {
       "id": "undead-hexbolt-acolyte",
@@ -34676,7 +34735,6 @@
         "ranged",
         "undead"
       ],
-      "housingCost": 1,
       "icon": "🔮",
       "artworkDescription": "A cowled adept who threads hexes past every bodyguard straight to the enemy commander",
       "abilities": [
@@ -34705,7 +34763,8 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "housingCost": 1
     },
     {
       "id": "undead-dirge-bearer",
@@ -34724,7 +34783,6 @@
         "soldier",
         "undead"
       ],
-      "housingCost": 1,
       "icon": "🔔",
       "artworkDescription": "A pallbearer tolling a cracked funeral bell whose tune stirs every dead soldier to fight harder",
       "abilities": [
@@ -34747,7 +34805,8 @@
           ]
         }
       ],
-      "faction": "undead"
+      "faction": "undead",
+      "housingCost": 1
     },
     {
       "id": "undead-thorn-ossuary",
