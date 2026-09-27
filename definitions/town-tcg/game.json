@@ -11286,7 +11286,6 @@
         "armor": 2
       },
       "playCosts": {
-        "gold": 3,
         "energy": 1
       },
       "tags": [
@@ -11316,7 +11315,14 @@
               "propertyId": "armor",
               "amount": 3
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "machine"
@@ -11332,7 +11338,6 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 3,
         "energy": 2
       },
       "tags": [
@@ -11366,7 +11371,14 @@
               "type": "freeze",
               "scope": "target"
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "machine"
@@ -11382,7 +11394,6 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 2,
         "energy": 1
       },
       "tags": [],
@@ -11427,7 +11438,6 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 4,
         "energy": 1
       },
       "tags": [
@@ -11457,7 +11467,14 @@
               "scope": "target",
               "amount": 4
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "machine"
@@ -11501,10 +11518,18 @@
               "resourceId": "energy",
               "amount": 1
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-field-technician",
@@ -11539,10 +11564,18 @@
               "scope": "target",
               "amount": 2
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-assault-drone",
@@ -11555,7 +11588,6 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 2,
         "energy": 1
       },
       "housingCost": 1,
@@ -11620,10 +11652,18 @@
               "scope": "target",
               "amount": 5
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-energy-generator",
@@ -11661,7 +11701,8 @@
           ]
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-repair-bay",
@@ -11697,10 +11738,18 @@
               "type": "untap",
               "scope": "self"
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-command-bunker",
@@ -11742,7 +11791,8 @@
           ]
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-fabrication-plant",
@@ -11754,7 +11804,6 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 4,
         "energy": 1
       },
       "housingProvided": 2,
@@ -11795,7 +11844,6 @@
       "name": "Overload Pulse",
       "objectType": "spell",
       "playCosts": {
-        "gold": 3,
         "energy": 2
       },
       "icon": "💥",
@@ -11833,7 +11881,14 @@
               "type": "discard_cards",
               "amount": 1
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "machine"
@@ -11843,7 +11898,6 @@
       "name": "System Reboot",
       "objectType": "spell",
       "playCosts": {
-        "gold": 2,
         "energy": 1
       },
       "icon": "🔄",
@@ -11877,7 +11931,14 @@
               "scope": "target",
               "amount": 5
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "machine"
@@ -11912,10 +11973,18 @@
               "propertyId": "attack",
               "amount": -2
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-energy-transfer",
@@ -11947,7 +12016,8 @@
           ]
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-sensor-array",
@@ -11960,7 +12030,6 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 2,
         "energy": 1
       },
       "tags": [
@@ -11989,7 +12058,14 @@
               "propertyId": "attack",
               "amount": 2
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "machine"
@@ -12037,7 +12113,8 @@
           ]
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-forward-operating-base",
@@ -12082,7 +12159,8 @@
           ]
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-demolition-expert",
@@ -12130,10 +12208,18 @@
               "propertyId": "currentHp",
               "amount": -2
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "conclave-runeweaver",
@@ -19677,13 +19763,13 @@
           "conditions": [],
           "effects": [
             {
-              "type": "freeze",
-              "target": "random_enemy_unit"
+              "type": "tap_enemy_units"
             }
           ]
         }
       ],
-      "playCost": 6
+      "playCost": 6,
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-grid-commander",
@@ -19721,8 +19807,7 @@
           "conditions": [],
           "effects": [
             {
-              "type": "freeze",
-              "target": "all_enemy_units"
+              "type": "tap_enemy_units"
             }
           ]
         },
@@ -19741,12 +19826,20 @@
           "effects": [
             {
               "type": "direct_damage",
-              "target": "target",
-              "amount": 2
+              "amount": 2,
+              "scope": "target"
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-patrol-drone",
@@ -19766,7 +19859,8 @@
       ],
       "icon": "🔹",
       "artworkDescription": "A small quad-rotor drone",
-      "triggers": []
+      "triggers": [],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-recon-drone",
@@ -19798,12 +19892,20 @@
           "conditions": [],
           "effects": [
             {
-              "type": "reveal",
-              "target": "random_enemy_unit"
+              "type": "reveal_attachments",
+              "scope": "target"
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-siege-drone",
@@ -19823,7 +19925,8 @@
       ],
       "icon": "🔴",
       "artworkDescription": "A heavy-framed combat drone",
-      "triggers": []
+      "triggers": [],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-relay-drone",
@@ -19863,7 +19966,8 @@
             }
           ]
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-sentinel-drone",
@@ -19883,7 +19987,8 @@
       ],
       "icon": "🛡️",
       "artworkDescription": "A stocky defensive drone",
-      "triggers": []
+      "triggers": [],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-watchtower",
@@ -19907,12 +20012,12 @@
           "conditions": [],
           "effects": [
             {
-              "type": "freeze",
-              "target": "random_enemy_unit"
+              "type": "tap_enemy_units"
             }
           ]
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-freeze-relay",
@@ -19934,16 +20039,15 @@
           "conditions": [],
           "effects": [
             {
-              "type": "freeze",
-              "target": "random_enemy_unit"
+              "type": "tap_enemy_units"
             },
             {
-              "type": "freeze",
-              "target": "random_enemy_unit"
+              "type": "tap_enemy_units"
             }
           ]
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-command-post",
@@ -19998,7 +20102,8 @@
             }
           ]
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-arc-tower",
@@ -20020,17 +20125,16 @@
           "conditions": [],
           "effects": [
             {
-              "type": "direct_damage",
-              "target": "random_enemy_unit",
+              "type": "damage_enemy_units",
               "amount": 2
             },
             {
-              "type": "freeze",
-              "target": "random_enemy_unit"
+              "type": "tap_enemy_units"
             }
           ]
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-detection-grid",
@@ -20052,8 +20156,7 @@
           "conditions": [],
           "effects": [
             {
-              "type": "reveal",
-              "target": "random_enemy_unit"
+              "type": "tap_enemy_units"
             }
           ]
         }
@@ -20077,11 +20180,19 @@
           "effects": [
             {
               "type": "reveal_attachments",
-              "target": "all_enemy_units"
+              "scope": "target"
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-lockdown-station",
@@ -20103,21 +20214,19 @@
           "conditions": [],
           "effects": [
             {
-              "type": "freeze",
-              "target": "random_enemy_unit"
+              "type": "tap_enemy_units"
             },
             {
-              "type": "freeze",
-              "target": "random_enemy_unit"
+              "type": "tap_enemy_units"
             },
             {
-              "type": "direct_damage",
-              "target": "random_enemy_unit",
+              "type": "damage_enemy_units",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-signal-hub",
@@ -20168,11 +20277,19 @@
           "effects": [
             {
               "type": "untap",
-              "target": "target_friendly_building"
+              "scope": "target"
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "building",
+            "min": 1,
+            "max": 1
+          }
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-pulse-emitter",
@@ -20207,11 +20324,19 @@
           "effects": [
             {
               "type": "freeze",
-              "target": "target_enemy_unit"
+              "scope": "target"
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-targeting-matrix",
@@ -20233,8 +20358,7 @@
           "conditions": [],
           "effects": [
             {
-              "type": "direct_damage",
-              "target": "target_enemy_unit",
+              "type": "damage_enemy_units",
               "amount": 2
             }
           ]
@@ -20253,12 +20377,20 @@
           "effects": [
             {
               "type": "direct_damage",
-              "target": "target_enemy_unit",
-              "amount": 1
+              "amount": 1,
+              "scope": "target"
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-grid-amplifier",
@@ -20307,15 +20439,23 @@
           "effects": [
             {
               "type": "freeze",
-              "target": "random_enemy_unit"
+              "scope": "target"
             },
             {
               "type": "freeze",
-              "target": "random_enemy_unit"
+              "scope": "target"
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-energy-conduit",
@@ -20346,7 +20486,8 @@
             }
           ]
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-freeze-lattice",
@@ -20368,17 +20509,16 @@
           "conditions": [],
           "effects": [
             {
-              "type": "freeze",
-              "target": "random_enemy_unit"
+              "type": "tap_enemy_units"
             },
             {
-              "type": "direct_damage",
-              "target": "random_enemy_unit",
+              "type": "damage_enemy_units",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-lockdown-protocol",
@@ -20397,15 +20537,23 @@
           "effects": [
             {
               "type": "freeze",
-              "target": "target_enemy_unit"
+              "scope": "target"
             },
             {
               "type": "freeze",
-              "target": "random_enemy_unit"
+              "scope": "target"
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-system-purge",
@@ -20423,17 +20571,16 @@
           "conditions": [],
           "effects": [
             {
-              "type": "direct_damage",
-              "target": "all_enemy_units",
+              "type": "damage_enemy_units",
               "amount": 2
             },
             {
-              "type": "freeze",
-              "target": "all_enemy_units"
+              "type": "tap_enemy_units"
             }
           ]
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-grid-surge",
@@ -20452,8 +20599,8 @@
           "effects": [
             {
               "type": "direct_damage",
-              "target": "target_enemy_unit",
-              "amount": 4
+              "amount": 4,
+              "scope": "target"
             },
             {
               "type": "gain_resource",
@@ -20461,9 +20608,17 @@
               "scope": "player",
               "amount": 2
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-cascade-freeze",
@@ -20481,12 +20636,12 @@
           "conditions": [],
           "effects": [
             {
-              "type": "freeze",
-              "target": "all_enemy_units"
+              "type": "tap_enemy_units"
             }
           ]
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-emergency-shutdown",
@@ -20504,17 +20659,16 @@
           "conditions": [],
           "effects": [
             {
-              "type": "freeze",
-              "target": "all_enemy_units"
+              "type": "tap_enemy_units"
             },
             {
-              "type": "direct_damage",
-              "target": "all_enemy_units",
+              "type": "damage_enemy_units",
               "amount": 3
             }
           ]
         }
-      ]
+      ],
+      "playCostResource": "energy"
     },
     {
       "id": "storm-aether-spire",
@@ -27492,7 +27646,8 @@
       ],
       "icon": "🎯",
       "artworkDescription": "A sleek matte-black pursuit drone with twin rail-gun barrels angled forward, red targeting lasers scanning the dark",
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-bulwark-drone",
@@ -27524,7 +27679,8 @@
           ]
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-shock-sentry",
@@ -27544,7 +27700,8 @@
       ],
       "icon": "⚡",
       "artworkDescription": "A spindly bipedal combat bot crackling with coiled discharge coils, hunched in an aggressive stance",
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-overwatch-drone",
@@ -27579,8 +27736,8 @@
             {
               "type": "modify_property",
               "scope": "target",
-              "property": "attack",
-              "amount": 1
+              "amount": 1,
+              "propertyId": "attack"
             }
           ],
           "choice": {
@@ -27592,7 +27749,8 @@
           }
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-blast-walker",
@@ -27624,7 +27782,8 @@
           ]
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-tactical-uplink",
@@ -27644,7 +27803,8 @@
           }
         ]
       },
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-emp-strike",
@@ -27670,7 +27830,8 @@
           "max": 1
         }
       },
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-repair-protocol",
@@ -27691,8 +27852,8 @@
           {
             "type": "modify_property",
             "scope": "target",
-            "property": "armor",
-            "amount": 1
+            "amount": 1,
+            "propertyId": "armor"
           }
         ],
         "choice": {
@@ -27703,7 +27864,8 @@
           "max": 1
         }
       },
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-deployment-bay",
@@ -27731,7 +27893,8 @@
           ]
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-caster",
@@ -27766,8 +27929,8 @@
             {
               "type": "modify_property",
               "scope": "target",
-              "property": "armor",
-              "amount": 1
+              "amount": 1,
+              "propertyId": "armor"
             },
             {
               "type": "heal",
@@ -27784,7 +27947,8 @@
           }
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "sentry-interceptor-drone",
@@ -27823,7 +27987,8 @@
           "min": 1,
           "max": 1
         }
-      }
+      },
+      "playCostResource": "energy"
     },
     {
       "id": "fort-crossbow-warden",
@@ -35327,7 +35492,8 @@
       "icon": "⚙️",
       "artworkDescription": "A compact brass automaton with a single oversized fist, belching steam with every stomping step",
       "housingCost": 1,
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-ironclad-sentinel",
@@ -35359,7 +35525,8 @@
           ]
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-gear-reaper",
@@ -35379,7 +35546,8 @@
       "icon": "⚔️",
       "artworkDescription": "A spinning war machine with saw-blade arms that carve through enemy ranks in a shower of sparks",
       "housingCost": 2,
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-piston-bombardier",
@@ -35419,7 +35587,8 @@
           ]
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-coilspring-skirmisher",
@@ -35438,7 +35607,8 @@
       "icon": "🔩",
       "artworkDescription": "A wiry mechanical scout with coiled spring legs, launching counter-strikes with a snap of compressed steel",
       "housingCost": 1,
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-scrap-volley",
@@ -35457,7 +35627,8 @@
           }
         ]
       },
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-emergency-protocols",
@@ -35488,7 +35659,8 @@
           "max": 1
         }
       },
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-overclock-directive",
@@ -35520,7 +35692,8 @@
           "max": 1
         }
       },
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-armaments-foundry",
@@ -35548,7 +35721,8 @@
           ]
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-pressure-venter",
@@ -35578,7 +35752,8 @@
           ]
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-warden-automaton",
@@ -35624,7 +35799,8 @@
           }
         }
       ],
-      "faction": "machine"
+      "faction": "machine",
+      "playCostResource": "energy"
     },
     {
       "id": "machine-assembly-hub",

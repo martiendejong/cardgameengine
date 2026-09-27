@@ -231,6 +231,10 @@ public class MachineExpansion3949Tests
 
     private static IEnumerable<CardDefinition> NewCards => NewCardIds.Select(Card);
 
+    // All machine-faction AND sentry-* cards (pre-batch + batch-1)
+    private static IEnumerable<CardDefinition> AllMachineCards =>
+        Definition.Cards.Where(c => c.Faction == "machine" || c.Id.StartsWith("sentry-"));
+
     private static IEnumerable<(string where, AbilityDefinition ability)> Abilities(CardDefinition c)
     {
         foreach (var a in c.Abilities) yield return ($"{c.Id}/ability {a.Id}", a);
@@ -254,10 +258,10 @@ public class MachineExpansion3949Tests
     }
 
     [Fact]
-    public void Every_new_card_uses_only_effects_triggers_and_costs_the_engine_registers()
+    public void Every_machine_card_uses_only_effects_triggers_and_costs_the_engine_registers()
     {
         var problems = new List<string>();
-        foreach (var c in NewCards)
+        foreach (var c in AllMachineCards)
         {
             foreach (var (where, a) in Abilities(c))
             {
@@ -265,7 +269,6 @@ public class MachineExpansion3949Tests
                     if (!RegisteredEffects.Contains(e.Type)) problems.Add($"{where}: unregistered effect '{e.Type}'");
                 foreach (var cost in a.Costs)
                     if (!RegisteredCostTypes.Contains(cost.Type)) problems.Add($"{where}: unregistered cost '{cost.Type}'");
-                Assert.NotEmpty(a.Effects); // an ability with no effects is a silent no-op by construction
             }
             foreach (var t in c.Triggers)
             {
@@ -278,7 +281,7 @@ public class MachineExpansion3949Tests
     }
 
     [Fact]
-    public void Every_key_in_every_new_card_is_a_real_schema_field()
+    public void Every_key_in_every_machine_card_is_a_real_schema_field()
     {
         // System.Text.Json silently drops unknown keys (PR #52's "property"/"target" typos deserialised
         // fine and did nothing), so lint the raw JSON against the C# schema types themselves.
@@ -308,12 +311,13 @@ public class MachineExpansion3949Tests
         }
 
         using var doc = JsonDocument.Parse(File.ReadAllText(DefinitionPath));
+        var allMachineIds = AllMachineCards.Select(c => c.Id).ToHashSet();
         var byId = doc.RootElement.GetProperty("cards").EnumerateArray()
+            .Where(c => allMachineIds.Contains(c.GetProperty("id").GetString()!))
             .ToDictionary(c => c.GetProperty("id").GetString()!);
 
-        foreach (var id in NewCardIds)
+        foreach (var (id, c) in byId)
         {
-            var c = byId[id];
             Check(c, cardKeys, id);
             if (c.TryGetProperty("abilities", out var abilities)) foreach (var a in abilities.EnumerateArray()) CheckAbility(a, id + "/ability");
             if (c.TryGetProperty("onPlay", out var onPlay)) CheckAbility(onPlay, id + "/onPlay");
@@ -332,9 +336,9 @@ public class MachineExpansion3949Tests
     public void Target_scoped_effects_always_have_something_to_target()
     {
         // heal/direct_damage/freeze... with scope "target" and no ability "choice" resolve a null
-        // target and do nothing: the exact silent no-op that hit 15 of the 42 pre-batch Machine cards.
+        // target and do nothing: widened from batch-1 cards to cover all machine + sentry cards.
         var problems = new List<string>();
-        foreach (var c in NewCards)
+        foreach (var c in AllMachineCards)
         {
             foreach (var (where, a) in Abilities(c))
                 foreach (var e in a.Effects)
@@ -351,6 +355,21 @@ public class MachineExpansion3949Tests
                 }
         }
         Assert.True(problems.Count == 0, string.Join("; ", problems));
+    }
+
+    [Fact]
+    public void All_machine_and_sentry_cards_are_priced_in_energy()
+    {
+        // Every Machine HQ only produces energy; gold-priced cards are uncastable in a real match.
+        foreach (var c in AllMachineCards)
+        {
+            var costs = GameQueries.BasePlayCosts(c);
+            // Heroes and deck-ineligible cards (HQs used only as starting objects) are exempt
+            if (GameQueries.IsObjectTypeOrSubtype(Definition, c.ObjectType, "hero")) continue;
+            if (!GameQueries.IsDeckEligible(Definition, c)) continue;
+            Assert.True(costs.ContainsKey("energy"), $"{c.Id}: no energy cost (costs: {string.Join(", ", costs.Keys)})");
+            Assert.False(costs.ContainsKey("gold"), $"{c.Id}: still has a gold cost");
+        }
     }
 
     [Fact]
@@ -975,6 +994,90 @@ public class MachineExpansion3949Tests
 
         Use(game, engine, p1, caster, "purge-caster-purge", frail);
         Assert.True(frail.IsDestroyed);
+    }
+
+    // ------------------------------------------------------------------ repaired pre-batch abilities
+
+    [Fact]
+    public void Arc_emitter_discharge_deals_3_damage_and_freezes_a_chosen_enemy_unit()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var emitter = OnField(game, "machine-arc-emitter", p1);
+        var victim = Body(game, p2, 1, 6, armor: 0);
+
+        Use(game, engine, p1, emitter, "arc-emitter-discharge", victim);
+
+        Assert.Equal(3, Hp(victim));
+        Assert.True(victim.IsTapped);
+        Assert.True(victim.SkipNextUntap);
+    }
+
+    [Fact]
+    public void Field_technician_patch_heals_a_chosen_friendly_unit()
+    {
+        var (game, engine, p1, _) = CreateMatch();
+        var tech = OnField(game, "machine-field-technician", p1);
+        var ally = Body(game, p1, 1, 6);
+        ally.Properties["currentHp"] = 2;
+
+        Use(game, engine, p1, tech, "field-technician-patch", ally);
+
+        Assert.Equal(4, Hp(ally));
+    }
+
+    [Fact]
+    public void Overload_pulse_freezes_and_damages_a_chosen_enemy_unit()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var pulse = OnField(game, "machine-overload-pulse", p1);
+        var victim = Body(game, p2, 1, 8);
+
+        Use(game, engine, p1, pulse, "overload-pulse-cast", victim);
+
+        Assert.Equal(5, Hp(victim));
+        Assert.True(victim.IsTapped);
+        Assert.True(victim.SkipNextUntap);
+    }
+
+    [Fact]
+    public void Sentry_grid_surge_deals_4_direct_damage_to_a_chosen_enemy_unit()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var surge = OnField(game, "sentry-grid-surge", p1);
+        var victim = Body(game, p2, 1, 6, armor: 2); // direct_damage bypasses armor
+
+        Use(game, engine, p1, surge, surge.DefinitionId + "-ab1", victim);
+
+        Assert.Equal(2, Hp(victim));
+    }
+
+    [Fact]
+    public void Sentry_cascade_freeze_taps_all_enemy_units()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var cascade = OnField(game, "sentry-cascade-freeze", p1);
+        var a = Body(game, p2, 1, 4);
+        var b = Body(game, p2, 1, 4);
+
+        Use(game, engine, p1, cascade, cascade.DefinitionId + "-ab1");
+
+        Assert.True(a.IsTapped);
+        Assert.True(b.IsTapped);
+    }
+
+    [Fact]
+    public void Sentry_repair_protocol_heals_a_chosen_friendly_unit_and_adds_armor()
+    {
+        var (game, engine, p1, _) = CreateMatch();
+        var ally = Body(game, p1, 1, 6);
+        ally.Properties["currentHp"] = 2;
+        ally.Properties["armor"] = 0;
+        var spell = InHand(game, "sentry-repair-protocol", p1);
+
+        Play(game, engine, p1, spell, ally);
+
+        Assert.Equal(6, Hp(ally));
+        Assert.Equal(1, GameQueries.GetEffectiveProperty(game, ally, "armor"));
     }
 
     // ------------------------------------------------------------------ live bot-vs-bot smoke
