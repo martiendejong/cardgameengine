@@ -429,8 +429,9 @@ public class ConclaveExpansion3950Tests
     {
         // heal/direct_damage/freeze... with scope "target" and no ability "choice" resolve a null
         // target and do nothing; a trigger event that supplies no target does the same.
+        // Widened to every conclave card (not just batch-1) by task 4120.
         var problems = new List<string>();
-        foreach (var c in NewCards)
+        foreach (var c in Definition.Cards.Where(c => c.Faction == "conclave"))
         {
             foreach (var (where, a) in Abilities(c))
                 foreach (var e in a.Effects)
@@ -450,14 +451,14 @@ public class ConclaveExpansion3950Tests
     }
 
     [Fact]
-    public void Every_new_equipment_declares_real_slots_because_slotless_equipment_never_attaches()
+    public void Every_conclave_equipment_declares_real_slots_because_slotless_equipment_never_attaches()
     {
-        // conclave-spellshard-staff / conclave-focus-crystal (pre-batch) declare no slots, so they
-        // land on the battlefield unattached and their is_attached abilities can never fire.
+        // conclave-spellshard-staff / conclave-focus-crystal (pre-batch) declared no slots, so they
+        // landed on the battlefield unattached and their is_attached abilities could never fire.
+        // Widened to every conclave equipment card by task 4120.
         var slots = new HashSet<string> { "mainHand", "offHand", "body", "head", "mutation" };
-        foreach (var id in EquipmentIds)
+        foreach (var c in Definition.Cards.Where(c => c.Faction == "conclave" && c.ObjectType == "equipment"))
         {
-            var c = Card(id);
             Assert.NotNull(c.Slots);
             Assert.NotEmpty(c.Slots!);
             Assert.All(c.Slots!, s => Assert.Contains(s, slots));
@@ -497,30 +498,37 @@ public class ConclaveExpansion3950Tests
     }
 
     [Fact]
-    public void New_cards_are_deck_eligible_and_priced_in_mana_the_resource_the_conclave_hq_actually_produces()
+    public void Every_conclave_card_is_deck_eligible_and_priced_in_mana_the_resource_the_conclave_hq_actually_produces()
     {
         // Mana is an entity resource banked on the Conclave nexus (paid from there by play costs);
         // gold has no Conclave income, so a gold-priced card can be uncastable in a real match.
+        // Widened to every conclave card by task 4120 (pre-batch cards repaired to mana-only costs).
         var cap = Card(HqId).ResourceCapacities!["mana"];
-        foreach (var c in NewCards)
+        foreach (var c in Definition.Cards.Where(c => c.Faction == "conclave"))
         {
             Assert.True(GameQueries.IsDeckEligible(Definition, c), $"{c.Id} is not deck-eligible");
             var costs = GameQueries.BasePlayCosts(c);
-            if (c.Id is HqId or HeroId) { Assert.Empty(costs); continue; }
-            Assert.Equal(new[] { "mana" }, costs.Keys.ToArray());
+            // HQ and heroes have no play cost (placed by game setup)
+            if (GameQueries.IsObjectTypeOrSubtype(Definition, c.ObjectType, "headquarters") ||
+                GameQueries.IsObjectTypeOrSubtype(Definition, c.ObjectType, "hero"))
+            { Assert.Empty(costs); continue; }
+            Assert.True(costs.ContainsKey("mana"), $"{c.Id}: no mana cost (costs: {string.Join(", ", costs.Keys)})");
+            Assert.False(costs.ContainsKey("gold"), $"{c.Id}: still has a gold cost");
             Assert.InRange(costs["mana"], 1, cap);
         }
     }
 
     [Fact]
-    public void New_cards_are_role_distinct_from_each_other_and_from_the_55_pre_batch_conclave_cards()
+    public void All_conclave_cards_are_role_distinct_from_each_other()
     {
-        // A structural fingerprint (object type + slot/tags + which effect types run on which
-        // event) - not stats. Two cards with the same fingerprint would be the "reskinned clone
-        // under a new name" the task forbids; this fails the moment a future batch copy-pastes a role.
+        // A structural fingerprint (object type + slot/tags + which effect types+amounts run on which
+        // event) — not stats. Two cards with the same fingerprint would be the "reskinned clone
+        // under a new name" the task forbids. Widened to every conclave card by task 4120.
         static string Fingerprint(CardDefinition c)
         {
-            static string Effects(IEnumerable<EffectDefinition> es) => string.Join("+", es.Select(e => e.Type).OrderBy(x => x, StringComparer.Ordinal));
+            // Include amount so cards that do different quantities of the same effect are distinct.
+            static string Effects(IEnumerable<EffectDefinition> es) =>
+                string.Join("+", es.Select(e => e.Amount.HasValue ? $"{e.Type}:{e.Amount}" : e.Type).OrderBy(x => x, StringComparer.Ordinal));
             var parts = new List<string> { c.ObjectType };
             if (c.Slots != null) parts.Add("slots:" + string.Join("+", c.Slots.OrderBy(x => x, StringComparer.Ordinal)));
             if (c.AttachTags.Count > 0) parts.Add("attachTags:" + string.Join("+", c.AttachTags.OrderBy(x => x, StringComparer.Ordinal)));
@@ -536,15 +544,10 @@ public class ConclaveExpansion3950Tests
             return string.Join("|", parts.OrderBy(x => x, StringComparer.Ordinal));
         }
 
-        var existing = Definition.Cards
-            .Where(c => c.Faction == "conclave" && !NewCardIds.Contains(c.Id))
-            .ToDictionary(c => c.Id, Fingerprint);
-
         var seen = new Dictionary<string, string>();
-        foreach (var c in NewCards)
+        foreach (var c in Definition.Cards.Where(c => c.Faction == "conclave"))
         {
             var fp = Fingerprint(c);
-            Assert.True(!existing.ContainsValue(fp), $"{c.Id} duplicates the role of an existing conclave card: {fp}");
             Assert.True(seen.TryAdd(fp, c.Id), $"{c.Id} duplicates the role of {(seen.TryGetValue(fp, out var other) ? other : "?")}: {fp}");
         }
     }
@@ -1165,5 +1168,154 @@ public class ConclaveExpansion3950Tests
         SetMana(game, p1, 11);
         Play(game, engine, p1, InHand(game, "rune-conflux-ritual", p1));
         Assert.Equal(12, Mana(game, p1)); // 11 - 1 + 3 = 13, clamped to the nexus capacity
+    }
+
+    // ------------------------------------------------------------------ pre-batch spell behaviour (real engine, task 4120 repairs)
+
+    [Fact]
+    public void Arcane_surge_deals_four_damage_to_a_chosen_enemy_unit_and_banks_one_mana()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var target = Body(game, p2, 1, 8);
+        SetMana(game, p1, 5);
+
+        Play(game, engine, p1, InHand(game, "conclave-arcane-surge", p1), target);
+
+        Assert.Equal(4, Hp(target));    // 8 - 4 direct damage
+        Assert.Equal(5 - 2 + 1, Mana(game, p1)); // paid 2, gained 1
+    }
+
+    [Fact]
+    public void Mass_freeze_freezes_the_chosen_enemy_unit_and_draws_a_card()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var target = Body(game, p2, 1, 8);
+        var handBefore = HandCount(game, p1);
+        SetMana(game, p1, 6);
+
+        Play(game, engine, p1, InHand(game, "conclave-mass-freeze", p1), target);
+
+        Assert.True(target.IsTapped);
+        Assert.True(target.SkipNextUntap);
+        Assert.Equal(handBefore + 1, HandCount(game, p1));
+        Assert.Equal(6 - 3, Mana(game, p1));
+    }
+
+    [Fact]
+    public void Spell_echo_draws_two_cards_and_banks_two_mana()
+    {
+        var (game, engine, p1, _) = CreateMatch();
+        var handBefore = HandCount(game, p1);
+        SetMana(game, p1, 5);
+
+        Play(game, engine, p1, InHand(game, "conclave-spell-echo", p1));
+
+        Assert.Equal(handBefore + 2, HandCount(game, p1));
+        Assert.Equal(5 - 2 + 2, Mana(game, p1));
+    }
+
+    [Fact]
+    public void Void_rift_deals_six_damage_to_a_chosen_enemy_unit_and_forces_the_opponent_to_discard_two()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var target = Body(game, p2, 1, 10);
+        SetMana(game, p1, 7);
+        // put extra cards in p2's hand as discard fodder
+        InHand(game, "town-watch", p2);
+        InHand(game, "town-watch", p2);
+        var p2HandBefore = HandCount(game, p2);
+
+        Play(game, engine, p1, InHand(game, "conclave-void-rift", p1), target);
+
+        Assert.Equal(4, Hp(target));           // 10 - 6
+        Assert.Equal(p2HandBefore - 2, HandCount(game, p2)); // opponent discards 2
+        Assert.Equal(7 - 4, Mana(game, p1));
+    }
+
+    [Fact]
+    public void Ley_tap_gains_four_mana_in_the_hq_bank()
+    {
+        var (game, engine, p1, _) = CreateMatch();
+        SetMana(game, p1, 3);
+
+        Play(game, engine, p1, InHand(game, "conclave-ley-tap", p1));
+
+        Assert.Equal(3 - 2 + 4, Mana(game, p1)); // paid 2, gained 4
+    }
+
+    [Fact]
+    public void Mana_drain_banks_two_mana_into_the_hq()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var target = Body(game, p2, 1, 5);
+        SetMana(game, p1, 4);
+
+        Play(game, engine, p1, InHand(game, "conclave-mana-drain", p1), target);
+
+        // gain_bank_resource:2 always fires; transfer_resource is a no-op on a unit with no mana
+        Assert.Equal(4 - 1 + 2, Mana(game, p1)); // paid 1, gained 2
+    }
+
+    [Fact]
+    public void Greater_counterspell_cancels_an_enemy_spell_and_banks_two_mana_plus_one_draw()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        SetMana(game, p1, 6);
+
+        // Put the counterspell in p1's hand BEFORE p2 casts — HasReactionTo checks the hand
+        // at cast time to decide whether to open the reaction window.
+        var counter = InHand(game, "conclave-greater-counterspell", p1);
+        var handBefore = HandCount(game, p1); // includes the counterspell
+        var mine = Body(game, p1, 2, 4);
+
+        // p2 casts a zero-cost Town spell — the engine opens a spellCast reaction window
+        var spell = InHand(game, "merch-market-squeeze", p2);
+        ToMain(game, p2);
+        var (castOk, castErr) = engine.ExecuteAction(game, p2.Id, new ActionRequest
+        {
+            Type = "playCard", SourceObjectId = spell.Id, TargetIds = new List<string>()
+        });
+        Assert.True(castOk, castErr);
+        Assert.Equal(GameState.WaitingForReaction, game.State);
+
+        Play(game, engine, p1, counter);
+        Assert.True(engine.ExecuteAction(game, p1.Id, new ActionRequest { Type = "pass" }).success);
+
+        Assert.Equal(GameState.WaitingForAction, game.State);
+        // sapping-hex countered — own units keep their attack
+        Assert.Equal(2, Effective(game, mine, "attack"));
+        Assert.Equal(6 - 3 + 2, Mana(game, p1)); // paid 3, gained 2
+        Assert.Equal(handBefore - 1 + 1, HandCount(game, p1)); // counterspell consumed, drew 1
+    }
+
+    [Fact]
+    public void Arcane_collapse_destroys_a_chosen_enemy_unit_and_draws_a_card()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var target = Body(game, p2, 1, 8);
+        var handBefore = HandCount(game, p1);
+        SetMana(game, p1, 8);
+
+        Play(game, engine, p1, InHand(game, "conclave-arcane-collapse", p1), target);
+
+        Assert.True(target.IsDestroyed);
+        Assert.Equal(handBefore + 1, HandCount(game, p1));
+        Assert.Equal(8 - 5, Mana(game, p1));
+    }
+
+    [Fact]
+    public void Reveal_mind_reveals_a_chosen_enemy_unit_and_draws_a_card()
+    {
+        var (game, engine, p1, p2) = CreateMatch();
+        var target = Body(game, p2, 1, 5);
+        target.FaceDown = true;
+        var handBefore = HandCount(game, p1);
+        SetMana(game, p1, 3);
+
+        Play(game, engine, p1, InHand(game, "conclave-reveal-mind", p1), target);
+
+        Assert.False(target.FaceDown);
+        Assert.Equal(handBefore + 1, HandCount(game, p1));
+        Assert.Equal(3 - 1, Mana(game, p1));
     }
 }
