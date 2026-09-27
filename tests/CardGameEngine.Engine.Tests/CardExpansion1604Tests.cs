@@ -170,7 +170,10 @@ public class CardExpansion1604Tests
         var hunter = PutOnBattlefield(game, "brood-warrior", p1);
         var baseAttack = GameQueries.GetEffectiveProperty(game, hunter, "attack");
         var handBefore = game.Objects.Count(o => o.OwnerId == p1.Id && o.ZoneId == "hand");
-        var biomassBefore = p1.Resources.GetValueOrDefault("biomass");
+        // apex-predator-surge now costs 3 biomass (entity-scoped, HQ bank) and gains 1 biomass via gain_bank_resource
+        var hq = GameQueries.FindResourceBank(game, p1.Id)!;
+        hq.Resources["biomass"] = 10;
+        var biomassBefore = hq.Resources.GetValueOrDefault("biomass");
         var surge = PutInHand(game, "apex-predator-surge", p1);
 
         var (ok, error) = engine.ExecuteAction(game, p1.Id, new ActionRequest { Type = "playCard", SourceObjectId = surge.Id });
@@ -179,7 +182,8 @@ public class CardExpansion1604Tests
         Assert.Equal(baseAttack + 2, GameQueries.GetEffectiveProperty(game, hunter, "attack"));
         // handBefore excludes Surge itself; playing it removes 1 (itself) and draw_cards adds 1 back.
         Assert.Equal(handBefore + 1, game.Objects.Count(o => o.OwnerId == p1.Id && o.ZoneId == "hand"));
-        Assert.Equal(biomassBefore + 1, p1.Resources.GetValueOrDefault("biomass"));
+        // paid 3 biomass to play, gained 1 from onPlay effect -> net -2 from HQ bank
+        Assert.Equal(biomassBefore - 3 + 1, hq.Resources.GetValueOrDefault("biomass"));
     }
 
     [Fact]

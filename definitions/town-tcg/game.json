@@ -14069,8 +14069,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "biomass",
               "amount": 1
             }
@@ -14121,7 +14121,14 @@
               "propertyId": "armor",
               "amount": -1
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "brood"
@@ -14177,7 +14184,6 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 2,
         "biomass": 2
       },
       "housingCost": 2,
@@ -14203,7 +14209,14 @@
               "scope": "target",
               "amount": 4
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "brood"
@@ -14219,7 +14232,6 @@
         "armor": 2
       },
       "playCosts": {
-        "gold": 3,
         "biomass": 2
       },
       "housingCost": 2,
@@ -14268,7 +14280,6 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 2,
         "biomass": 3
       },
       "housingCost": 2,
@@ -14304,7 +14315,6 @@
         "armor": 2
       },
       "playCosts": {
-        "gold": 4,
         "biomass": 4
       },
       "housingCost": 3,
@@ -14355,8 +14365,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "biomass",
               "amount": 1
             }
@@ -14376,7 +14386,6 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 4,
         "biomass": 3
       },
       "housingCost": 3,
@@ -14393,8 +14402,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "biomass",
               "amount": 2
             }
@@ -14412,7 +14421,6 @@
         "maxHp": 5,
         "armor": 0
       },
-      "playCost": 3,
       "housingProvided": 0,
       "tags": [],
       "icon": "🕳️",
@@ -14433,15 +14441,18 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "biomass",
               "amount": 3
             }
           ]
         }
       ],
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 3
+      }
     },
     {
       "id": "brood-spawning-pool",
@@ -14453,7 +14464,6 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 3,
         "biomass": 1
       },
       "housingProvided": 4,
@@ -14501,7 +14511,6 @@
         "maxHp": 4,
         "armor": 0
       },
-      "playCost": 2,
       "housingProvided": 0,
       "tags": [],
       "icon": "⚗️",
@@ -14512,15 +14521,18 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "biomass",
               "amount": 1
             }
           ]
         }
       ],
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 2
+      }
     },
     {
       "id": "brood-chrysalis-chamber",
@@ -14532,7 +14544,6 @@
         "armor": 2
       },
       "playCosts": {
-        "gold": 4,
         "biomass": 2
       },
       "housingProvided": 5,
@@ -14562,8 +14573,8 @@
               "cardId": "ravager"
             },
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "biomass",
               "amount": 1
             }
@@ -14576,33 +14587,25 @@
       "id": "brood-biomass-surge",
       "name": "Biomass Surge",
       "objectType": "spell",
-      "playCost": 2,
       "icon": "💚",
       "artworkDescription": "A pulse of raw organic energy floods through every vein in the hive network",
-      "abilities": [
-        {
-          "id": "surge-cast",
-          "name": "Cast Biomass Surge",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 2
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "biomass",
-              "amount": 4
-            }
-          ]
-        }
-      ],
-      "faction": "brood"
+      "faction": "brood",
+      "onPlay": {
+        "id": "surge-cast",
+        "name": "Cast Biomass Surge",
+        "effects": [
+          {
+            "type": "gain_bank_resource",
+            "scope": "self",
+            "resourceId": "biomass",
+            "amount": 4
+          }
+        ],
+        "conditions": []
+      },
+      "playCosts": {
+        "biomass": 2
+      }
     },
     {
       "id": "brood-consume",
@@ -14613,34 +14616,31 @@
       },
       "icon": "🌀",
       "artworkDescription": "The swarm descends and leaves nothing behind",
-      "abilities": [
-        {
-          "id": "consume-cast",
-          "name": "Cast Consume",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "biomass",
-              "amount": 2
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "destroy",
-              "scope": "target"
-            },
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "biomass",
-              "amount": 2
-            }
-          ]
+      "faction": "brood",
+      "onPlay": {
+        "id": "consume-cast",
+        "name": "Cast Consume",
+        "effects": [
+          {
+            "type": "destroy",
+            "scope": "target"
+          },
+          {
+            "type": "gain_bank_resource",
+            "scope": "self",
+            "resourceId": "biomass",
+            "amount": 2
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
         }
-      ],
-      "faction": "brood"
+      }
     },
     {
       "id": "brood-evolve-sentinel",
@@ -14651,36 +14651,26 @@
       },
       "icon": "🧬",
       "artworkDescription": "The warrior's carapace thickens, its limbs multiply, its mind narrows to pure defense",
-      "abilities": [
-        {
-          "id": "evolve-sentinel-cast",
-          "name": "Evolve Warrior to Sentinel",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "biomass",
-              "amount": 3
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "buff_tag_until_end_of_turn",
-              "tag": "soldier",
-              "propertyId": "armor",
-              "amount": 3
-            },
-            {
-              "type": "buff_tag_until_end_of_turn",
-              "tag": "soldier",
-              "propertyId": "attack",
-              "amount": 1
-            }
-          ]
-        }
-      ],
-      "faction": "brood"
+      "faction": "brood",
+      "onPlay": {
+        "id": "evolve-sentinel-cast",
+        "name": "Evolve Warrior to Sentinel",
+        "effects": [
+          {
+            "type": "buff_tag_until_end_of_turn",
+            "tag": "soldier",
+            "propertyId": "armor",
+            "amount": 3
+          },
+          {
+            "type": "buff_tag_until_end_of_turn",
+            "tag": "soldier",
+            "propertyId": "attack",
+            "amount": 1
+          }
+        ],
+        "conditions": []
+      }
     },
     {
       "id": "brood-mass-sacrifice",
@@ -14691,38 +14681,24 @@
       },
       "icon": "💀",
       "artworkDescription": "By the queen's will, the weak are unmade so the strong may feast",
-      "abilities": [
-        {
-          "id": "mass-sacrifice-cast",
-          "name": "Cast Mass Sacrifice",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "biomass",
-              "amount": 1
-            },
-            {
-              "type": "sacrifice_units",
-              "amount": 2
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "biomass",
-              "amount": 5
-            },
-            {
-              "type": "draw_cards",
-              "amount": 1
-            }
-          ]
-        }
-      ],
-      "faction": "brood"
+      "faction": "brood",
+      "onPlay": {
+        "id": "mass-sacrifice-cast",
+        "name": "Cast Mass Sacrifice",
+        "effects": [
+          {
+            "type": "gain_bank_resource",
+            "scope": "self",
+            "resourceId": "biomass",
+            "amount": 5
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ],
+        "conditions": []
+      }
     },
     {
       "id": "brood-chitin-fortification",
@@ -14733,42 +14709,39 @@
       },
       "icon": "🛡️",
       "artworkDescription": "Organic plates secrete across the target unit's hide",
-      "abilities": [
-        {
-          "id": "chitin-cast",
-          "name": "Cast Chitin Fortification",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "biomass",
-              "amount": 2
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "modify_property",
-              "scope": "target",
-              "propertyId": "armor",
-              "amount": 2
-            },
-            {
-              "type": "modify_property",
-              "scope": "target",
-              "propertyId": "maxHp",
-              "amount": 2
-            },
-            {
-              "type": "modify_property",
-              "scope": "target",
-              "propertyId": "currentHp",
-              "amount": 2
-            }
-          ]
+      "faction": "brood",
+      "onPlay": {
+        "id": "chitin-cast",
+        "name": "Cast Chitin Fortification",
+        "effects": [
+          {
+            "type": "modify_property",
+            "scope": "target",
+            "propertyId": "armor",
+            "amount": 2
+          },
+          {
+            "type": "modify_property",
+            "scope": "target",
+            "propertyId": "maxHp",
+            "amount": 2
+          },
+          {
+            "type": "modify_property",
+            "scope": "target",
+            "propertyId": "currentHp",
+            "amount": 2
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
         }
-      ],
-      "faction": "brood"
+      }
     },
     {
       "id": "brood-nest-cluster",
@@ -14780,7 +14753,6 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 2,
         "biomass": 1
       },
       "housingProvided": 3,
@@ -14813,7 +14785,6 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 2,
         "biomass": 2
       },
       "housingCost": 2,
@@ -14829,12 +14800,6 @@
           "costs": [
             {
               "type": "tap"
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "biomass",
-              "amount": 1
             }
           ],
           "conditions": [],
@@ -14844,7 +14809,14 @@
               "scope": "target",
               "amount": 4
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "faction": "brood"
@@ -14860,7 +14832,6 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 1,
         "biomass": 2
       },
       "housingCost": 1,
@@ -22268,9 +22239,9 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 6
             }
           ]
@@ -22289,15 +22260,17 @@
           ],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 2
             }
           ]
         }
       ],
-      "playCost": 6
+      "playCosts": {
+        "biomass": 6
+      }
     },
     {
       "id": "apex-brood-empress",
@@ -22340,15 +22313,15 @@
           "effects": [
             {
               "type": "modify_property",
-              "target": "self",
               "propertyId": "attack",
-              "amount": 3
+              "amount": 3,
+              "scope": "self"
             },
             {
               "type": "modify_property",
-              "target": "self",
               "propertyId": "armor",
-              "amount": 3
+              "amount": 3,
+              "scope": "self"
             }
           ]
         },
@@ -22393,7 +22366,6 @@
         "maxHp": 1,
         "armor": 0
       },
-      "playCost": 0,
       "housingCost": 1,
       "tags": [
         "worker"
@@ -22406,15 +22378,18 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 1
             }
           ]
         }
       ],
-      "deckLimit": "unlimited"
+      "deckLimit": "unlimited",
+      "playCosts": {
+        "biomass": 0
+      }
     },
     {
       "id": "apex-spore-crawler",
@@ -22426,7 +22401,6 @@
         "maxHp": 2,
         "armor": 0
       },
-      "playCost": 1,
       "housingCost": 1,
       "tags": [
         "worker"
@@ -22439,14 +22413,17 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "playCosts": {
+        "biomass": 1
+      }
     },
     {
       "id": "apex-acid-grub",
@@ -22458,7 +22435,6 @@
         "maxHp": 1,
         "armor": 0
       },
-      "playCost": 1,
       "housingCost": 1,
       "tags": [
         "soldier"
@@ -22471,9 +22447,9 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 1
             },
             {
@@ -22483,7 +22459,10 @@
             }
           ]
         }
-      ]
+      ],
+      "playCosts": {
+        "biomass": 1
+      }
     },
     {
       "id": "apex-tunneler-drone",
@@ -22495,7 +22474,6 @@
         "maxHp": 3,
         "armor": 0
       },
-      "playCost": 1,
       "housingCost": 1,
       "tags": [
         "worker",
@@ -22509,14 +22487,17 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "playCosts": {
+        "biomass": 1
+      }
     },
     {
       "id": "apex-venom-skitter",
@@ -22528,7 +22509,6 @@
         "maxHp": 2,
         "armor": 0
       },
-      "playCost": 1,
       "housingCost": 1,
       "tags": [
         "soldier",
@@ -22542,14 +22522,17 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "playCosts": {
+        "biomass": 1
+      }
     },
     {
       "id": "apex-brood-warrior",
@@ -22561,7 +22544,6 @@
         "maxHp": 6,
         "armor": 1
       },
-      "playCost": 3,
       "housingCost": 2,
       "tags": [
         "soldier",
@@ -22575,14 +22557,17 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 2
             }
           ]
         }
-      ]
+      ],
+      "playCosts": {
+        "biomass": 3
+      }
     },
     {
       "id": "apex-hive-guardian",
@@ -22594,7 +22579,6 @@
         "maxHp": 6,
         "armor": 2
       },
-      "playCost": 4,
       "housingCost": 2,
       "tags": [
         "soldier",
@@ -22609,14 +22593,17 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 3
             }
           ]
         }
-      ]
+      ],
+      "playCosts": {
+        "biomass": 4
+      }
     },
     {
       "id": "apex-apex-ravager",
@@ -22628,7 +22615,6 @@
         "maxHp": 7,
         "armor": 2
       },
-      "playCost": 5,
       "housingCost": 3,
       "tags": [
         "soldier",
@@ -22642,14 +22628,17 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 3
             }
           ]
         }
-      ]
+      ],
+      "playCosts": {
+        "biomass": 5
+      }
     },
     {
       "id": "apex-biomass-titan",
@@ -22662,7 +22651,6 @@
         "armor": 2
       },
       "playCosts": {
-        "gold": 7,
         "biomass": 5
       },
       "housingCost": 3,
@@ -22680,9 +22668,9 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 4
             }
           ]
@@ -22698,7 +22686,6 @@
         "maxHp": 8,
         "armor": 1
       },
-      "playCost": 3,
       "housingProvided": 4,
       "tags": [
         "resource-node"
@@ -22732,7 +22719,10 @@
             }
           ]
         }
-      ]
+      ],
+      "playCosts": {
+        "biomass": 3
+      }
     },
     {
       "id": "apex-biomass-extractor",
@@ -22743,7 +22733,6 @@
         "maxHp": 6,
         "armor": 0
       },
-      "playCost": 2,
       "housingProvided": 0,
       "tags": [
         "resource-node"
@@ -22756,14 +22745,17 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 1
             }
           ]
         }
-      ]
+      ],
+      "playCosts": {
+        "biomass": 2
+      }
     },
     {
       "id": "apex-enzyme-vat",
@@ -22774,7 +22766,6 @@
         "maxHp": 5,
         "armor": 0
       },
-      "playCost": 3,
       "housingProvided": 0,
       "tags": [
         "resource-node"
@@ -22797,14 +22788,17 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 3
             }
           ]
         }
-      ]
+      ],
+      "playCosts": {
+        "biomass": 3
+      }
     },
     {
       "id": "apex-incubation-pod",
@@ -22815,7 +22809,6 @@
         "maxHp": 7,
         "armor": 2
       },
-      "playCost": 4,
       "housingProvided": 2,
       "tags": [],
       "icon": "🥚",
@@ -22826,9 +22819,9 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 1
             },
             {
@@ -22837,292 +22830,304 @@
             }
           ]
         }
-      ]
+      ],
+      "playCosts": {
+        "biomass": 4
+      }
     },
     {
       "id": "apex-mass-sacrifice",
       "name": "Mass Sacrifice",
       "objectType": "spell",
-      "playCost": 1,
       "tags": [],
       "icon": "💀",
       "artworkDescription": "A dark ritual wave passes over the swarm",
-      "abilities": [
-        {
-          "id": "apex-mass-sacrifice-ab1",
-          "name": "Mass Sacrifice",
-          "costs": [
-            {
-              "type": "sacrifice_units",
-              "amount": 3
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "gain_resource",
-              "resourceId": "biomass",
-              "scope": "player",
-              "amount": 6
-            }
-          ]
-        }
-      ]
+      "playCosts": {
+        "biomass": 1
+      },
+      "onPlay": {
+        "id": "apex-mass-sacrifice-ab1",
+        "name": "Mass Sacrifice",
+        "effects": [
+          {
+            "type": "gain_bank_resource",
+            "resourceId": "biomass",
+            "scope": "self",
+            "amount": 6
+          }
+        ],
+        "conditions": [],
+        "costs": [
+          {
+            "type": "sacrifice_units",
+            "amount": 3
+          }
+        ]
+      }
     },
     {
       "id": "apex-evolve-surge",
       "name": "Evolve Surge",
       "objectType": "spell",
       "playCosts": {
-        "gold": 2,
         "biomass": 3
       },
       "tags": [],
       "icon": "🧬",
       "artworkDescription": "A cascade of mutagenic biomass floods a chosen unit",
-      "abilities": [
-        {
-          "id": "apex-evolve-surge-ab1",
-          "name": "Evolve Surge",
-          "costs": [],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "modify_property",
-              "target": "target_friendly_unit",
-              "propertyId": "attack",
-              "amount": 3
-            },
-            {
-              "type": "modify_property",
-              "target": "target_friendly_unit",
-              "propertyId": "maxHp",
-              "amount": 4
-            },
-            {
-              "type": "modify_property",
-              "target": "target_friendly_unit",
-              "propertyId": "currentHp",
-              "amount": 4
-            }
-          ]
-        }
-      ]
+      "onPlay": {
+        "id": "apex-evolve-surge-ab1",
+        "name": "Evolve Surge",
+        "effects": [
+          {
+            "type": "modify_property",
+            "propertyId": "attack",
+            "amount": 3,
+            "scope": "target"
+          },
+          {
+            "type": "modify_property",
+            "propertyId": "maxHp",
+            "amount": 4,
+            "scope": "target"
+          },
+          {
+            "type": "modify_property",
+            "propertyId": "currentHp",
+            "amount": 4,
+            "scope": "target"
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "self",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        },
+        "costs": []
+      }
     },
     {
       "id": "apex-biomass-feast",
       "name": "Biomass Feast",
       "objectType": "spell",
-      "playCost": 0,
       "tags": [],
       "icon": "🍖",
       "artworkDescription": "The hive mind signals a feeding frenzy",
-      "abilities": [
-        {
-          "id": "apex-biomass-feast-ab1",
-          "name": "Biomass Feast",
-          "costs": [
-            {
-              "type": "sacrifice_units",
-              "amount": 1
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "gain_resource",
-              "resourceId": "biomass",
-              "scope": "player",
-              "amount": 2
-            }
-          ]
-        }
-      ]
+      "playCosts": {
+        "biomass": 0
+      },
+      "onPlay": {
+        "id": "apex-biomass-feast-ab1",
+        "name": "Biomass Feast",
+        "effects": [
+          {
+            "type": "gain_bank_resource",
+            "resourceId": "biomass",
+            "scope": "self",
+            "amount": 2
+          }
+        ],
+        "conditions": [],
+        "costs": [
+          {
+            "type": "sacrifice_units",
+            "amount": 1
+          }
+        ]
+      }
     },
     {
       "id": "apex-spore-burst",
       "name": "Spore Burst",
       "objectType": "spell",
-      "playCost": 2,
       "tags": [],
       "icon": "💨",
       "artworkDescription": "A pressurized spore pod detonates",
-      "abilities": [
-        {
-          "id": "apex-spore-burst-ab1",
-          "name": "Spore Burst",
-          "costs": [],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "freeze",
-              "target": "target_enemy_unit"
-            },
-            {
-              "type": "gain_resource",
-              "resourceId": "biomass",
-              "scope": "player",
-              "amount": 1
-            }
-          ]
-        }
-      ]
+      "playCosts": {
+        "biomass": 2
+      },
+      "onPlay": {
+        "id": "apex-spore-burst-ab1",
+        "name": "Spore Burst",
+        "effects": [
+          {
+            "type": "freeze",
+            "scope": "target"
+          },
+          {
+            "type": "gain_bank_resource",
+            "resourceId": "biomass",
+            "scope": "self",
+            "amount": 1
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        },
+        "costs": []
+      }
     },
     {
       "id": "apex-enzyme-flood",
       "name": "Enzyme Flood",
       "objectType": "spell",
       "playCosts": {
-        "gold": 3,
         "biomass": 4
       },
       "tags": [],
       "icon": "🌊",
       "artworkDescription": "The Enzyme Vats rupture simultaneously",
-      "abilities": [
-        {
-          "id": "apex-enzyme-flood-ab1",
-          "name": "Enzyme Flood",
-          "costs": [],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "modify_property",
-              "target": "all_enemy_units",
-              "propertyId": "armor",
-              "amount": -3
-            },
-            {
-              "type": "direct_damage",
-              "target": "all_enemy_units",
-              "amount": 2
-            }
-          ]
-        }
-      ]
+      "onPlay": {
+        "id": "apex-enzyme-flood-ab1",
+        "name": "Enzyme Flood",
+        "effects": [
+          {
+            "type": "modify_property_enemy_units",
+            "propertyId": "armor",
+            "amount": -3
+          },
+          {
+            "type": "damage_enemy_units",
+            "amount": 2
+          }
+        ],
+        "conditions": [],
+        "costs": []
+      }
     },
     {
       "id": "apex-apex-signal",
       "name": "Apex Signal",
       "objectType": "spell",
       "playCosts": {
-        "gold": 2,
         "biomass": 2
       },
       "tags": [],
       "icon": "📡",
       "artworkDescription": "The Brood Empress emits a subsonic dominance signal",
-      "abilities": [
-        {
-          "id": "apex-apex-signal-ab1",
-          "name": "Apex Signal",
-          "costs": [],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "buff_tag_until_end_of_turn",
-              "tag": "worker",
-              "propertyId": "attack",
-              "amount": 3
-            },
-            {
-              "type": "buff_tag_until_end_of_turn",
-              "tag": "soldier",
-              "propertyId": "attack",
-              "amount": 2
-            }
-          ]
-        }
-      ]
+      "onPlay": {
+        "id": "apex-apex-signal-ab1",
+        "name": "Apex Signal",
+        "effects": [
+          {
+            "type": "buff_tag_until_end_of_turn",
+            "tag": "worker",
+            "propertyId": "attack",
+            "amount": 3
+          },
+          {
+            "type": "buff_tag_until_end_of_turn",
+            "tag": "soldier",
+            "propertyId": "attack",
+            "amount": 2
+          }
+        ],
+        "conditions": [],
+        "costs": []
+      }
     },
     {
       "id": "apex-hive-pulse",
       "name": "Hive Pulse",
       "objectType": "spell",
-      "playCost": 1,
       "tags": [],
       "icon": "🔊",
       "artworkDescription": "A resonant biomass pulse radiates from the hive core",
-      "abilities": [
-        {
-          "id": "apex-hive-pulse-ab1",
-          "name": "Hive Pulse",
-          "costs": [],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "heal",
-              "target": "all_friendly_units",
-              "amount": 2
-            },
-            {
-              "type": "draw_cards",
-              "amount": 1
-            }
-          ]
-        }
-      ]
+      "playCosts": {
+        "biomass": 1
+      },
+      "onPlay": {
+        "id": "apex-hive-pulse-ab1",
+        "name": "Hive Pulse",
+        "effects": [
+          {
+            "type": "heal_own_units",
+            "amount": 2
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ],
+        "conditions": [],
+        "costs": []
+      }
     },
     {
       "id": "apex-scent-trail",
       "name": "Scent Trail",
       "objectType": "spell",
-      "playCost": 1,
       "tags": [],
       "icon": "👃",
       "artworkDescription": "Pheromone markers are laid across enemy territory",
-      "abilities": [
-        {
-          "id": "apex-scent-trail-ab1",
-          "name": "Scent Trail",
-          "costs": [],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "reveal",
-              "target": "all_enemy_units"
-            },
-            {
-              "type": "draw_cards",
-              "amount": 2
-            }
-          ]
-        }
-      ]
+      "playCosts": {
+        "biomass": 1
+      },
+      "onPlay": {
+        "id": "apex-scent-trail-ab1",
+        "name": "Scent Trail",
+        "effects": [
+          {
+            "type": "reveal",
+            "scope": "target"
+          },
+          {
+            "type": "draw_cards",
+            "amount": 2
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
+        },
+        "costs": []
+      }
     },
     {
       "id": "apex-molt",
       "name": "Molt",
       "objectType": "spell",
-      "playCost": 0,
       "tags": [],
       "icon": "🐚",
       "artworkDescription": "A drone sheds its outer shell",
-      "abilities": [
-        {
-          "id": "apex-molt-ab1",
-          "name": "Molt",
-          "costs": [
-            {
-              "type": "sacrifice_units",
-              "amount": 1
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "gain_resource",
-              "resourceId": "biomass",
-              "scope": "player",
-              "amount": 1
-            },
-            {
-              "type": "summon",
-              "cardId": "apex-spore-crawler"
-            }
-          ]
-        }
-      ]
+      "playCosts": {
+        "biomass": 0
+      },
+      "onPlay": {
+        "id": "apex-molt-ab1",
+        "name": "Molt",
+        "effects": [
+          {
+            "type": "gain_bank_resource",
+            "resourceId": "biomass",
+            "scope": "self",
+            "amount": 1
+          },
+          {
+            "type": "summon",
+            "cardId": "apex-spore-crawler"
+          }
+        ],
+        "conditions": [],
+        "costs": [
+          {
+            "type": "sacrifice_units",
+            "amount": 1
+          }
+        ]
+      }
     },
     {
       "id": "hold-shadow-citadel",
@@ -27131,7 +27136,6 @@
       "id": "apex-bone-stalker",
       "name": "Bone Stalker",
       "objectType": "unit",
-      "playCost": 2,
       "housingCost": 1,
       "properties": {
         "attack": 3,
@@ -27151,9 +27155,9 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 1
             },
             {
@@ -27165,13 +27169,15 @@
           ]
         }
       ],
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 2
+      }
     },
     {
       "id": "apex-chitin-crusher",
       "name": "Chitin Crusher",
       "objectType": "unit",
-      "playCost": 3,
       "housingCost": 2,
       "properties": {
         "attack": 4,
@@ -27191,21 +27197,23 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 2
             }
           ]
         }
       ],
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 3
+      }
     },
     {
       "id": "apex-pack-hunter",
       "name": "Pack Hunter",
       "objectType": "unit",
-      "playCost": 2,
       "housingCost": 1,
       "properties": {
         "attack": 2,
@@ -27236,21 +27244,23 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 1
             }
           ]
         }
       ],
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 2
+      }
     },
     {
       "id": "apex-trophy-beast",
       "name": "Trophy Beast",
       "objectType": "unit",
-      "playCost": 4,
       "housingCost": 2,
       "properties": {
         "attack": 3,
@@ -27271,9 +27281,9 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 3
             },
             {
@@ -27284,13 +27294,15 @@
           ]
         }
       ],
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 4
+      }
     },
     {
       "id": "apex-alpha-predator",
       "name": "Alpha Predator",
       "objectType": "unit",
-      "playCost": 5,
       "housingCost": 3,
       "properties": {
         "attack": 5,
@@ -27310,9 +27322,9 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 2
             },
             {
@@ -27327,21 +27339,23 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 3
             }
           ]
         }
       ],
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 5
+      }
     },
     {
       "id": "apex-death-mark",
       "name": "Death Mark",
       "objectType": "spell",
-      "playCost": 2,
       "tags": [],
       "icon": "🎯",
       "artworkDescription": "A hunter's pheromone glyph is smeared across a target, the entire predator swarm locking its gaze on the marked prey",
@@ -27355,9 +27369,9 @@
             "amount": 3
           },
           {
-            "type": "gain_resource",
+            "type": "gain_bank_resource",
             "resourceId": "biomass",
-            "scope": "player",
+            "scope": "self",
             "amount": 1
           }
         ],
@@ -27369,13 +27383,15 @@
           "max": 1
         }
       },
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 2
+      }
     },
     {
       "id": "apex-predator-surge",
       "name": "Predator Surge",
       "objectType": "spell",
-      "playCost": 3,
       "tags": [],
       "icon": "⚡",
       "artworkDescription": "A subsonic roar ripples through the pack, every hunter exploding forward in a synchronized killing charge",
@@ -27393,20 +27409,22 @@
             "amount": 1
           },
           {
-            "type": "gain_resource",
+            "type": "gain_bank_resource",
             "resourceId": "biomass",
-            "scope": "player",
+            "scope": "self",
             "amount": 1
           }
         ]
       },
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 3
+      }
     },
     {
       "id": "apex-culling-strike",
       "name": "Culling Strike",
       "objectType": "spell",
-      "playCost": 1,
       "tags": [],
       "icon": "🗡️",
       "artworkDescription": "A precise predatory lunge ends the suffering of an already wounded prey — the weak do not survive the hunt",
@@ -27420,9 +27438,9 @@
             "amount": 5
           },
           {
-            "type": "gain_resource",
+            "type": "gain_bank_resource",
             "resourceId": "biomass",
-            "scope": "player",
+            "scope": "self",
             "amount": 1
           }
         ],
@@ -27434,13 +27452,15 @@
           "max": 1
         }
       },
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 1
+      }
     },
     {
       "id": "apex-trophy-lodge",
       "name": "Trophy Lodge",
       "objectType": "building",
-      "playCost": 3,
       "constructionRequirement": 2,
       "properties": {
         "currentHp": 6,
@@ -27458,21 +27478,23 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 1
             }
           ]
         }
       ],
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 3
+      }
     },
     {
       "id": "apex-maw-leaper",
       "name": "Maw Leaper",
       "objectType": "unit",
-      "playCost": 1,
       "housingCost": 1,
       "properties": {
         "attack": 2,
@@ -27496,21 +27518,23 @@
               "scope": "target"
             },
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "biomass",
-              "scope": "player",
+              "scope": "self",
               "amount": 1
             }
           ]
         }
       ],
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 1
+      }
     },
     {
       "id": "apex-hunger-call",
       "name": "Hunger Call",
       "objectType": "spell",
-      "playCost": 2,
       "tags": [],
       "icon": "📯",
       "artworkDescription": "A guttural hunting call echoes from the hive depths, drawing dormant predators to the surface ready to feed",
@@ -27527,14 +27551,17 @@
             "cardId": "apex-bone-stalker"
           },
           {
-            "type": "gain_resource",
+            "type": "gain_bank_resource",
             "resourceId": "biomass",
-            "scope": "player",
+            "scope": "self",
             "amount": 1
           }
         ]
       },
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 2
+      }
     },
     {
       "id": "sentry-hunter-drone",
@@ -30611,7 +30638,6 @@
       "id": "brood-pheromone-spreader",
       "name": "Pheromone Spreader",
       "objectType": "unit",
-      "playCost": 1,
       "properties": {
         "attack": 1,
         "currentHp": 2,
@@ -30636,13 +30662,15 @@
             "amount": 1
           }
         ]
+      },
+      "playCosts": {
+        "biomass": 1
       }
     },
     {
       "id": "brood-spore-caster",
       "name": "Spore Caster",
       "objectType": "unit",
-      "playCost": 2,
       "properties": {
         "attack": 1,
         "currentHp": 3,
@@ -30680,13 +30708,15 @@
           ]
         }
       ],
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 2
+      }
     },
     {
       "id": "brood-carapace-brute",
       "name": "Carapace Brute",
       "objectType": "unit",
-      "playCost": 3,
       "properties": {
         "attack": 3,
         "currentHp": 5,
@@ -30701,13 +30731,15 @@
       "icon": "🪳",
       "artworkDescription": "A thick-shelled warrior whose layered chitin deflects blade and bolt alike, planted in the vanguard",
       "housingCost": 1,
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 3
+      }
     },
     {
       "id": "brood-acid-bombardier",
       "name": "Acid Bombardier",
       "objectType": "unit",
-      "playCost": 4,
       "properties": {
         "attack": 3,
         "currentHp": 5,
@@ -30753,13 +30785,15 @@
           }
         }
       ],
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 4
+      }
     },
     {
       "id": "brood-molt-ravager",
       "name": "Molt Ravager",
       "objectType": "unit",
-      "playCost": 5,
       "properties": {
         "attack": 5,
         "currentHp": 6,
@@ -30797,13 +30831,15 @@
           ]
         }
       ],
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 5
+      }
     },
     {
       "id": "brood-acid-deluge",
       "name": "Acid Deluge",
       "objectType": "spell",
-      "playCost": 3,
       "icon": "☠️",
       "artworkDescription": "A torrent of caustic bile rains down, melting armour and dissolving ranks of enemy soldiers",
       "onPlay": {
@@ -30821,13 +30857,15 @@
           }
         ]
       },
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 3
+      }
     },
     {
       "id": "brood-frenzy-pheromone",
       "name": "Frenzy Pheromone",
       "objectType": "spell",
-      "playCost": 2,
       "icon": "🟡",
       "artworkDescription": "A concentrated chemical burst that sends every brood warrior into a bloodthirsty rampage",
       "onPlay": {
@@ -30841,13 +30879,15 @@
           }
         ]
       },
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 2
+      }
     },
     {
       "id": "brood-larval-flood",
       "name": "Larval Flood",
       "objectType": "spell",
-      "playCost": 4,
       "icon": "🌊",
       "artworkDescription": "Tunnels crack open and a tide of larvae pour forth, overwhelming every position on the field",
       "onPlay": {
@@ -30880,13 +30920,15 @@
           }
         ]
       },
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 4
+      }
     },
     {
       "id": "brood-pheromone-throne",
       "name": "Pheromone Throne",
       "objectType": "building",
-      "playCost": 4,
       "constructionRequirement": 2,
       "properties": {
         "currentHp": 7,
@@ -30908,7 +30950,10 @@
           ]
         }
       ],
-      "faction": "brood"
+      "faction": "brood",
+      "playCosts": {
+        "biomass": 4
+      }
     },
     {
       "id": "brood-incubation-hive",
