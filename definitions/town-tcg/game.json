@@ -12232,7 +12232,6 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 2,
         "mana": 1
       },
       "housingCost": 1,
@@ -12253,8 +12252,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 1
             }
@@ -12267,8 +12266,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 1
             }
@@ -12288,7 +12287,6 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 3,
         "mana": 1
       },
       "housingCost": 1,
@@ -12327,8 +12325,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 1
             }
@@ -12348,7 +12346,6 @@
         "armor": 0
       },
       "playCosts": {
-        "gold": 3,
         "mana": 2
       },
       "housingCost": 1,
@@ -12380,7 +12377,14 @@
               "scope": "target",
               "amount": 3
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "triggers": [
@@ -12389,8 +12393,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 1
             }
@@ -12410,7 +12414,6 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 4,
         "mana": 2
       },
       "housingCost": 2,
@@ -12447,7 +12450,14 @@
               "scope": "target",
               "amount": 4
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "triggers": [
@@ -12456,8 +12466,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 1
             }
@@ -12475,7 +12485,6 @@
         "maxHp": 5,
         "armor": 0
       },
-      "playCost": 3,
       "housingProvided": 0,
       "icon": "🔮",
       "artworkDescription": "A tall crystalline pillar pulsing with concentrated arcane energy",
@@ -12491,8 +12500,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 2
             }
@@ -12505,15 +12514,18 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 1
             }
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 3
+      }
     },
     {
       "id": "conclave-arcane-tower",
@@ -12524,7 +12536,6 @@
         "maxHp": 8,
         "armor": 2
       },
-      "playCost": 5,
       "housingProvided": 2,
       "icon": "🏰",
       "artworkDescription": "A tall stone tower wreathed in swirling magical auras",
@@ -12550,7 +12561,14 @@
               "scope": "target",
               "amount": 3
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "opponent",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "triggers": [
@@ -12559,15 +12577,18 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 2
             }
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 5
+      }
     },
     {
       "id": "conclave-mana-vault",
@@ -12578,7 +12599,6 @@
         "maxHp": 6,
         "armor": 1
       },
-      "playCost": 4,
       "housingProvided": 1,
       "icon": "🏛️",
       "artworkDescription": "A reinforced vault with glowing mana crystals",
@@ -12594,8 +12614,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 3
             },
@@ -12608,14 +12628,16 @@
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 4
+      }
     },
     {
       "id": "conclave-spellshard-staff",
       "name": "Spellshard Staff",
       "objectType": "equipment",
       "playCosts": {
-        "gold": 2,
         "mana": 1
       },
       "icon": "🪄",
@@ -12636,8 +12658,8 @@
           ],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 2
             },
@@ -12646,16 +12668,26 @@
               "propertyId": "attack",
               "amount": 2
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "slots": [
+        "mainHand"
+      ],
+      "attachTo": "chooseCharacter"
     },
     {
       "id": "conclave-focus-crystal",
       "name": "Focus Crystal",
       "objectType": "equipment",
-      "playCost": 3,
       "icon": "💎",
       "artworkDescription": "A perfectly cut arcane crystal worn as a pendant",
       "abilities": [
@@ -12691,407 +12723,316 @@
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "slots": [
+        "offHand"
+      ],
+      "attachTo": "chooseCharacter",
+      "playCosts": {
+        "mana": 3
+      }
     },
     {
       "id": "conclave-arcane-surge",
       "name": "Arcane Surge",
       "objectType": "spell",
       "playCosts": {
-        "gold": 2,
         "mana": 2
       },
       "icon": "🌊",
       "artworkDescription": "A wave of raw arcane energy crashing outward",
-      "abilities": [
-        {
-          "id": "arcane-surge-cast",
-          "name": "Cast Arcane Surge",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 2
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "mana",
-              "amount": 2
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "direct_damage",
-              "scope": "target",
-              "amount": 4
-            },
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "mana",
-              "amount": 1
-            }
-          ]
+      "faction": "conclave",
+      "onPlay": {
+        "id": "arcane-surge-cast",
+        "name": "Cast Arcane Surge",
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 4
+          },
+          {
+            "type": "gain_bank_resource",
+            "scope": "self",
+            "resourceId": "mana",
+            "amount": 1
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
         }
-      ],
-      "faction": "conclave"
+      }
     },
     {
       "id": "conclave-mass-freeze",
       "name": "Mass Freeze",
       "objectType": "spell",
       "playCosts": {
-        "gold": 3,
         "mana": 3
       },
       "icon": "❄️",
       "artworkDescription": "Frost crystallizes the air as multiple enemy units are encased in arcane ice",
-      "abilities": [
-        {
-          "id": "mass-freeze-cast",
-          "name": "Cast Mass Freeze",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 3
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "mana",
-              "amount": 3
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "freeze",
-              "scope": "target"
-            },
-            {
-              "type": "freeze",
-              "scope": "target"
-            },
-            {
-              "type": "draw_cards",
-              "amount": 1
-            }
-          ]
+      "faction": "conclave",
+      "onPlay": {
+        "id": "mass-freeze-cast",
+        "name": "Cast Mass Freeze",
+        "effects": [
+          {
+            "type": "freeze",
+            "scope": "target"
+          },
+          {
+            "type": "freeze",
+            "scope": "target"
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
         }
-      ],
-      "faction": "conclave"
+      }
     },
     {
       "id": "conclave-spell-echo",
       "name": "Spell Echo",
       "objectType": "spell",
       "playCosts": {
-        "gold": 2,
         "mana": 2
       },
       "icon": "🔁",
       "artworkDescription": "Shimmering ripples in the air as a spell's resonance is captured and repeated",
-      "abilities": [
-        {
-          "id": "spell-echo-cast",
-          "name": "Cast Spell Echo",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 2
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "mana",
-              "amount": 2
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "draw_cards",
-              "amount": 2
-            },
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "mana",
-              "amount": 2
-            }
-          ]
-        }
-      ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "onPlay": {
+        "id": "spell-echo-cast",
+        "name": "Cast Spell Echo",
+        "effects": [
+          {
+            "type": "draw_cards",
+            "amount": 2
+          },
+          {
+            "type": "gain_bank_resource",
+            "scope": "self",
+            "resourceId": "mana",
+            "amount": 2
+          }
+        ],
+        "conditions": []
+      }
     },
     {
       "id": "conclave-void-rift",
       "name": "Void Rift",
       "objectType": "spell",
       "playCosts": {
-        "gold": 4,
         "mana": 4
       },
       "icon": "🕳️",
       "artworkDescription": "A tear in reality through which void energy pours",
-      "abilities": [
-        {
-          "id": "void-rift-cast",
-          "name": "Open Void Rift",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 4
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "mana",
-              "amount": 4
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "direct_damage",
-              "scope": "target",
-              "amount": 6
-            },
-            {
-              "type": "discard_cards",
-              "amount": 2
-            }
-          ]
+      "faction": "conclave",
+      "onPlay": {
+        "id": "void-rift-cast",
+        "name": "Open Void Rift",
+        "effects": [
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 6
+          },
+          {
+            "type": "discard_cards",
+            "amount": 2
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
         }
-      ],
-      "faction": "conclave"
+      }
     },
     {
       "id": "conclave-mana-drain",
       "name": "Mana Drain",
       "objectType": "spell",
       "playCosts": {
-        "gold": 2,
         "mana": 1
       },
       "icon": "🌀",
       "artworkDescription": "Tendrils of dark energy siphoning glowing mana from an enemy caster",
-      "abilities": [
-        {
-          "id": "mana-drain-cast",
-          "name": "Cast Mana Drain",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 2
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "mana",
-              "amount": 1
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "transfer_resource",
-              "scope": "target",
-              "resourceId": "mana",
-              "amount": 2
-            },
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "mana",
-              "amount": 2
-            }
-          ]
+      "faction": "conclave",
+      "onPlay": {
+        "id": "mana-drain-cast",
+        "name": "Cast Mana Drain",
+        "effects": [
+          {
+            "type": "transfer_resource",
+            "scope": "target",
+            "resourceId": "mana",
+            "amount": 2
+          },
+          {
+            "type": "gain_bank_resource",
+            "scope": "self",
+            "resourceId": "mana",
+            "amount": 2
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
         }
-      ],
-      "faction": "conclave"
+      }
     },
     {
       "id": "conclave-greater-counterspell",
       "name": "Greater Counterspell",
       "objectType": "spell",
       "playCosts": {
-        "gold": 3,
         "mana": 3
       },
       "icon": "🚫",
       "artworkDescription": "A shimmering arcane barrier shattering an incoming spell mid-cast",
-      "abilities": [
-        {
-          "id": "greater-counterspell-cast",
-          "name": "Counter",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 3
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "mana",
-              "amount": 3
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "counter_spell"
-            },
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "mana",
-              "amount": 2
-            },
-            {
-              "type": "draw_cards",
-              "amount": 1
-            }
-          ]
-        }
-      ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "onPlay": {
+        "id": "greater-counterspell-cast",
+        "name": "Counter",
+        "effects": [
+          {
+            "type": "counter_spell"
+          },
+          {
+            "type": "gain_bank_resource",
+            "scope": "self",
+            "resourceId": "mana",
+            "amount": 2
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ],
+        "conditions": []
+      },
+      "timing": "reaction",
+      "reactionTo": [
+        "spellCast"
+      ]
     },
     {
       "id": "conclave-arcane-collapse",
       "name": "Arcane Collapse",
       "objectType": "spell",
       "playCosts": {
-        "gold": 5,
         "mana": 5
       },
       "icon": "💥",
       "artworkDescription": "Reality implodes around a target",
-      "abilities": [
-        {
-          "id": "arcane-collapse-cast",
-          "name": "Trigger Collapse",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 5
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "mana",
-              "amount": 5
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "destroy",
-              "scope": "target"
-            },
-            {
-              "type": "direct_damage",
-              "scope": "target",
-              "amount": 5
-            },
-            {
-              "type": "draw_cards",
-              "amount": 1
-            }
-          ]
+      "faction": "conclave",
+      "onPlay": {
+        "id": "arcane-collapse-cast",
+        "name": "Trigger Collapse",
+        "effects": [
+          {
+            "type": "destroy",
+            "scope": "target"
+          },
+          {
+            "type": "direct_damage",
+            "scope": "target",
+            "amount": 5
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 3
         }
-      ],
-      "faction": "conclave"
+      }
     },
     {
       "id": "conclave-ley-tap",
       "name": "Ley Tap",
       "objectType": "spell",
-      "playCost": 2,
       "icon": "✨",
       "artworkDescription": "A mage driving a crystalline spike into a glowing ley line underfoot",
-      "abilities": [
-        {
-          "id": "ley-tap-cast",
-          "name": "Tap Ley Line",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 2
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "gain_resource",
-              "scope": "player",
-              "resourceId": "mana",
-              "amount": 4
-            }
-          ]
-        }
-      ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "onPlay": {
+        "id": "ley-tap-cast",
+        "name": "Tap Ley Line",
+        "effects": [
+          {
+            "type": "gain_bank_resource",
+            "scope": "self",
+            "resourceId": "mana",
+            "amount": 4
+          }
+        ],
+        "conditions": []
+      },
+      "playCosts": {
+        "mana": 2
+      }
     },
     {
       "id": "conclave-reveal-mind",
       "name": "Reveal Mind",
       "objectType": "spell",
       "playCosts": {
-        "gold": 1,
         "mana": 1
       },
       "icon": "👁️",
       "artworkDescription": "A third eye opens above a mage's brow",
-      "abilities": [
-        {
-          "id": "reveal-mind-cast",
-          "name": "Cast Reveal Mind",
-          "costs": [
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "gold",
-              "amount": 1
-            },
-            {
-              "type": "resource",
-              "scope": "player",
-              "resourceId": "mana",
-              "amount": 1
-            }
-          ],
-          "conditions": [],
-          "effects": [
-            {
-              "type": "reveal",
-              "scope": "target"
-            },
-            {
-              "type": "draw_cards",
-              "amount": 1
-            }
-          ]
+      "faction": "conclave",
+      "onPlay": {
+        "id": "reveal-mind-cast",
+        "name": "Cast Reveal Mind",
+        "effects": [
+          {
+            "type": "reveal",
+            "scope": "target"
+          },
+          {
+            "type": "draw_cards",
+            "amount": 1
+          }
+        ],
+        "conditions": [],
+        "choice": {
+          "type": "entity",
+          "controller": "opponent",
+          "objectType": "unit",
+          "min": 1,
+          "max": 1
         }
-      ],
-      "faction": "conclave"
+      }
     },
     {
       "id": "conclave-senior-enchanter",
@@ -13104,7 +13045,6 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 4,
         "mana": 2
       },
       "housingCost": 2,
@@ -13141,7 +13081,14 @@
               "scope": "target",
               "amount": 2
             }
-          ]
+          ],
+          "choice": {
+            "type": "entity",
+            "controller": "self",
+            "objectType": "unit",
+            "min": 1,
+            "max": 1
+          }
         }
       ],
       "triggers": [
@@ -13150,8 +13097,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 1
             }
@@ -13170,7 +13117,6 @@
         "armor": 1
       },
       "playCosts": {
-        "gold": 5,
         "mana": 2
       },
       "housingProvided": 3,
@@ -13211,8 +13157,8 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 2
             }
@@ -30479,7 +30425,6 @@
       "id": "storm-gale-striker",
       "name": "Gale Striker",
       "objectType": "unit",
-      "playCost": 1,
       "properties": {
         "attack": 2,
         "currentHp": 2,
@@ -30491,13 +30436,15 @@
       "icon": "💨",
       "artworkDescription": "A wiry scout sprinting through a howling gale, hair and cloak streaming horizontal in the wind",
       "housingCost": 1,
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 1
+      }
     },
     {
       "id": "storm-thunder-warden",
       "name": "Thunder Warden",
       "objectType": "unit",
-      "playCost": 2,
       "properties": {
         "attack": 2,
         "currentHp": 3,
@@ -30510,13 +30457,15 @@
       "icon": "🛡️",
       "artworkDescription": "A stout warrior in lightning-scorched plate armor, shield raised against crackling arcs of electricity",
       "housingCost": 1,
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 2
+      }
     },
     {
       "id": "storm-cloud-reaper",
       "name": "Cloud Reaper",
       "objectType": "unit",
-      "playCost": 3,
       "properties": {
         "attack": 3,
         "currentHp": 4,
@@ -30541,13 +30490,15 @@
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 3
+      }
     },
     {
       "id": "storm-squall-berserker",
       "name": "Squall Berserker",
       "objectType": "unit",
-      "playCost": 4,
       "properties": {
         "attack": 5,
         "currentHp": 5,
@@ -30560,13 +30511,15 @@
       "icon": "⚡",
       "artworkDescription": "A towering warrior consumed by a living tempest, twin axes crackling with chained lightning that leaps between foes on each swing",
       "housingCost": 2,
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 4
+      }
     },
     {
       "id": "storm-cyclone-herald",
       "name": "Cyclone Herald",
       "objectType": "unit",
-      "playCost": 5,
       "properties": {
         "attack": 4,
         "currentHp": 7,
@@ -30600,13 +30553,15 @@
           "choice": null
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 5
+      }
     },
     {
       "id": "storm-lightning-lash",
       "name": "Lightning Lash",
       "objectType": "spell",
-      "playCost": 1,
       "icon": "⚡",
       "artworkDescription": "A thin whip of pure lightning snapping from an outstretched hand, scorching a single target with pinpoint precision",
       "onPlay": {
@@ -30627,13 +30582,15 @@
           "max": 1
         }
       },
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 1
+      }
     },
     {
       "id": "storm-thunderclap",
       "name": "Thunderclap",
       "objectType": "spell",
-      "playCost": 3,
       "icon": "💥",
       "artworkDescription": "A deafening shockwave erupting from the sky, flattening every enemy on the field as sonic and electrical energy collide",
       "onPlay": {
@@ -30642,17 +30599,19 @@
         "effects": [
           {
             "type": "damage_enemy_units",
-            "amount": 2
+            "amount": 3
           }
         ]
       },
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 3
+      }
     },
     {
       "id": "storm-arc-infusion",
       "name": "Arc Infusion",
       "objectType": "spell",
-      "playCost": 2,
       "icon": "✨",
       "artworkDescription": "Writhing arcs of electricity pouring into a friendly unit, muscles surging with unnatural speed and power",
       "onPlay": {
@@ -30678,13 +30637,15 @@
           "max": 1
         }
       },
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 2
+      }
     },
     {
       "id": "storm-tempest-bastion",
       "name": "Tempest Bastion",
       "objectType": "building",
-      "playCost": 4,
       "constructionRequirement": 2,
       "properties": {
         "currentHp": 7,
@@ -30705,13 +30666,15 @@
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 4
+      }
     },
     {
       "id": "storm-fog-wraith",
       "name": "Fog Wraith",
       "objectType": "unit",
-      "playCost": 2,
       "properties": {
         "attack": 1,
         "currentHp": 4,
@@ -30735,13 +30698,15 @@
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 2
+      }
     },
     {
       "id": "storm-gale-dancer",
       "name": "Gale Dancer",
       "objectType": "unit",
-      "playCost": 4,
       "properties": {
         "attack": 3,
         "currentHp": 6,
@@ -30775,7 +30740,10 @@
           "choice": null
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 4
+      }
     },
     {
       "id": "brood-pheromone-spreader",
@@ -33002,7 +32970,6 @@
       "id": "conclave-ley-initiate",
       "name": "Ley Initiate",
       "objectType": "unit",
-      "playCost": 1,
       "properties": {
         "attack": 1,
         "currentHp": 2,
@@ -33021,21 +32988,23 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 2
             }
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 1
+      }
     },
     {
       "id": "conclave-glyph-warden",
       "name": "Glyph Warden",
       "objectType": "unit",
-      "playCost": 2,
       "properties": {
         "attack": 2,
         "currentHp": 3,
@@ -33076,13 +33045,15 @@
           }
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 2
+      }
     },
     {
       "id": "conclave-chain-binder",
       "name": "Chain Binder",
       "objectType": "unit",
-      "playCost": 3,
       "properties": {
         "attack": 2,
         "currentHp": 4,
@@ -33132,13 +33103,15 @@
           }
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 3
+      }
     },
     {
       "id": "conclave-ley-channeler",
       "name": "Ley Channeler",
       "objectType": "unit",
-      "playCost": 4,
       "properties": {
         "attack": 3,
         "currentHp": 5,
@@ -33182,21 +33155,23 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 1
             }
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 4
+      }
     },
     {
       "id": "conclave-grand-arbiter",
       "name": "Grand Arbiter",
       "objectType": "unit",
-      "playCost": 5,
       "properties": {
         "attack": 4,
         "currentHp": 7,
@@ -33244,21 +33219,23 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 2
             }
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 5
+      }
     },
     {
       "id": "conclave-ley-pulse",
       "name": "Ley Pulse",
       "objectType": "spell",
-      "playCost": 2,
       "icon": "💠",
       "artworkDescription": "A shockwave of pure ley-line energy erupting outward from a glowing node, scattering enemies like leaves",
       "onPlay": {
@@ -33270,20 +33247,22 @@
             "amount": 1
           },
           {
-            "type": "gain_resource",
-            "scope": "player",
+            "type": "gain_bank_resource",
+            "scope": "self",
             "resourceId": "mana",
             "amount": 1
           }
         ]
       },
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 2
+      }
     },
     {
       "id": "conclave-mending-sigil",
       "name": "Mending Sigil",
       "objectType": "spell",
-      "playCost": 3,
       "icon": "✴️",
       "artworkDescription": "A golden sigil materialising above a wounded unit, knitting flesh and armour with threads of warm arcane light",
       "onPlay": {
@@ -33304,13 +33283,15 @@
           "max": 1
         }
       },
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 3
+      }
     },
     {
       "id": "conclave-mind-shatter",
       "name": "Mind Shatter",
       "objectType": "spell",
-      "playCost": 4,
       "icon": "🧠",
       "artworkDescription": "Concentric rings of violet force imploding around an enemy unit's skull, leaving them staggered and weakened",
       "onPlay": {
@@ -33337,13 +33318,15 @@
           "max": 1
         }
       },
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 4
+      }
     },
     {
       "id": "conclave-sanctum-of-accord",
       "name": "Sanctum of Accord",
       "objectType": "building",
-      "playCost": 4,
       "constructionRequirement": 2,
       "properties": {
         "currentHp": 6,
@@ -33363,21 +33346,23 @@
               "amount": 1
             },
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 1
             }
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 4
+      }
     },
     {
       "id": "conclave-veil-dancer",
       "name": "Veil Dancer",
       "objectType": "unit",
-      "playCost": 2,
       "properties": {
         "attack": 3,
         "currentHp": 3,
@@ -33403,13 +33388,15 @@
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 2
+      }
     },
     {
       "id": "conclave-rift-sentinel",
       "name": "Rift Sentinel",
       "objectType": "unit",
-      "playCost": 3,
       "properties": {
         "attack": 2,
         "currentHp": 5,
@@ -33446,15 +33433,18 @@
               "amount": 2
             },
             {
-              "type": "gain_resource",
-              "scope": "player",
+              "type": "gain_bank_resource",
+              "scope": "self",
               "resourceId": "mana",
               "amount": 1
             }
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 3
+      }
     },
     {
       "id": "raiders-hook-runner",
@@ -37379,7 +37369,6 @@
       "id": "arcane-void-stalker",
       "name": "Void Stalker",
       "objectType": "unit",
-      "playCost": 1,
       "properties": {
         "attack": 2,
         "currentHp": 2,
@@ -37391,13 +37380,15 @@
       "icon": "👁️",
       "artworkDescription": "A flickering silhouette of compressed void energy, two luminous eyes staring from within a rift seam",
       "housingCost": 1,
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 1
+      }
     },
     {
       "id": "arcane-rift-channeler",
       "name": "Rift Channeler",
       "objectType": "unit",
-      "playCost": 2,
       "properties": {
         "attack": 2,
         "currentHp": 3,
@@ -37419,13 +37410,15 @@
             "amount": 1
           }
         ]
+      },
+      "playCosts": {
+        "mana": 2
       }
     },
     {
       "id": "arcane-mana-elemental",
       "name": "Mana Elemental",
       "objectType": "unit",
-      "playCost": 3,
       "properties": {
         "attack": 3,
         "currentHp": 4,
@@ -37441,21 +37434,23 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "mana",
-              "amount": 2,
-              "scope": "player"
+              "amount": 3,
+              "scope": "self"
             }
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 3
+      }
     },
     {
       "id": "arcane-void-wraith",
       "name": "Void Wraith",
       "objectType": "unit",
-      "playCost": 3,
       "properties": {
         "attack": 4,
         "currentHp": 3,
@@ -37468,13 +37463,15 @@
       "icon": "🕳️",
       "artworkDescription": "A spectral form woven from collapsed void rift threads, trailing tendrils of inverted light",
       "housingCost": 1,
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 3
+      }
     },
     {
       "id": "arcane-prism-guardian",
       "name": "Prism Guardian",
       "objectType": "unit",
-      "playCost": 4,
       "properties": {
         "attack": 3,
         "currentHp": 6,
@@ -37515,13 +37512,15 @@
           }
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 4
+      }
     },
     {
       "id": "arcane-nexus-colossus",
       "name": "Nexus Colossus",
       "objectType": "unit",
-      "playCost": 5,
       "properties": {
         "attack": 5,
         "currentHp": 7,
@@ -37546,13 +37545,15 @@
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 5
+      }
     },
     {
       "id": "arcane-void-rupture",
       "name": "Void Rupture",
       "objectType": "spell",
-      "playCost": 2,
       "icon": "🌑",
       "artworkDescription": "A fissure tears open in the air and vomits void energy across everything caught in its radius",
       "onPlay": {
@@ -37565,13 +37566,15 @@
           }
         ]
       },
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 2
+      }
     },
     {
       "id": "arcane-temporal-surge",
       "name": "Temporal Surge",
       "objectType": "spell",
-      "playCost": 3,
       "icon": "⏩",
       "artworkDescription": "Arcane energy accelerates a chosen unit through compressed time, leaving afterimage trails of luminous blue",
       "onPlay": {
@@ -37597,13 +37600,15 @@
           "max": 1
         }
       },
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 3
+      }
     },
     {
       "id": "arcane-mana-siphon",
       "name": "Mana Siphon",
       "objectType": "spell",
-      "playCost": 1,
       "icon": "💧",
       "artworkDescription": "Tendrils of arcane energy reach across the field, drawing mana from an enemy to fuel your own reserves",
       "onPlay": {
@@ -37611,10 +37616,10 @@
         "name": "Drain 2 mana from opponent, gain 2 mana",
         "effects": [
           {
-            "type": "gain_resource",
+            "type": "gain_bank_resource",
             "resourceId": "mana",
             "amount": 2,
-            "scope": "player"
+            "scope": "self"
           },
           {
             "type": "set_resource",
@@ -37624,13 +37629,15 @@
           }
         ]
       },
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 1
+      }
     },
     {
       "id": "arcane-annihilation-wave",
       "name": "Annihilation Wave",
       "objectType": "spell",
-      "playCost": 5,
       "icon": "💥",
       "artworkDescription": "A rolling wall of pure annihilating arcane force that unmakes everything in its path, leaving only scorched silence",
       "onPlay": {
@@ -37643,13 +37650,15 @@
           }
         ]
       },
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 5
+      }
     },
     {
       "id": "arcane-rift-gate",
       "name": "Rift Gate",
       "objectType": "building",
-      "playCost": 3,
       "constructionRequirement": 2,
       "properties": {
         "currentHp": 7,
@@ -37664,21 +37673,23 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "mana",
               "amount": 1,
-              "scope": "player"
+              "scope": "self"
             }
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 3
+      }
     },
     {
       "id": "arcane-mana-forge",
       "name": "Mana Forge",
       "objectType": "building",
-      "playCost": 4,
       "constructionRequirement": 3,
       "properties": {
         "currentHp": 5,
@@ -37693,10 +37704,10 @@
           "conditions": [],
           "effects": [
             {
-              "type": "gain_resource",
+              "type": "gain_bank_resource",
               "resourceId": "mana",
               "amount": 2,
-              "scope": "player"
+              "scope": "self"
             },
             {
               "type": "heal_own_units",
@@ -37705,13 +37716,15 @@
           ]
         }
       ],
-      "faction": "conclave"
+      "faction": "conclave",
+      "playCosts": {
+        "mana": 4
+      }
     },
     {
       "id": "arcane-void-mantle",
       "name": "Void Mantle",
       "objectType": "equipment",
-      "playCost": 2,
       "icon": "🌌",
       "artworkDescription": "A cloak woven from compressed void-thread that bends incoming strikes around its wearer and lends unnatural speed to counterattacks",
       "faction": "conclave",
@@ -37727,7 +37740,10 @@
       ],
       "attachTags": [
         "retaliate"
-      ]
+      ],
+      "playCosts": {
+        "mana": 2
+      }
     },
     {
       "id": "rune-forge-sanctum",
